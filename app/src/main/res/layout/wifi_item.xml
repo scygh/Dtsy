@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="60dp"
+    android:background="#ccc">
+    <TextView
+        android:id="@+id/tv_wifiname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="wifiName"
+        android:textSize="26sp"
+        />
+    <TextView
+        android:id="@+id/tv_wifistatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_wifiname"
+        android:layout_marginLeft="20dp"
+        android:text="wifistatus"
+        android:textSize="16sp"
+        />
+    <ImageView
+        android:id="@+id/iv_wifi_rssi"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:src="@mipmap/wifi_rssi_4"/>
+</RelativeLayout>

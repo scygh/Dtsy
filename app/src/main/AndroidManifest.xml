@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.moredian.entrance.guard">
+
+    <application
+        android:name=".app.MainApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".view.activity.PersonsManageActivity"></activity>
+        <activity android:name=".view.activity.NetSettingActivity" />
+        <activity android:name=".view.activity.MachinesettingActivity" />
+        <activity android:name=".view.activity.InpersontopayActivity" />
+        <activity android:name=".view.activity.AutomaticconsumptionActivity" />
+        <activity android:name=".view.activity.ManualconsumptionActivity" />
+        <activity android:name=".view.activity.LoginActivity" />
+        <activity android:name=".view.activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".view.activity.MainActivity" />
+    </application>
+
+</manifest>
