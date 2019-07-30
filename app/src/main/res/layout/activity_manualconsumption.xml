@@ -7,69 +7,56 @@
     android:orientation="vertical"
     tools:context=".view.activity.ManualconsumptionActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="#fff"
-        android:elevation="10dp"
-        >
-        <ImageView
-            android:id="@+id/Manualconsumption_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:src="@mipmap/back"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="手动消费"
-            android:textSize="26sp"/>
-    </RelativeLayout>
+    <include layout="@layout/header_bar" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_margin="10dp"
         android:background="@drawable/tip_button_bg"
         android:elevation="10dp"
-        >
+        android:visibility="gone">
+
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="20dp"
-            android:src="@mipmap/person_icon"/>
+            android:src="@mipmap/person_icon" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="60dp"
+            android:layout_marginTop="20dp"
             android:text="姓名"
-            android:textSize="22sp"
-            android:textColor="#fff"/>
+            android:textColor="#fff"
+            android:textSize="22sp" />
+
         <TextView
             android:id="@+id/Manualconsumption_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="120dp"
+            android:layout_marginTop="20dp"
             android:text="****"
-            android:textSize="22sp"
-            android:textColor="#fff"/>
+            android:textColor="#fff"
+            android:textSize="22sp" />
+
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="60dp"
-            android:src="@mipmap/qingchu_icon"/>
+            android:src="@mipmap/qingchu_icon" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_marginTop="60dp"
             android:text="卡片轻触设备左侧即刻响应"
-            android:textSize="22sp"
-            android:textColor="#fff"/>
+            android:textColor="#fff"
+            android:textSize="22sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -77,8 +64,9 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="100dp"
             android:text="余额"
-            android:textSize="40sp"
-            android:textColor="#fff"/>
+            android:textColor="#fff"
+            android:textSize="40sp" />
+
         <TextView
             android:id="@+id/Manualconsumption_balance"
             android:layout_width="wrap_content"
@@ -86,8 +74,8 @@
             android:layout_marginLeft="120dp"
             android:layout_marginTop="100dp"
             android:text="0.00"
-            android:textSize="40sp"
-            android:textColor="#fff"/>
+            android:textColor="#fff"
+            android:textSize="40sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -95,74 +83,83 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="150dp"
             android:text="(提示:余额包含赠送补贴)"
-            android:textSize="16sp"
-            android:textColor="#fff"/>
+            android:textColor="#fff"
+            android:textSize="16sp" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:layout_margin="10dp"
-        android:background="@drawable/manualconsumption_bg"
-        android:elevation="10dp"
-        >
+        android:background="@drawable/tip_button_bg"
+        android:elevation="10dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="消费金额"
-            android:textSize="30sp"
-            android:textColor="#fff"/>
+            android:textColor="#fff"
+            android:textSize="30sp" />
+
         <TextView
             android:id="@+id/Manualconsumption_keyboard_enter_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="键盘输入金额"
             android:layout_centerInParent="true"
-            android:textSize="30sp"
-            android:textColor="#fff"/>
+            android:text="键盘输入金额"
+            android:textColor="#fff"
+            android:textSize="35sp"
+            android:textStyle="bold"/>
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="10dp"
             android:layout_height="20dp"
             android:layout_marginLeft="10dp"
-            android:background="@color/color_50BBDC">
-        </LinearLayout>
+            android:background="@color/color_50BBDC"></LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="温馨提示"
+            android:textColor="#000"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#000"/>
+            android:textStyle="bold" />
     </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:text="1. 先输入金额"
-        android:textSize="16sp"
-        android:textColor="@color/icon"/>
+        android:text="1. 请确保外设键盘连接成功，串口相关设置正确"
+        android:textColor="@color/icon"
+        android:textSize="16sp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:text="2. 卡片接触设备左侧，按下绿色确认键即可完成消费"
-        android:textSize="16sp"
-        android:textColor="@color/icon"/>
+        android:text="2. 未输入金额状态下会查询会员信息"
+        android:textColor="@color/icon"
+        android:textSize="16sp" />
+
     <Button
         android:id="@+id/Manualconsumption_usesdozensmallnotes"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
         android:layout_marginTop="580dp"
+        android:layout_marginRight="50dp"
         android:background="@drawable/tip_button_bg"
-        android:textColor="#fff"
-        android:text="补打小票"
         android:elevation="10dp"
-        android:textSize="25sp"/>
+        android:text="补打小票"
+        android:textColor="#fff"
+        android:visibility="gone"
+        android:textSize="25sp" />
 </LinearLayout>

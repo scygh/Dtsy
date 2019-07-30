@@ -28,6 +28,8 @@ public class ManualconsumptionActivity extends AppCompatActivity {
     TextView ManualconsumptionKeyboardEnterMoney;
     @BindView(R.id.Manualconsumption_usesdozensmallnotes)
     Button ManualconsumptionUsesdozensmallnotes;
+    @BindView(R.id.page_name)
+    TextView pageName;
 
     public static Intent getManualconsumptionActivityIntent(Context context) {
         Intent intent = new Intent(context, ManualconsumptionActivity.class);
@@ -39,6 +41,7 @@ public class ManualconsumptionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manualconsumption);
         ButterKnife.bind(this);
+        pageName.setText("手动扣款");
     }
 
     @OnClick({R.id.Manualconsumption_back, R.id.Manualconsumption_usesdozensmallnotes})

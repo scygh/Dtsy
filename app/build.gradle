@@ -21,6 +21,10 @@ android {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
         }
+        sourceSets.main {
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
     }
 }
 
@@ -35,5 +39,4 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     implementation 'com.blankj:utilcode:1.25.1'
     implementation 'com.android.support:design:29.0.0'
-
 }

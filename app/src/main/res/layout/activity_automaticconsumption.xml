@@ -1,9 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".view.activity.AutomaticconsumptionActivity">
+    <include layout="@layout/header_bar" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/tip_button_bg"
+        android:elevation="10dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="消费金额"
+            android:textColor="#fff"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/automaticcnsumption_keyboard_enter_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:hint="请输入自动扣款金额"
+            android:textColorHint="#fff"
+            android:textColor="#fff"
+            android:textSize="35sp"
+            android:inputType="numberDecimal"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textCursorDrawable="@null"
+            android:background="@null"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="800dp"
+        >
+        <Button
+            android:id="@+id/automaticcnsumption_sure"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#50BBDC"
+            android:textSize="26sp"
+            android:text="确定"/>
+        <Button
+            android:id="@+id/automaticcnsumption_cancle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="26sp"
+            android:text="取消"/>
+    </LinearLayout>
+</LinearLayout>

@@ -12,7 +12,7 @@
         android:id="@+id/persondetail_ll"
         android:layout_width="400dp"
         android:layout_height="70dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="150dp"
         android:gravity="center_vertical">
 
@@ -49,7 +49,7 @@
         android:layout_width="400dp"
         android:layout_height="70dp"
         android:layout_below="@+id/persondetail_ll"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
         android:gravity="center_vertical">
 
@@ -86,7 +86,7 @@
         android:layout_width="400dp"
         android:layout_height="70dp"
         android:layout_below="@+id/persondetail_ll2"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
         android:gravity="center_vertical">
 
@@ -122,7 +122,7 @@
         android:layout_width="400dp"
         android:layout_height="70dp"
         android:layout_below="@+id/persondetail_ll3"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
         android:gravity="center_vertical">
 
@@ -154,14 +154,41 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="250dp"
+        android:layout_height="310dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="150dp"
+        android:layout_marginRight="30dp"
+        android:background="#bfbfbf">
     <ImageView
         android:id="@+id/persondetail_camera"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="150dp"
-        android:layout_marginRight="20dp"
+        android:layout_centerInParent="true"
         android:src="@mipmap/camera"
         />
+    </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        >
+        <Button
+            android:id="@+id/persondetail_sure"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#50BBDC"
+            android:textSize="26sp"
+            android:text="确定"/>
+        <Button
+            android:id="@+id/persondetail_cancle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="26sp"
+            android:text="取消"/>
+    </LinearLayout>
 </RelativeLayout>
