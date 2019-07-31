@@ -54,20 +54,32 @@ import static android.net.wifi.WifiManager.EXTRA_SUPPLICANT_ERROR;
 public class NetSettingActivity extends AppCompatActivity {
 
     private static final String TAG = "NetSettingActivity";
+    //回退键
     @BindView(R.id.Manualconsumption_back)
     ImageView ManualconsumptionBack;
+    // 当前页面的名字
     @BindView(R.id.page_name)
     TextView pageName;
+    //扫描获取的WIFI列表
     @BindView(R.id.net_setting_recyclerview)
     RecyclerView netSettingRecyclerview;
+    //WLAN 开关
     @BindView(R.id.net_setting_switch)
     Switch netSettingSwitch;
+    //WIFI 统一管理类
     private WifiManager mWifiManager;
+    //WIFI热点信息列表
     private List<ScanResult> results;
+    //列表适配器类对象
     private NetSettingRvAdapter adapter;
+    //WIFI的系统广播
     private WifiBroadCastReceiver wifiBroadCastReceiver;
+    //已保存的WIFI 列表
     private static List<WifiConfiguration> mWifiConfigurations;
 
+    /**
+     * descirption: 获取当前activity 的Intent对象
+     */
     public static Intent getNetSettingActivityIntent(Context context) {
         Intent intent = new Intent(context, NetSettingActivity.class);
         return intent;
@@ -98,16 +110,24 @@ public class NetSettingActivity extends AppCompatActivity {
         pageName.setText("网络设置");
         initWifi();
         initReceiver();
+        initView();
+    }
+
+    //初始化视图控制
+    public void initView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        netSettingRecyclerview.setLayoutManager(linearLayoutManager);
+        netSettingRecyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         netSettingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    if(!mWifiManager.isWifiEnabled()){
+                    if (!mWifiManager.isWifiEnabled()) {
                         mWifiManager.setWifiEnabled(true);
-                        handler.postDelayed(runnable,5000);
                     }
+                    handler.postDelayed(runnable, 1000 * 10);
                 } else {
-                    if(mWifiManager.isWifiEnabled()){
+                    if (mWifiManager.isWifiEnabled()) {
                         mWifiManager.setWifiEnabled(false);
                         results.clear();
                         adapter.notifyDataSetChanged();
@@ -118,6 +138,7 @@ public class NetSettingActivity extends AppCompatActivity {
         });
     }
 
+    //注册广播
     public void initReceiver() {
         wifiBroadCastReceiver = new WifiBroadCastReceiver();
         IntentFilter filter = new IntentFilter();
@@ -145,7 +166,7 @@ public class NetSettingActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(NetSettingActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(NetSettingActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.LOCATION_REQUEST);
         } else {
-            Toast.makeText(this, "权限允许", Toast.LENGTH_SHORT).show();
+            ToastUtils.showShort("权限已通过");
             openGPSandWIFISetting();
         }
     }
@@ -165,7 +186,7 @@ public class NetSettingActivity extends AppCompatActivity {
      */
     private void openGPSandWIFISetting() {
         if (checkGpsIsOpen()) {
-            Toast.makeText(this, "开始扫描", Toast.LENGTH_SHORT).show();
+            ToastUtils.showShort("GPS已打开");
             startScanwifi();
         } else {
             new AlertDialog.Builder(this).setTitle("提示")
@@ -195,40 +216,18 @@ public class NetSettingActivity extends AppCompatActivity {
     }
 
     /**
-     * descirption: 如果wifi没有开启，则开启wifi,如果开启了，就开始扫描附近wifi
+     * descirption: 权限请求成功，打开GPS成功之后执行此方法 如果wifi没有开启，则开启wifi,如果开启了，就开始扫描附近wifi
      */
     private void startScanwifi() {
         //请求开启wifi
-        boolean isOpen = mWifiManager.setWifiEnabled(true);
-        if (mWifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLING) {
-            ToastUtils.showShort("正在开启wifi");
-        }
-        if (isOpen) {
-            results = WifiUtil.getScanResult(mWifiManager);
-        }
-        mWifiConfigurations = mWifiManager.getConfiguredNetworks();
-        //开启扫描后直接获取是空，所以需要延迟获取
-        if (results.size() == 0) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startScanwifi();
-                }
-            }, 5000);
-        } else {
-            netSettingSwitch.setChecked(true);
-            initRecyclerView();
-            handler.postDelayed(runnable, 1000 * 10);
-        }
+        mWifiManager.setWifiEnabled(true);
+        //前往广播监听
     }
 
     /**
      * descirption: 初始化recyclerView
      */
     public void initRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        netSettingRecyclerview.setLayoutManager(linearLayoutManager);
-        netSettingRecyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter = new NetSettingRvAdapter(NetSettingActivity.this, results);
         netSettingRecyclerview.setAdapter(adapter);
         adapter.setMyItemClickListener(new NetSettingRvAdapter.OnMyItemClickListener() {
@@ -273,7 +272,8 @@ public class NetSettingActivity extends AppCompatActivity {
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
-                        handler.postDelayed(runnable,5000);
+                        Log.d(TAG, "onDismiss: ");
+                        handler.postDelayed(runnable, 1000 * 10);
                     }
                 });
                 dialog.show();
@@ -367,10 +367,9 @@ public class NetSettingActivity extends AppCompatActivity {
         if (requestCode == Constants.LOCATION_REQUEST) {
             for (int i = 0; i < permissions.length; i++) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "权限允许", Toast.LENGTH_SHORT).show();
                     openGPSandWIFISetting();
                 } else {
-                    Toast.makeText(this, "你拒绝了权限请求", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showShort("你拒绝了权限");
                 }
             }
         }
@@ -389,7 +388,7 @@ public class NetSettingActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
                 //当扫描到结果后
-                Log.d(TAG, "onReceive: 广播收到信息，您已扫描到结果");
+                initRecyclerView();
             } else if (intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
                 //wifi连接网络状态
                 NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
@@ -404,15 +403,21 @@ public class NetSettingActivity extends AppCompatActivity {
                     ToastUtils.showShort("正在连接");
                 } else if (state == state.CONNECTED) {
                     ToastUtils.showShort("建立连接");
-                    adapter.notifyDataSetChanged();
+                    if (adapter != null) {
+                        adapter.notifyDataSetChanged();
+                    }
                 } else if (state == state.DISCONNECTING) {
                     ToastUtils.showShort("正在断开连接");
                 } else if (state == state.DISCONNECTED) {
                     ToastUtils.showShort("已断开连接");
-                    adapter.notifyDataSetChanged();
+                    if (adapter != null) {
+                        adapter.notifyDataSetChanged();
+                    }
                 } else if (state == state.FAILED) {
                     ToastUtils.showShort("连接失败");
-                    adapter.notifyDataSetChanged();
+                    if (adapter != null) {
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             } else if (intent.getAction().equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
                 ////这个监听wifi的打开与关闭，与wifi的连接无关
@@ -426,9 +431,14 @@ public class NetSettingActivity extends AppCompatActivity {
                         break;
                     case WifiManager.WIFI_STATE_ENABLED:
                         Log.d("WIFI状态", "wifiState:WIFI_STATE_ENABLED");
+                        //监听到WIFI 已经开启，开始扫描
+                        netSettingSwitch.setChecked(true);
+                        results = WifiUtil.getScanResult(mWifiManager);
+                        mWifiConfigurations = mWifiManager.getConfiguredNetworks();
                         break;
                     case WifiManager.WIFI_STATE_ENABLING:
                         Log.d("WIFI状态", "wifiState:WIFI_STATE_ENABLING");
+                        ToastUtils.showShort("正在打开wifi...");
                         break;
                     case WifiManager.WIFI_STATE_UNKNOWN:
                         Log.d("WIFI状态", "wifiState:WIFI_STATE_UNKNOWN");

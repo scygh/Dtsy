@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -33,7 +34,7 @@ public class NetSettingRvAdapter extends RecyclerView.Adapter<NetSettingRvAdapte
     private List<ScanResult> results;
     private OnMyItemClickListener myItemClickListener;
 
-    public interface OnMyItemClickListener{
+    public interface OnMyItemClickListener {
         void onItemClick(int position);
     }
 
@@ -76,8 +77,8 @@ public class NetSettingRvAdapter extends RecyclerView.Adapter<NetSettingRvAdapte
             String currentWifiName = WifiUtil.getCurrentWifiSSID(context);
             if (scanResult.SSID != null) {
                 tvWifiname.setText(scanResult.SSID);
-                Log.d(TAG, "bind: " + currentWifiName + "\""+ scanResult.SSID + "\"");
-                if (currentWifiName.equals("\""+ scanResult.SSID + "\"")) {
+                Log.d(TAG, "bind: " + currentWifiName + "\"" + scanResult.SSID + "\"");
+                if (currentWifiName.equals("\"" + scanResult.SSID + "\"")) {
                     tvWifiname.setTextColor(context.getResources().getColor(R.color.color_3EB1b0));
                     tvWifistatus.setText("已连接");
                 } else {
@@ -105,7 +106,7 @@ public class NetSettingRvAdapter extends RecyclerView.Adapter<NetSettingRvAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = View.inflate(context, R.layout.wifi_item, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.wifi_item, null);
         return new ViewHolder(view);
     }
 

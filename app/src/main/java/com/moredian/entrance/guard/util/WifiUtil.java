@@ -21,8 +21,8 @@ public class WifiUtil {
     private static WifiManager wifiManager;
 
     /**
-    * descirption: 获取当前连接wifi名字
-    */
+     * descirption: 获取当前连接wifi名字 内存溢出？
+     */
     public static String getCurrentWifiSSID(Context context) {
         wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = wifiManager.getConnectionInfo();
@@ -30,8 +30,8 @@ public class WifiUtil {
     }
 
     /**
-    * descirption: 扫描附近WIFI返回结果 注意权限，延时，定位
-    */
+     * descirption: 扫描附近WIFI返回结果 注意权限，延时，定位
+     */
     public static List<ScanResult> getScanResult(WifiManager mWifiManager) {
         mWifiManager.startScan();
         List<ScanResult> results = mWifiManager.getScanResults();
@@ -79,5 +79,30 @@ public class WifiUtil {
         list.addAll(set);
     }
 
+
+    /*private void startScanwifi() {
+        //请求开启wifi
+        boolean isOpen = mWifiManager.setWifiEnabled(true);
+        if (mWifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLING) {
+            ToastUtils.showShort("正在开启wifi");
+        }
+        if (isOpen) {
+            results = WifiUtil.getScanResult(mWifiManager);
+        }
+        mWifiConfigurations = mWifiManager.getConfiguredNetworks();
+        //开启扫描后直接获取是空，所以需要延迟获取
+        if (results.size() == 0) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startScanwifi();
+                }
+            }, 5000);
+        } else {
+            netSettingSwitch.setChecked(true);
+            initRecyclerView();
+            handler.postDelayed(runnable, 1000 * 10);
+        }
+    }*/
 
 }
