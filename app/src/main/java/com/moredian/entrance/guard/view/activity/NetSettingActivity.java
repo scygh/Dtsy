@@ -37,10 +37,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.moredian.entrance.guard.Constants;
+import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.entity.AccessPoint;
-import com.moredian.entrance.guard.util.WifiUtil;
+import com.moredian.entrance.guard.utils.WifiUtil;
 import com.moredian.entrance.guard.view.adapter.NetSettingRvAdapter;
 
 import java.util.List;
@@ -456,10 +456,10 @@ public class NetSettingActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         unregisterReceiver(wifiBroadCastReceiver);
         mWifiConfigurations.clear();
         results.clear();
         handler.removeCallbacks(runnable);
-        super.onDestroy();
     }
 }

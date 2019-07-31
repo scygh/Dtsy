@@ -1,7 +1,6 @@
 package com.moredian.entrance.guard.view.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moredian.entrance.guard.R;
-import com.moredian.entrance.guard.util.WifiUtil;
+import com.moredian.entrance.guard.utils.WifiUtil;
 import com.moredian.entrance.guard.view.activity.NetSettingActivity;
 
 import java.util.List;

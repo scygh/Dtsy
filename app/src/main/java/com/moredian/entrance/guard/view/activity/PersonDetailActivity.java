@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.moredian.entrance.guard.R;
+import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.entity.GetListByPage;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,9 +34,14 @@ public class PersonDetailActivity extends AppCompatActivity {
     EditText persondetailTelephone;
     @BindView(R.id.persondetail_camera)
     ImageView persondetailCamera;
+    private GetListByPage.ContentBean.RowsBean rowsBean;
 
-    public static Intent getPersonDetailActivityIntent(Context context) {
+    public static Intent getPersonDetailActivityIntent(Context context, GetListByPage.ContentBean.RowsBean rowsBean) {
         Intent intent = new Intent(context, PersonDetailActivity.class);
+        intent.putExtra(Constants.INTENT_ROWSBEAN_NAME, rowsBean.getName());
+        intent.putExtra(Constants.INTENT_ROWSBEAN_IDCARD, rowsBean.getId());
+        intent.putExtra(Constants.INTENT_ROWSBEAN_STUID, rowsBean.getDepartmentId());
+        intent.putExtra(Constants.INTENT_ROWSBEAN_PHONE, rowsBean.getPhone());
         return intent;
     }
 
@@ -44,6 +51,11 @@ public class PersonDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_person_detail);
         ButterKnife.bind(this);
         pageName.setText("人员详情");
+        Intent dataIntent = getIntent();
+        persondetailName.setText(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_NAME));
+        persondetailCardnum.setText(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_IDCARD));
+        persondetailStunum.setText(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_STUID));
+        persondetailTelephone.setText(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_PHONE));
     }
 
     @OnClick({R.id.Manualconsumption_back, R.id.persondetail_camera})
@@ -53,6 +65,7 @@ public class PersonDetailActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.persondetail_camera:
+                // TODO: 2019/7/31 启动人脸识别录入一张照片 
                 break;
         }
     }

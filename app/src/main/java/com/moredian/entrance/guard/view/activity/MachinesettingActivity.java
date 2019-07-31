@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.moredian.entrance.guard.Constants;
+import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.R;
 import android_serialport_api.SerialPortUtils;
 

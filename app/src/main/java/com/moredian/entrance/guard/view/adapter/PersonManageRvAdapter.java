@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moredian.entrance.guard.R;
+import com.moredian.entrance.guard.entity.GetListByPage;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
 public class PersonManageRvAdapter extends RecyclerView.Adapter<PersonManageRvAdapter.ViewHolder> {
     private static final String TAG = "NetSettingRvAdapter";
     private Context context;
-    private List<String> results;
+    List<GetListByPage.ContentBean.RowsBean> rowsBeans;
     private OnMyItemClickListener myItemClickListener;
 
     public interface OnMyItemClickListener {
@@ -36,9 +37,9 @@ public class PersonManageRvAdapter extends RecyclerView.Adapter<PersonManageRvAd
         this.myItemClickListener = myItemClickListener;
     }
 
-    public PersonManageRvAdapter(Context context, List<String> results) {
+    public PersonManageRvAdapter(Context context, List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
         this.context = context;
-        this.results = results;
+        this.rowsBeans = rowsBeans;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -56,7 +57,7 @@ public class PersonManageRvAdapter extends RecyclerView.Adapter<PersonManageRvAd
             });
         }
         public void bind() {
-            String name = results.get(getAdapterPosition());
+            String name = rowsBeans.get(getAdapterPosition()).getName();
             tvWifiname.setText(name);
         }
     }
@@ -75,6 +76,6 @@ public class PersonManageRvAdapter extends RecyclerView.Adapter<PersonManageRvAd
 
     @Override
     public int getItemCount() {
-        return results.size();
+        return rowsBeans.size();
     }
 }

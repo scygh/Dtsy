@@ -10,8 +10,7 @@ import android.os.Message;
 import android.view.WindowManager;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.SpanUtils;
-import com.moredian.entrance.guard.Constants;
+import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.R;
 
 public class SplashActivity extends AppCompatActivity {

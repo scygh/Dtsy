@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.moredian.entrance.guard.Constants;
+import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.R;
 
 import butterknife.BindView;

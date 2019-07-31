@@ -1,4 +1,4 @@
-package com.moredian.entrance.guard.util;
+package com.moredian.entrance.guard.utils;
 
 import android.content.Context;
 import android.net.wifi.ScanResult;

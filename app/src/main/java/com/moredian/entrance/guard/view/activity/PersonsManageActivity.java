@@ -12,7 +12,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
+import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.entity.GetListByPage;
+import com.moredian.entrance.guard.entity.GetToken;
+import com.moredian.entrance.guard.http.Api;
+import com.moredian.entrance.guard.http.ApiUtils;
 import com.moredian.entrance.guard.view.adapter.NetSettingRvAdapter;
 import com.moredian.entrance.guard.view.adapter.PersonManageRvAdapter;
 
@@ -22,6 +29,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PersonsManageActivity extends AppCompatActivity {
 
@@ -32,6 +42,8 @@ public class PersonsManageActivity extends AppCompatActivity {
     @BindView(R.id.person_manage_recyclerview)
     RecyclerView personManageRecyclerview;
     private PersonManageRvAdapter adapter;
+    private Api api;
+    List<GetListByPage.ContentBean.RowsBean> arowsBeans;
 
     public static Intent getPersonsManageActivityIntent(Context context) {
         Intent intent = new Intent(context, PersonsManageActivity.class);
@@ -44,20 +56,31 @@ public class PersonsManageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_persons_manage);
         ButterKnife.bind(this);
         pageName.setText("人员管理");
-        List<String> persons = new ArrayList<>();
-        persons.add("张三");
-        persons.add("李四");
-        persons.add("王五");
-        persons.add("赵六");
+        api = new Api();
+        api.getListByPage();
+        api.setOnResponse(new Api.OnResponse() {
+            @Override
+            public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
+                arowsBeans = rowsBeans;
+                if (arowsBeans != null) {
+                    initRecyclerview();
+                } else {
+                    ToastUtils.showShort("列表为空");
+                }
+            }
+        });
+    }
+
+    private void initRecyclerview() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         personManageRecyclerview.setLayoutManager(linearLayoutManager);
         personManageRecyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        adapter = new PersonManageRvAdapter(PersonsManageActivity.this,persons);
+        adapter = new PersonManageRvAdapter(PersonsManageActivity.this, arowsBeans);
         personManageRecyclerview.setAdapter(adapter);
         adapter.setMyItemClickListener(new PersonManageRvAdapter.OnMyItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                startActivity(PersonDetailActivity.getPersonDetailActivityIntent(PersonsManageActivity.this));
+                startActivity(PersonDetailActivity.getPersonDetailActivityIntent(PersonsManageActivity.this, arowsBeans.get(position)));
             }
         });
     }
@@ -69,5 +92,10 @@ public class PersonsManageActivity extends AppCompatActivity {
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
