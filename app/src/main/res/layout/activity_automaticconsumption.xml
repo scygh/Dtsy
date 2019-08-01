@@ -41,20 +41,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="800dp"
+        android:layout_marginTop="810dp"
         >
         <Button
             android:id="@+id/automaticcnsumption_sure"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#50BBDC"
+            android:background="@color/color_50BBDC"
             android:textSize="26sp"
             android:text="确定"/>
         <Button
             android:id="@+id/automaticcnsumption_cancle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:background="#ccc"
             android:layout_weight="1"
             android:textSize="26sp"
             android:text="取消"/>

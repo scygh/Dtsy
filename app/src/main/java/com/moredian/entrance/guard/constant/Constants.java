@@ -20,18 +20,21 @@ public class Constants {
     public static final String USERID = "userId";
     public static final String ACCOUNT = "Account";
 
-    //permission
-    public static final int LOCATION_REQUEST = 1;
-    public static final int LOCATION_REQUEST_2 = 2;
-    public static final int REFRESH = 3;
-
     //url
     public static final String SERVER_URL = "http://dev.machine_api.dt128.com/";
-
 
     //intent
     public static final String INTENT_ROWSBEAN_NAME = "intent_rowsbean_name";
     public static final String INTENT_ROWSBEAN_IDCARD = "intent_rowsbean_idcard";
     public static final String INTENT_ROWSBEAN_STUID = "intent_rowsbean_stuid";
     public static final String INTENT_ROWSBEAN_PHONE = "intent_rowsbean_phone";
+    public static final String INTENT_FACEINPUT_RGBDATA = "intent_faceinput_rgbdata";
+
+    //permission
+    public static final int LOCATION_REQUEST = 1;
+    public static final int LOCATION_REQUEST_2 = 2;
+
+    //startActivityForREsult requestCode resultCode
+    public static final int FACE_INPUT_REQUESTCODE = 3;
+    public static final int FACE_INPUT_RESULTCODE = 4;
 }

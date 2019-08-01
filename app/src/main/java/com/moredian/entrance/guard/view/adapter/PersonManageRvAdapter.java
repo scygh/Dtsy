@@ -1,6 +1,7 @@
 package com.moredian.entrance.guard.view.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,8 +24,10 @@ import butterknife.ButterKnife;
  * email : 1797484636@qq.com
  * date : 2019/7/29 08:46
  */
-public class PersonManageRvAdapter extends RecyclerView.Adapter<PersonManageRvAdapter.ViewHolder> {
+public class PersonManageRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "NetSettingRvAdapter";
+    private static final int TYPE_ITEM = 0;
+    private static final int TYPE_FOOTER = 1;
     private Context context;
     List<GetListByPage.ContentBean.RowsBean> rowsBeans;
     private OnMyItemClickListener myItemClickListener;
@@ -42,11 +45,17 @@ public class PersonManageRvAdapter extends RecyclerView.Adapter<PersonManageRvAd
         this.rowsBeans = rowsBeans;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class FootViewHolder extends RecyclerView.ViewHolder{
+        public FootViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_wifiname)
         TextView tvWifiname;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +65,7 @@ public class PersonManageRvAdapter extends RecyclerView.Adapter<PersonManageRvAd
                 }
             });
         }
+
         public void bind() {
             String name = rowsBeans.get(getAdapterPosition()).getName();
             tvWifiname.setText(name);
@@ -64,18 +74,36 @@ public class PersonManageRvAdapter extends RecyclerView.Adapter<PersonManageRvAd
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = View.inflate(context, R.layout.person_item, null);
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == TYPE_ITEM) {
+            View view = LayoutInflater.from(context).inflate( R.layout.person_item,parent, false);
+            return new ItemViewHolder(view);
+        } else if(viewType == TYPE_FOOTER) {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_foot, parent,
+                    false);
+            return new FootViewHolder(view);
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind();
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ItemViewHolder) {
+            ((ItemViewHolder) holder).bind();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return rowsBeans.size();
+        return rowsBeans.size() == 0 ? 0 : rowsBeans.size()+1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position + 1 == getItemCount()) {
+            return TYPE_FOOTER;
+        } else {
+            return TYPE_ITEM;
+        }
     }
 }

@@ -35,6 +35,7 @@ public class Api {
     private OnResponse onResponse;
     public interface OnResponse {
         void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans);
+        void onResponseMore(List<GetListByPage.ContentBean.RowsBean> rowsBeans);
     }
     public void setOnResponse(OnResponse onResponse) {
         this.onResponse = onResponse;
@@ -73,11 +74,11 @@ public class Api {
     /**
     * descirption: 获取消费者列表
     */
-    public void getListByPage() {
+    public void getListByPage(int pageIndex) {
         String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         Log.d(TAG, "onResponse: tokene" + token);
         if (token != null) {
-            ApiUtils.getListByPageService().getListByPage(token, 1, 20).enqueue(new Callback<GetListByPage>() {
+            ApiUtils.getListByPageService().getListByPage(token, pageIndex, 20).enqueue(new Callback<GetListByPage>() {
                 @Override
                 public void onResponse(Call<GetListByPage> call, Response<GetListByPage> response) {
                     GetListByPage getListByPage = response.body();
@@ -85,7 +86,11 @@ public class Api {
                         if (getListByPage.getStatusCode() == 200) {
                             rowsBeans = getListByPage.getContent().getRows();
                             if (onResponse != null) {
-                                onResponse.onResponse(rowsBeans);
+                                if (pageIndex > 1) {
+                                    onResponse.onResponseMore(rowsBeans);
+                                } else {
+                                    onResponse.onResponse(rowsBeans);
+                                }
                             }
                         }
                     } else {

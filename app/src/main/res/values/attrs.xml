@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 自定义控件的名称 -->
+    <declare-styleable name="CameraView">
+        <attr name="previewwidth" format="integer"/>
+        <attr name="previewheight" format="integer"/>
+        <attr name="displaywidth" format="integer"/>
+        <attr name="displayheight" format="integer"/>
+    </declare-styleable>
+</resources>

@@ -170,25 +170,11 @@
         />
     </RelativeLayout>
 
-    <LinearLayout
+    <include
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        >
-        <Button
-            android:id="@+id/persondetail_sure"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#50BBDC"
-            android:textSize="26sp"
-            android:text="确定"/>
-        <Button
-            android:id="@+id/persondetail_cancle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textSize="26sp"
-            android:text="取消"/>
-    </LinearLayout>
+        layout="@layout/bottom_btn_layout"
+        android:layout_marginBottom="10dp"
+        />
 </RelativeLayout>

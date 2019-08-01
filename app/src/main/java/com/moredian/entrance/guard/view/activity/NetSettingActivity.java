@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,8 +38,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.R;
+import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.AccessPoint;
 import com.moredian.entrance.guard.utils.WifiUtil;
 import com.moredian.entrance.guard.view.adapter.NetSettingRvAdapter;
@@ -66,6 +67,8 @@ public class NetSettingActivity extends AppCompatActivity {
     //WLAN 开关
     @BindView(R.id.net_setting_switch)
     Switch netSettingSwitch;
+    @BindView(R.id.loading_ll)
+    RelativeLayout loadingLl;
     //WIFI 统一管理类
     private WifiManager mWifiManager;
     //WIFI热点信息列表
@@ -388,6 +391,9 @@ public class NetSettingActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
                 //当扫描到结果后
+                if (loadingLl.getVisibility() == View.VISIBLE) {
+                    loadingLl.setVisibility(View.GONE);
+                }
                 initRecyclerView();
             } else if (intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
                 //wifi连接网络状态
@@ -435,6 +441,7 @@ public class NetSettingActivity extends AppCompatActivity {
                         netSettingSwitch.setChecked(true);
                         results = WifiUtil.getScanResult(mWifiManager);
                         mWifiConfigurations = mWifiManager.getConfiguredNetworks();
+                        loadingLl.setVisibility(View.VISIBLE);
                         break;
                     case WifiManager.WIFI_STATE_ENABLING:
                         Log.d("WIFI状态", "wifiState:WIFI_STATE_ENABLING");

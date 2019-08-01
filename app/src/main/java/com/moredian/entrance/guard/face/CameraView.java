@@ -1,0 +1,247 @@
+package com.moredian.entrance.guard.face;
+
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.hardware.Camera;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+
+import com.moredian.entrance.guard.R;
+
+
+/**
+ * Created by zjmantou on 2017/7/31.
+ */
+
+public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
+
+    private static final String TAG = CameraView.class.getSimpleName();
+
+    private static final int DEFAULT_CAMERA_PREVIEW_WIDTH = 1920;
+    private static final int DEFAULT_CAMERA_PREVIEW_HEIGHT = 1080;
+
+    private static final int DEFAULT_CAMERA_DISPLAY_WIDTH = 1920;
+    private static final int DEFAULT_CAMERA_DISPLAY_HEIGHT = 1080;
+
+    private static final int DEFAULT_CAMERA_PREVIEW_FORMAT = 15;
+
+    private int mPreviewWidth = DEFAULT_CAMERA_PREVIEW_WIDTH;
+    private int mPreviewHeight = DEFAULT_CAMERA_PREVIEW_HEIGHT;
+
+    //private int mDisplayWidth = DEFAULT_CAMERA_DISPLAY_WIDTH;
+    //private int mDisplayHeight = DEFAULT_CAMERA_DISPLAY_HEIGHT;
+
+    private int mCameraId = -1;
+    private Camera mCamera;
+    private Camera.PreviewCallback mPreviewCallback;
+    private int mDisplayDegree;
+
+    private Camera.FaceDetectionListener mFaceDetectionListener;
+    private boolean isStartFaceDetection;
+
+    private SurfaceHolder mSurface;
+
+    private HandlerThread mCameraThread = null;
+    private Handler mCameraHandler = null;
+    private boolean mHasOpened;
+
+    public static int mVideoPreviewWidth = 480;
+    public static int mVideoPreviewHeight = 800;
+
+
+    public CameraView(Context context) {
+        this(context, null);
+    }
+
+    public boolean hasOpened(){
+        return mHasOpened;
+    }
+
+    public CameraView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        try {
+            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraView);
+            this.mPreviewWidth = typedArray.getInteger(R.styleable.CameraView_previewwidth, DEFAULT_CAMERA_PREVIEW_WIDTH);
+            this.mPreviewHeight = typedArray.getInteger(R.styleable.CameraView_previewheight, DEFAULT_CAMERA_PREVIEW_HEIGHT);
+
+            typedArray.recycle();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        getHolder().addCallback(this);
+    }
+
+    public void init(int cameraId, int displayDegree, Camera.PreviewCallback previewCallback,
+                     Camera.FaceDetectionListener faceDetectionListener) {
+        this.mCameraId = cameraId;
+        this.mDisplayDegree = displayDegree;
+        this.mPreviewCallback = previewCallback;
+        this.mFaceDetectionListener = faceDetectionListener;
+        if(DeviceType.isG2()){
+            mVideoPreviewWidth = 480;
+            mVideoPreviewHeight = 800;
+        }else if (DeviceType.isMg1()){
+            mVideoPreviewWidth = 720;
+            mVideoPreviewHeight = 1280;
+        }else{
+            mVideoPreviewWidth = 1280;
+            mVideoPreviewHeight = 720;
+        }
+    }
+
+    /*public void setDisplaySize(int width, int height) {
+        mDisplayWidth = width;
+        mDisplayHeight = height;
+    }*/
+
+
+    private Runnable startCameraPreviewRunnable = new Runnable() {
+        @Override
+        public void run() {
+            Log.d(TAG,"startCameraPreviewRunnable mCameraId:"+mCameraId+",mSurface:"+mSurface+",mCamera:"+mCamera);
+            if (mSurface == null || mCamera != null || mCameraId == -1) {
+                mCameraHandler.postDelayed(startCameraPreviewRunnable, 1000);
+                return;
+            }
+
+            final int pw = mPreviewWidth;
+            final int ph = mPreviewHeight;
+            Log.d(TAG,"startCameraPreviewRunnable onCameraCreate mPreviewWidth:"+mPreviewWidth+",mPreviewHeight:"+mPreviewHeight);
+
+            mCamera = CameraUtil.openCamera(mCameraId, new CameraUtil.CameraWritter() {
+                @Override
+                public void onCameraCreate(Camera camera) {
+                    Log.d(TAG,"startCameraPreviewRunnable onCameraCreate mCameraId:"+mCameraId);
+                    Camera.Parameters parameters = camera.getParameters();
+                    Camera.Size size = CameraUtil.choosePreferredSize(parameters.getSupportedPreviewSizes(),
+                            mPreviewWidth, mPreviewHeight);
+                    parameters.setPreviewSize(size.width, size.height);
+
+                    int rate = CameraUtil.choosePreferredRate(
+                            parameters.getSupportedPreviewFrameRates(),
+                            DEFAULT_CAMERA_PREVIEW_FORMAT);
+
+                    parameters.setPreviewFrameRate(rate);
+                    camera.setParameters(parameters);
+
+                    int orientation = CameraUtil.getSuitableCameraDisplayOrientation(mDisplayDegree, mCameraId);
+                    camera.setDisplayOrientation(orientation);
+                    mPreviewWidth = size.width;
+                    mPreviewHeight = size.height;
+                }
+            });
+
+            if (mCamera != null) {
+                try {
+                    if (mPreviewWidth != pw && mPreviewHeight != ph) {
+                        mPreviewWidth = pw;
+                        mPreviewHeight = ph;
+                        requestLayout();
+                    }
+
+                    CameraUtil.startPreview(mCamera, mSurface);
+                    mCamera.setPreviewCallback(mPreviewCallback);
+
+                    //增加人脸检测
+                    if (CameraUtil.getMaxNumDetectedFaces(mCamera) > 0 && mFaceDetectionListener != null) {
+                        isStartFaceDetection = true;
+                        //开启人脸检测
+                        mCamera.setFaceDetectionListener(mFaceDetectionListener);
+                        mCamera.startFaceDetection();
+                    }
+                    mHasOpened = true;
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                    CameraUtil.closeCamera(mCamera);
+                    mCamera = null;
+                    mCameraHandler.postDelayed(startCameraPreviewRunnable, 1000);
+                }
+            }else {
+                mCameraHandler.postDelayed(startCameraPreviewRunnable, 1000);
+            }
+        }
+    };
+
+    private Runnable stopCameraPreviewRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mCamera != null) {
+                if (isStartFaceDetection) {
+                    try {
+                        //关闭人脸检测
+                        mCamera.setFaceDetectionListener(null);
+                        mCamera.stopFaceDetection();
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                CameraUtil.closeCamera(mCamera);
+                isStartFaceDetection = false;
+                mCamera = null;
+            }
+        }
+    };
+
+    /**
+     * 开始预览
+     */
+    private void startCameraPreview() {
+        if (mCameraHandler != null) {
+            mCameraHandler.removeCallbacks(stopCameraPreviewRunnable);
+            mCameraHandler.post(startCameraPreviewRunnable);
+        }
+    }
+
+    /**
+     * 停止摄像头预览
+     */
+    private void stopCameraPreview() {
+        if (mCameraHandler != null) {
+            mCameraHandler.removeCallbacks(startCameraPreviewRunnable);
+            mCameraHandler.post(stopCameraPreviewRunnable);
+        }
+    }
+
+    public void onPause() {
+        stopCameraPreview();
+    }
+
+    public void onResume() {
+        startCameraPreview();
+    }
+
+    public void start() {
+        if(mCameraHandler ==null) {
+            mCameraThread = new HandlerThread("CameraPreviewThread");
+            mCameraThread.start();
+            mCameraHandler = new Handler(mCameraThread.getLooper());
+        }
+    }
+
+    public void stop() {
+        if (mCameraThread != null) {
+            mCameraThread.quit();
+        }
+        mCameraHandler = null;
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        mSurface = holder;
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        mSurface = null;
+    }
+}

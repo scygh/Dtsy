@@ -2,12 +2,15 @@ package com.moredian.entrance.guard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.moredian.entrance.guard.R;
@@ -65,8 +68,20 @@ public class PersonDetailActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.persondetail_camera:
-                // TODO: 2019/7/31 启动人脸识别录入一张照片 
+                // TODO: 2019/7/31 启动人脸识别录入一张照片
+                startActivityForResult(FaceInputActivity.getFaceInputActivityIntent(PersonDetailActivity.this),Constants.FACE_INPUT_REQUESTCODE);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == Constants.FACE_INPUT_REQUESTCODE && resultCode == Constants.FACE_INPUT_RESULTCODE) {
+            byte[] image = data.getByteArrayExtra(Constants.INTENT_FACEINPUT_RGBDATA);
+            if (image.length>0) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(image,0,image.length);
+                persondetailCamera.setImageBitmap(bitmap);
+            }
         }
     }
 }
