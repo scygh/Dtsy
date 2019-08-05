@@ -64,17 +64,21 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
     public CameraView(Context context, AttributeSet attrs) {
         super(context, attrs);
         try {
+            //获取mPreviewWidth，mPreviewHeight属性
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraView);
             this.mPreviewWidth = typedArray.getInteger(R.styleable.CameraView_previewwidth, DEFAULT_CAMERA_PREVIEW_WIDTH);
             this.mPreviewHeight = typedArray.getInteger(R.styleable.CameraView_previewheight, DEFAULT_CAMERA_PREVIEW_HEIGHT);
-
             typedArray.recycle();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //通过回调方法监听SurfaceView的生命周期
         getHolder().addCallback(this);
     }
 
+    /**
+    * descirption: 初始化mCameraId mDisplayDegree 俩接口对象
+    */
     public void init(int cameraId, int displayDegree, Camera.PreviewCallback previewCallback,
                      Camera.FaceDetectionListener faceDetectionListener) {
         this.mCameraId = cameraId;
@@ -117,17 +121,17 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
                 public void onCameraCreate(Camera camera) {
                     Log.d(TAG,"startCameraPreviewRunnable onCameraCreate mCameraId:"+mCameraId);
                     Camera.Parameters parameters = camera.getParameters();
+                    //取到最大的误差不大于10的Camera Size
                     Camera.Size size = CameraUtil.choosePreferredSize(parameters.getSupportedPreviewSizes(),
                             mPreviewWidth, mPreviewHeight);
                     parameters.setPreviewSize(size.width, size.height);
-
+                    //获取不小于15 的最大帧率
                     int rate = CameraUtil.choosePreferredRate(
                             parameters.getSupportedPreviewFrameRates(),
                             DEFAULT_CAMERA_PREVIEW_FORMAT);
-
                     parameters.setPreviewFrameRate(rate);
                     camera.setParameters(parameters);
-
+                    //根据displayDegree来调整获取要旋转的度数，保证正确显示
                     int orientation = CameraUtil.getSuitableCameraDisplayOrientation(mDisplayDegree, mCameraId);
                     camera.setDisplayOrientation(orientation);
                     mPreviewWidth = size.width;
@@ -145,6 +149,8 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
                     CameraUtil.startPreview(mCamera, mSurface);
                     mCamera.setPreviewCallback(mPreviewCallback);
+                    //摄像头对焦成功后调用一次，上者会不停调用
+                    //mCamera.setOneShotPreviewCallback(mPreviewCallback);
 
                     //增加人脸检测
                     if (CameraUtil.getMaxNumDetectedFaces(mCamera) > 0 && mFaceDetectionListener != null) {
@@ -215,6 +221,9 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         startCameraPreview();
     }
 
+    /**
+    * descirption: 开启消息机制
+    */
     public void start() {
         if(mCameraHandler ==null) {
             mCameraThread = new HandlerThread("CameraPreviewThread");
@@ -223,6 +232,9 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+    * descirption: 关闭消息机制
+    */
     public void stop() {
         if (mCameraThread != null) {
             mCameraThread.quit();

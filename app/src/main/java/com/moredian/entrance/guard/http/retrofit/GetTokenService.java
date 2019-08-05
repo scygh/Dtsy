@@ -15,5 +15,5 @@ import retrofit2.http.Query;
 public interface GetTokenService {
 
     @GET("Api/Token/GetToken")
-    Call<GetToken> getToken(@Query("account") String account,@Query("password") String password);
+    Call<GetToken> getToken(@Query("account") String account, @Query("password") String password);
 }

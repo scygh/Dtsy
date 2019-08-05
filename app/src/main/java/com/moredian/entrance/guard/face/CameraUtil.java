@@ -24,7 +24,7 @@ public class CameraUtil {
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         Camera.getCameraInfo(cameraId, cameraInfo);
         int orientation;
-        if(cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+        if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             orientation = (cameraInfo.orientation + displayDegree) % 360;
             orientation = (360 - orientation) % 360;
         } else {
@@ -47,7 +47,7 @@ public class CameraUtil {
         if (options.size() > 0) {
             return Collections.max(options, new CompareSizesByArea());
         } else {
-            return sizes.get(sizes.size()-1);
+            return sizes.get(sizes.size() - 1);
         }
     }
 
@@ -62,9 +62,9 @@ public class CameraUtil {
         });
 
         //支持帧率列表里是否包括要设置的值
-        if(!supportRates.contains(targetRate)) {
+        if (!supportRates.contains(targetRate)) {
             int max = supportRates.get(supportRates.size() - 1);
-            if(max < targetRate) {
+            if (max < targetRate) {
                 targetRate = max;
             } else {
                 for (int rate : supportRates) {
@@ -78,13 +78,16 @@ public class CameraUtil {
         return targetRate;
     }
 
+    /**
+    * descirption: 拿到后置摄像头的ID
+    */
     public static int getBackCameraId() {
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         int numberOfCameras = Camera.getNumberOfCameras();
 
-        for(int i = 0; i < numberOfCameras; i++) {
+        for (int i = 0; i < numberOfCameras; i++) {
             Camera.getCameraInfo(i, cameraInfo);
-            if(cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
                 Log.d(TAG, "back camera id :" + i);
                 return i;
             }
@@ -92,13 +95,16 @@ public class CameraUtil {
         return -1;
     }
 
+    /**
+    * descirption: 拿到前置摄像头的ID
+    */
     public static int getFrontCameraId() {
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         int numberOfCameras = Camera.getNumberOfCameras();
 
-        for(int i = 0; i < numberOfCameras; i++) {
+        for (int i = 0; i < numberOfCameras; i++) {
             Camera.getCameraInfo(i, cameraInfo);
-            if(cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
                 Log.d(TAG, "front camera id :" + i);
                 return i;
             }
@@ -106,27 +112,32 @@ public class CameraUtil {
         return -1;
     }
 
-
+    /**
+    * descirption: 打开相机后回调
+    */
     public static Camera openCamera(int cameraId, CameraWritter writter) {
         Camera camera = null;
         try {
             camera = Camera.open(cameraId);
-            if(camera != null) {
+            if (camera != null) {
                 //FaceTrackManager.getInstance().initTrack(context);
-                if(writter != null) {
+                if (writter != null) {
                     writter.onCameraCreate(camera);
                 }
             }
         } catch (Throwable e) {
-            Log.e(TAG,"opencamera id:"+cameraId+",exp:"+e.getMessage());
+            Log.e(TAG, "opencamera id:" + cameraId + ",exp:" + e.getMessage());
             closeCamera(camera);
             camera = null;
         }
         return camera;
     }
 
+    /**
+    * descirption: 关闭相机
+    */
     public static void closeCamera(Camera camera) {
-        if(camera != null) {
+        if (camera != null) {
             try {
                 camera.stopPreview();
                 camera.setPreviewCallback(null);
@@ -145,9 +156,8 @@ public class CameraUtil {
         }
     }
 
-
     public static int getMaxNumDetectedFaces(Camera camera) {
-        if(camera != null) {
+        if (camera != null) {
             try {
                 return camera.getParameters().getMaxNumDetectedFaces();
             } catch (Throwable e) {
@@ -169,7 +179,9 @@ public class CameraUtil {
         void onCameraCreate(Camera camera);
     }
 
-
+    /**
+    * descirption: 获取当前屏幕的旋转角度 左右横屏 还是倒过来了
+    */
     public static int getRotation(Activity activity) {
         WindowManager manager = activity.getWindowManager();
         int rotation = manager.getDefaultDisplay().getRotation();
@@ -188,7 +200,6 @@ public class CameraUtil {
                 degrees = 270;
                 break;
         }
-
         return degrees;
     }
 }

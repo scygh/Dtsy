@@ -28,6 +28,7 @@ public class Constants {
     public static final String INTENT_ROWSBEAN_IDCARD = "intent_rowsbean_idcard";
     public static final String INTENT_ROWSBEAN_STUID = "intent_rowsbean_stuid";
     public static final String INTENT_ROWSBEAN_PHONE = "intent_rowsbean_phone";
+    public static final String INTENT_ROWSBEAN_ID = "intent_rowsbean_id";
     public static final String INTENT_FACEINPUT_RGBDATA = "intent_faceinput_rgbdata";
 
     //permission

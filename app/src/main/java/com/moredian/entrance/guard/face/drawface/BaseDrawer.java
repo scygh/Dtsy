@@ -14,6 +14,7 @@ public abstract class BaseDrawer implements Drawer {
         mDrawerSurface = drawerSurface;
     }
 
+
     @Override
     public void invalidate() {
         if(mDrawerSurface != null) {

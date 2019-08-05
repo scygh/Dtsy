@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.face.CameraUtil;
@@ -55,6 +56,7 @@ public class FaceInputActivity extends AppCompatActivity {
     @BindView(R.id.persondetail_cancle)
     Button beCancle;
     private byte[] rgb_data;
+    private byte[] image;
     private static boolean mShowCallbackFace = true;
     private static int mCheckRgbCameraOpenCount = 0;
     private MyReceiver mReceiver = new MyReceiver();
@@ -127,7 +129,6 @@ public class FaceInputActivity extends AppCompatActivity {
 
     private void initCamera() {
         int display_degree = CameraUtil.getRotation(this);
-        Log.d(TAG, "display:  " + display_degree);
         if (mRgbCameraView != null) {
             mRgbCameraView.init(CameraUtil.getBackCameraId(), display_degree, previewCallback, faceDetectionListener);
             mRgbCameraView.requestLayout();
@@ -161,6 +162,9 @@ public class FaceInputActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * descirption: 先开启mRgbCameraView ，后开启mNirCameraView，如果后者不成功则不断请求开启
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -177,6 +181,9 @@ public class FaceInputActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * descirption: mNirTipsView恢复默认 ，两个Cameraview 暂停
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -192,6 +199,9 @@ public class FaceInputActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * descirption: 恢复初始，解绑广播
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -216,6 +226,7 @@ public class FaceInputActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
+                //如果人脸识别已打开，红外生物识别获取焦点，如果没打开则延迟重来
                 case KEY_OPEN_NIR_CAMERA:
                     if (mRgbCameraView.hasOpened()) {
                         mNirCameraView.onResume();
@@ -224,6 +235,7 @@ public class FaceInputActivity extends AppCompatActivity {
                         mHandler.sendEmptyMessageDelayed(KEY_OPEN_NIR_CAMERA, OPEN_MIR_CAMERA_DELAY + mCheckRgbCameraOpenCount * 1000);
                     }
                     break;
+                //隐藏显示的文字
                 case KEY_DETECT_HIDE:
                     mHandler.removeMessages(KEY_DETECT_HIDE);
                     Log.e(TAG, "hide detect result");
@@ -231,6 +243,7 @@ public class FaceInputActivity extends AppCompatActivity {
                         mDetectResultView.setVisibility(View.GONE);
                     }
                     break;
+                //靠近一点提醒，后隐藏
                 case KEY_DETECT_FACE_SIZE_ERROR:
                     mHandler.removeMessages(KEY_DETECT_FACE_SIZE_ERROR);
                     Log.e(TAG, "face size incorrect");
@@ -242,6 +255,7 @@ public class FaceInputActivity extends AppCompatActivity {
                     }
                     mHandler.sendEmptyMessageDelayed(KEY_DETECT_HIDE, 2000);
                     break;
+                //摆正提醒，后隐藏
                 case KEY_DETECT_FACE_ANGLE_ERROR:
                     mHandler.removeMessages(KEY_DETECT_FACE_ANGLE_ERROR);
                     Log.e(TAG, "face angle incorrect");
@@ -253,6 +267,7 @@ public class FaceInputActivity extends AppCompatActivity {
                     }
                     mHandler.sendEmptyMessageDelayed(KEY_DETECT_HIDE, 2000);
                     break;
+                //提醒保持静止提醒，后隐藏
                 case KEY_DETECT_FACE_QUALITY_ERROR:
                     mHandler.removeMessages(KEY_DETECT_FACE_QUALITY_ERROR);
                     Log.e(TAG, "face quality incorrect");
@@ -264,6 +279,7 @@ public class FaceInputActivity extends AppCompatActivity {
                     }
                     mHandler.sendEmptyMessageDelayed(KEY_DETECT_HIDE, 2000);
                     break;
+                //显示识别获取的名字后隐藏
                 case KEY_DETECT_USER_NAME:
                     mHandler.removeMessages(KEY_DETECT_USER_NAME);
                     String username = msg.getData().getString(USER_NAME);
@@ -287,10 +303,14 @@ public class FaceInputActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.persondetail_sure:
-                Intent intent = new Intent();
-                intent.putExtra(Constants.INTENT_FACEINPUT_RGBDATA ,rgb_data);
-                setResult(Constants.FACE_INPUT_RESULTCODE,intent);
-                finish();
+                if (image != null) {
+                    Intent intent = new Intent();
+                    intent.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
+                    setResult(Constants.FACE_INPUT_RESULTCODE, intent);
+                    finish();
+                } else {
+                    ToastUtils.showShort("录入失败，请重新录入人脸");
+                }
                 break;
             case R.id.persondetail_cancle:
                 finish();
@@ -302,10 +322,11 @@ public class FaceInputActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-
+            //判断是否成功
             if (action != null && !action.equals("")) {
                 boolean status = intent.getBooleanExtra(CHECK_STATUS, false);
                 rgb_data = intent.getByteArrayExtra(RGB_DATA);
+                // 彩色摄像头抓到的人脸
                 if (rgb_data != null && rgb_data.length > 0) {
                     Bitmap rgbBitmap = BitmapFactory.decodeByteArray(rgb_data, 0, rgb_data.length);
                     mRgbFaceView.setImageBitmap(rgbBitmap);
@@ -313,7 +334,7 @@ public class FaceInputActivity extends AppCompatActivity {
                         mRgbFaceView.setVisibility(View.VISIBLE);
                     }
                 }
-
+                //红外摄像头抓到的人脸
                 byte[] nir_data = intent.getByteArrayExtra(NIR_DATA);
                 if (nir_data != null && nir_data.length > 0) {
                     Bitmap rgbBitmap = BitmapFactory.decodeByteArray(nir_data, 0, nir_data.length);
@@ -322,11 +343,12 @@ public class FaceInputActivity extends AppCompatActivity {
                         mNirFaceView.setVisibility(View.VISIBLE);
                     }
                 }
-
+                //如果获取失败则做相应的处理
                 String reason = "";
                 if (!status) {
                     reason = intent.getStringExtra(CHECK_FAIL_REASON);
                     Log.d(TAG, "receive:" + action + ",status:  " + status + ",reason  :" + reason);
+                    //人脸质量是否合格
                     if (action.equals(DETECT_RESULT_ACTION)) {
                         if (reason.contains(DETECT_FAIL_REASON_FACE_SIZE_INCORRECT)) {
                             mHandler.sendEmptyMessage(KEY_DETECT_FACE_SIZE_ERROR);
@@ -337,10 +359,12 @@ public class FaceInputActivity extends AppCompatActivity {
                         } else if (reason.contains(DETECT_FAIL_REASON_FACE_QUALITY_TOO_LOW)) {
                             mHandler.sendEmptyMessage(KEY_DETECT_FACE_QUALITY_ERROR);
                         }
+                        //是否是活体
                     } else if (action.equals(NIR_RESULT_ACTION)) {
                         mNirTipsView.setBackground(getResources().getDrawable(R.drawable.shap_nir_tip_fail));
                     }
                 } else {
+                    //人脸质量是否合格
                     if (action.equals(DETECT_RESULT_ACTION)) {
                         int facecount = intent.getIntExtra(FACE_COUNT, 0);
                         String trackids = "";
@@ -351,18 +375,14 @@ public class FaceInputActivity extends AppCompatActivity {
                                 trackids = trackids + "," + trackid;
                             }
                         }
-                        Log.d(TAG, "receive:" + action + ",status :" + status + ",facecount:" + facecount + ",trackids:<" + trackids + ">");
                     } else if (action.equals(NIR_RESULT_ACTION)) {
                         long trackid = intent.getLongExtra(TRACK_ID, 0l);
-                        Log.d(TAG, "receive :" + action + ",status :" + status + ",trackid:" + trackid + ",rgb_data_size:" + rgb_data.length + ",nir_data_size:" + nir_data.length);
+                        image = rgb_data;
                         mNirTipsView.setBackground(getResources().getDrawable(R.drawable.shap_nir_tip_succ));
                     } else if (action.equals(OFFLINE_RECOGNIZE_ACTION) || action.equals(ONLINE_RECOGNIZE_ACTION)) {
                         long trackid = intent.getLongExtra(TRACK_ID, 0l);
                         String username = intent.getStringExtra(USER_NAME);
                         String menberId = intent.getStringExtra(PERSON_ID);
-
-                        Log.d(TAG, "receive:" + action + ",status :" + status + ",trackid:" + trackid + ",username:<" + username + ">");
-
                         Message msg = new Message();
                         msg.what = KEY_DETECT_USER_NAME;
                         Bundle b = new Bundle();

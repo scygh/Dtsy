@@ -47,14 +47,12 @@ public class PersonsManageActivity extends AppCompatActivity {
     private Api api;
     List<GetListByPage.ContentBean.RowsBean> arowsBeans = new ArrayList<>();
     boolean isLoading = false;
-    ;
     private Handler handler = new Handler();
     private int pageIndex = 1;
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
             getData();
-            Log.d("test", "load more completed");
         }
     };
 
@@ -102,6 +100,11 @@ public class PersonsManageActivity extends AppCompatActivity {
                     isLoading = false;
                 }
             }
+
+            @Override
+            public void onFailed() {
+                loadingLl.setVisibility(View.GONE);
+            }
         });
         swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.icon));
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -114,13 +117,13 @@ public class PersonsManageActivity extends AppCompatActivity {
     }
 
     private void refresh() {
-        api.getListByPage(1);
+        api.getListByPage(1, 20);
         loadingLl.setVisibility(View.VISIBLE);
         pageIndex = 1;
     }
 
     private void getData() {
-        api.getListByPage(++pageIndex);
+        api.getListByPage(++pageIndex, 20);
         Log.d(TAG, "getData: " + pageIndex);
     }
 
