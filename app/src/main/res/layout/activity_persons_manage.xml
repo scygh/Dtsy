@@ -22,8 +22,8 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <include layout="@layout/loading_layout"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/weight_100"
+            android:layout_height="@dimen/height_100"
             android:layout_centerInParent="true"
             android:visibility="gone"
             />

@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Iterator;
+import java.util.Vector;
 
 
 public class SerialPortUtils {
@@ -39,7 +41,7 @@ public class SerialPortUtils {
             Log.d(TAG, "openSerialPort: 打开串口异常：" + e.toString());
             return serialPort;
         }
-        Log.d(TAG, "openSerialPort: 打开串口");
+        Log.d(TAG, "openSerialPort: 打开串口成功");
         return serialPort;
     }
 
@@ -84,6 +86,19 @@ public class SerialPortUtils {
 
     }
 
+    public void sendSerialPort(int data){
+        String hexString = Integer.toHexString(data);
+        Log.d(TAG, "sendSerialPort: 发送数据" + hexString);
+        try {
+            outputStream.write(data);
+            outputStream.flush();
+            Log.d(TAG, "sendSerialPort: 串口数据发送成功");
+        } catch (IOException e) {
+            Log.e(TAG, "sendSerialPort: 串口数据发送失败："+e.toString());
+        }
+
+    }
+
     /**
      * 单开一线程，来读数据
      */
@@ -121,5 +136,6 @@ public class SerialPortUtils {
     public void setOnDataReceiveListener(OnDataReceiveListener dataReceiveListener) {
         onDataReceiveListener = dataReceiveListener;
     }
+
 
 }

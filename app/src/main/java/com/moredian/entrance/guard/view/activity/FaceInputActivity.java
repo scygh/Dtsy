@@ -304,6 +304,8 @@ public class FaceInputActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.persondetail_sure:
                 if (image != null) {
+                    // TODO: 2019/8/6 处理图片质量
+
                     Intent intent = new Intent();
                     intent.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
                     setResult(Constants.FACE_INPUT_RESULTCODE, intent);

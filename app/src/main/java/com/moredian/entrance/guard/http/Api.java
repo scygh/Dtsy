@@ -2,6 +2,7 @@ package com.moredian.entrance.guard.http;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Advanceable;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -135,6 +136,9 @@ public class Api {
                 @Override
                 public void onFailure(Call<GetListByPage> call, Throwable t) {
                     ToastUtils.showShort("获取失败");
+                    if (onResponse != null) {
+                        onResponse.onFailed();
+                    }
                 }
             });
         } else {
@@ -159,6 +163,9 @@ public class Api {
                     public void onNext(PostResponse postResponse) {
                         if (postResponse != null && postResponse.getStatusCode() == 200) {
                             ToastUtils.showShort("创建成功");
+                            if (createResponse != null) {
+                                createResponse.onCreate();
+                            }
                         }
                     }
 

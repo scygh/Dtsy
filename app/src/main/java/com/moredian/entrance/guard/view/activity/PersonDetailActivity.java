@@ -78,9 +78,7 @@ public class PersonDetailActivity extends AppCompatActivity {
             @Override
             public void onCreate() {
                 if (bitmap != null) {
-                    String b = Base64BitmapUtil.bitmapToBase64(bitmap,PersonDetailActivity.this);
-                    PostRequestBody postRequestBody = new PostRequestBody(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_ID),b);
-                    api.postUpdate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), "123");
+                    updatePerson();
                 } else {
                     ToastUtils.showShort("图片为空");
                 }
@@ -101,9 +99,9 @@ public class PersonDetailActivity extends AppCompatActivity {
             case R.id.persondetail_sure:
                 // TODO: 2019/8/1 点击create  update
                 if (bitmap != null) {
-                    PostRequestBody postRequestBody = new PostRequestBody(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_ID), dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_NAME),
-                            dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_PHONE));
-                    api.postCreate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), "123");
+                    createPerson();
+                } else {
+                    ToastUtils.showShort("请先录脸");
                 }
                 break;
             case R.id.persondetail_cancle:
@@ -114,6 +112,18 @@ public class PersonDetailActivity extends AppCompatActivity {
                 api.postDelete(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), "123");
                 break;
         }
+    }
+
+    private synchronized void createPerson() {
+        PostRequestBody postRequestBody = new PostRequestBody(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_ID), dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_NAME),
+                dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_PHONE));
+        api.postCreate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), "123");
+    }
+
+    private synchronized void updatePerson() {
+        String b = Base64BitmapUtil.bitmapToBase64(bitmap, PersonDetailActivity.this);
+        PostRequestBody postRequestBody = new PostRequestBody(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_ID),b);
+        api.postUpdate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), "123");
     }
 
     @Override

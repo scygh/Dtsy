@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/loading_ll"
-    android:layout_width="100dp"
+    android:layout_width="120dp"
     android:layout_height="100dp"
     android:background="@drawable/loading_bg">
     <ProgressBar
         android:id="@+id/loading"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/height_30"
+        android:layout_height="@dimen/height_30"
         android:layout_centerHorizontal="true"
         android:indeterminateTint="@color/icon"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/margin_20"
         />
     <TextView
         android:id="@+id/loading_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="@dimen/margin_60"
         android:textColor="@color/icon"
-        android:text="加载中..."/>
+        android:textSize="@dimen/textSize_20"
+        android:text="@string/loading"/>
 
 </RelativeLayout>

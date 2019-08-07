@@ -10,20 +10,20 @@
 
     <LinearLayout
         android:id="@+id/persondetail_ll"
-        android:layout_width="400dp"
-        android:layout_height="70dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="150dp"
+        android:layout_width="@dimen/width_400"
+        android:layout_height="@dimen/height_70"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginTop="@dimen/margin_150"
         android:gravity="center_vertical">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/margin_10"
             android:layout_weight="2"
             android:gravity="right"
-            android:text="姓名:"
-            android:textSize="26sp" />
+            android:text="@string/name"
+            android:textSize="@dimen/textSize_26" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -46,21 +46,21 @@
 
     <LinearLayout
         android:id="@+id/persondetail_ll2"
-        android:layout_width="400dp"
-        android:layout_height="70dp"
+        android:layout_width="@dimen/width_400"
+        android:layout_height="@dimen/height_70"
         android:layout_below="@+id/persondetail_ll"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginTop="@dimen/margin_10"
         android:gravity="center_vertical">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/margin_10"
             android:layout_weight="2"
             android:gravity="right"
-            android:text="卡编号:"
-            android:textSize="26sp" />
+            android:text="@string/kbh"
+            android:textSize="@dimen/textSize_26" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -72,32 +72,32 @@
                 android:id="@+id/persondetail_cardnum"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_10"
                 android:background="@null"
                 android:textCursorDrawable="@null"
-                android:textSize="26sp" />
+                android:textSize="@dimen/textSize_26" />
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/persondetail_ll3"
-        android:layout_width="400dp"
-        android:layout_height="70dp"
+        android:layout_width="@dimen/width_400"
+        android:layout_height="@dimen/height_70"
         android:layout_below="@+id/persondetail_ll2"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginTop="@dimen/margin_10"
         android:gravity="center_vertical">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/margin_10"
             android:layout_weight="2"
             android:gravity="right"
-            android:text="工学号:"
-            android:textSize="26sp" />
+            android:text="@string/gxh"
+            android:textSize="@dimen/textSize_26" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -119,21 +119,21 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="400dp"
-        android:layout_height="70dp"
+        android:layout_width="@dimen/width_400"
+        android:layout_height="@dimen/height_70"
         android:layout_below="@+id/persondetail_ll3"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginTop="@dimen/margin_10"
         android:gravity="center_vertical">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/margin_10"
             android:layout_weight="2"
             android:gravity="right"
-            android:text="电话:"
-            android:textSize="26sp" />
+            android:text="@string/phone"
+            android:textSize="@dimen/textSize_26" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -161,27 +161,26 @@
         android:layout_marginTop="150dp"
         android:layout_marginRight="30dp"
         android:background="#bfbfbf">
-    <ImageView
-        android:id="@+id/persondetail_camera"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_centerInParent="true"
-        android:src="@mipmap/camera"
-        />
+
+        <ImageView
+            android:id="@+id/persondetail_camera"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/camera" />
     </RelativeLayout>
 
     <Button
         android:id="@+id/personDetail_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/height_200"
+        android:layout_height="@dimen/height_100"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="700dp"
-        android:text="删除创建"/>
+        android:text="删除创建" />
+
     <include
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
         layout="@layout/bottom_btn_layout"
-        android:layout_marginBottom="10dp"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_80"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

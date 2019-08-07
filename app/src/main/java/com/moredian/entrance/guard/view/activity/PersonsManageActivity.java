@@ -98,6 +98,7 @@ public class PersonsManageActivity extends AppCompatActivity {
                 } else {
                     ToastUtils.showShort("只有这么多啦！");
                     isLoading = false;
+                    adapter.notifyItemRemoved(adapter.getItemCount());
                 }
             }
 
@@ -116,6 +117,9 @@ public class PersonsManageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+    * descirption: 刷新一次
+    */
     private void refresh() {
         api.getListByPage(1, 20);
         loadingLl.setVisibility(View.VISIBLE);
@@ -127,6 +131,9 @@ public class PersonsManageActivity extends AppCompatActivity {
         Log.d(TAG, "getData: " + pageIndex);
     }
 
+    /**
+    * descirption: 初始化列表数据
+    */
     private void initRecyclerview() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         personManageRecyclerview.setLayoutManager(linearLayoutManager);

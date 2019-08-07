@@ -1,63 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".view.activity.AutomaticconsumptionActivity">
-    <include layout="@layout/header_bar" />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/tip_button_bg"
-        android:elevation="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="消费金额"
-            android:textColor="#fff"
-            android:textSize="30sp" />
-
-        <EditText
-            android:id="@+id/automaticcnsumption_keyboard_enter_money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:hint="请输入自动扣款金额"
-            android:textColorHint="#fff"
-            android:textColor="#fff"
-            android:textSize="35sp"
-            android:inputType="numberDecimal"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textStyle="bold"
-            android:textCursorDrawable="@null"
-            android:background="@null"/>
-    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="810dp"
-        >
-        <Button
-            android:id="@+id/automaticcnsumption_sure"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/color_50BBDC"
-            android:textSize="26sp"
-            android:text="确定"/>
-        <Button
-            android:id="@+id/automaticcnsumption_cancle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:background="#ccc"
-            android:layout_weight="1"
-            android:textSize="26sp"
-            android:text="取消"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/header_bar" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_200"
+            android:layout_margin="@dimen/margin_10"
+            android:background="@drawable/tip_button_bg"
+            android:elevation="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:text="@string/money"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/textSize_30" />
+
+            <EditText
+                android:id="@+id/automaticcnsumption_keyboard_enter_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@null"
+                android:gravity="center"
+                android:hint="@string/autoinput_money"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:textColor="@color/color_white"
+                android:textColorHint="@color/color_white"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/textSize_35"
+                android:textStyle="bold" />
+        </RelativeLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <include
+        layout="@layout/bottom_btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_80"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

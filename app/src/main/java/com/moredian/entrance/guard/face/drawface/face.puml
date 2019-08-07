@@ -1,0 +1,11 @@
+@startuml
+
+interface Drawer
+interface DrawerSurface
+
+abstract class BaseDrawer implements Drawer
+abstract class BaseFaceDrawer
+class DrawerSurfaceView extends SurfaceView implements SurfaceHolder.Callback, DrawerSurface, Handler.Callback
+class FaceDefaultDrawerMg1 extends BaseFaceDrawer
+class FaceMaskDrawer extends BaseDrawer
+@enduml

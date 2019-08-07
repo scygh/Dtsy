@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         app:previewheight="720"
         app:previewwidth="1280"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="@dimen/height_80"
         />
 
     <com.moredian.entrance.guard.face.CameraView
@@ -79,6 +79,5 @@
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         layout="@layout/bottom_btn_layout"
-        android:layout_marginBottom="10dp"
         />
 </RelativeLayout>

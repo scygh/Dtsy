@@ -25,21 +25,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="消费模式"
-                android:textColor="#000"
-                android:textSize="26sp"
+                android:layout_margin="@dimen/margin_10"
+                android:text="@string/xfms"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/textSize_26"
                 android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#000" />
+                android:background="@color/color_black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_margin="10dp">
+                android:layout_height="@dimen/margin_160"
+                android:layout_margin="@dimen/margin_10">
 
                 <LinearLayout
                     android:id="@+id/main_ll1"
@@ -50,16 +50,16 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/height_70"
+                        android:layout_height="@dimen/width_70"
                         android:src="@mipmap/main_manualconsumption" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="手动扣款"
-                        android:textSize="20sp" />
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:text="@string/sdkk"
+                        android:textSize="@dimen/textSize_20" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -71,16 +71,16 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/height_70"
+                        android:layout_height="@dimen/width_70"
                         android:src="@mipmap/main_auto" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="自动扣款"
-                        android:textSize="20sp" />
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:text="@string/zdkk"
+                        android:textSize="@dimen/textSize_20" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -92,37 +92,37 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/height_70"
+                        android:layout_height="@dimen/width_70"
                         android:src="@mipmap/main_time" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="时段定额"
-                        android:textSize="20sp" />
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:text="@string/sdde"
+                        android:textSize="@dimen/textSize_20" />
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="人员信息"
-                android:textColor="#000"
-                android:textSize="26sp"
+                android:layout_margin="@dimen/margin_10"
+                android:text="@string/ryxx"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/textSize_26"
                 android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#000" />
+                android:background="@color/color_black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_margin="10dp">
+                android:layout_height="@dimen/margin_160"
+                android:layout_margin="@dimen/margin_10">
 
                 <LinearLayout
                     android:id="@+id/main_ll4"
@@ -133,16 +133,16 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/height_70"
+                        android:layout_height="@dimen/width_70"
                         android:src="@mipmap/main_persons" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="人员管理"
-                        android:textSize="20sp" />
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:text="@string/rygl"
+                        android:textSize="@dimen/textSize_20" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -167,42 +167,42 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="报表中心"
-                android:textColor="#000"
-                android:textSize="26sp"
+                android:layout_margin="@dimen/margin_10"
+                android:text="@string/bbzx"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/textSize_26"
                 android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#000" />
+                android:background="@color/color_black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_margin="10dp">
+                android:layout_height="@dimen/margin_160"
+                android:layout_margin="@dimen/margin_10">
 
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="系统设置"
-                android:textColor="#000"
-                android:textSize="26sp"
+                android:layout_margin="@dimen/margin_10"
+                android:text="@string/wlsz"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/textSize_26"
                 android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#000" />
+                android:background="@color/color_black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_margin="10dp">
+                android:layout_height="@dimen/margin_160"
+                android:layout_margin="@dimen/margin_10">
 
                 <LinearLayout
                     android:id="@+id/main_ll5"
@@ -213,15 +213,15 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/height_70"
+                        android:layout_height="@dimen/width_70"
                         android:src="@mipmap/main_machine_setting" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="机器设置"
-                        android:textSize="20sp" />
+                        android:text="@string/jqsz"
+                        android:textSize="@dimen/textSize_20" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -233,15 +233,15 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/height_70"
+                        android:layout_height="@dimen/width_70"
                         android:src="@mipmap/main_net_setting" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="网络设置"
-                        android:textSize="20sp" />
+                        android:text="@string/wlsz"
+                        android:textSize="@dimen/textSize_20" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -257,13 +257,12 @@
             <Button
                 android:id="@+id/logout_btn"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_margin="50dp"
+                android:layout_height="@dimen/height_80"
+                android:layout_margin="@dimen/margin_50"
                 android:background="@drawable/login_button_bg"
-                android:text="退出登录"
-                android:textColor="#fff"
-                android:textSize="25sp"
-                 />
+                android:text="@string/logout"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/textSize_26" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

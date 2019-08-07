@@ -1,16 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.1"
-    defaultConfig {
-        applicationId "com.moredian.entrance.guard"
-        minSdkVersion 16
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
 
     signingConfigs {
         release {
@@ -26,6 +16,17 @@ android {
             storeFile file('release.jks')
             storePassword 'xierandroid123'
         }
+    }
+
+    compileSdkVersion 29
+    buildToolsVersion "29.0.1"
+    defaultConfig {
+        applicationId "com.moredian.entrance.guard"
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -45,9 +46,15 @@ android {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
         }
+
+        externalNativeBuild {
+            ndkBuild {
+                path 'src/main/jni/Android.mk'
+            }
+        }
+
         sourceSets.main {
-            jni.srcDirs = []
-            jniLibs.srcDirs = ['src/main/jniLibs']
+            jniLibs.srcDirs = ['libs']
         }
     }
 }

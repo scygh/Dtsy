@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="height_200">200dp</dimen>
+    <dimen name="width_400">400dp</dimen>
+    <dimen name="height_100">100dp</dimen>
+    <dimen name="weight_100">100dp</dimen>
+    <dimen name="height_40">40dp</dimen>
+    <dimen name="height_30">30dp</dimen>
+    <dimen name="height_70">70dp</dimen>
+    <dimen name="width_70">70dp</dimen>
+    <dimen name="height_80">80dp</dimen>
+    <dimen name="width_80">80dp</dimen>
+    <dimen name="width_10">10dp</dimen>
+    <dimen name="height_20">20dp</dimen>
+
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+    <dimen name="margin_30">30dp</dimen>
+    <dimen name="margin_40">40dp</dimen>
+    <dimen name="margin_50">50dp</dimen>
+    <dimen name="margin_60">60dp</dimen>
+    <dimen name="margin_80">80dp</dimen>
+    <dimen name="margin_160">160dp</dimen>
+    <dimen name="margin_150">150dp</dimen>
+
+
+    <dimen name="textSize_16">16sp</dimen>
+    <dimen name="textSize_18">18sp</dimen>
+    <dimen name="textSize_20">20sp</dimen>
+    <dimen name="textSize_26">26sp</dimen>
+    <dimen name="textSize_28">28sp</dimen>
+    <dimen name="textSize_30">30sp</dimen>
+    <dimen name="textSize_35">35sp</dimen>
+
+</resources>

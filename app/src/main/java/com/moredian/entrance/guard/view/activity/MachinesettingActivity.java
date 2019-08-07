@@ -13,10 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.R;
-import android_serialport_api.SerialPortUtils;
+import com.moredian.entrance.guard.constant.Constants;
 
+import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,10 +33,10 @@ public class MachinesettingActivity extends AppCompatActivity {
     EditText machinesettingPort;
     @BindView(R.id.machinesetting_baudrate)
     EditText machinesettingBaudrate;
-    @BindView(R.id.machinesetting_sure)
-    Button machinesettingSure;
-    @BindView(R.id.machinesetting_cancle)
-    Button machinesettingCancle;
+    @BindView(R.id.persondetail_sure)
+    Button persondetailSure;
+    @BindView(R.id.persondetail_cancle)
+    Button persondetailCancle;
 
     public static Intent getMachinesettingActivityIntent(Context context) {
         Intent intent = new Intent(context, MachinesettingActivity.class);
@@ -49,25 +49,27 @@ public class MachinesettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_machinesetting);
         ButterKnife.bind(this);
         pageName.setText("机器设置");
-        machinesettingMachineNumber.setText(SPUtils.getInstance().getString(Constants.MACHINE_NUMBER,"unknnow"));
-        machinesettingPort.setText(SPUtils.getInstance().getString(Constants.MACHINE_PORT,"unknnow"));
-        machinesettingBaudrate.setText(SPUtils.getInstance().getString(Constants.MACHINE_BAUDRTE,"unknnow"));
+        machinesettingMachineNumber.setText(SPUtils.getInstance().getString(Constants.MACHINE_NUMBER, "001"));
+        machinesettingPort.setText(SPUtils.getInstance().getString(Constants.MACHINE_PORT, "/dev/ttyMT1"));
+        machinesettingBaudrate.setText(SPUtils.getInstance().getString(Constants.MACHINE_BAUDRTE, "115200"));
     }
 
-    @OnClick({R.id.machinesetting_sure, R.id.machinesetting_cancle,R.id.Manualconsumption_back})
+    @OnClick({R.id.persondetail_sure, R.id.persondetail_cancle, R.id.Manualconsumption_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.machinesetting_sure:
+            case R.id.persondetail_sure:
                 SerialPortUtils serialPortUtils = new SerialPortUtils();
                 String machineNumber = machinesettingMachineNumber.getText().toString();
                 String machinePort = machinesettingPort.getText().toString();
                 String machineBaudrate = machinesettingBaudrate.getText().toString();
-                SPUtils.getInstance().put(Constants.MACHINE_NUMBER,machineNumber);
-                SPUtils.getInstance().put(Constants.MACHINE_PORT,machinePort);
-                SPUtils.getInstance().put(Constants.MACHINE_BAUDRTE,machineBaudrate);
+                SPUtils.getInstance().put(Constants.MACHINE_NUMBER, machineNumber);
+                SPUtils.getInstance().put(Constants.MACHINE_PORT, machinePort);
+                SPUtils.getInstance().put(Constants.MACHINE_BAUDRTE, machineBaudrate);
                 ToastUtils.showShort("保存成功");
+                serialPortUtils.closeSerialPort();
+                serialPortUtils.openSerialPort(machinePort, Integer.parseInt(machineBaudrate));
                 break;
-            case R.id.machinesetting_cancle:
+            case R.id.persondetail_cancle:
                 finish();
                 break;
             case R.id.Manualconsumption_back:

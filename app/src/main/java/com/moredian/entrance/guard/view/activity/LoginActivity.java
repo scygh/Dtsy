@@ -35,8 +35,6 @@ public class LoginActivity extends AppCompatActivity {
     TextInputEditText usernameTv;
     @BindView(R.id.passsword_tv)
     TextInputEditText passswordTv;
-    @BindView(R.id.password_cansee_iv)
-    ImageView passwordCanseeIv;
     @BindView(R.id.remenberpassword_rb)
     RadioButton remenberpasswordRb;
     @BindView(R.id.login_btn)

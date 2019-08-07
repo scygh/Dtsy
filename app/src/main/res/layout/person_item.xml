@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="100dp"
-    android:background="#FFF">
+    android:layout_width="match_parent" android:layout_height="@dimen/height_100"
+    android:background="@color/color_white">
     <TextView
         android:id="@+id/tv_wifiname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_margin="@dimen/margin_30"
         android:text="wifiName"
-        android:textSize="26sp"
+        android:textSize="@dimen/textSize_26"
         />
     <ImageView
         android:id="@+id/iv_wifi_rssi"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/height_40"
+        android:layout_height="@dimen/height_40"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="@dimen/margin_20"
         android:src="@mipmap/youjiantou"/>
 </RelativeLayout>

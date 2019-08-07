@@ -13,7 +13,7 @@ public class FaceMaskDrawer extends BaseDrawer {
 
     public static final int FACE_TYPE_NORMAL = 0;
     public static final int FACE_TYPE_PENDANT = 1;
-
+    //按照不同机型来选择不同FaceDrawer
     private BaseFaceDrawer mFaceDrawer;
 
     private Camera.Face[] mFaces;
@@ -25,6 +25,9 @@ public class FaceMaskDrawer extends BaseDrawer {
         showFaceType(FACE_TYPE_NORMAL);
     }
 
+    /**
+    * descirption: 创建FaceDrawer
+    */
     public boolean showFaceType(int type) {
         if(mFaceDrawer != null && type == mCurrentType) {
             return false;
@@ -40,6 +43,9 @@ public class FaceMaskDrawer extends BaseDrawer {
         return true;
     }
 
+    /**
+    * descirption: 更新FaceDrawer
+    */
     public boolean setFaces(Camera.Face[] faces) {
         if (faces == null && this.mFaces == null){
             return false;
@@ -51,6 +57,9 @@ public class FaceMaskDrawer extends BaseDrawer {
         return true;
     }
 
+    /**
+    * descirption: 判断mFaces 是不是可以用
+    */
     @Override
     public boolean isEnable() {
         if(mFaces != null && mFaces.length > 0 ) {
@@ -59,6 +68,9 @@ public class FaceMaskDrawer extends BaseDrawer {
         return false;
     }
 
+    /**
+     * descirption: 显示FaceDrawer
+     */
     @Override
     public void draw(Canvas canvas) {
         if(mFaceDrawer != null) {

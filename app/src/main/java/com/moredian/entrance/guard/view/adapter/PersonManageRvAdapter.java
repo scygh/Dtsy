@@ -45,7 +45,7 @@ public class PersonManageRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.rowsBeans = rowsBeans;
     }
 
-    public class FootViewHolder extends RecyclerView.ViewHolder{
+    public class FootViewHolder extends RecyclerView.ViewHolder {
         public FootViewHolder(@NonNull View itemView) {
             super(itemView);
         }
@@ -76,9 +76,9 @@ public class PersonManageRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
-            View view = LayoutInflater.from(context).inflate( R.layout.person_item,parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.person_item, parent, false);
             return new ItemViewHolder(view);
-        } else if(viewType == TYPE_FOOTER) {
+        } else if (viewType == TYPE_FOOTER) {
             View view = LayoutInflater.from(context).inflate(R.layout.item_foot, parent,
                     false);
             return new FootViewHolder(view);
@@ -95,7 +95,7 @@ public class PersonManageRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        return rowsBeans.size() == 0 ? 0 : rowsBeans.size()+1;
+        return rowsBeans.size() == 0 ? 0 : rowsBeans.size() + 1;
     }
 
     @Override

@@ -11,24 +11,24 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="@dimen/height_80">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="@dimen/height_40"
             android:text="WLAN"
             android:textColor="@color/color_black"
-            android:textSize="28sp" />
+            android:textSize="@dimen/textSize_28" />
 
         <Switch
             android:id="@+id/net_setting_switch"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/margin_60"
+            android:layout_height="@dimen/margin_60"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="40dp"
+            android:layout_marginRight="@dimen/margin_40"
             android:thumb="@drawable/switch_custom_thumb_selector"
             android:track="@drawable/switch_custom_track_selector" />
 
@@ -36,8 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginRight="@dimen/margin_20"
             android:background="#bcbcbc"/>
     </RelativeLayout>
 
@@ -52,8 +52,8 @@
 
         </androidx.recyclerview.widget.RecyclerView>
         <include layout="@layout/loading_layout"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/weight_100"
+            android:layout_height="@dimen/height_100"
             android:layout_centerInParent="true"
             android:visibility="gone"/>
     </RelativeLayout>

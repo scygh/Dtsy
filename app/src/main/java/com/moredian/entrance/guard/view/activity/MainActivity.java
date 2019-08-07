@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -15,12 +16,15 @@ import com.blankj.utilcode.util.SPUtils;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.R;
 
+import android_serialport_api.SerialPortFinder;
+import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "SerialPortUtils";
 
     @BindView(R.id.logout_btn)
     Button logoutBtn;
@@ -50,6 +54,22 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+        SerialPortUtils serialPortUtils = new SerialPortUtils();
+        serialPortUtils.openSerialPort("/dev/ttyMT1",115200);
+        SerialPortFinder finder = new SerialPortFinder();
+        String[] attr = finder.getAllDevicesPath();
+        for (String path: attr) {
+            Log.d(TAG, "onCreate: " + path );
+        }
+        serialPortUtils.sendSerialPort("0xA1");
+        serialPortUtils.sendSerialPort("0xB1");
+        serialPortUtils.sendSerialPort("0x03");
+        serialPortUtils.setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
+            @Override
+            public void onDataReceive(byte[] buffer, int size) {
+                Log.d(TAG, "onDataReceive: " + new String(buffer));
+            }
+        });
     }
 
     @OnClick({R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6, R.id.logout_btn})

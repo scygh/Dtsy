@@ -24,10 +24,11 @@ public class AutomaticconsumptionActivity extends AppCompatActivity {
     TextView pageName;
     @BindView(R.id.automaticcnsumption_keyboard_enter_money)
     TextView automaticcnsumptionKeyboardEnterMoney;
-    @BindView(R.id.automaticcnsumption_sure)
-    Button automaticcnsumptionSure;
-    @BindView(R.id.automaticcnsumption_cancle)
-    Button automaticcnsumptionCancle;
+    @BindView(R.id.persondetail_sure)
+    Button persondetailSure;
+    @BindView(R.id.persondetail_cancle)
+    Button persondetailCancle;
+
 
     public static Intent getAutomaticconsumptionActivityIntent(Context context) {
         Intent intent = new Intent(context, AutomaticconsumptionActivity.class);
@@ -42,15 +43,15 @@ public class AutomaticconsumptionActivity extends AppCompatActivity {
         pageName.setText("自动扣款");
     }
 
-    @OnClick({R.id.Manualconsumption_back, R.id.automaticcnsumption_sure, R.id.automaticcnsumption_cancle})
+    @OnClick({R.id.Manualconsumption_back, R.id.persondetail_sure, R.id.persondetail_cancle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Manualconsumption_back:
                 finish();
                 break;
-            case R.id.automaticcnsumption_sure:
+            case R.id.persondetail_sure:
                 break;
-            case R.id.automaticcnsumption_cancle:
+            case R.id.persondetail_cancle:
                 break;
         }
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="@dimen/height_80"
     android:gravity="center">
         <Button
             android:id="@+id/persondetail_sure"
@@ -9,14 +9,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/color_50BBDC"
-            android:textSize="26sp"
+            android:textSize="@dimen/textSize_26"
             android:text="确定"/>
         <Button
             android:id="@+id/persondetail_cancle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="#ccc"
+            android:background="@color/color_grey"
             android:layout_weight="1"
-            android:textSize="26sp"
+            android:textSize="@dimen/textSize_26"
             android:text="取消"/>
 </LinearLayout>

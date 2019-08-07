@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">鼎图收银</string>
+    <string name="money">消费金额</string>
+    <string name="autoinput_money">请输入自动扣款金额</string>
+    <string name="keybordinput_money">键盘输入金额</string>
+    <string name="tip">温馨提示</string>
+    <string name="tip_1">1. 请确保外设键盘连接成功，串口相关设置正确</string>
+    <string name="tip_2">2. 未输入金额状态下会查询会员信息</string>
+    <string name="username">请输入账号</string>
+    <string name="password">请输入密码</string>
+    <string name="remember_password">记住密码</string>
+    <string name="login">登录</string>
+    <string name="logout">退出登录</string>
+    <string name="machinesetting_machine_number">机号设置</string>
+    <string name="machine_number">机号</string>
+    <string name="portandbaudrate">串口和波特率</string>
+    <string name="machinesetting_port">串口号</string>
+    <string name="machinesetting_baudrate">波特率</string>
+    <string name="xfms">消费模式</string>
+    <string name="ryxx">人员信息</string>
+    <string name="bbzx">报表中心</string>
+    <string name="sdkk">手动扣款</string>
+    <string name="zdkk">自动扣款</string>
+    <string name="sdde">时段定额</string>
+    <string name="rygl">人员管理</string>
+    <string name="jqsz">机器设置</string>
+    <string name="wlsz">网络设置</string>
+    <string name="xtsz">系统设置</string>
+    <string name="name">姓名:</string>
+    <string name="kbh">卡编号:</string>
+    <string name="gxh">工学号:</string>
+    <string name="phone">电话:</string>
+    <string name="loadmore">加载更多</string>
+    <string name="loading">加载中...</string>
+
 </resources>

@@ -20,23 +20,23 @@ public class SerialPort {
     public SerialPort(File device, int baudrate, int flags) throws SecurityException, IOException {
 
         //检查访问权限，如果没有读写权限，进行文件操作，修改文件访问权限
-//        if (!device.canRead() || !device.canWrite()) {
-//
-//            try {
-//                //通过挂载到linux的方式，修改文件的操作权限
-//                Process su = Runtime.getRuntime().exec("/system/xbin/su");
-//                String cmd = "chmod 777 " + device.getAbsolutePath() + "\n" + "exit\n";
-//                su.getOutputStream().write(cmd.getBytes());
-//
-//                if ((su.waitFor() != 0) || !device.canRead() || !device.canWrite()) {
-//                    Log.e("SerialPort", "SerialPort: 没有权限");
-//                    throw new SecurityException();
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                throw new SecurityException();
-//            }
-//        }
+        if (!device.canRead() || !device.canWrite()) {
+
+            try {
+                //通过挂载到linux的方式，修改文件的操作权限
+                Process su = Runtime.getRuntime().exec("/system/bin/su");
+                String cmd = "chmod 777 " + device.getAbsolutePath() + "\n" + "exit\n";
+                su.getOutputStream().write(cmd.getBytes());
+
+                if ((su.waitFor() != 0) || !device.canRead() || !device.canWrite()) {
+                    Log.e("SerialPort", "SerialPort: 没有权限");
+                    throw new SecurityException();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new SecurityException();
+            }
+        }
 
         mFd = open(device.getAbsolutePath(), baudrate, flags);
 

@@ -89,28 +89,28 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="10dp"
+        android:layout_height="@dimen/height_200"
+        android:layout_margin="@dimen/margin_10"
         android:background="@drawable/tip_button_bg"
         android:elevation="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="消费金额"
-            android:textColor="#fff"
-            android:textSize="30sp" />
+            android:layout_margin="@dimen/margin_10"
+            android:text="@string/money"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/textSize_30" />
 
         <TextView
             android:id="@+id/Manualconsumption_keyboard_enter_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="键盘输入金额"
-            android:textColor="#fff"
-            android:textSize="35sp"
-            android:textStyle="bold"/>
+            android:text="@string/keybordinput_money"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/textSize_35"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <LinearLayout
@@ -118,36 +118,38 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="10dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:background="@color/color_50BBDC"></LinearLayout>
+            android:layout_width="@dimen/width_10"
+            android:layout_height="@dimen/height_20"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:background="@color/color_50BBDC">
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="温馨提示"
-            android:textColor="#000"
-            android:textSize="18sp"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:text="@string/tip"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/textSize_18"
             android:textStyle="bold" />
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:text="1. 请确保外设键盘连接成功，串口相关设置正确"
+        android:layout_marginLeft="@dimen/margin_20"
+        android:text="@string/tip_1"
         android:textColor="@color/icon"
-        android:textSize="16sp" />
+        android:textSize="@dimen/textSize_16" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:text="2. 未输入金额状态下会查询会员信息"
+        android:layout_marginLeft="@dimen/margin_20"
+        android:text="@string/tip_2"
         android:textColor="@color/icon"
-        android:textSize="16sp" />
+        android:textSize="@dimen/textSize_16" />
 
     <Button
         android:id="@+id/Manualconsumption_usesdozensmallnotes"
