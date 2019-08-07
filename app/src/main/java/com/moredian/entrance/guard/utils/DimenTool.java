@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
+ * 403
  * Created by cdy on 2016/2/3. * 快速生成适配工具类
  */
 public class DimenTool {

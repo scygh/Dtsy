@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -56,14 +57,12 @@ public class MainActivity extends AppCompatActivity {
         }
         SerialPortUtils serialPortUtils = new SerialPortUtils();
         serialPortUtils.openSerialPort("/dev/ttyMT1",115200);
-        SerialPortFinder finder = new SerialPortFinder();
+        /*SerialPortFinder finder = new SerialPortFinder();
         String[] attr = finder.getAllDevicesPath();
         for (String path: attr) {
             Log.d(TAG, "onCreate: " + path );
-        }
-        serialPortUtils.sendSerialPort("0xA1");
-        serialPortUtils.sendSerialPort("0xB1");
-        serialPortUtils.sendSerialPort("0x03");
+        }*/
+        serialPortUtils.sendSerialPort("你好呀");
         serialPortUtils.setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
