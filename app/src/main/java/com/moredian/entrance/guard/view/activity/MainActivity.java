@@ -56,12 +56,12 @@ public class MainActivity extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
         SerialPortUtils serialPortUtils = new SerialPortUtils();
-        serialPortUtils.openSerialPort("/dev/ttyMT1",115200);
-        /*SerialPortFinder finder = new SerialPortFinder();
+        serialPortUtils.openSerialPort("/dev/ttyMT1",9600);
+        SerialPortFinder finder = new SerialPortFinder();
         String[] attr = finder.getAllDevicesPath();
         for (String path: attr) {
             Log.d(TAG, "onCreate: " + path );
-        }*/
+        }
         serialPortUtils.sendSerialPort("你好呀");
         serialPortUtils.setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
             @Override
