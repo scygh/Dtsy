@@ -35,6 +35,7 @@ public class NetSettingRvAdapter extends RecyclerView.Adapter<NetSettingRvAdapte
 
     public interface OnMyItemClickListener {
         void onItemClick(int position);
+        boolean onLongItemClick(int position);
     }
 
     public void setMyItemClickListener(OnMyItemClickListener myItemClickListener) {
@@ -61,6 +62,12 @@ public class NetSettingRvAdapter extends RecyclerView.Adapter<NetSettingRvAdapte
                 @Override
                 public void onClick(View view) {
                     myItemClickListener.onItemClick(getAdapterPosition());
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    return myItemClickListener.onLongItemClick(getAdapterPosition());
                 }
             });
         }

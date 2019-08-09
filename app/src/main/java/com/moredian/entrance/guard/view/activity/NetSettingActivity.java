@@ -36,6 +36,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
@@ -69,6 +70,9 @@ public class NetSettingActivity extends AppCompatActivity {
     Switch netSettingSwitch;
     @BindView(R.id.loading_ll)
     RelativeLayout loadingLl;
+    @BindView(R.id.net_refresh)
+    SwipeRefreshLayout netRefresh;
+
     //WIFI 统一管理类
     private WifiManager mWifiManager;
     //WIFI热点信息列表
@@ -137,6 +141,24 @@ public class NetSettingActivity extends AppCompatActivity {
                         handler.removeCallbacks(runnable);
                     }
                 }
+            }
+        });
+        netRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                results.clear();
+                if (WifiUtil.getScanResult(mWifiManager).size() > 0) {
+                    results.addAll(WifiUtil.getScanResult(mWifiManager));
+                    adapter.notifyDataSetChanged();
+                    Log.d(TAG, "run: 刷新一次" + results.get(0).SSID);
+                }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        netRefresh.setRefreshing(false);
+                    }
+                },1000);
+
             }
         });
     }
@@ -255,6 +277,7 @@ public class NetSettingActivity extends AppCompatActivity {
                 alertDialog.setPositiveButton("连接", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        mWifiManager.disconnect();
                         AccessPoint accessPoint = new AccessPoint(results.get(position).SSID, results.get(position).capabilities, et.getText().toString());
                         WifiConfiguration wifiConfiguration = createConfiguration(accessPoint);
                         //如果你设置的wifi是设备已经存储过的，那么这个networkId会返回小于0的值。
@@ -280,6 +303,43 @@ public class NetSettingActivity extends AppCompatActivity {
                     }
                 });
                 dialog.show();
+            }
+
+            @Override
+            public boolean onLongItemClick(int position) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(NetSettingActivity.this);
+                alertDialog.setTitle("wifi:" + results.get(position).SSID);
+                alertDialog.setMessage("取消保存");
+                //  取消选项
+                alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                //  确认选项
+                alertDialog.setPositiveButton("取消保存", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                       clearExitsMsg(results.get(position).SSID);
+                        Log.d("scy", "onClick: "+isWifiSave(results.get(position).SSID));
+                    }
+                });
+                AlertDialog dialog = alertDialog.create();
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    public void onShow(DialogInterface dialog) {
+                        handler.removeCallbacks(runnable);
+                    }
+                });
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        handler.postDelayed(runnable, 1000 * 10);
+                    }
+                });
+                dialog.show();
+                return true;
             }
         });
     }
@@ -313,12 +373,7 @@ public class NetSettingActivity extends AppCompatActivity {
         config.allowedProtocols.clear();
         config.SSID = "\"" + SSID + "\"";
         //判断当前连接的wifi保存了密码，清除wifi保存信息
-        WifiConfiguration tempConfig = isWifiSave(SSID);
-        if (tempConfig != null) {
-            mWifiManager.removeNetwork(tempConfig.networkId);
-            mWifiManager.saveConfiguration();
-            Log.d(TAG, "createConfiguration: 清除wifi保存信息");
-        }
+        clearExitsMsg(SSID);
         if (encryptionType.contains("WEP")) {
             Log.d(TAG, "createConfiguration: wep");
             /**
@@ -353,6 +408,18 @@ public class NetSettingActivity extends AppCompatActivity {
             config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
         }
         return config;
+    }
+
+    /**
+    * descirption: 删除已保存的wifi信息
+    */
+    private void clearExitsMsg(String SSID) {
+        WifiConfiguration tempConfig = isWifiSave(SSID);
+        if (tempConfig != null) {
+            mWifiManager.removeNetwork(tempConfig.networkId);
+            mWifiManager.saveConfiguration();
+            Log.d(TAG, "createConfiguration: 清除wifi保存信息");
+        }
     }
 
     @OnClick({R.id.Manualconsumption_back})

@@ -69,9 +69,8 @@ public class SerialPortUtils {
      */
     public void sendSerialPort(String data){
         Log.d(TAG, "sendSerialPort: 发送数据");
-
         try {
-            byte[] sendData = data.getBytes(); //string转byte[]
+            byte[] sendData = ChangeTool.HexToByteArr(data.replace(" " , ""));
             this.data_ = new String(sendData); //byte[]转string
             if (sendData.length > 0) {
                 outputStream.write(sendData);

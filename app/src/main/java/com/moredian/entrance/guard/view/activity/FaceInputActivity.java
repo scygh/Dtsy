@@ -305,13 +305,19 @@ public class FaceInputActivity extends AppCompatActivity {
             case R.id.persondetail_sure:
                 if (image != null) {
                     // TODO: 2019/8/6 处理图片质量
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(image,0,image.length);
+                    Log.d(TAG, "onViewClicked: "+ bitmap.getHeight()+ bitmap.getWidth());
+                    if (bitmap.getWidth() < 200 || bitmap.getHeight()<200) {
+                        ToastUtils.showShort("人脸大小不能小于200x200,请重新录入");
+                    } else {
+                        Intent intent = new Intent();
+                        intent.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
+                        setResult(Constants.FACE_INPUT_RESULTCODE, intent);
+                        finish();
+                    }
 
-                    Intent intent = new Intent();
-                    intent.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
-                    setResult(Constants.FACE_INPUT_RESULTCODE, intent);
-                    finish();
                 } else {
-                    ToastUtils.showShort("录入失败，请重新录入人脸");
+                    ToastUtils.showShort("没有识别到人脸，请重新录入");
                 }
                 break;
             case R.id.persondetail_cancle:
@@ -324,7 +330,7 @@ public class FaceInputActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            //判断是否成功
+            //判断是否有信息
             if (action != null && !action.equals("")) {
                 boolean status = intent.getBooleanExtra(CHECK_STATUS, false);
                 rgb_data = intent.getByteArrayExtra(RGB_DATA);

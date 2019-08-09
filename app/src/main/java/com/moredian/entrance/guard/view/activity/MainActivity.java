@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout mainLl5;
     @BindView(R.id.main_ll6)
     LinearLayout mainLl6;
+    SerialPortUtils serialPortUtils;
 
     public static Intent getMainActivityIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -55,20 +57,24 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-        SerialPortUtils serialPortUtils = new SerialPortUtils();
-        serialPortUtils.openSerialPort("/dev/ttyMT1",9600);
-        SerialPortFinder finder = new SerialPortFinder();
+        serialPortUtils = new SerialPortUtils();
+        serialPortUtils.openSerialPort("/dev/ttyMT2",115200);
+        /*SerialPortFinder finder = new SerialPortFinder();
         String[] attr = finder.getAllDevicesPath();
         for (String path: attr) {
             Log.d(TAG, "onCreate: " + path );
-        }
-        serialPortUtils.sendSerialPort("你好呀");
+        }*/
         serialPortUtils.setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
-                Log.d(TAG, "onDataReceive: " + new String(buffer));
+                Log.d(TAG, "onDataReceive: " + new String(buffer,0,size));
             }
         });
+    }
+
+    public void send(View view) {
+        String msg = ((EditText)findViewById(R.id.et1)).getText().toString();
+        serialPortUtils.sendSerialPort("A1 B1 03 00 01 01 00 00 02");
     }
 
     @OnClick({R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6, R.id.logout_btn})
@@ -98,5 +104,11 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        serialPortUtils.closeSerialPort();
     }
 }

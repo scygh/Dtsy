@@ -41,21 +41,26 @@
             android:background="#bcbcbc"/>
     </RelativeLayout>
 
-    <RelativeLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/net_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/net_setting_recyclerview"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/net_setting_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
 
-        </androidx.recyclerview.widget.RecyclerView>
-        <include layout="@layout/loading_layout"
-            android:layout_width="@dimen/width_100"
-            android:layout_height="@dimen/height_100"
-            android:layout_centerInParent="true"
-            android:visibility="gone"/>
-    </RelativeLayout>
+            </androidx.recyclerview.widget.RecyclerView>
+            <include layout="@layout/loading_layout"
+                android:layout_width="@dimen/width_100"
+                android:layout_height="@dimen/height_100"
+                android:layout_centerInParent="true"
+                android:visibility="gone"/>
+        </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>

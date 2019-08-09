@@ -29,7 +29,7 @@ public class FaceDefaultDrawerMg1 extends BaseFaceDrawer {
                                      int viewWidth, int viewHeight) {
         matrix.setScale(mirror ? -1 : 1, 1);
         matrix.postRotate(displayOrientation);
-        matrix.postScale(viewWidth / 2000f, viewHeight / 2000f);
+        matrix.postScale(viewWidth / 1800f, viewHeight / 1800f);
         matrix.postTranslate(viewWidth /2f , viewHeight /2f);
     }
 
