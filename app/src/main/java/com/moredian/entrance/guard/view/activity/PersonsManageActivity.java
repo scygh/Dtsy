@@ -180,6 +180,12 @@ public class PersonsManageActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        refresh();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         pageIndex = 1;

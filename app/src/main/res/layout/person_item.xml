@@ -6,9 +6,21 @@
         android:id="@+id/tv_wifiname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_30"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_centerVertical="true"
         android:text="wifiName"
+        android:textColor="@color/color_black"
         android:textSize="@dimen/textSize_26"
+        />
+    <TextView
+        android:id="@+id/tv_isfaceinput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_60"
+        android:text="已录入"
+        android:textSize="@dimen/textSize_20"
         />
     <ImageView
         android:id="@+id/iv_wifi_rssi"

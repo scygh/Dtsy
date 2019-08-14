@@ -19,6 +19,6 @@ import retrofit2.http.Query;
  */
 public interface GetListByPageService {
 
-    @GET("Api/User/GetListByPage")
+    @GET("Api/User/GetPage")
     Call<GetListByPage> getListByPage(@Header("AccessToken") String token, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
 }

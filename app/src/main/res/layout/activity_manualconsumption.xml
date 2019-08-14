@@ -109,7 +109,7 @@
             android:layout_centerInParent="true"
             android:text="@string/keybordinput_money"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/textSize_35"
+            android:textSize="@dimen/textSize_40"
             android:textStyle="bold" />
     </RelativeLayout>
 

@@ -2,9 +2,12 @@ package com.moredian.entrance.guard.http;
 
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.http.retrofit.GetListByPageService;
+import com.moredian.entrance.guard.http.retrofit.GetReadCardService;
 import com.moredian.entrance.guard.http.retrofit.GetTokenService;
 import com.moredian.entrance.guard.http.retrofit.PostCreate;
 import com.moredian.entrance.guard.http.retrofit.PostDelete;
+import com.moredian.entrance.guard.http.retrofit.PostQRCodeExpense;
+import com.moredian.entrance.guard.http.retrofit.PostSimpleExpense;
 import com.moredian.entrance.guard.http.retrofit.PostUpdate;
 
 /**
@@ -51,4 +54,24 @@ public class ApiUtils {
         return RetrofitClient.getClient(BASE_URL).create(PostUpdate.class);
     }
 
+    /**
+    * descirption: 读取卡信息
+    */
+    public static GetReadCardService getReadCardService() {
+        return RetrofitClient.getClient(BASE_URL).create(GetReadCardService.class);
+    }
+
+    /**
+     * descirption:简单支付
+     */
+    public static PostSimpleExpense postSimpleExpenseService() {
+        return RetrofitClient.getClient(BASE_URL).create(PostSimpleExpense.class);
+    }
+
+    /**
+     * descirption:出示二维码支付
+     */
+    public static PostQRCodeExpense postQRCodeExpenseService() {
+        return RetrofitClient.getClient(BASE_URL).create(PostQRCodeExpense.class);
+    }
 }

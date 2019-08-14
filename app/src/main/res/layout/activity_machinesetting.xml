@@ -43,6 +43,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:background="@drawable/machine_setting_edittext_bg">
 
                 <EditText
@@ -88,6 +90,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:background="@drawable/machine_setting_edittext_bg">
 
                 <EditText
@@ -124,6 +128,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:background="@drawable/machine_setting_edittext_bg">
 
                 <EditText

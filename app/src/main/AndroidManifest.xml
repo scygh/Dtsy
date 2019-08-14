@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 读取联系人权限，上传联系人需要用到此权限 -->
@@ -24,15 +24,24 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activity.FaceInputActivity"></activity>
-        <activity android:name=".view.activity.PersonDetailActivity" />
+        <activity android:name=".view.activity.ConsumeResultActivity"></activity>
+        <activity android:name=".view.activity.FaceInputActivity" />
+        <activity
+            android:name=".view.activity.PersonDetailActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".view.activity.PersonsManageActivity" />
         <activity android:name=".view.activity.NetSettingActivity" />
-        <activity android:name=".view.activity.MachinesettingActivity" />
+        <activity
+            android:name=".view.activity.MachinesettingActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".view.activity.InpersontopayActivity" />
-        <activity android:name=".view.activity.AutomaticconsumptionActivity" />
+        <activity
+            android:name=".view.activity.AutomaticconsumptionActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".view.activity.ManualconsumptionActivity" />
-        <activity android:name=".view.activity.LoginActivity" />
+        <activity
+            android:name=".view.activity.LoginActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".view.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

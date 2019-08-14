@@ -9,9 +9,15 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.GetListByPage;
+import com.moredian.entrance.guard.entity.GetReadCard;
 import com.moredian.entrance.guard.entity.GetToken;
+import com.moredian.entrance.guard.entity.PostQRCodeExpenseBody;
 import com.moredian.entrance.guard.entity.PostResponse;
 import com.moredian.entrance.guard.entity.PostRequestBody;
+import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
+import com.moredian.entrance.guard.entity.QRCodeExpense;
+import com.moredian.entrance.guard.entity.SimpleExpense;
+import com.moredian.entrance.guard.http.retrofit.PostSimpleExpense;
 import com.moredian.entrance.guard.view.activity.LoginActivity;
 import com.moredian.entrance.guard.view.activity.MainActivity;
 
@@ -70,6 +76,21 @@ public class Api {
 
     public interface CreateResponse {
         void onCreate();
+    }
+
+    /**
+     * descirption: 收到信息通知回调
+     */
+    private GetResponseListener getResponseListener;
+
+    public void setGetResponseListener(GetResponseListener getResponseListener) {
+        this.getResponseListener = getResponseListener;
+    }
+
+    public interface GetResponseListener<T> {
+        void onRespnse(T t);
+
+        void onFail(String err);
     }
 
     /**
@@ -263,6 +284,153 @@ public class Api {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
                                 ToastUtils.showShort(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 读取卡信息
+     */
+    public void getReadCard(Integer companyCode, Integer diviceID, Integer number, String token, String modiantoken) {
+        Observable<GetReadCard> readCardObservable =  ApiUtils.getReadCardService().GetReadCard(companyCode, diviceID, number, token, modiantoken);
+                readCardObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetReadCard>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetReadCard getReadCard) {
+                        ToastUtils.showShort("查询");
+                        if (getReadCard != null && getReadCard.getStatusCode() == 200) {
+                            ToastUtils.showShort("查询成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(getReadCard);
+                            }
+                        } else {
+                            ToastUtils.showShort("查询null");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastUtils.showShort(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 简单刷卡支付
+     */
+    public void postSimpleExpense(PostSimpleExpenseBody body, String token, String modiantoken) {
+        ApiUtils.postSimpleExpenseService().simpleExpense(body, token, modiantoken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<SimpleExpense>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(SimpleExpense simpleExpense) {
+                        if (simpleExpense != null && simpleExpense.getStatusCode() == 200) {
+                            ToastUtils.showShort("消费成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(simpleExpense);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastUtils.showShort(error);
+                                if (getResponseListener != null) {
+                                    getResponseListener.onFail(error);
+                                }
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 出示二维码支付
+     */
+    public void postQRCodeExpense(PostQRCodeExpenseBody body, String token, String modiantoken) {
+        ApiUtils.postQRCodeExpenseService().QRCodeExpense(body, token, modiantoken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<QRCodeExpense>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(QRCodeExpense qrCodeExpense) {
+                        if (qrCodeExpense != null && qrCodeExpense.getStatusCode() == 200) {
+                            ToastUtils.showShort("消费成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(qrCodeExpense);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastUtils.showShort(error);
+                                if (getResponseListener != null) {
+                                    getResponseListener.onFail(error);
+                                }
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
                             } catch (IOException e1) {

@@ -15,9 +15,11 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.R;
 
+import android_serialport_api.ChangeTool;
 import android_serialport_api.SerialPortFinder;
 import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
@@ -57,24 +59,16 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-        serialPortUtils = new SerialPortUtils();
-        serialPortUtils.openSerialPort("/dev/ttyMT2",115200);
-        /*SerialPortFinder finder = new SerialPortFinder();
-        String[] attr = finder.getAllDevicesPath();
-        for (String path: attr) {
-            Log.d(TAG, "onCreate: " + path );
-        }*/
-        serialPortUtils.setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
+        MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
-                Log.d(TAG, "onDataReceive: " + new String(buffer,0,size));
+                Log.d(TAG, "onDataReceive: " + ChangeTool.ByteArrToHex(buffer,0,size));
             }
         });
     }
 
     public void send(View view) {
-        String msg = ((EditText)findViewById(R.id.et1)).getText().toString();
-        serialPortUtils.sendSerialPort("A1 B1 03 00 01 01 00 00 02");
+        MainApplication.getSerialPortUtils().sendSerialPort(Constants.BUZZING);
     }
 
     @OnClick({R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6, R.id.logout_btn})
@@ -109,6 +103,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        serialPortUtils.closeSerialPort();
+        MainApplication.getSerialPortUtils().closeSerialPort();
     }
 }

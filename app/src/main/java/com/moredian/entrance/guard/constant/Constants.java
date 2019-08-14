@@ -30,6 +30,10 @@ public class Constants {
     public static final String INTENT_ROWSBEAN_PHONE = "intent_rowsbean_phone";
     public static final String INTENT_ROWSBEAN_ID = "intent_rowsbean_id";
     public static final String INTENT_FACEINPUT_RGBDATA = "intent_faceinput_rgbdata";
+    public static final String INTENT_CONSUME_SKSUCCESS = "intent_consume_sksuccess";
+    public static final String INTENT_CONSUME_QRSUCCESS = "intent_consume_qrsuccess";
+    public static final String INTENT_CONSUME_FACESUCCESS = "intent_consume_facesuccess";
+    public static final String INTENT_CONSUME_KIND = "intent_consume_kind";
 
     //permission
     public static final int LOCATION_REQUEST = 1;
@@ -38,4 +42,23 @@ public class Constants {
     //startActivityForREsult requestCode resultCode
     public static final int FACE_INPUT_REQUESTCODE = 3;
     public static final int FACE_INPUT_RESULTCODE = 4;
+
+    //SerialPort
+    public static final String SERIALPORT = "/dev/ttyMT2";
+    public static final int BAUDRATE = 115200;
+
+    public static final String BUZZING = "A1 B1 03 00 01 01 00 00 02";
+    public static final String SETMONEYOK = "A1 B1 03 01 01 01 00 01 01 05";
+    public static final String SETMONEYFAIL = "A1 B1 03 01 01 01 00 01 02 06";
+
+
+    //fragmentTAG
+    public static final String SHOWCARDMESSAGE = "ShowCardMessage";
+    public static final String BUNDLE_TAG = "bundle_tag";
+
+    //code
+    public static final int KIND_FIND = 1;
+    public static final int KIND_CONSUME = 2;//刷卡支付
+    public static final int KIND_CONSUME_TDC = 3;//二维码
+    public static final int KIND_CONSUME_FACE = 4;//人脸支付
 }

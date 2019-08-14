@@ -1,6 +1,9 @@
 package android_serialport_api;
 
 import android.util.Log;
+
+import com.blankj.utilcode.util.ToastUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -116,7 +119,11 @@ public class SerialPortUtils {
                     if (size > 0){
                         Log.d(TAG, "run: 接收到了数据：" + changeTool.ByteArrToHex(buffer));
                         Log.d(TAG, "run: 接收到了数据大小：" + String.valueOf(size));
-                        onDataReceiveListener.onDataReceive(buffer,size);
+                        if (onDataReceiveListener != null) {
+                            onDataReceiveListener.onDataReceive(buffer, size);
+                        } else {
+                            ToastUtils.showShort("串口还未能接收数据");
+                        }
                     }
                 } catch (IOException e) {
                     Log.e(TAG, "run: 数据读取异常：" +e.toString());

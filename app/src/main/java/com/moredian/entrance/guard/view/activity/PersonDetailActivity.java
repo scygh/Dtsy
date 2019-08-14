@@ -54,11 +54,11 @@ public class PersonDetailActivity extends AppCompatActivity {
 
     public static Intent getPersonDetailActivityIntent(Context context, GetListByPage.ContentBean.RowsBean rowsBean) {
         Intent intent = new Intent(context, PersonDetailActivity.class);
-        intent.putExtra(Constants.INTENT_ROWSBEAN_NAME, rowsBean.getName());
-        intent.putExtra(Constants.INTENT_ROWSBEAN_IDCARD, rowsBean.getId());
-        intent.putExtra(Constants.INTENT_ROWSBEAN_STUID, rowsBean.getDepartmentId());
-        intent.putExtra(Constants.INTENT_ROWSBEAN_PHONE, rowsBean.getPhone());
-        intent.putExtra(Constants.INTENT_ROWSBEAN_ID, rowsBean.getId());
+        intent.putExtra(Constants.INTENT_ROWSBEAN_NAME, rowsBean.getUser().getName());
+        intent.putExtra(Constants.INTENT_ROWSBEAN_IDCARD, rowsBean.getUser().getId());
+        intent.putExtra(Constants.INTENT_ROWSBEAN_STUID, rowsBean.getUser().getDepartmentId());
+        intent.putExtra(Constants.INTENT_ROWSBEAN_PHONE, rowsBean.getUser().getPhone());
+        intent.putExtra(Constants.INTENT_ROWSBEAN_ID, rowsBean.getUser().getId());
         return intent;
     }
 

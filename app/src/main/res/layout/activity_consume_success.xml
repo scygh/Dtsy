@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:orientation="vertical"
+    tools:context=".view.activity.ConsumeResultActivity">
+
+    <TextView
+        android:id="@+id/cs_over"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="@dimen/margin_60"
+        android:layout_marginRight="@dimen/margin_40"
+        android:text="@string/consume_over"
+        android:textColor="@color/color_118EEA"
+        android:textSize="@dimen/textSize_35" />
+
+    <ImageView
+        android:layout_width="@dimen/height_80"
+        android:layout_height="@dimen/width_80"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/margin_60"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/cs_consume_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/consume_success"
+        android:textColor="@color/color_118EEA"
+        android:textSize="@dimen/textSize_35" />
+
+    <LinearLayout
+        android:id="@+id/cs_amount_big_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_20"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/textSize_40" />
+
+        <TextView
+            android:id="@+id/cs_amount_big"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.00"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/textSize_80" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cs_ll_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_40"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_40"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="付款方式"
+                android:textColor="@color/color_grey"
+                android:textSize="@dimen/textSize_28" />
+
+            <TextView
+                android:id="@+id/cs_consume_kind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="刷卡"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/textSize_28" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/cs_balance_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_40"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_40"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="余额"
+                android:textColor="@color/color_grey"
+                android:textSize="@dimen/textSize_28" />
+
+            <TextView
+                android:id="@+id/cs_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="1000.00元"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/textSize_28" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_40"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_40"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="消费金额"
+                android:textColor="@color/color_grey"
+                android:textSize="@dimen/textSize_28" />
+
+            <TextView
+                android:id="@+id/cs_amount_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="15.00元"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/textSize_28" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_40"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_40"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="消费时间"
+                android:textColor="@color/color_grey"
+                android:textSize="@dimen/textSize_28" />
+
+            <TextView
+                android:id="@+id/cs_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="2019-07-26 15:49:00"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/textSize_28" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_40"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_40"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="消费模式"
+                android:textColor="@color/color_grey"
+                android:textSize="@dimen/textSize_28" />
+
+            <TextView
+                android:id="@+id/cs_consume_pattern"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="自动扣款"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/textSize_28" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
