@@ -1,11 +1,27 @@
 package android_serialport_api;
 
 
+import android.util.Log;
+
+import com.blankj.utilcode.util.StringUtils;
+
 public class ChangeTool {
 
     // 判断奇数或偶数，位运算，最后一位是1则为奇数，为0是偶数
     public static int isOdd(int num) {
         return num & 1;
+    }
+
+    public static String numToHex1(int b) {
+        return String.format("%02x", b);
+    }
+
+    public static String numToHex2(int b) {
+        return String.format("%04x", b);
+    }
+
+    public static String numToHex3(int b) {
+        return String.format("%06x", b);
     }
 
     //Hex字符串转int
@@ -67,4 +83,45 @@ public class ChangeTool {
         }
         return result;
     }
+
+    public static String makeChecksum(String data) {
+        if (data == null || data.equals("")) {
+            return "";
+        }
+        int total = 0;
+        int len = data.length();
+        int num = 0;
+        while (num < len) {
+            String s = data.substring(num, num + 2);
+            Log.d("AutoActivity", "makeChecksum: " + s+"\n");
+            total += Integer.parseInt(s, 16);
+            num = num + 2;
+        }
+        /**
+         * 用256求余最大是255，即16进制的FF
+         */
+        Log.d("AutoActivity", "makeChecksum: " + total);
+        int mod = total % 256;
+        String hex = Integer.toHexString(mod);
+        len = hex.length();
+        // 如果不够校验位的长度，补0,这里用的是两位校验
+        if (len < 2) {
+            hex = "0" + hex;
+        }
+        return hex;
+    }
+
+    /**
+     * 字符串转换unicode
+     */
+    public static String string2Unicode(String string) {
+        StringBuffer unicode = new StringBuffer();
+        for (int i = 0; i < string.length(); i++) {
+            char c = string.charAt(i);
+            // 转换为unicode
+            unicode.append(Integer.toHexString(c));
+        }
+        return unicode.toString();
+    }
+
 }

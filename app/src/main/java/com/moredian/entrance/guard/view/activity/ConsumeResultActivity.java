@@ -15,8 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.entity.FaceExpense;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.SimpleExpense;
+import com.moredian.entrance.guard.face.drawface.FaceDefaultDrawer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,17 +56,21 @@ public class ConsumeResultActivity extends AppCompatActivity {
         }
     };
 
-    public static Intent getConsumeSuccessActivityIntent(Context context, SimpleExpense.ContentBean contentBean, String kind) {
+    public static Intent getConsumeSuccessActivityIntent(Context context, SimpleExpense.ContentBean contentBean) {
         Intent intent = new Intent(context, ConsumeResultActivity.class);
-        intent.putExtra(Constants.INTENT_CONSUME_SKSUCCESS, contentBean);
-        intent.putExtra(Constants.INTENT_CONSUME_KIND, kind);
+        intent.putExtra(Constants.INTENT_CONSUME_SPSUCCESS, contentBean);
         return intent;
     }
 
-    public static Intent getQRConsumeSuccessActivityIntent(Context context, QRCodeExpense.ContentBean.DetailsBean detailsBean, String kind) {
+    public static Intent getQRConsumeSuccessActivityIntent(Context context, QRCodeExpense.ContentBean contentBean) {
         Intent intent = new Intent(context, ConsumeResultActivity.class);
-        intent.putExtra(Constants.INTENT_CONSUME_QRSUCCESS, detailsBean);
-        intent.putExtra(Constants.INTENT_CONSUME_KIND, kind);
+        intent.putExtra(Constants.INTENT_CONSUME_QRSUCCESS, contentBean);
+        return intent;
+    }
+
+    public static Intent getFaceConsumeSuccessActivityIntent(Context context, FaceExpense.ContentBean contentBean) {
+        Intent intent = new Intent(context, ConsumeResultActivity.class);
+        intent.putExtra(Constants.INTENT_CONSUME_FACESUCCESS, contentBean);
         return intent;
     }
 
@@ -81,16 +87,52 @@ public class ConsumeResultActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-        csConsumeKind.setText(getIntent().getStringExtra(Constants.INTENT_CONSUME_KIND));
-        SimpleExpense.ContentBean contentBean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_SKSUCCESS);
-        QRCodeExpense.ContentBean.DetailsBean detailsBean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_QRSUCCESS);
-        if (detailsBean != null) {
+        QRCodeExpense.ContentBean qrcontentbean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_QRSUCCESS);
+        SimpleExpense.ContentBean secontentbean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_SPSUCCESS);
+        FaceExpense.ContentBean facecontentbean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_FACESUCCESS);
+        if (secontentbean != null) {
+            if (secontentbean.getExpenseDetail() != null) {
+                csConsumeResult.setText("支付成功");
+                csConsumeKind.setText("刷卡支付");
+                csAmountBig.setText(secontentbean.getExpenseDetail().getAmount() + "");
+                csAmountSmall.setText(secontentbean.getExpenseDetail().getAmount() + "");
+                csBalance.setText(secontentbean.getExpenseDetail().getBalance() + "");
+                csDate.setText(secontentbean.getExpenseDetail().getCreateTime());
+                int partern = secontentbean.getExpenseDetail().getPattern();
+                if (partern == 1) {
+                    csConsumePattern.setText("手动消费");
+                } else if (partern == 2) {
+                    csConsumePattern.setText("自动消费");
+                } else if (partern == 3) {
+                    csConsumePattern.setText("定值消费");
+                } else if (partern == 4) {
+                    csConsumePattern.setText("商品消费");
+                } else if (partern == 5) {
+                    csConsumePattern.setText("机器充值");
+                } else if (partern == 6) {
+                    csConsumePattern.setText("机器退款");
+                } else if (partern == 7) {
+                    csConsumePattern.setText("订餐模式");
+                }
+            }
+        }
+        if (qrcontentbean != null) {
             csConsumeResult.setText("支付成功");
-            csAmountBig.setText(detailsBean.getAmount() + "");
-            csAmountSmall.setText(detailsBean.getAmount() + "");
+            csAmountBig.setText(qrcontentbean.getThirdPartyExpense().getAmount() + "");
+            csAmountSmall.setText(qrcontentbean.getThirdPartyExpense().getAmount() + "");
             csBalanceRl.setVisibility(View.GONE);
-            csDate.setText(detailsBean.getCreateTime());
-            int partern = detailsBean.getPattern();
+            csDate.setText(qrcontentbean.getThirdPartyExpense().getCreateTime());
+            int partern = qrcontentbean.getThirdPartyExpense().getPattern();
+            int qrtype = qrcontentbean.getQRType();
+            if (qrtype == 1) {
+                csConsumeKind.setText("微信二维码支付");
+            } else if (qrtype == 2) {
+                csConsumeKind.setText("支付宝二维码支付");
+            } else if (qrtype == 3) {
+                csConsumeKind.setText("会员码支付");
+            } else if (qrtype == 4) {
+                csConsumeKind.setText("取餐码支付");
+            }
             if (partern == 1) {
                 csConsumePattern.setText("手动消费");
             } else if (partern == 2) {
@@ -106,13 +148,14 @@ public class ConsumeResultActivity extends AppCompatActivity {
             } else if (partern == 7) {
                 csConsumePattern.setText("订餐模式");
             }
-        } else if (contentBean != null) {
+        }
+        if (facecontentbean != null) {
             csConsumeResult.setText("支付成功");
-            csAmountBig.setText(contentBean.getAmount() + "");
-            csAmountSmall.setText(contentBean.getAmount() + "");
-            csBalance.setText(contentBean.getBalance() + "");
-            csDate.setText(contentBean.getCreateTime());
-            int partern = contentBean.getPattern();
+            csAmountBig.setText(facecontentbean.getThirdPartyExpense().getAmount() + "");
+            csAmountSmall.setText(facecontentbean.getThirdPartyExpense().getAmount() + "");
+            csDate.setText(facecontentbean.getThirdPartyExpense().getCreateTime());
+            int partern = facecontentbean.getThirdPartyExpense().getPattern();
+            csConsumeKind.setText("人脸支付");
             if (partern == 1) {
                 csConsumePattern.setText("手动消费");
             } else if (partern == 2) {
@@ -128,12 +171,13 @@ public class ConsumeResultActivity extends AppCompatActivity {
             } else if (partern == 7) {
                 csConsumePattern.setText("订餐模式");
             }
-        } else {
+        }
+        if (secontentbean == null && qrcontentbean == null && facecontentbean == null) {
             csConsumeResult.setText("支付失败");
+            csConsumeResult.setTextColor(getResources().getColor(R.color.color_f00));
             csAmountBigLl.setVisibility(View.GONE);
             csLlDetail.setVisibility(View.GONE);
         }
-
         handler.postDelayed(runnable, 10000);
     }
 

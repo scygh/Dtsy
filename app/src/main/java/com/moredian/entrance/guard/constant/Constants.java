@@ -30,10 +30,10 @@ public class Constants {
     public static final String INTENT_ROWSBEAN_PHONE = "intent_rowsbean_phone";
     public static final String INTENT_ROWSBEAN_ID = "intent_rowsbean_id";
     public static final String INTENT_FACEINPUT_RGBDATA = "intent_faceinput_rgbdata";
-    public static final String INTENT_CONSUME_SKSUCCESS = "intent_consume_sksuccess";
+    public static final String INTENT_FACEINPUT_MEMBERID = "intent_faceinput_memberid";
+    public static final String INTENT_CONSUME_SPSUCCESS = "intent_consume_spsuccess";
     public static final String INTENT_CONSUME_QRSUCCESS = "intent_consume_qrsuccess";
     public static final String INTENT_CONSUME_FACESUCCESS = "intent_consume_facesuccess";
-    public static final String INTENT_CONSUME_KIND = "intent_consume_kind";
 
     //permission
     public static final int LOCATION_REQUEST = 1;

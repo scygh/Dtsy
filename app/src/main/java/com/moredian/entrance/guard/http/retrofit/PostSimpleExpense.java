@@ -19,5 +19,5 @@ import retrofit2.http.POST;
 public interface PostSimpleExpense {
 
     @POST("Api/Expense/SimpleExpense")
-    Observable<SimpleExpense> simpleExpense(@Body PostSimpleExpenseBody postRequestBody, @Header("AccessToken") String token, @Header("moredianToken") String modiantoken);
+    Observable<SimpleExpense> simpleExpense(@Body PostSimpleExpenseBody postRequestBody, @Header("AccessToken") String token);
 }

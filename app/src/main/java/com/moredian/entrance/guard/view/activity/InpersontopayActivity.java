@@ -34,12 +34,13 @@ public class InpersontopayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inpersontopay);
         ButterKnife.bind(this);
+        pageName.setText("时段定额");
     }
 
-    @OnClick({ R.id.Manualconsumption_keyboard_enter_money})
+    @OnClick({R.id.Manualconsumption_back, R.id.page_name})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.Manualconsumption_keyboard_enter_money:
+            case R.id.Manualconsumption_back:
                 finish();
                 break;
         }

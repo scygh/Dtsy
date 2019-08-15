@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
+import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
 
 import android_serialport_api.SerialPortUtils;
@@ -50,7 +51,7 @@ public class MachinesettingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         pageName.setText("机器设置");
         machinesettingMachineNumber.setText(SPUtils.getInstance().getString(Constants.MACHINE_NUMBER, "001"));
-        machinesettingPort.setText(SPUtils.getInstance().getString(Constants.MACHINE_PORT, "/dev/ttyMT1"));
+        machinesettingPort.setText(SPUtils.getInstance().getString(Constants.MACHINE_PORT, "/dev/ttyMT2"));
         machinesettingBaudrate.setText(SPUtils.getInstance().getString(Constants.MACHINE_BAUDRTE, "115200"));
     }
 
@@ -58,7 +59,6 @@ public class MachinesettingActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.persondetail_sure:
-                SerialPortUtils serialPortUtils = new SerialPortUtils();
                 String machineNumber = machinesettingMachineNumber.getText().toString();
                 String machinePort = machinesettingPort.getText().toString();
                 String machineBaudrate = machinesettingBaudrate.getText().toString();
@@ -66,8 +66,8 @@ public class MachinesettingActivity extends AppCompatActivity {
                 SPUtils.getInstance().put(Constants.MACHINE_PORT, machinePort);
                 SPUtils.getInstance().put(Constants.MACHINE_BAUDRTE, machineBaudrate);
                 ToastUtils.showShort("保存成功");
-                serialPortUtils.closeSerialPort();
-                serialPortUtils.openSerialPort(machinePort, Integer.parseInt(machineBaudrate));
+                MainApplication.getSerialPortUtils().closeSerialPort();
+                MainApplication.getSerialPortUtils().openSerialPort(machinePort, Integer.parseInt(machineBaudrate));
                 break;
             case R.id.persondetail_cancle:
                 finish();

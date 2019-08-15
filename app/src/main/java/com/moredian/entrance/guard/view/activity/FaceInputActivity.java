@@ -57,7 +57,8 @@ public class FaceInputActivity extends AppCompatActivity {
     Button beCancle;
     private byte[] rgb_data;
     private byte[] image;
-    private static boolean mShowCallbackFace = true;
+    private String memberId;
+    private static boolean mShowCallbackFace = false;
     private static int mCheckRgbCameraOpenCount = 0;
     private MyReceiver mReceiver = new MyReceiver();
     private static final int KEY_DETECT_HIDE = 0;
@@ -283,7 +284,6 @@ public class FaceInputActivity extends AppCompatActivity {
                 case KEY_DETECT_USER_NAME:
                     mHandler.removeMessages(KEY_DETECT_USER_NAME);
                     String username = msg.getData().getString(USER_NAME);
-                    Log.e(TAG, "show username：" + username);
                     if (!username.equals(mDetectResultView.getText())) {
                         mDetectResultView.setText(username);
                     }
@@ -303,26 +303,30 @@ public class FaceInputActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.persondetail_sure:
-                if (image != null) {
-                    // TODO: 2019/8/6 处理图片质量
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(image,0,image.length);
-                    Log.d(TAG, "onViewClicked: "+ bitmap.getHeight()+ bitmap.getWidth());
-                    if (bitmap.getWidth() < 200 || bitmap.getHeight()<200) {
-                        ToastUtils.showShort("人脸大小不能小于200x200,请重新录入");
-                    } else {
-                        Intent intent = new Intent();
-                        intent.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
-                        setResult(Constants.FACE_INPUT_RESULTCODE, intent);
-                        finish();
-                    }
-
-                } else {
-                    ToastUtils.showShort("没有识别到人脸，请重新录入");
-                }
+                setResult();
                 break;
             case R.id.persondetail_cancle:
                 finish();
                 break;
+        }
+    }
+
+    private void setResult() {
+        if (image != null) {
+            // TODO: 2019/8/6 处理图片质量
+            Bitmap bitmap = BitmapFactory.decodeByteArray(image,0,image.length);
+            Log.d(TAG, "onViewClicked: "+ bitmap.getHeight()+ bitmap.getWidth());
+            if (bitmap.getWidth() < 200 || bitmap.getHeight()<200) {
+                ToastUtils.showShort("人脸大小不能小于200x200,请重新录入");
+            } else {
+                Intent intent = new Intent();
+                intent.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
+                intent.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
+                setResult(Constants.FACE_INPUT_RESULTCODE, intent);
+                finish();
+            }
+        } else {
+            ToastUtils.showShort("没有识别到人脸，请重新录入");
         }
     }
 
@@ -390,11 +394,11 @@ public class FaceInputActivity extends AppCompatActivity {
                     } else if (action.equals(OFFLINE_RECOGNIZE_ACTION) || action.equals(ONLINE_RECOGNIZE_ACTION)) {
                         long trackid = intent.getLongExtra(TRACK_ID, 0l);
                         String username = intent.getStringExtra(USER_NAME);
-                        String menberId = intent.getStringExtra(PERSON_ID);
+                        memberId= intent.getStringExtra(PERSON_ID);
                         Message msg = new Message();
                         msg.what = KEY_DETECT_USER_NAME;
                         Bundle b = new Bundle();
-                        b.putString(USER_NAME, username + "<" + menberId + ">");
+                        b.putString(USER_NAME, username);
                         msg.setData(b);
                         mHandler.sendMessage(msg);
                     }

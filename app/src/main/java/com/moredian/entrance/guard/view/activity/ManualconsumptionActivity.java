@@ -93,37 +93,7 @@ public class ManualconsumptionActivity extends AppCompatActivity {
     }
 
     /**
-     * descirption: 出示付款码操作
-     */
-    private void QrCodeConsume(String a, int kind) {
-        String qrcode = a.substring(22, 40);
-        Log.d(TAG, "QrCodeConsume: " + qrcode);
-        if (kind == Constants.KIND_CONSUME_TDC) {
-            String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
-            String amount = ManualconsumptionKeyboardEnterMoney.getText().toString();
-            if (token != null) {
-                PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), 1, 1, 2);
-                api.postQRCodeExpense(body, token, "123");
-            }
-            api.setGetResponseListener(new Api.GetResponseListener<QRCodeExpense>() {
-                @Override
-                public void onRespnse(QRCodeExpense qrCodeExpense) {
-                    ManualconsumptionKeyboardEnterMoney.setText("0.00");
-                    //跳转到支付成功界面
-                    startActivity(ConsumeResultActivity.getQRConsumeSuccessActivityIntent(ManualconsumptionActivity.this, qrCodeExpense.getContent().getDetails(), "二维码支付"));
-                }
-
-                @Override
-                public void onFail(String err) {
-                    ToastUtils.showShort("支付失败");
-                    startActivity(ConsumeResultActivity.getConsumeFailActivityIntent(ManualconsumptionActivity.this));
-                }
-            });
-        }
-    }
-
-    /**
-     * descirption: 键盘输入和刷卡操作
+     * descirption: 把接收到刷卡的16进制数转化去消费查询
      */
     private void formatReadCard(String a, int kind) {
         int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
@@ -140,7 +110,7 @@ public class ManualconsumptionActivity extends AppCompatActivity {
     }
 
     /**
-     * descirption: 格式化接收到的字节数组
+     * descirption: 外接键盘输入显示
      */
     private void formatHex(byte[] buffer, int size) {
         try {
@@ -163,7 +133,7 @@ public class ManualconsumptionActivity extends AppCompatActivity {
     }
 
     /**
-     * descirption: 查询卡信息
+     * descirption: 查询卡信息，数据下行
      */
     public void getReadCard(Integer companyCode, Integer diviceID, Integer number) {
         String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
@@ -174,54 +144,27 @@ public class ManualconsumptionActivity extends AppCompatActivity {
         api.setGetResponseListener(new Api.GetResponseListener<GetReadCard>() {
             @Override
             public void onRespnse(GetReadCard getReadCard) {
-                //展示卡信息
-                Log.d(TAG, "onRespnse: getReadcard");
-                String name = ChangeTool.ByteArrToHex(getReadCard.getContent().getUserName().getBytes(Charset.forName("GBK"))).replace(" ", "");
-                String balance = ChangeTool.ByteArrToHex((getReadCard.getContent().getBalance() + "").getBytes()).replace(" ", "");
-                String paycount = ChangeTool.ByteArrToHex((getReadCard.getContent().getPayCount() + "").getBytes()).replace(" ", "");
-                String status = ChangeTool.ByteArrToHex((getReadCard.getContent().getState() + "").getBytes()).replace(" ", "");
-                int q = 18 - name.length();
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < q; i++) {
-                    stringBuilder.append("0");
-                }
-                String namehex = stringBuilder.toString() + name;
-                stringBuilder.delete(0, stringBuilder.length());
-                q = 6 - balance.length();
-                for (int i = 0; i < q; i++) {
-                    stringBuilder.append("0");
-                }
-                String balancehex = stringBuilder.toString() + balance;
-                stringBuilder.delete(0, stringBuilder.length());
-                q = 4 - paycount.length();
-                for (int i = 0; i < q; i++) {
-                    stringBuilder.append("0");
-                }
-                String paycounthex = stringBuilder.toString() + paycount;
+                String name = getReadCard.getContent().getUserName();
+                double balance = getReadCard.getContent().getBalance();
+                int paycount = getReadCard.getContent().getPayCount();
+                int status = getReadCard.getContent().getState();
+                Log.d(TAG, "onRespnse: " + name);
+                String namehex = getNameHex(name);
                 Log.d(TAG, "onRespnse: " + namehex);
+                Log.d(TAG, "onRespnse: " + balance);
+                String balancehex = ChangeTool.numToHex3((int) (balance * 100));
                 Log.d(TAG, "onRespnse: " + balancehex);
+                Log.d(TAG, "onRespnse: " + paycount);
+                String paycounthex = ChangeTool.numToHex2(paycount);
                 Log.d(TAG, "onRespnse: " + paycounthex);
                 Log.d(TAG, "onRespnse: " + status);
+                String statushex = ChangeTool.numToHex1(status);
+                Log.d(TAG, "onRespnse: " + statushex);
                 showDialog(getReadCard);
-                int nameint = 0;
-                for (int i = 0; i < name.length(); i += 2) {
-                    nameint += ChangeTool.HexToInt(name.substring(i, i + 2));
-                }
-                int balanceint = 0;
-                for (int i = 0; i < balance.length(); i += 2) {
-                    balanceint += ChangeTool.HexToInt(balance.substring(i, i + 2));
-                }
-                int paycountint = 0;
-                for (int i = 0; i < paycount.length(); i += 2) {
-                    paycountint += ChangeTool.HexToInt(paycount.substring(i, i + 2));
-                }
-                int sum = 19 + nameint + balanceint + paycountint + ChangeTool.HexToInt(status);
-                Log.d(TAG, "onRespnse: " + sum);
-                String a = ChangeTool.ByteArrToHex((sum + "").getBytes()).replace(" ", "");
-                MainApplication.getSerialPortUtils().sendSerialPort("A1B103020101000f" + namehex + balancehex + paycounthex + status + a.substring(a.length() - 2));
-                //MainApplication.getSerialPortUtils().sendSerialPort("A1B103020101000f" + namehex +balancehex+paycounthex+status+92);
-                Log.d(TAG, "onRespnse: " + "A1B103020101000f" + namehex + balancehex + paycounthex + status + ChangeTool.ByteArrToHex((sum + "").getBytes()));
-
+                String sum = "020101000f" + namehex + balancehex + paycounthex + statushex;
+                Log.d(TAG, "onRespnse: " + "A1B103020101000f" + namehex + balancehex + paycounthex + statushex + ChangeTool.makeChecksum(sum));
+                MainApplication.getSerialPortUtils().sendSerialPort("A1B103020101000f" + namehex + balancehex + paycounthex + statushex + ChangeTool.makeChecksum(sum));
+                //MainApplication.getSerialPortUtils().sendSerialPort("A1 B1 03 02 01 01 00 0f 41 42 43 44 45 46 47 48 49 12 34 56 00 78 00 94");
             }
 
             @Override
@@ -244,8 +187,10 @@ public class ManualconsumptionActivity extends AppCompatActivity {
             public void onRespnse(GetReadCard getReadCard) {
                 publiccount = getReadCard.getContent().getPayCount();
                 publiccount++;
+                String name = getReadCard.getContent().getUserName();
+                int status = getReadCard.getContent().getState();
                 //查询到消费次数之后执行消费
-                postSimpleExpense(number, publiccount);
+                postSimpleExpense(number, publiccount, name, status);
             }
 
             @Override
@@ -267,12 +212,12 @@ public class ManualconsumptionActivity extends AppCompatActivity {
     /**
      * descirption: 刷卡消费
      */
-    public void postSimpleExpense(int number, int count) {
+    public void postSimpleExpense(int number, int count, String name, int status) {
         String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         String amount = ManualconsumptionKeyboardEnterMoney.getText().toString();
         PostSimpleExpenseBody body = new PostSimpleExpenseBody(number, Double.parseDouble(amount), 1, count, "scy", 1, 2);
         if (token != null) {
-            api.postSimpleExpense(body, token, "123");
+            api.postSimpleExpense(body, token);
             api.setGetResponseListener(new Api.GetResponseListener<SimpleExpense>() {
                 @Override
                 public void onRespnse(SimpleExpense simpleExpense) {
@@ -280,8 +225,9 @@ public class ManualconsumptionActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             ManualconsumptionKeyboardEnterMoney.setText("0.00");
+                            consumeSenddown(simpleExpense, status, name);
                             //跳转到支付成功界面
-                            startActivity(ConsumeResultActivity.getConsumeSuccessActivityIntent(ManualconsumptionActivity.this, simpleExpense.getContent(), "刷卡支付"));
+                            startActivity(ConsumeResultActivity.getConsumeSuccessActivityIntent(ManualconsumptionActivity.this, simpleExpense.getContent()));
                         }
                     });
                 }
@@ -295,6 +241,78 @@ public class ManualconsumptionActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * descirption: 付款码消费
+     */
+    private void QrCodeConsume(String a, int kind) {
+        String qrcode = a.substring(22, 40);
+        Log.d(TAG, "QrCodeConsume: " + qrcode);
+        if (kind == Constants.KIND_CONSUME_TDC) {
+            String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
+            String amount = ManualconsumptionKeyboardEnterMoney.getText().toString();
+            if (token != null) {
+                PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), 1, 1, 2);
+                api.postQRCodeExpense(body, token, "123");
+            }
+            api.setGetResponseListener(new Api.GetResponseListener<QRCodeExpense>() {
+                @Override
+                public void onRespnse(QRCodeExpense qrCodeExpense) {
+                    ManualconsumptionKeyboardEnterMoney.setText("0.00");
+                    //跳转到支付成功界面
+                    startActivity(ConsumeResultActivity.getQRConsumeSuccessActivityIntent(ManualconsumptionActivity.this, qrCodeExpense.getContent()));
+
+                }
+
+                @Override
+                public void onFail(String err) {
+                    ToastUtils.showShort("支付失败");
+                    startActivity(ConsumeResultActivity.getConsumeFailActivityIntent(ManualconsumptionActivity.this));
+                }
+            });
+        }
+    }
+
+    /**
+     * descirption: 拼接name
+     */
+    private String getNameHex(String name) {
+        String namehex = ChangeTool.string2Unicode(name);
+        StringBuilder stringBuilder = new StringBuilder();
+        if (namehex.length() < 18) {
+            for (int i = 0; i < (18 - namehex.length()); i++) {
+                stringBuilder.append("0");
+            }
+        }
+        namehex = namehex + stringBuilder.toString();
+        return namehex;
+    }
+
+    /**
+     * descirption: 消费成功，拼接字符，数据下行
+     */
+    private void consumeSenddown(SimpleExpense simpleExpense, int status, String name) {
+        double amount = simpleExpense.getContent().getExpenseDetail().getAmount();
+        double oamount = simpleExpense.getContent().getExpenseDetail().getOriginalAmount();
+        double balance = simpleExpense.getContent().getExpenseDetail().getBalance();
+        int paycount = simpleExpense.getContent().getExpenseDetail().getPayCount();
+        int discountrate = simpleExpense.getContent().getExpenseDetail().getDiscountRate();
+        String consumestatus = ChangeTool.numToHex1(simpleExpense.getContent().getTradingState());
+        String discountratehex = ChangeTool.numToHex1(discountrate);
+        String namehex = getNameHex(name);
+        String balancehex = ChangeTool.numToHex3((int) (balance * 100));
+        String amounthex = ChangeTool.numToHex3((int) (amount * 100));
+        String oamounthex = ChangeTool.numToHex3((int) (oamount * 100));
+        String paycounthex = ChangeTool.numToHex2(paycount);
+        String statushex = ChangeTool.numToHex1(status);
+        String sum = "0301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus;
+        MainApplication.getSerialPortUtils().sendSerialPort("A1B1030301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus + ChangeTool.makeChecksum(sum));
+        //MainApplication.getSerialPortUtils().sendSerialPort("A1B10303010100177363793131000000001e05280003840003846400380000c2");
+        Log.d(TAG, "consumeSenddown: " + "A1B1030301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus + ChangeTool.makeChecksum(sum));
+    }
+
+    /**
+     * descirption: 点击事件
+     */
     @OnClick({R.id.Manualconsumption_back, R.id.Manualconsumption_usesdozensmallnotes})
     public void onViewClicked(View view) {
         switch (view.getId()) {

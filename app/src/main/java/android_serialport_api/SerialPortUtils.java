@@ -53,12 +53,17 @@ public class SerialPortUtils {
      */
     public void closeSerialPort(){
         try {
-            inputStream.close();
-            outputStream.close();
-
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (outputStream != null) {
+                outputStream.close();
+            }
             this.serialPortStatus = false;
             this.threadStatus = true; //线程状态
-            serialPort.close();
+            if (serialPort != null) {
+                serialPort.close();
+            }
         } catch (IOException e) {
             Log.e(TAG, "closeSerialPort: 关闭串口异常："+e.toString());
             return;

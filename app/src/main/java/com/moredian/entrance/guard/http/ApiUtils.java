@@ -6,6 +6,7 @@ import com.moredian.entrance.guard.http.retrofit.GetReadCardService;
 import com.moredian.entrance.guard.http.retrofit.GetTokenService;
 import com.moredian.entrance.guard.http.retrofit.PostCreate;
 import com.moredian.entrance.guard.http.retrofit.PostDelete;
+import com.moredian.entrance.guard.http.retrofit.PostFaceExpense;
 import com.moredian.entrance.guard.http.retrofit.PostQRCodeExpense;
 import com.moredian.entrance.guard.http.retrofit.PostSimpleExpense;
 import com.moredian.entrance.guard.http.retrofit.PostUpdate;
@@ -73,5 +74,12 @@ public class ApiUtils {
      */
     public static PostQRCodeExpense postQRCodeExpenseService() {
         return RetrofitClient.getClient(BASE_URL).create(PostQRCodeExpense.class);
+    }
+
+    /**
+     * descirption:魔点人脸支付
+     */
+    public static PostFaceExpense postFaceExpenseService() {
+        return RetrofitClient.getClient(BASE_URL).create(PostFaceExpense.class);
     }
 }

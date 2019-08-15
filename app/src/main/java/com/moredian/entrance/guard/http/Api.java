@@ -8,9 +8,11 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.entity.FaceExpense;
 import com.moredian.entrance.guard.entity.GetListByPage;
 import com.moredian.entrance.guard.entity.GetReadCard;
 import com.moredian.entrance.guard.entity.GetToken;
+import com.moredian.entrance.guard.entity.PostFaceExpenseBody;
 import com.moredian.entrance.guard.entity.PostQRCodeExpenseBody;
 import com.moredian.entrance.guard.entity.PostResponse;
 import com.moredian.entrance.guard.entity.PostRequestBody;
@@ -351,8 +353,8 @@ public class Api {
     /**
      * descirption: 简单刷卡支付
      */
-    public void postSimpleExpense(PostSimpleExpenseBody body, String token, String modiantoken) {
-        ApiUtils.postSimpleExpenseService().simpleExpense(body, token, modiantoken)
+    public void postSimpleExpense(PostSimpleExpenseBody body, String token) {
+        ApiUtils.postSimpleExpenseService().simpleExpense(body, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<SimpleExpense>() {
@@ -398,7 +400,7 @@ public class Api {
     }
 
     /**
-     * descirption: 出示二维码支付
+     * descirption: 二维码支付
      */
     public void postQRCodeExpense(PostQRCodeExpenseBody body, String token, String modiantoken) {
         ApiUtils.postQRCodeExpenseService().QRCodeExpense(body, token, modiantoken)
@@ -416,6 +418,55 @@ public class Api {
                             ToastUtils.showShort("消费成功");
                             if (getResponseListener != null) {
                                 getResponseListener.onRespnse(qrCodeExpense);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastUtils.showShort(error);
+                                if (getResponseListener != null) {
+                                    getResponseListener.onFail(error);
+                                }
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 人脸支付
+     */
+    public void postFaceExpense(PostFaceExpenseBody body, String token, String modiantoken) {
+        ApiUtils.postFaceExpenseService().faceExpense(body, token, modiantoken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<FaceExpense>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(FaceExpense expense) {
+                        if (expense != null && expense.getStatusCode() == 200) {
+                            ToastUtils.showShort("消费成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(expense);
                             }
                         }
                     }
