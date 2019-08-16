@@ -5,6 +5,7 @@ import com.moredian.entrance.guard.http.retrofit.GetListByPageService;
 import com.moredian.entrance.guard.http.retrofit.GetReadCardService;
 import com.moredian.entrance.guard.http.retrofit.GetTokenService;
 import com.moredian.entrance.guard.http.retrofit.PostCreate;
+import com.moredian.entrance.guard.http.retrofit.PostDefiniteExpense;
 import com.moredian.entrance.guard.http.retrofit.PostDelete;
 import com.moredian.entrance.guard.http.retrofit.PostFaceExpense;
 import com.moredian.entrance.guard.http.retrofit.PostQRCodeExpense;
@@ -81,5 +82,12 @@ public class ApiUtils {
      */
     public static PostFaceExpense postFaceExpenseService() {
         return RetrofitClient.getClient(BASE_URL).create(PostFaceExpense.class);
+    }
+
+    /**
+     * descirption:定额支付
+     */
+    public static PostDefiniteExpense postDefiniteExpenseService() {
+        return RetrofitClient.getClient(BASE_URL).create(PostDefiniteExpense.class);
     }
 }

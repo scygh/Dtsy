@@ -317,7 +317,7 @@ public class AutomaticconsumptionActivity extends AppCompatActivity {
                     ToastUtils.showShort("还未设置金额");
                 } else {
                     closeKeyboard();
-                    startActivityForResult(FaceInputActivity.getFaceInputActivityIntent(AutomaticconsumptionActivity.this), Constants.FACE_INPUT_REQUESTCODE);
+                    startActivityForResult(FaceInputConsumeActivity.getFaceInputActivityIntent(AutomaticconsumptionActivity.this), Constants.FACE_INPUT_REQUESTCODE);
                 }
                 break;
             case R.id.persondetail_cancle:
@@ -347,6 +347,8 @@ public class AutomaticconsumptionActivity extends AppCompatActivity {
                         startActivity(ConsumeResultActivity.getConsumeFailActivityIntent(AutomaticconsumptionActivity.this));
                     }
                 });
+            } else {
+                ToastUtils.showShort("人脸未录入，不能使用人脸支付");
             }
         }
     }

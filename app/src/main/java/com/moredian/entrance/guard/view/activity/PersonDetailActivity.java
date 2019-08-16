@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +30,7 @@ import butterknife.OnClick;
 
 public class PersonDetailActivity extends AppCompatActivity {
 
+    private static final String TAG  = "PersonDetailActivity";
     @BindView(R.id.Manualconsumption_back)
     ImageView ManualconsumptionBack;
     @BindView(R.id.page_name)
@@ -51,6 +53,9 @@ public class PersonDetailActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private Api api;
     private Intent dataIntent;
+    private boolean isFaceExits;
+    private boolean istheSameFace = false;
+    private String exitmemberId;
 
     public static Intent getPersonDetailActivityIntent(Context context, GetListByPage.ContentBean.RowsBean rowsBean) {
         Intent intent = new Intent(context, PersonDetailActivity.class);
@@ -59,6 +64,7 @@ public class PersonDetailActivity extends AppCompatActivity {
         intent.putExtra(Constants.INTENT_ROWSBEAN_STUID, rowsBean.getUser().getDepartmentId());
         intent.putExtra(Constants.INTENT_ROWSBEAN_PHONE, rowsBean.getUser().getPhone());
         intent.putExtra(Constants.INTENT_ROWSBEAN_ID, rowsBean.getUser().getId());
+        intent.putExtra(Constants.INTENT_MEMBER_ID, rowsBean.getUserFace().getMemberId());
         return intent;
     }
 
@@ -74,13 +80,19 @@ public class PersonDetailActivity extends AppCompatActivity {
         persondetailCardnum.setText(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_IDCARD));
         persondetailStunum.setText(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_STUID));
         persondetailTelephone.setText(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_PHONE));
+        exitmemberId = dataIntent.getStringExtra(Constants.INTENT_MEMBER_ID);
         api.setCreateResponse(new Api.CreateResponse() {
             @Override
             public void onCreate() {
                 if (bitmap != null) {
-                    updatePerson();
+                    //如果是没录入过，或者是同一个人则可以更新
+                    if (istheSameFace || exitmemberId == null) {
+                        updatePerson();
+                    } else {
+                        ToastUtils.showShort("更新的人脸不是您自己的，请重新选择名字");
+                    }
                 } else {
-                    ToastUtils.showShort("图片为空");
+                    ToastUtils.showShort("更新的图片为空");
                 }
             }
         });
@@ -93,7 +105,7 @@ public class PersonDetailActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.persondetail_camera:
-                // TODO: 2019/7/31 启动人脸识别录入一张照片
+                // TODO: 2019/7/31 启动人脸录入 一张照片
                 startActivityForResult(FaceInputActivity.getFaceInputActivityIntent(PersonDetailActivity.this), Constants.FACE_INPUT_REQUESTCODE);
                 break;
             case R.id.persondetail_sure:
@@ -117,12 +129,13 @@ public class PersonDetailActivity extends AppCompatActivity {
     private synchronized void createPerson() {
         PostRequestBody postRequestBody = new PostRequestBody(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_ID), dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_NAME),
                 dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_PHONE));
+        Log.d(TAG, "createPerson: " + dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_ID));
         api.postCreate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), "123");
     }
 
     private synchronized void updatePerson() {
         String b = Base64BitmapUtil.bitmapToBase64(bitmap, PersonDetailActivity.this);
-        PostRequestBody postRequestBody = new PostRequestBody(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_ID),b);
+        PostRequestBody postRequestBody = new PostRequestBody(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_ID), b);
         api.postUpdate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), "123");
     }
 
@@ -130,11 +143,30 @@ public class PersonDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == Constants.FACE_INPUT_REQUESTCODE && resultCode == Constants.FACE_INPUT_RESULTCODE) {
             byte[] image = data.getByteArrayExtra(Constants.INTENT_FACEINPUT_RGBDATA);
-            if (image != null && image.length > 0) {
-                bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-                persondetailCamera.setImageBitmap(bitmap);
+            String memberId = data.getStringExtra(Constants.INTENT_FACEINPUT_MEMBERID);
+            if (memberId != null) {
+                //如果当前人员已经录过，且两者是同一个人，就允许更新人脸
+                if (exitmemberId != null) {
+                    if (memberId == exitmemberId) {
+                        istheSameFace = true;
+                    }
+                }
+                if (image != null && image.length > 0) {
+                    bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                    persondetailCamera.setImageBitmap(bitmap);
+                }
+            } else {
+                if (image != null && image.length > 0) {
+                    bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                    persondetailCamera.setImageBitmap(bitmap);
+                }
             }
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        istheSameFace = false;
+    }
 }

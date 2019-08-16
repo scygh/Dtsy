@@ -287,10 +287,18 @@ public class GetListByPage {
                  * MemberFace : MD_1001_6369e769-ef3b-47fe-b7ce-f7f8e931c29c
                  * MemberType : 2
                  */
-
+                private String MemberBase64;
                 private String MemberId;
                 private String MemberFace;
                 private int MemberType;
+
+                public String getMemberBase64() {
+                    return MemberBase64;
+                }
+
+                public void setMemberBase64(String memberBase64) {
+                    MemberBase64 = memberBase64;
+                }
 
                 public String getMemberId() {
                     return MemberId;

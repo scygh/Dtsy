@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         app:previewheight="720"
         app:previewwidth="1280"
-        android:layout_marginBottom="@dimen/height_80"
         />
 
     <com.moredian.entrance.guard.face.CameraView
@@ -21,13 +20,12 @@
         android:layout_height="1dp"
         app:previewheight="480"
         app:previewwidth="800"
-        android:layout_marginBottom="100dp"/>
+        />
 
     <com.moredian.entrance.guard.face.drawface.DrawerSurfaceView
         android:id="@+id/faceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="100dp"
         android:visibility="visible"
         />
 
@@ -60,7 +58,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="90dp"
         android:visibility="gone"
         />
 
@@ -70,7 +67,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="90dp"
         android:visibility="gone"
         />
 
@@ -79,5 +75,6 @@
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         layout="@layout/bottom_btn_layout"
+        android:visibility="gone"
         />
 </RelativeLayout>

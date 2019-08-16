@@ -151,10 +151,11 @@ public class ConsumeResultActivity extends AppCompatActivity {
         }
         if (facecontentbean != null) {
             csConsumeResult.setText("支付成功");
-            csAmountBig.setText(facecontentbean.getThirdPartyExpense().getAmount() + "");
-            csAmountSmall.setText(facecontentbean.getThirdPartyExpense().getAmount() + "");
-            csDate.setText(facecontentbean.getThirdPartyExpense().getCreateTime());
-            int partern = facecontentbean.getThirdPartyExpense().getPattern();
+            csAmountBig.setText(facecontentbean.getExpenseDetail().getAmount() + "");
+            csAmountSmall.setText(facecontentbean.getExpenseDetail().getAmount() + "");
+            csBalance.setText(facecontentbean.getExpenseDetail().getBalance() + "");
+            csDate.setText(facecontentbean.getExpenseDetail().getCreateTime());
+            int partern = facecontentbean.getExpenseDetail().getPattern();
             csConsumeKind.setText("人脸支付");
             if (partern == 1) {
                 csConsumePattern.setText("手动消费");

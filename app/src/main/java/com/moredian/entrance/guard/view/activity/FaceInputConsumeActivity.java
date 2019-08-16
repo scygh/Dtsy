@@ -34,9 +34,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FaceInputActivity extends AppCompatActivity {
+public class FaceInputConsumeActivity extends AppCompatActivity {
 
-    private static final String TAG = "FaceInputActivity";
+    private static final String TAG = "FTCActivity";
 
     @BindView(R.id.camera_view)
     CameraView mRgbCameraView;
@@ -61,6 +61,7 @@ public class FaceInputActivity extends AppCompatActivity {
     private String memberId;
     private static boolean mShowCallbackFace = false;
     private static int mCheckRgbCameraOpenCount = 0;
+    private int faceflag;
     private MyReceiver mReceiver = new MyReceiver();
     private static final int KEY_DETECT_HIDE = 0;
     private static final int KEY_DETECT_FACE_SIZE_ERROR = 1;
@@ -100,7 +101,7 @@ public class FaceInputActivity extends AppCompatActivity {
     private static final String RECOGNIZE_FAIL_REASON3 = "track_id_has_no_online_response";
 
     public static Intent getFaceInputActivityIntent(Context context) {
-        Intent intent = new Intent(context, FaceInputActivity.class);
+        Intent intent = new Intent(context, FaceInputConsumeActivity.class);
         return intent;
     }
 
@@ -113,6 +114,7 @@ public class FaceInputActivity extends AppCompatActivity {
         setContentView(R.layout.activity_face_input);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         ButterKnife.bind(this);
+        faceflag = getIntent().getIntExtra(Constants.INTENT_FACEINPUT_FLAG, 0);
         initCamera();
         initReceiver();
     }
@@ -313,26 +315,25 @@ public class FaceInputActivity extends AppCompatActivity {
     }
 
     private void setMyResult() {
-            if (image != null) {
-                // TODO: 2019/8/6 处理图片质量
-                Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-                if (bitmap.getWidth() < 200 || bitmap.getHeight() < 200) {
-                    ToastUtils.showShort("人脸大小不能小于200x200,请重新录入");
-                } else {
-                    Intent intent2 = new Intent();
-                    intent2.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
-                    if (TextUtils.isEmpty(memberId)) {
-                        intent2.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
-                    } else {
-                        intent2.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
-                        ToastUtils.showShort("人脸已录入过");
-                    }
-                    FaceInputActivity.this.setResult(Constants.FACE_INPUT_RESULTCODE, intent2);
-                    finish();
-                }
+        if (image != null) {
+            // TODO: 2019/8/6 处理图片质量
+            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            if (bitmap.getWidth() < 200 || bitmap.getHeight() < 200) {
+                ToastUtils.showShort("人脸大小不能小于200x200,请重新录入");
             } else {
-                ToastUtils.showShort("没有录到人脸，请重新录入");
+                Intent intent2 = new Intent();
+                intent2.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
+                if (TextUtils.isEmpty(memberId)) {
+                    intent2.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
+                } else {
+                    intent2.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
+                }
+                FaceInputConsumeActivity.this.setResult(Constants.FACE_INPUT_RESULTCODE, intent2);
+                finish();
             }
+        } else {
+            ToastUtils.showShort("没有录到人脸，请重新录入");
+        }
     }
 
     public class MyReceiver extends BroadcastReceiver {
@@ -396,16 +397,13 @@ public class FaceInputActivity extends AppCompatActivity {
                         long trackid = intent.getLongExtra(TRACK_ID, 0l);
                         image = rgb_data;
                         mNirTipsView.setBackground(getResources().getDrawable(R.drawable.shap_nir_tip_succ));
-                        Log.d(TAG, "NIR_RESULT_ACTION: "+ System.currentTimeMillis());
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 setMyResult();
                             }
                         },2000);
-
                     } else if (action.equals(OFFLINE_RECOGNIZE_ACTION) || action.equals(ONLINE_RECOGNIZE_ACTION)) {
-                        Log.d(TAG, "OFFLINE_RECOGNIZE_ACTION: "+ System.currentTimeMillis());
                         long trackid = intent.getLongExtra(TRACK_ID, 0l);
                         String username = intent.getStringExtra(USER_NAME);
                         memberId = intent.getStringExtra(PERSON_ID);

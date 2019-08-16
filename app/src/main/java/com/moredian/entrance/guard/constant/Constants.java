@@ -21,7 +21,8 @@ public class Constants {
     public static final String ACCOUNT = "Account";
 
     //url
-    public static final String SERVER_URL = "http://dev.machine_api.dt128.com/";
+    //public static final String SERVER_URL = "http://dev.machine_api.dt128.com/";
+    public static final String SERVER_URL = "http://dev.open.api.dt128.com/";
 
     //intent
     public static final String INTENT_ROWSBEAN_NAME = "intent_rowsbean_name";
@@ -29,11 +30,13 @@ public class Constants {
     public static final String INTENT_ROWSBEAN_STUID = "intent_rowsbean_stuid";
     public static final String INTENT_ROWSBEAN_PHONE = "intent_rowsbean_phone";
     public static final String INTENT_ROWSBEAN_ID = "intent_rowsbean_id";
+    public static final String INTENT_MEMBER_ID = "intent_member_id";
     public static final String INTENT_FACEINPUT_RGBDATA = "intent_faceinput_rgbdata";
     public static final String INTENT_FACEINPUT_MEMBERID = "intent_faceinput_memberid";
     public static final String INTENT_CONSUME_SPSUCCESS = "intent_consume_spsuccess";
     public static final String INTENT_CONSUME_QRSUCCESS = "intent_consume_qrsuccess";
     public static final String INTENT_CONSUME_FACESUCCESS = "intent_consume_facesuccess";
+    public static final String INTENT_FACEINPUT_FLAG = "intent_faceinput_flag";
 
     //permission
     public static final int LOCATION_REQUEST = 1;

@@ -8,10 +8,12 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.entity.DefiniteExpense;
 import com.moredian.entrance.guard.entity.FaceExpense;
 import com.moredian.entrance.guard.entity.GetListByPage;
 import com.moredian.entrance.guard.entity.GetReadCard;
 import com.moredian.entrance.guard.entity.GetToken;
+import com.moredian.entrance.guard.entity.PostDefiniteExpenseBody;
 import com.moredian.entrance.guard.entity.PostFaceExpenseBody;
 import com.moredian.entrance.guard.entity.PostQRCodeExpenseBody;
 import com.moredian.entrance.guard.entity.PostResponse;
@@ -463,6 +465,55 @@ public class Api {
 
                     @Override
                     public void onNext(FaceExpense expense) {
+                        if (expense != null && expense.getStatusCode() == 200) {
+                            ToastUtils.showShort("消费成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(expense);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastUtils.showShort(error);
+                                if (getResponseListener != null) {
+                                    getResponseListener.onFail(error);
+                                }
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 定额支付
+     */
+    public void postDefiniteExpense(PostDefiniteExpenseBody body, String token, String modiantoken) {
+        ApiUtils.postDefiniteExpenseService().definiteExpense(body, token, modiantoken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DefiniteExpense>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(DefiniteExpense expense) {
                         if (expense != null && expense.getStatusCode() == 200) {
                             ToastUtils.showShort("消费成功");
                             if (getResponseListener != null) {
