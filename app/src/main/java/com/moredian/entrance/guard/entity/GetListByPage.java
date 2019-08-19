@@ -130,10 +130,10 @@ public class GetListByPage {
                 private String DepartmentId;
                 private String Name;
                 private Object EmpId;
-                private Object IdCard;
+                private String IdCard;
                 private int Sex;
                 private int Age;
-                private Object Address;
+                private String Address;
                 private String Phone;
                 private String CreateTime;
                 private int State;
@@ -176,11 +176,11 @@ public class GetListByPage {
                     this.EmpId = EmpId;
                 }
 
-                public Object getIdCard() {
+                public String getIdCard() {
                     return IdCard;
                 }
 
-                public void setIdCard(Object IdCard) {
+                public void setIdCard(String IdCard) {
                     this.IdCard = IdCard;
                 }
 
@@ -200,11 +200,11 @@ public class GetListByPage {
                     this.Age = Age;
                 }
 
-                public Object getAddress() {
+                public String getAddress() {
                     return Address;
                 }
 
-                public void setAddress(Object Address) {
+                public void setAddress(String Address) {
                     this.Address = Address;
                 }
 

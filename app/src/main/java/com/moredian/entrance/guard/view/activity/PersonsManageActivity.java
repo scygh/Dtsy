@@ -2,10 +2,13 @@ package com.moredian.entrance.guard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PersonsManageActivity extends AppCompatActivity {
+public class PersonsManageActivity extends BaseActivity {
 
     private static final String TAG = "PersonsManageActivity";
     @BindView(R.id.Manualconsumption_back)
@@ -44,7 +47,6 @@ public class PersonsManageActivity extends AppCompatActivity {
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
     private PersonManageRvAdapter adapter;
-    private Api api;
     List<GetListByPage.ContentBean.RowsBean> arowsBeans = new ArrayList<>();
     boolean isLoading = false;
     private Handler handler = new Handler();
@@ -62,12 +64,17 @@ public class PersonsManageActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_persons_manage);
-        ButterKnife.bind(this);
+    public int layoutView() {
+        return R.layout.activity_persons_manage;
+    }
+
+    @Override
+    public void initView() {
         pageName.setText("人员管理");
-        api = new Api();
+    }
+
+    @Override
+    public void initData() {
         refresh();
         api.setOnResponse(new Api.OnResponse() {
             @Override
@@ -126,6 +133,9 @@ public class PersonsManageActivity extends AppCompatActivity {
         pageIndex = 1;
     }
 
+    /**
+    * descirption: 下拉加载更多
+    */
     private void getData() {
         api.getListByPage(++pageIndex, 20);
         Log.d(TAG, "getData: " + pageIndex);
@@ -165,7 +175,7 @@ public class PersonsManageActivity extends AppCompatActivity {
         adapter.setMyItemClickListener(new PersonManageRvAdapter.OnMyItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                startActivity(PersonDetailActivity.getPersonDetailActivityIntent(PersonsManageActivity.this, arowsBeans.get(position)));
+                startActivity(PersonDetailActivity.getPersonDetailActivityIntent(PersonsManageActivity.this, position));
             }
         });
     }
@@ -191,4 +201,5 @@ public class PersonsManageActivity extends AppCompatActivity {
         pageIndex = 1;
         handler.removeCallbacks(runnable);
     }
+
 }

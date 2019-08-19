@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,13 +25,16 @@ import com.moredian.entrance.guard.entity.PostRequestBody;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.Base64BitmapUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PersonDetailActivity extends AppCompatActivity {
+public class PersonDetailActivity extends BaseActivity {
 
-    private static final String TAG  = "PersonDetailActivity";
+    private static final String TAG = "PersonDetailActivity";
     @BindView(R.id.Manualconsumption_back)
     ImageView ManualconsumptionBack;
     @BindView(R.id.page_name)
@@ -51,36 +55,95 @@ public class PersonDetailActivity extends AppCompatActivity {
     Button persondetailCancle;
     private GetListByPage.ContentBean.RowsBean rowsBean;
     private Bitmap bitmap;
-    private Api api;
     private Intent dataIntent;
-    private boolean isFaceExits;
+    //判断返回的memberID是否和当前一致
     private boolean istheSameFace = false;
+    //当前的memberID
     private String exitmemberId;
+    //获取的page
+    List<GetListByPage.ContentBean.RowsBean> arowsBeans;
+    //数据定位
+    int abposition;
 
-    public static Intent getPersonDetailActivityIntent(Context context, GetListByPage.ContentBean.RowsBean rowsBean) {
+    /**
+     * descirption: 得到intent
+     */
+    public static Intent getPersonDetailActivityIntent(Context context, int position) {
         Intent intent = new Intent(context, PersonDetailActivity.class);
-        intent.putExtra(Constants.INTENT_ROWSBEAN_NAME, rowsBean.getUser().getName());
-        intent.putExtra(Constants.INTENT_ROWSBEAN_IDCARD, rowsBean.getUser().getId());
-        intent.putExtra(Constants.INTENT_ROWSBEAN_STUID, rowsBean.getUser().getDepartmentId());
-        intent.putExtra(Constants.INTENT_ROWSBEAN_PHONE, rowsBean.getUser().getPhone());
-        intent.putExtra(Constants.INTENT_ROWSBEAN_ID, rowsBean.getUser().getId());
-        intent.putExtra(Constants.INTENT_MEMBER_ID, rowsBean.getUserFace().getMemberId());
+        intent.putExtra(Constants.INTENT_ROWSBEAN_POSITION, position);
         return intent;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_person_detail);
-        ButterKnife.bind(this);
+    public int layoutView() {
+        return R.layout.activity_person_detail;
+    }
+
+    @Override
+    public void initView() {
         pageName.setText("人员详情");
-        api = new Api();
+    }
+
+    @Override
+    public void initData() {
         dataIntent = getIntent();
-        persondetailName.setText(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_NAME));
-        persondetailCardnum.setText(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_IDCARD));
-        persondetailStunum.setText(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_STUID));
-        persondetailTelephone.setText(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_PHONE));
-        exitmemberId = dataIntent.getStringExtra(Constants.INTENT_MEMBER_ID);
+        initRequest();
+    }
+
+    /**
+     * descirption: 请求数据初始化
+     */
+    private void initRequest() {
+        abposition = dataIntent.getIntExtra(Constants.INTENT_ROWSBEAN_POSITION, 0);
+        int page = abposition / 20 + 1;
+        abposition = abposition % 20;
+        api.getListByPage(page, 20);
+        api.setOnResponse(new Api.OnResponse() {
+            @Override
+            public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
+                arowsBeans = rowsBeans;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        persondetailName.setText(arowsBeans.get(abposition).getUser().getName());
+                        persondetailCardnum.setText(arowsBeans.get(abposition).getUser().getIdCard());
+                        persondetailStunum.setText(arowsBeans.get(abposition).getUser().getDepartmentId());
+                        persondetailTelephone.setText(arowsBeans.get(abposition).getUser().getPhone());
+                        if (arowsBeans.get(abposition).getUserFace() != null) {
+                            exitmemberId = dataIntent.getStringExtra(arowsBeans.get(abposition).getUserFace().getMemberId());
+                            if (!TextUtils.isEmpty(arowsBeans.get(abposition).getUserFace().getMemberBase64())) {
+                                persondetailCamera.setImageBitmap(Base64BitmapUtil.base64ToBitmap(arowsBeans.get(abposition).getUserFace().getMemberBase64()));
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onResponseMore(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
+                arowsBeans = rowsBeans;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        persondetailName.setText(arowsBeans.get(abposition).getUser().getName());
+                        persondetailCardnum.setText(arowsBeans.get(abposition).getUser().getIdCard());
+                        persondetailStunum.setText(arowsBeans.get(abposition).getUser().getDepartmentId());
+                        persondetailTelephone.setText(arowsBeans.get(abposition).getUser().getPhone());
+                        if (arowsBeans.get(abposition).getUserFace() != null) {
+                            exitmemberId = dataIntent.getStringExtra(arowsBeans.get(abposition).getUserFace().getMemberId());
+                            if (!TextUtils.isEmpty(arowsBeans.get(abposition).getUserFace().getMemberBase64())) {
+                                persondetailCamera.setImageBitmap(Base64BitmapUtil.base64ToBitmap(arowsBeans.get(abposition).getUserFace().getMemberBase64()));
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailed() {
+
+            }
+        });
         api.setCreateResponse(new Api.CreateResponse() {
             @Override
             public void onCreate() {
@@ -120,22 +183,27 @@ public class PersonDetailActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.personDetail_delete:
-                PostRequestBody postRequestBody = new PostRequestBody(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_ID));
+                PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId());
                 api.postDelete(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), "123");
                 break;
         }
     }
 
+    /**
+     * descirption: 创建人员
+     */
     private synchronized void createPerson() {
-        PostRequestBody postRequestBody = new PostRequestBody(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_ID), dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_NAME),
-                dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_PHONE));
-        Log.d(TAG, "createPerson: " + dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_ID));
+        PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId(), arowsBeans.get(abposition).getUser().getName(),
+                arowsBeans.get(abposition).getUser().getPhone());
         api.postCreate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), "123");
     }
 
+    /**
+     * descirption: 更新人脸
+     */
     private synchronized void updatePerson() {
         String b = Base64BitmapUtil.bitmapToBase64(bitmap, PersonDetailActivity.this);
-        PostRequestBody postRequestBody = new PostRequestBody(dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_ID), b);
+        PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId(), b);
         api.postUpdate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), "123");
     }
 
@@ -168,5 +236,8 @@ public class PersonDetailActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         istheSameFace = false;
+        if (arowsBeans != null) {
+            arowsBeans = null;
+        }
     }
 }

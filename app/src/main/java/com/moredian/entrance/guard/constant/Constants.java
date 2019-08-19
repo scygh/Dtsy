@@ -25,6 +25,7 @@ public class Constants {
     public static final String SERVER_URL = "http://dev.open.api.dt128.com/";
 
     //intent
+    public static final String INTENT_ROWSBEAN_POSITION = "intent_rowsbean_position";
     public static final String INTENT_ROWSBEAN_NAME = "intent_rowsbean_name";
     public static final String INTENT_ROWSBEAN_IDCARD = "intent_rowsbean_idcard";
     public static final String INTENT_ROWSBEAN_STUID = "intent_rowsbean_stuid";

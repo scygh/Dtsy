@@ -2,13 +2,18 @@ package com.moredian.entrance.guard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
@@ -17,7 +22,9 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.entity.FaceExpense;
 import com.moredian.entrance.guard.entity.GetReadCard;
+import com.moredian.entrance.guard.entity.PostFaceExpenseBody;
 import com.moredian.entrance.guard.entity.PostQRCodeExpenseBody;
 import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
@@ -25,7 +32,6 @@ import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.view.fragment.ShowCardMessageFragment;
 
-import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 
 import android_serialport_api.ChangeTool;
@@ -34,7 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ManualconsumptionActivity extends AppCompatActivity {
+public class ManualconsumptionActivity extends BaseActivity {
 
     private static final String TAG = "MActivity";
     @BindView(R.id.Manualconsumption_back)
@@ -49,7 +55,8 @@ public class ManualconsumptionActivity extends AppCompatActivity {
     Button ManualconsumptionUsesdozensmallnotes;
     @BindView(R.id.page_name)
     TextView pageName;
-    private Api api;
+    @BindView(R.id.manu_face_pay)
+    ImageView manuFacePay;
     private int publiccount;
 
     public static Intent getManualconsumptionActivityIntent(Context context) {
@@ -58,12 +65,17 @@ public class ManualconsumptionActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manualconsumption);
-        ButterKnife.bind(this);
+    public int layoutView() {
+        return R.layout.activity_manualconsumption;
+    }
+
+    @Override
+    public void initView() {
         pageName.setText("手动扣款");
-        api = new Api();
+    }
+
+    @Override
+    public void initData() {
         MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
@@ -313,7 +325,7 @@ public class ManualconsumptionActivity extends AppCompatActivity {
     /**
      * descirption: 点击事件
      */
-    @OnClick({R.id.Manualconsumption_back, R.id.Manualconsumption_usesdozensmallnotes})
+    @OnClick({R.id.Manualconsumption_back, R.id.Manualconsumption_usesdozensmallnotes,R.id.manu_face_pay})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Manualconsumption_back:
@@ -321,6 +333,42 @@ public class ManualconsumptionActivity extends AppCompatActivity {
                 break;
             case R.id.Manualconsumption_usesdozensmallnotes:
                 break;
+            case R.id.manu_face_pay:
+                String money = ManualconsumptionKeyboardEnterMoney.getText().toString().trim();
+                if (money.equals("键盘输入金额") || money.equals("0.00") || money.equals("")) {
+                    ToastUtils.showShort("还未设置金额");
+                } else {
+                    startActivityForResult(FaceInputConsumeActivity.getFaceInputActivityIntent(ManualconsumptionActivity.this), Constants.FACE_INPUT_REQUESTCODE);
+                }
+                break;
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == Constants.FACE_INPUT_REQUESTCODE && resultCode == Constants.FACE_INPUT_RESULTCODE) {
+            String memberId = data.getStringExtra(Constants.INTENT_FACEINPUT_MEMBERID);
+            if (!TextUtils.isEmpty(memberId)) {
+                String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
+                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId,Double.parseDouble(ManualconsumptionKeyboardEnterMoney.getText().toString().trim()),1,1,2);
+                api.postFaceExpense(postFaceExpenseBody,token,"123");
+                api.setGetResponseListener(new Api.GetResponseListener<FaceExpense>() {
+                    @Override
+                    public void onRespnse(FaceExpense faceExpense) {
+                        ManualconsumptionKeyboardEnterMoney.setText("0.00");
+                        startActivity(ConsumeResultActivity.getFaceConsumeSuccessActivityIntent(ManualconsumptionActivity.this, faceExpense.getContent()));
+                    }
+
+                    @Override
+                    public void onFail(String err) {
+                        ToastUtils.showShort("支付失败");
+                        startActivity(ConsumeResultActivity.getConsumeFailActivityIntent(ManualconsumptionActivity.this));
+                    }
+                });
+            } else {
+                ToastUtils.showShort("人脸未录入，不能使用人脸支付");
+            }
+        }
+    }
+
 }

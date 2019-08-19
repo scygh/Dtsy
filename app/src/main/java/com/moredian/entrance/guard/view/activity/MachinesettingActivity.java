@@ -22,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MachinesettingActivity extends AppCompatActivity {
+public class MachinesettingActivity extends BaseActivity {
 
     @BindView(R.id.Manualconsumption_back)
     ImageView ManualconsumptionBack;
@@ -45,15 +45,23 @@ public class MachinesettingActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_machinesetting);
-        ButterKnife.bind(this);
+    public int layoutView() {
+        return R.layout.activity_machinesetting;
+    }
+
+    @Override
+    public void initView() {
         pageName.setText("机器设置");
         machinesettingMachineNumber.setText(SPUtils.getInstance().getString(Constants.MACHINE_NUMBER, "001"));
         machinesettingPort.setText(SPUtils.getInstance().getString(Constants.MACHINE_PORT, "/dev/ttyMT2"));
         machinesettingBaudrate.setText(SPUtils.getInstance().getString(Constants.MACHINE_BAUDRTE, "115200"));
     }
+
+    @Override
+    public void initData() {
+
+    }
+
 
     @OnClick({R.id.persondetail_sure, R.id.persondetail_cancle, R.id.Manualconsumption_back})
     public void onViewClicked(View view) {

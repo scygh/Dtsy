@@ -53,7 +53,7 @@ import butterknife.OnClick;
 
 import static android.net.wifi.WifiManager.EXTRA_SUPPLICANT_ERROR;
 
-public class NetSettingActivity extends AppCompatActivity {
+public class NetSettingActivity extends BaseActivity {
 
     private static final String TAG = "NetSettingActivity";
     //回退键
@@ -110,18 +110,13 @@ public class NetSettingActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_net_setting);
-        ButterKnife.bind(this);
-        pageName.setText("网络设置");
-        initWifi();
-        initReceiver();
-        initView();
+    public int layoutView() {
+        return R.layout.activity_net_setting;
     }
 
-    //初始化视图控制
+    @Override
     public void initView() {
+        pageName.setText("网络设置");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         netSettingRecyclerview.setLayoutManager(linearLayoutManager);
         netSettingRecyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -161,6 +156,12 @@ public class NetSettingActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void initData() {
+        initWifi();
+        initReceiver();
     }
 
     //注册广播

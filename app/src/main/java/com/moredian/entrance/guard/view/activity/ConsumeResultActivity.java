@@ -24,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ConsumeResultActivity extends AppCompatActivity {
+public class ConsumeResultActivity extends BaseActivity {
 
     @BindView(R.id.cs_over)
     TextView csOver;
@@ -80,13 +80,17 @@ public class ConsumeResultActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_consume_success);
-        ButterKnife.bind(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+    public int layoutView() {
+        return R.layout.activity_consume_success;
+    }
+
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initData() {
         QRCodeExpense.ContentBean qrcontentbean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_QRSUCCESS);
         SimpleExpense.ContentBean secontentbean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_SPSUCCESS);
         FaceExpense.ContentBean facecontentbean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_FACESUCCESS);

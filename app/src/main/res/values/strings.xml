@@ -26,6 +26,7 @@
     <string name="jqsz">机器设置</string>
     <string name="wlsz">网络设置</string>
     <string name="xtsz">系统设置</string>
+    <string name="personset">个人设置</string>
     <string name="name">姓名:</string>
     <string name="kbh">卡编号:</string>
     <string name="balance">余额:</string>

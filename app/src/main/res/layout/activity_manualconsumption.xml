@@ -14,8 +14,7 @@
         android:layout_height="180dp"
         android:layout_margin="10dp"
         android:background="@drawable/tip_button_bg"
-        android:elevation="10dp"
-        android:visibility="gone">
+        android:elevation="10dp">
 
         <ImageView
             android:layout_width="30dp"
@@ -151,6 +150,14 @@
         android:textColor="@color/icon"
         android:textSize="@dimen/textSize_16" />
 
+    <ImageView
+        android:id="@+id/manu_face_pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_60"
+        android:src="@mipmap/facepay" />
+
     <Button
         android:id="@+id/Manualconsumption_usesdozensmallnotes"
         android:layout_width="match_parent"
@@ -162,6 +169,6 @@
         android:elevation="10dp"
         android:text="补打小票"
         android:textColor="#fff"
-        android:visibility="gone"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:visibility="gone" />
 </LinearLayout>

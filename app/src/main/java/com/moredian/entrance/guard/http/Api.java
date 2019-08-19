@@ -151,7 +151,6 @@ public class Api {
                             }
                         }
                     } else {
-                        ToastUtils.showShort("获取页面失败");
                         if (onResponse != null) {
                             onResponse.onFailed();
                         }

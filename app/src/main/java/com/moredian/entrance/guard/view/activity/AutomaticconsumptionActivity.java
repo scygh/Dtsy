@@ -2,10 +2,13 @@ package com.moredian.entrance.guard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,7 +43,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AutomaticconsumptionActivity extends AppCompatActivity {
+public class AutomaticconsumptionActivity extends BaseActivity {
     private static final String TAG = "AutoActivity";
     @BindView(R.id.Manualconsumption_back)
     ImageView ManualconsumptionBack;
@@ -52,7 +55,6 @@ public class AutomaticconsumptionActivity extends AppCompatActivity {
     Button persondetailSure;
     @BindView(R.id.persondetail_cancle)
     Button persondetailCancle;
-    private Api api;
     private int publiccount;
 
 
@@ -61,13 +63,19 @@ public class AutomaticconsumptionActivity extends AppCompatActivity {
         return intent;
     }
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_automaticconsumption);
-        ButterKnife.bind(this);
+    public int layoutView() {
+        return R.layout.activity_automaticconsumption;
+    }
+
+    @Override
+    public void initView() {
         pageName.setText("自动扣款");
-        api = new Api();
+    }
+
+    @Override
+    public void initData() {
         MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
@@ -333,8 +341,8 @@ public class AutomaticconsumptionActivity extends AppCompatActivity {
             String memberId = data.getStringExtra(Constants.INTENT_FACEINPUT_MEMBERID);
             if (!TextUtils.isEmpty(memberId)) {
                 String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
-                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId,Double.parseDouble(automaticcnsumptionKeyboardEnterMoney.getText().toString().trim()),2,1,2);
-                api.postFaceExpense(postFaceExpenseBody,token,"123");
+                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(automaticcnsumptionKeyboardEnterMoney.getText().toString().trim()), 2, 1, 2);
+                api.postFaceExpense(postFaceExpenseBody, token, "123");
                 api.setGetResponseListener(new Api.GetResponseListener<FaceExpense>() {
                     @Override
                     public void onRespnse(FaceExpense faceExpense) {

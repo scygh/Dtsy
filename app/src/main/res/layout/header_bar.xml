@@ -11,7 +11,7 @@
         android:layout_height="@dimen/height_40"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin_20"
-        android:src="@mipmap/back" />
+        android:src="@mipmap/fanhui" />
 
     <TextView
         android:id="@+id/page_name"
@@ -19,5 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="pagename"
-        android:textSize="@dimen/textSize_26" />
+        android:textSize="@dimen/textSize_26"
+        android:textColor="@color/color_black"/>
 </RelativeLayout>

@@ -2,8 +2,11 @@ package com.moredian.entrance.guard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class InpersontopayActivity extends AppCompatActivity {
+public class InpersontopayActivity extends BaseActivity {
 
     @BindView(R.id.Manualconsumption_back)
     ImageView ManualconsumptionBack;
@@ -30,11 +33,18 @@ public class InpersontopayActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inpersontopay);
-        ButterKnife.bind(this);
+    public int layoutView() {
+        return R.layout.activity_inpersontopay;
+    }
+
+    @Override
+    public void initView() {
         pageName.setText("时段定额");
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     @OnClick({R.id.Manualconsumption_back, R.id.page_name})
