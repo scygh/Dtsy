@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="tab_text_size">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/color_grey</item>
+    </style>
+
 </resources>
