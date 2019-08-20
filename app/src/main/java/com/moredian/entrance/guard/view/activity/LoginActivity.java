@@ -27,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private static final String TAG = "LoginActivity";
 
@@ -39,7 +39,6 @@ public class LoginActivity extends AppCompatActivity {
     RadioButton remenberpasswordRb;
     @BindView(R.id.login_btn)
     Button loginBtn;
-    private Api api;
 
     public static Intent getLoginActivityIntent(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
@@ -47,11 +46,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
-        api = new Api();
+    public int layoutView() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initData() {
         if (usernameTv != null && passswordTv != null) {
             String existsUsername = SPUtils.getInstance().getString(Constants.USRTNAME);
             String existsPassword = SPUtils.getInstance().getString(Constants.PASSWORD);
@@ -70,9 +75,9 @@ public class LoginActivity extends AppCompatActivity {
                 SPUtils.getInstance().put(Constants.PASSWORD, passswordTv.getText().toString().trim());
                 break;
             case R.id.login_btn:
-                String name =  usernameTv.getText().toString().trim();
+                String name = usernameTv.getText().toString().trim();
                 String password = passswordTv.getText().toString().trim();
-                api.getToken(name,password,LoginActivity.this);
+                api.getToken(name, password, LoginActivity.this);
                 break;
         }
     }

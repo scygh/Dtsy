@@ -12,13 +12,10 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.blankj.utilcode.util.SPUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
-import com.moredian.entrance.guard.constant.Constants;
 
-import android_serialport_api.ChangeTool;
-import android_serialport_api.SerialPortUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -27,8 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "SerialPortUtils";
 
-    @BindView(R.id.logout_btn)
-    Button logoutBtn;
     @BindView(R.id.main_ll1)
     LinearLayout mainLl1;
     @BindView(R.id.main_ll2)
@@ -57,19 +52,9 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-        MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
-            @Override
-            public void onDataReceive(byte[] buffer, int size) {
-                Log.d(TAG, "onDataReceive: " + ChangeTool.ByteArrToHex(buffer, 0, size));
-            }
-        });
     }
 
-    public void send(View view) {
-        MainApplication.getSerialPortUtils().sendSerialPort(Constants.BUZZING);
-    }
-
-    @OnClick({R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6,R.id.main_ll7, R.id.logout_btn})
+    @OnClick({R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6,R.id.main_ll7})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.main_ll1:
@@ -92,11 +77,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.main_ll7:
                 startActivity(PersonalSettingActivity.getPersonalSettingActivityIntent(this));
-                break;
-            case R.id.logout_btn:
-                startActivity(LoginActivity.getLoginActivityIntent(this));
-                SPUtils.getInstance().put(Constants.ISLOGIN, false);
-                finish();
                 break;
         }
     }

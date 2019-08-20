@@ -183,12 +183,13 @@
                 android:layout_height="@dimen/margin_160"
                 android:layout_margin="@dimen/margin_10"
                 android:orientation="vertical">
+
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:text="发送"
                     android:onClick="send"
-                    android:visibility="gone"/>
+                    android:text="发送"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -248,8 +249,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/wlsz"
                         android:layout_marginTop="@dimen/margin_10"
+                        android:text="@string/wlsz"
                         android:textSize="@dimen/textSize_20" />
                 </LinearLayout>
 
@@ -260,30 +261,20 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical">
+
                     <ImageView
                         android:layout_width="@dimen/height_70"
                         android:layout_height="@dimen/width_70"
-                        android:src="@mipmap/personalsetting" />
+                        android:src="@mipmap/ps" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/personset"
                         android:layout_marginTop="@dimen/margin_10"
+                        android:text="@string/personset"
                         android:textSize="@dimen/textSize_20" />
                 </LinearLayout>
             </LinearLayout>
-
-            <Button
-                android:id="@+id/logout_btn"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_80"
-                android:layout_margin="@dimen/margin_50"
-                android:background="@drawable/login_button_bg"
-                android:text="@string/logout"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/textSize_26"
-                android:visibility="gone"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

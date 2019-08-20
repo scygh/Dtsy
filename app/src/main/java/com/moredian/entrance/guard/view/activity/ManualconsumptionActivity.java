@@ -80,8 +80,6 @@ public class ManualconsumptionActivity extends BaseActivity {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
                 String a = ChangeTool.ByteArrToHex(buffer, 0, size);
-                Log.d(TAG, "formatHex: " + a);
-                Log.d(TAG, "formatHex: " + a.length());
                 String money = ManualconsumptionKeyboardEnterMoney.getText().toString().trim();
                 if (a.length() == 24) {//接收到键盘输入金额
                     formatHex(buffer, size);
@@ -94,7 +92,7 @@ public class ManualconsumptionActivity extends BaseActivity {
                     }
                 } else if (a.length() == 42) {//接收到扫码的信息
                     if (money.equals("键盘输入金额") || money.equals("0.00")) {
-                        ToastUtils.showShort("键盘还未输入金额，请服务人员确认金额");
+                        ToastUtils.showShort("键盘还未输入金额");
                     } else {
                         //扫码消费 011103040101000C00000028731343776464974922
                         QrCodeConsume(a, Constants.KIND_CONSUME_TDC);
@@ -122,10 +120,11 @@ public class ManualconsumptionActivity extends BaseActivity {
     }
 
     /**
-     * descirption: 外接键盘输入显示
+     * descirption: 外接键盘输入金额显示
      */
     private void formatHex(byte[] buffer, int size) {
         try {
+            //把16进制字符串转成int
             int money = ChangeTool.HexToInt(ChangeTool.ByteArrToHex(buffer, 0, size).substring(16, 22));
             Log.d(TAG, "onDataReceive: " + money);
             float m = (float) money / 100;

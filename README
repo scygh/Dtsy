@@ -1,0 +1,14 @@
+1. SplashActivity 闪停页面
+2. MainActivity 主界面
+3. ManualconsumptionActivity 手动扣款界面
+4. AutomaticconsumeptionActivity 自动扣款界面
+5. InpersontopayActivity 时段定额界面
+6. PersonsManageActivity 人员列表界面
+7. PersonDetailActivity 人员详情界面
+8. FaceInputActivity 人脸录入界面
+9. MachinesettingActivity 机器设置界面
+10. NetSettingActivity 网络设置界面
+11. PersonSettingActivity 个人设置界面
+12. LoginActivity 登录界面
+13. FaceInputConsumeActivity 人脸支付界面
+14. ConsumeResultActivity 消费返回结果界面

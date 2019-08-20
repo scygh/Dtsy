@@ -123,7 +123,7 @@ public class Api {
 
             @Override
             public void onFailure(Call<GetToken> call, Throwable t) {
-                ToastUtils.showShort("获取失败");
+                ToastUtils.showShort("登录失败");
             }
         });
     }
