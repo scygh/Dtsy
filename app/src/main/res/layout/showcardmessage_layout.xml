@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:paddingTop="@dimen/margin_80"
     android:paddingBottom="@dimen/margin_80">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/color_white"
-        >
+        android:background="@color/color_white">
+
+        <ImageView
+            android:layout_width="@dimen/height_40"
+            android:layout_height="@dimen/height_40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_100"
+            android:src="@mipmap/xingming"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -17,7 +24,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_320"
             android:text="@string/name"
-            android:textSize="@dimen/textSize_26"/>
+            android:textSize="@dimen/textSize_26" />
+
         <TextView
             android:id="@+id/scm_name_tv"
             android:layout_width="wrap_content"
@@ -25,13 +33,20 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_320"
             android:text="沈程阳"
-            android:textSize="@dimen/textSize_26"/>
+            android:textSize="@dimen/textSize_26" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/color_fafafa"
-        >
+        android:background="@color/color_fafafa">
+
+        <ImageView
+            android:layout_width="@dimen/height_40"
+            android:layout_height="@dimen/height_40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_100"
+            android:src="@mipmap/cardnum"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,20 +54,29 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_320"
             android:text="@string/kbh"
-            android:textSize="@dimen/textSize_26"/>
+            android:textSize="@dimen/textSize_26" />
+
         <TextView
             android:id="@+id/scm_cradnum_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_320"
-            android:text="123"
-            android:textSize="@dimen/textSize_26"/>
+            android:text=""
+            android:textSize="@dimen/textSize_26" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/color_white">
+
+        <ImageView
+            android:layout_width="@dimen/height_40"
+            android:layout_height="@dimen/height_40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_100"
+            android:src="@mipmap/yue"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,7 +84,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_320"
             android:text="@string/balance"
-            android:textSize="@dimen/textSize_26"/>
+            android:textSize="@dimen/textSize_26" />
+
         <TextView
             android:id="@+id/scm_balance_tv"
             android:layout_width="wrap_content"
@@ -68,14 +93,15 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_320"
             android:text="100.00"
-            android:textSize="@dimen/textSize_28"
-            android:textColor="@color/color_f00"/>
+            android:textColor="@color/color_f00"
+            android:textSize="@dimen/textSize_28" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/color_fafafa"
-        >
+        android:background="@color/color_fafafa">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +109,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_320"
             android:text="@string/ccount"
-            android:textSize="@dimen/textSize_26"/>
+            android:textSize="@dimen/textSize_26" />
+
         <TextView
             android:id="@+id/scm_ccount_tv"
             android:layout_width="wrap_content"
@@ -91,12 +118,14 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_320"
             android:text="1"
-            android:textSize="@dimen/textSize_26"/>
+            android:textSize="@dimen/textSize_26" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/color_white">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,7 +133,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_320"
             android:text="@string/status"
-            android:textSize="@dimen/textSize_26"/>
+            android:textSize="@dimen/textSize_26" />
+
         <TextView
             android:id="@+id/scm_status_tv"
             android:layout_width="wrap_content"
@@ -112,6 +142,6 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_320"
             android:text="可以消费"
-            android:textSize="@dimen/textSize_26"/>
+            android:textSize="@dimen/textSize_26" />
     </RelativeLayout>
 </LinearLayout>

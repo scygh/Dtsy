@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6,R.id.main_ll7})
+    @OnClick({R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6,R.id.main_ll7,R.id.main_ll8})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.main_ll1:
@@ -77,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.main_ll7:
                 startActivity(PersonalSettingActivity.getPersonalSettingActivityIntent(this));
+                break;
+            case R.id.main_ll8:
+                startActivity(VoucherCenterActivity.getVoucherCenterActivityIntent(this));
                 break;
         }
     }

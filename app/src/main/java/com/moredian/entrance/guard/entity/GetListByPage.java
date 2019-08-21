@@ -1,5 +1,8 @@
 package com.moredian.entrance.guard.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -80,11 +83,12 @@ public class GetListByPage {
             this.Rows = Rows;
         }
 
-        public static class RowsBean {
+        public static class RowsBean implements Parcelable {
             /**
              * User : {"Id":"6369e769-ef3b-47fe-b7ce-f7f8e931c29c","DepartmentId":"00000000-0000-0000-0000-000000000001","Name":"scy11","EmpId":null,"IdCard":null,"Sex":0,"Age":0,"Address":null,"Phone":null,"CreateTime":"2019-08-01 10:40:10","State":1,"Password":"EIcSosWqXyA=","Photo":null,"PayKey":null,"AuthType":null,"AuthUrl":null,"AuthResult":null}
              * UserFace : {"MemberId":"1640744568733302785","MemberFace":"MD_1001_6369e769-ef3b-47fe-b7ce-f7f8e931c29c","MemberType":2}
              */
+
 
             private UserBean User;
             private UserFaceBean UserFace;
@@ -105,7 +109,9 @@ public class GetListByPage {
                 this.UserFace = UserFace;
             }
 
-            public static class UserBean {
+            public static class UserBean implements Parcelable {
+
+
                 /**
                  * Id : 6369e769-ef3b-47fe-b7ce-f7f8e931c29c
                  * DepartmentId : 00000000-0000-0000-0000-000000000001
@@ -129,7 +135,7 @@ public class GetListByPage {
                 private String Id;
                 private String DepartmentId;
                 private String Name;
-                private Object EmpId;
+                private String EmpId;
                 private String IdCard;
                 private int Sex;
                 private int Age;
@@ -138,11 +144,11 @@ public class GetListByPage {
                 private String CreateTime;
                 private int State;
                 private String Password;
-                private Object Photo;
-                private Object PayKey;
-                private Object AuthType;
-                private Object AuthUrl;
-                private Object AuthResult;
+                private String Photo;
+                private String PayKey;
+                private String AuthType;
+                private String AuthUrl;
+                private String AuthResult;
 
                 public String getId() {
                     return Id;
@@ -168,11 +174,11 @@ public class GetListByPage {
                     this.Name = Name;
                 }
 
-                public Object getEmpId() {
+                public String getEmpId() {
                     return EmpId;
                 }
 
-                public void setEmpId(Object EmpId) {
+                public void setEmpId(String EmpId) {
                     this.EmpId = EmpId;
                 }
 
@@ -240,53 +246,115 @@ public class GetListByPage {
                     this.Password = Password;
                 }
 
-                public Object getPhoto() {
+                public String getPhoto() {
                     return Photo;
                 }
 
-                public void setPhoto(Object Photo) {
+                public void setPhoto(String Photo) {
                     this.Photo = Photo;
                 }
 
-                public Object getPayKey() {
+                public String getPayKey() {
                     return PayKey;
                 }
 
-                public void setPayKey(Object PayKey) {
+                public void setPayKey(String PayKey) {
                     this.PayKey = PayKey;
                 }
 
-                public Object getAuthType() {
+                public String getAuthType() {
                     return AuthType;
                 }
 
-                public void setAuthType(Object AuthType) {
+                public void setAuthType(String AuthType) {
                     this.AuthType = AuthType;
                 }
 
-                public Object getAuthUrl() {
+                public String getAuthUrl() {
                     return AuthUrl;
                 }
 
-                public void setAuthUrl(Object AuthUrl) {
+                public void setAuthUrl(String AuthUrl) {
                     this.AuthUrl = AuthUrl;
                 }
 
-                public Object getAuthResult() {
+                public String getAuthResult() {
                     return AuthResult;
                 }
 
-                public void setAuthResult(Object AuthResult) {
+                public void setAuthResult(String AuthResult) {
                     this.AuthResult = AuthResult;
                 }
+
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
+
+                @Override
+                public void writeToParcel(Parcel dest, int flags) {
+                    dest.writeString(this.Id);
+                    dest.writeString(this.DepartmentId);
+                    dest.writeString(this.Name);
+                    dest.writeString(this.EmpId);
+                    dest.writeString(this.IdCard);
+                    dest.writeInt(this.Sex);
+                    dest.writeInt(this.Age);
+                    dest.writeString(this.Address);
+                    dest.writeString(this.Phone);
+                    dest.writeString(this.CreateTime);
+                    dest.writeInt(this.State);
+                    dest.writeString(this.Password);
+                    dest.writeString(this.Photo);
+                    dest.writeString(this.PayKey);
+                    dest.writeString(this.AuthType);
+                    dest.writeString(this.AuthUrl);
+                    dest.writeString(this.AuthResult);
+                }
+
+                public UserBean() {
+                }
+
+                protected UserBean(Parcel in) {
+                    this.Id = in.readString();
+                    this.DepartmentId = in.readString();
+                    this.Name = in.readString();
+                    this.EmpId = in.readString();
+                    this.IdCard = in.readString();
+                    this.Sex = in.readInt();
+                    this.Age = in.readInt();
+                    this.Address = in.readString();
+                    this.Phone = in.readString();
+                    this.CreateTime = in.readString();
+                    this.State = in.readInt();
+                    this.Password = in.readString();
+                    this.Photo = in.readString();
+                    this.PayKey = in.readString();
+                    this.AuthType = in.readString();
+                    this.AuthUrl = in.readString();
+                    this.AuthResult = in.readString();
+                }
+
+                public static final Creator<UserBean> CREATOR = new Creator<UserBean>() {
+                    @Override
+                    public UserBean createFromParcel(Parcel source) {
+                        return new UserBean(source);
+                    }
+
+                    @Override
+                    public UserBean[] newArray(int size) {
+                        return new UserBean[size];
+                    }
+                };
             }
 
-            public static class UserFaceBean {
+            public static class UserFaceBean implements Parcelable {
                 /**
                  * MemberId : 1640744568733302785
                  * MemberFace : MD_1001_6369e769-ef3b-47fe-b7ce-f7f8e931c29c
                  * MemberType : 2
                  */
+
                 private String MemberBase64;
                 private String MemberId;
                 private String MemberFace;
@@ -323,7 +391,73 @@ public class GetListByPage {
                 public void setMemberType(int MemberType) {
                     this.MemberType = MemberType;
                 }
+
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
+
+                @Override
+                public void writeToParcel(Parcel dest, int flags) {
+                    dest.writeString(this.MemberBase64);
+                    dest.writeString(this.MemberId);
+                    dest.writeString(this.MemberFace);
+                    dest.writeInt(this.MemberType);
+                }
+
+                public UserFaceBean() {
+                }
+
+                protected UserFaceBean(Parcel in) {
+                    this.MemberBase64 = in.readString();
+                    this.MemberId = in.readString();
+                    this.MemberFace = in.readString();
+                    this.MemberType = in.readInt();
+                }
+
+                public static final Creator<UserFaceBean> CREATOR = new Creator<UserFaceBean>() {
+                    @Override
+                    public UserFaceBean createFromParcel(Parcel source) {
+                        return new UserFaceBean(source);
+                    }
+
+                    @Override
+                    public UserFaceBean[] newArray(int size) {
+                        return new UserFaceBean[size];
+                    }
+                };
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeParcelable(this.User, flags);
+                dest.writeParcelable(this.UserFace, flags);
+            }
+
+            public RowsBean() {
+            }
+
+            protected RowsBean(Parcel in) {
+                this.User = in.readParcelable(UserBean.class.getClassLoader());
+                this.UserFace = in.readParcelable(UserFaceBean.class.getClassLoader());
+            }
+
+            public static final Parcelable.Creator<RowsBean> CREATOR = new Parcelable.Creator<RowsBean>() {
+                @Override
+                public RowsBean createFromParcel(Parcel source) {
+                    return new RowsBean(source);
+                }
+
+                @Override
+                public RowsBean[] newArray(int size) {
+                    return new RowsBean[size];
+                }
+            };
         }
     }
 }

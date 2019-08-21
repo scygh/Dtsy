@@ -13,6 +13,7 @@ import com.moredian.entrance.guard.entity.FaceExpense;
 import com.moredian.entrance.guard.entity.GetListByPage;
 import com.moredian.entrance.guard.entity.GetReadCard;
 import com.moredian.entrance.guard.entity.GetToken;
+import com.moredian.entrance.guard.entity.GetUserByUserID;
 import com.moredian.entrance.guard.entity.PostDefiniteExpenseBody;
 import com.moredian.entrance.guard.entity.PostFaceExpenseBody;
 import com.moredian.entrance.guard.entity.PostQRCodeExpenseBody;
@@ -150,10 +151,6 @@ public class Api {
                                 }
                             }
                         }
-                    } else {
-                        if (onResponse != null) {
-                            onResponse.onFailed();
-                        }
                     }
                 }
 
@@ -190,6 +187,8 @@ public class Api {
                             if (createResponse != null) {
                                 createResponse.onCreate();
                             }
+                        } else {
+                            ToastUtils.showShort(postResponse.getMessage());
                         }
                     }
 
@@ -233,6 +232,8 @@ public class Api {
                     public void onNext(PostResponse postResponse) {
                         if (postResponse != null && postResponse.getStatusCode() == 200) {
                             ToastUtils.showShort("更新成功");
+                        } else {
+                            ToastUtils.showShort(postResponse.getMessage());
                         }
                     }
 
@@ -276,6 +277,8 @@ public class Api {
                     public void onNext(PostResponse postResponse) {
                         if (postResponse != null && postResponse.getStatusCode() == 200) {
                             ToastUtils.showShort("删除成功");
+                        } else {
+                            ToastUtils.showShort(postResponse.getMessage());
                         }
                     }
 
@@ -324,7 +327,7 @@ public class Api {
                                 getResponseListener.onRespnse(getReadCard);
                             }
                         } else {
-                            ToastUtils.showShort("查询null");
+                            ToastUtils.showShort(getReadCard.getMessage());
                         }
                     }
 
@@ -371,6 +374,8 @@ public class Api {
                             if (getResponseListener != null) {
                                 getResponseListener.onRespnse(simpleExpense);
                             }
+                        } else {
+                            ToastUtils.showShort(simpleExpense.getMessage());
                         }
                     }
 
@@ -420,6 +425,8 @@ public class Api {
                             if (getResponseListener != null) {
                                 getResponseListener.onRespnse(qrCodeExpense);
                             }
+                        } else {
+                            ToastUtils.showShort(qrCodeExpense.getMessage());
                         }
                     }
 
@@ -469,6 +476,8 @@ public class Api {
                             if (getResponseListener != null) {
                                 getResponseListener.onRespnse(expense);
                             }
+                        } else {
+                            ToastUtils.showShort(expense.getMessage());
                         }
                     }
 
@@ -518,6 +527,59 @@ public class Api {
                             if (getResponseListener != null) {
                                 getResponseListener.onRespnse(expense);
                             }
+                        } else {
+                            ToastUtils.showShort(expense.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastUtils.showShort(error);
+                                if (getResponseListener != null) {
+                                    getResponseListener.onFail(error);
+                                }
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 按userID查询消费者
+     */
+    public void getUserByuserID(String userID, String token) {
+        ApiUtils.getUserByUserIdService().GetByUserID(userID, token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetUserByUserID>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetUserByUserID user) {
+                        if (user != null && user.getStatusCode() == 200) {
+                            ToastUtils.showShort("查询成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(user);
+                            }
+                        } else {
+                            ToastUtils.showShort(user.getMessage());
                         }
                     }
 

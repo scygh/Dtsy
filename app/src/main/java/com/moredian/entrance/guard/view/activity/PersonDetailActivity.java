@@ -21,6 +21,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.GetListByPage;
+import com.moredian.entrance.guard.entity.GetUserByUserID;
 import com.moredian.entrance.guard.entity.PostRequestBody;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.Base64BitmapUtil;
@@ -53,7 +54,6 @@ public class PersonDetailActivity extends BaseActivity {
     Button persondetailSure;
     @BindView(R.id.persondetail_cancle)
     Button persondetailCancle;
-    private GetListByPage.ContentBean.RowsBean rowsBean;
     private Bitmap bitmap;
     private Intent dataIntent;
     //判断返回的memberID是否和当前一致
@@ -61,9 +61,10 @@ public class PersonDetailActivity extends BaseActivity {
     //当前的memberID
     private String exitmemberId;
     //获取的page
-    List<GetListByPage.ContentBean.RowsBean> arowsBeans;
+    List<GetListByPage.ContentBean.RowsBean> arowsBeans = new ArrayList<>();
     //数据定位
     int abposition;
+    GetListByPage.ContentBean.RowsBean findbean;
 
     /**
      * descirption: 得到intent
@@ -71,6 +72,15 @@ public class PersonDetailActivity extends BaseActivity {
     public static Intent getPersonDetailActivityIntent(Context context, int position) {
         Intent intent = new Intent(context, PersonDetailActivity.class);
         intent.putExtra(Constants.INTENT_ROWSBEAN_POSITION, position);
+        return intent;
+    }
+
+    /**
+     * descirption: 得到intent
+     */
+    public static Intent getPersonDetailActivityIntent(Context context, String userid) {
+        Intent intent = new Intent(context, PersonDetailActivity.class);
+        intent.putExtra(Constants.INTENT_ROWSBEAN_BEAN, userid);
         return intent;
     }
 
@@ -95,70 +105,116 @@ public class PersonDetailActivity extends BaseActivity {
      */
     private void initRequest() {
         abposition = dataIntent.getIntExtra(Constants.INTENT_ROWSBEAN_POSITION, 0);
-        int page = abposition / 20 + 1;
-        abposition = abposition % 20;
-        api.getListByPage(page, 20);
-        api.setOnResponse(new Api.OnResponse() {
-            @Override
-            public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
-                arowsBeans = rowsBeans;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        persondetailName.setText(arowsBeans.get(abposition).getUser().getName());
-                        persondetailCardnum.setText(arowsBeans.get(abposition).getUser().getIdCard());
-                        persondetailStunum.setText(arowsBeans.get(abposition).getUser().getDepartmentId());
-                        persondetailTelephone.setText(arowsBeans.get(abposition).getUser().getPhone());
-                        if (arowsBeans.get(abposition).getUserFace() != null) {
-                            exitmemberId = dataIntent.getStringExtra(arowsBeans.get(abposition).getUserFace().getMemberId());
-                            if (!TextUtils.isEmpty(arowsBeans.get(abposition).getUserFace().getMemberBase64())) {
-                                persondetailCamera.setImageBitmap(Base64BitmapUtil.base64ToBitmap(arowsBeans.get(abposition).getUserFace().getMemberBase64()));
-                            }
+        String userid = dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_BEAN);
+        if (!TextUtils.isEmpty(userid)) {
+            api.getListByPage(1, 5000);
+            api.setOnResponse(new Api.OnResponse() {
+                @Override
+                public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
+                    arowsBeans.clear();
+                    arowsBeans.addAll(rowsBeans);
+                    for (GetListByPage.ContentBean.RowsBean bean : rowsBeans) {
+                        if (bean.getUser().getId().equals(userid)) {
+                            findbean = bean;
+                            break;
                         }
                     }
-                });
-            }
-
-            @Override
-            public void onResponseMore(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
-                arowsBeans = rowsBeans;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        persondetailName.setText(arowsBeans.get(abposition).getUser().getName());
-                        persondetailCardnum.setText(arowsBeans.get(abposition).getUser().getIdCard());
-                        persondetailStunum.setText(arowsBeans.get(abposition).getUser().getDepartmentId());
-                        persondetailTelephone.setText(arowsBeans.get(abposition).getUser().getPhone());
-                        if (arowsBeans.get(abposition).getUserFace() != null) {
-                            exitmemberId = dataIntent.getStringExtra(arowsBeans.get(abposition).getUserFace().getMemberId());
-                            if (!TextUtils.isEmpty(arowsBeans.get(abposition).getUserFace().getMemberBase64())) {
-                                persondetailCamera.setImageBitmap(Base64BitmapUtil.base64ToBitmap(arowsBeans.get(abposition).getUserFace().getMemberBase64()));
-                            }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setData(findbean);
                         }
-                    }
-                });
-            }
-
-            @Override
-            public void onFailed() {
-
-            }
-        });
-        api.setCreateResponse(new Api.CreateResponse() {
-            @Override
-            public void onCreate() {
-                if (bitmap != null) {
-                    //如果是没录入过，或者是同一个人则可以更新
-                    if (istheSameFace || exitmemberId == null) {
-                        updatePerson();
-                    } else {
-                        ToastUtils.showShort("更新的人脸不是您自己的，请重新选择名字");
-                    }
-                } else {
-                    ToastUtils.showShort("更新的图片为空");
+                    });
                 }
+
+                @Override
+                public void onResponseMore(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
+                }
+
+                @Override
+                public void onFailed() {
+                }
+            });
+        } else {
+            //拿position去拿数据
+            int page = abposition / 20 + 1;
+            abposition = abposition % 20;
+            api.getListByPage(page, 20);
+            api.setOnResponse(new Api.OnResponse() {
+                @Override
+                public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
+                    arowsBeans.clear();
+                    arowsBeans.addAll(rowsBeans);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setData();
+                        }
+                    });
+                }
+
+                @Override
+                public void onResponseMore(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
+                    arowsBeans = rowsBeans;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setData();
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailed() {
+
+                }
+            });
+            api.setCreateResponse(new Api.CreateResponse() {
+                @Override
+                public void onCreate() {
+                    updateData();
+                }
+            });
+        }
+    }
+
+    private void updateData() {
+        if (bitmap != null) {
+            //如果是没录入过，或者是同一个人则可以更新
+            if (istheSameFace || exitmemberId == null) {
+                updatePerson();
+            } else {
+                ToastUtils.showShort("更新的人脸不是您自己的，请重新选择名字");
             }
-        });
+        } else {
+            ToastUtils.showShort("人脸为空");
+        }
+    }
+
+    private void setData() {
+        persondetailName.setText(arowsBeans.get(abposition).getUser().getName());
+        persondetailCardnum.setText(arowsBeans.get(abposition).getUser().getIdCard());
+        persondetailStunum.setText(arowsBeans.get(abposition).getUser().getDepartmentId());
+        persondetailTelephone.setText(arowsBeans.get(abposition).getUser().getPhone());
+        if (arowsBeans.get(abposition).getUserFace() != null) {
+            exitmemberId = dataIntent.getStringExtra(arowsBeans.get(abposition).getUserFace().getMemberId());
+            if (!TextUtils.isEmpty(arowsBeans.get(abposition).getUserFace().getMemberBase64())) {
+                persondetailCamera.setImageBitmap(Base64BitmapUtil.base64ToBitmap(arowsBeans.get(abposition).getUserFace().getMemberBase64()));
+            }
+        }
+    }
+
+    private void setData(GetListByPage.ContentBean.RowsBean findbean) {
+        persondetailName.setText(findbean.getUser().getName());
+        persondetailCardnum.setText(findbean.getUser().getIdCard());
+        persondetailStunum.setText(findbean.getUser().getDepartmentId());
+        persondetailTelephone.setText(findbean.getUser().getPhone());
+        if (findbean.getUserFace() != null) {
+            exitmemberId = dataIntent.getStringExtra(findbean.getUserFace().getMemberId());
+            if (!TextUtils.isEmpty(findbean.getUserFace().getMemberBase64())) {
+                persondetailCamera.setImageBitmap(Base64BitmapUtil.base64ToBitmap(findbean.getUserFace().getMemberBase64()));
+            }
+        }
     }
 
     @OnClick({R.id.Manualconsumption_back, R.id.persondetail_camera, R.id.persondetail_sure, R.id.persondetail_cancle, R.id.personDetail_delete})
@@ -184,7 +240,7 @@ public class PersonDetailActivity extends BaseActivity {
                 break;
             case R.id.personDetail_delete:
                 PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId());
-                api.postDelete(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), "123");
+                api.postDelete(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
                 break;
         }
     }
@@ -195,7 +251,7 @@ public class PersonDetailActivity extends BaseActivity {
     private synchronized void createPerson() {
         PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId(), arowsBeans.get(abposition).getUser().getName(),
                 arowsBeans.get(abposition).getUser().getPhone());
-        api.postCreate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), "123");
+        api.postCreate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
     }
 
     /**
@@ -204,7 +260,7 @@ public class PersonDetailActivity extends BaseActivity {
     private synchronized void updatePerson() {
         String b = Base64BitmapUtil.bitmapToBase64(bitmap, PersonDetailActivity.this);
         PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId(), b);
-        api.postUpdate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), "123");
+        api.postUpdate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
     }
 
     @Override
@@ -237,7 +293,10 @@ public class PersonDetailActivity extends BaseActivity {
         super.onDestroy();
         istheSameFace = false;
         if (arowsBeans != null) {
-            arowsBeans = null;
+            arowsBeans.clear();
+        }
+        if (bitmap != null) {
+            bitmap = null;
         }
     }
 }

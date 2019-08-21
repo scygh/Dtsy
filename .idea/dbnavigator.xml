@@ -23,31 +23,36 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="2a311362-a295-4419-99e0-099309dc8041">
+        <schema name="main" object-types="table, dataset trigger, column, constraint, index, view" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="518688f8-0ac6-4159-b4e4-499aa248fa80">
-      <console name="Connection" type="STANDARD" schema="" session="Main" />
-    </connection>
-    <connection id="25c1a3dc-1e61-40f5-99ff-34bb6732ef66">
-      <console name="Connection 1" type="STANDARD" schema="main" session="Main" />
+    <connection id="2a311362-a295-4419-99e0-099309dc8041">
+      <console name="Connection 2" type="STANDARD" schema="main" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="518688f8-0ac6-4159-b4e4-499aa248fa80" />
-    <connection id="25c1a3dc-1e61-40f5-99ff-34bb6732ef66" />
+    <connection id="2a311362-a295-4419-99e0-099309dc8041" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-actions connection-id="25c1a3dc-1e61-40f5-99ff-34bb6732ef66" dataset="main.USER_GROUP_BEAN" active-filter-id="">
-      <filter id="4cc8da12-0e01-4239-878d-ebfd8604199a" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
-        <condition column="_id" operator="=" value="" active="true" />
-      </filter>
+    <filter-actions connection-id="2a311362-a295-4419-99e0-099309dc8041" dataset="main.USER_GROUP_BEAN" active-filter-id="68d0b97a-7aed-4c7c-987d-6c53568e26b1">
+      <filter id="68d0b97a-7aed-4c7c-987d-6c53568e26b1" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
     </filter-actions>
-    <filter-actions connection-id="25c1a3dc-1e61-40f5-99ff-34bb6732ef66" dataset="main.UPDATE_PERSON_ID" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="25c1a3dc-1e61-40f5-99ff-34bb6732ef66" dataset="main.FEATURES_BEAN" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="2a311362-a295-4419-99e0-099309dc8041" dataset="main.sqlite_sequence" active-filter-id="ecde1a4b-ed75-4d93-9546-079750c81cbb">
+      <filter id="ecde1a4b-ed75-4d93-9546-079750c81cbb" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
+    </filter-actions>
+    <filter-actions connection-id="2a311362-a295-4419-99e0-099309dc8041" dataset="main.UPDATE_PERSON_ID" active-filter-id="4429ecb9-3518-4a7a-b86f-7aa8b204b7b9">
+      <filter id="4429ecb9-3518-4a7a-b86f-7aa8b204b7b9" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
+    </filter-actions>
+    <filter-actions connection-id="2a311362-a295-4419-99e0-099309dc8041" dataset="main.FEATURES_BEAN" active-filter-id="992fcba7-e0ad-4de5-8e0e-b6f4d56953ed">
+      <filter id="992fcba7-e0ad-4de5-8e0e-b6f4d56953ed" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
+    </filter-actions>
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -72,97 +77,10 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="518688f8-0ac6-4159-b4e4-499aa248fa80" active="true">
+      <connection id="2a311362-a295-4419-99e0-099309dc8041" active="true">
         <database>
-          <name value="Connection" />
+          <name value="Connection 2" />
           <description value="" />
-          <database-type value="SQLITE" />
-          <config-type value="BASIC" />
-          <database-version value="9999.0" />
-          <driver-source value="BUILTIN" />
-          <driver-library value="" />
-          <driver value="" />
-          <url-type value="FILE" />
-          <host value="localhost" />
-          <port value="1234" />
-          <database value="database" />
-          <files>
-            <file path="sqlite.db" schema="main" />
-            <file path="C:\Users\lb\Desktop\offline.db" schema="" />
-          </files>
-          <type value="NONE" />
-          <user value="" />
-          <deprecated-pwd value="" />
-        </database>
-        <properties>
-          <auto-commit value="false" />
-        </properties>
-        <ssh-settings>
-          <active value="false" />
-          <proxy-host value="" />
-          <proxy-port value="22" />
-          <proxy-user value="" />
-          <deprecated-proxy-pwd value="" />
-          <auth-type value="PASSWORD" />
-          <key-file value="" />
-          <key-passphrase value="" />
-        </ssh-settings>
-        <ssl-settings>
-          <active value="false" />
-          <certificate-authority-file value="" />
-          <client-certificate-file value="" />
-          <client-key-file value="" />
-        </ssl-settings>
-        <details>
-          <charset value="UTF-8" />
-          <session-management value="true" />
-          <ddl-file-binding value="true" />
-          <database-logging value="false" />
-          <connect-automatically value="true" />
-          <restore-workspace value="true" />
-          <restore-workspace-deep value="true" />
-          <environment-type value="default" />
-          <idle-time-to-disconnect value="30" />
-          <idle-time-to-disconnect-pool value="5" />
-          <credential-expiry-time value="10" />
-          <max-connection-pool-size value="7" />
-          <alternative-statement-delimiter value="" />
-        </details>
-        <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
-          <object-type-filter use-master-settings="true">
-            <object-type name="SCHEMA" enabled="true" />
-            <object-type name="USER" enabled="true" />
-            <object-type name="ROLE" enabled="true" />
-            <object-type name="PRIVILEGE" enabled="true" />
-            <object-type name="CHARSET" enabled="true" />
-            <object-type name="TABLE" enabled="true" />
-            <object-type name="VIEW" enabled="true" />
-            <object-type name="MATERIALIZED_VIEW" enabled="true" />
-            <object-type name="NESTED_TABLE" enabled="true" />
-            <object-type name="COLUMN" enabled="true" />
-            <object-type name="INDEX" enabled="true" />
-            <object-type name="CONSTRAINT" enabled="true" />
-            <object-type name="DATASET_TRIGGER" enabled="true" />
-            <object-type name="DATABASE_TRIGGER" enabled="true" />
-            <object-type name="SYNONYM" enabled="true" />
-            <object-type name="SEQUENCE" enabled="true" />
-            <object-type name="PROCEDURE" enabled="true" />
-            <object-type name="FUNCTION" enabled="true" />
-            <object-type name="PACKAGE" enabled="true" />
-            <object-type name="TYPE" enabled="true" />
-            <object-type name="TYPE_ATTRIBUTE" enabled="true" />
-            <object-type name="ARGUMENT" enabled="true" />
-            <object-type name="DIMENSION" enabled="true" />
-            <object-type name="CLUSTER" enabled="true" />
-            <object-type name="DBLINK" enabled="true" />
-          </object-type-filter>
-          <object-name-filters />
-        </object-filters>
-      </connection>
-      <connection id="25c1a3dc-1e61-40f5-99ff-34bb6732ef66" active="true">
-        <database>
-          <name value="Connection 1" />
-          <description value="test" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
           <database-version value="3.21" />

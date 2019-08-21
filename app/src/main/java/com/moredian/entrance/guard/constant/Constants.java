@@ -23,15 +23,11 @@ public class Constants {
     //url
     //public static final String SERVER_URL = "http://dev.machine_api.dt128.com/";
     public static final String SERVER_URL = "http://dev.open.api.dt128.com/";
+    public static final String MODIAN_TOKEN = "116d758e-e603-4c26-a4a5-ab9cdb5c9a20";
 
     //intent
     public static final String INTENT_ROWSBEAN_POSITION = "intent_rowsbean_position";
-    public static final String INTENT_ROWSBEAN_NAME = "intent_rowsbean_name";
-    public static final String INTENT_ROWSBEAN_IDCARD = "intent_rowsbean_idcard";
-    public static final String INTENT_ROWSBEAN_STUID = "intent_rowsbean_stuid";
-    public static final String INTENT_ROWSBEAN_PHONE = "intent_rowsbean_phone";
-    public static final String INTENT_ROWSBEAN_ID = "intent_rowsbean_id";
-    public static final String INTENT_MEMBER_ID = "intent_member_id";
+    public static final String INTENT_ROWSBEAN_BEAN = "intent_rowsbean_bean";
     public static final String INTENT_FACEINPUT_RGBDATA = "intent_faceinput_rgbdata";
     public static final String INTENT_FACEINPUT_MEMBERID = "intent_faceinput_memberid";
     public static final String INTENT_CONSUME_SPSUCCESS = "intent_consume_spsuccess";

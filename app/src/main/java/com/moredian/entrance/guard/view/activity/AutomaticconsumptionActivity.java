@@ -116,7 +116,7 @@ public class AutomaticconsumptionActivity extends BaseActivity {
     public void getReadCard(Integer companyCode, Integer diviceID, Integer number) {
         String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         if (token != null) {
-            api.getReadCard(companyCode, diviceID, number, token, "123");
+            api.getReadCard(companyCode, diviceID, number, token, Constants.MODIAN_TOKEN);
             Log.d(TAG, "getReadCard: findover");
         }
         api.setGetResponseListener(new Api.GetResponseListener<GetReadCard>() {
@@ -203,7 +203,7 @@ public class AutomaticconsumptionActivity extends BaseActivity {
     public void getReadCardPaycount(Integer companyCode, Integer diviceID, Integer number) {
         String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         if (token != null) {
-            api.getReadCard(companyCode, diviceID, number, token, "123");
+            api.getReadCard(companyCode, diviceID, number, token, Constants.MODIAN_TOKEN);
         }
         api.setGetResponseListener(new Api.GetResponseListener<GetReadCard>() {
             @Override
@@ -264,7 +264,7 @@ public class AutomaticconsumptionActivity extends BaseActivity {
             String amount = automaticcnsumptionKeyboardEnterMoney.getText().toString();
             if (token != null) {
                 PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), 2, 1, 2);
-                api.postQRCodeExpense(body, token, "123");
+                api.postQRCodeExpense(body, token, Constants.MODIAN_TOKEN);
             }
             api.setGetResponseListener(new Api.GetResponseListener<QRCodeExpense>() {
                 @Override
@@ -342,7 +342,7 @@ public class AutomaticconsumptionActivity extends BaseActivity {
             if (!TextUtils.isEmpty(memberId)) {
                 String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
                 PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(automaticcnsumptionKeyboardEnterMoney.getText().toString().trim()), 2, 1, 2);
-                api.postFaceExpense(postFaceExpenseBody, token, "123");
+                api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
                 api.setGetResponseListener(new Api.GetResponseListener<FaceExpense>() {
                     @Override
                     public void onRespnse(FaceExpense faceExpense) {

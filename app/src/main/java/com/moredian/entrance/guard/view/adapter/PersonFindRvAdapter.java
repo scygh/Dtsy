@@ -29,7 +29,7 @@ public class PersonFindRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private OnMyItemClickListener myItemClickListener;
 
     public interface OnMyItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(String userid);
     }
 
     public void setMyItemClickListener(OnMyItemClickListener myItemClickListener) {
@@ -53,7 +53,7 @@ public class PersonFindRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    myItemClickListener.onItemClick(getAdapterPosition());
+                    myItemClickListener.onItemClick(rowsBeans.get(getAdapterPosition()).getUser().getId());
                 }
             });
         }
@@ -85,7 +85,7 @@ public class PersonFindRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return rowsBeans.size() == 0 ? 0 : rowsBeans.size() + 1;
+        return rowsBeans.size();
     }
 
 }

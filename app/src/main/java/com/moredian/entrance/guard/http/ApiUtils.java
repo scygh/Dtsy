@@ -4,6 +4,7 @@ import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.http.retrofit.GetListByPageService;
 import com.moredian.entrance.guard.http.retrofit.GetReadCardService;
 import com.moredian.entrance.guard.http.retrofit.GetTokenService;
+import com.moredian.entrance.guard.http.retrofit.GetUserByUserIdService;
 import com.moredian.entrance.guard.http.retrofit.PostCreate;
 import com.moredian.entrance.guard.http.retrofit.PostDefiniteExpense;
 import com.moredian.entrance.guard.http.retrofit.PostDelete;
@@ -33,6 +34,13 @@ public class ApiUtils {
      */
     public static GetListByPageService getListByPageService() {
         return RetrofitClient.getClient(BASE_URL).create(GetListByPageService.class);
+    }
+
+    /**
+     * descirption: 按userID查询消费者
+     */
+    public static GetUserByUserIdService getUserByUserIdService() {
+        return RetrofitClient.getClient(BASE_URL).create(GetUserByUserIdService.class);
     }
 
     /**

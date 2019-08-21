@@ -13,4 +13,16 @@
         <item name="android:textColor">@color/color_grey</item>
     </style>
 
+    <style name="addCustomer_et_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/margin_70</item>
+        <item name="android:textSize">@dimen/textSize_20</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:background">@color/color_white</item>
+        <item name="android:layout_marginLeft">@dimen/margin_40</item>
+        <item name="android:layout_marginRight">@dimen/margin_40</item>
+        <item name="android:layout_marginTop">@dimen/margin_25</item>
+        <item name="android:paddingLeft">@dimen/padding_10</item>
+    </style>
+
 </resources>

@@ -1,29 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <RelativeLayout
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/fpa_name_et"
+        style="@style/addCustomer_et_style"
+        android:hint="用户名(必填)" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/fpa_cardnumber_et"
+        style="@style/addCustomer_et_style"
+        android:hint="卡编号(必填)" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/fpa_amount_et"
+        style="@style/addCustomer_et_style"
+        android:hint="充值金额" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/fpa_idendity_et"
+        style="@style/addCustomer_et_style"
+        android:hint="身份证" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/fpa_phone_et"
+        style="@style/addCustomer_et_style"
+        android:hint="手机号" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/fpa_address_et"
+        style="@style/addCustomer_et_style"
+        android:hint="地址" />
+
+    <Button
+        android:id="@+id/login_btn"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/person_manage_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </androidx.recyclerview.widget.RecyclerView>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        <include layout="@layout/loading_layout"
-            android:layout_width="@dimen/width_100"
-            android:layout_height="@dimen/height_100"
-            android:layout_centerInParent="true"
-            android:visibility="gone"
-            />
-    </RelativeLayout>
-
+        android:layout_height="@dimen/height_80"
+        android:layout_margin="@dimen/margin_50"
+        android:background="@drawable/login_button_bg"
+        android:text="开户"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/textSize_26" />
 </LinearLayout>
