@@ -19,7 +19,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/height_40"
             android:text="WLAN"
-            android:textColor="@color/color_black"
+            android:textColor="@color/colorAccent"
             android:textSize="@dimen/textSize_28" />
 
         <Switch

@@ -23,6 +23,7 @@ import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.http.retrofit.PostSimpleExpense;
+import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.activity.LoginActivity;
 import com.moredian.entrance.guard.view.activity.MainActivity;
 
@@ -113,18 +114,18 @@ public class Api {
                         SPUtils.getInstance().put(Constants.ACCESSTOKEN, contentBean.getAccessToken());
                         SPUtils.getInstance().put(Constants.USERID, contentBean.getUserID());
                         SPUtils.getInstance().put(Constants.ACCOUNT, contentBean.getAccount());
-                        ToastUtils.showShort("登录成功");
+                        ToastHelper.showToast("登录成功");
                         context.startActivity(MainActivity.getMainActivityIntent(context));
                         ((LoginActivity) context).finish();
                     }
                 } else {
-                    ToastUtils.showShort("用户名或者密码错误");
+                    ToastHelper.showToast("用户名或者密码错误");
                 }
             }
 
             @Override
             public void onFailure(Call<GetToken> call, Throwable t) {
-                ToastUtils.showShort("登录失败");
+                ToastHelper.showToast("登录失败");
             }
         });
     }
@@ -156,14 +157,14 @@ public class Api {
 
                 @Override
                 public void onFailure(Call<GetListByPage> call, Throwable t) {
-                    ToastUtils.showShort("获取失败");
+                    ToastHelper.showToast("获取失败");
                     if (onResponse != null) {
                         onResponse.onFailed();
                     }
                 }
             });
         } else {
-            ToastUtils.showShort("Token获取失败");
+            ToastHelper.showToast("Token获取失败");
         }
     }
 
@@ -183,12 +184,12 @@ public class Api {
                     @Override
                     public void onNext(PostResponse postResponse) {
                         if (postResponse != null && postResponse.getStatusCode() == 200) {
-                            ToastUtils.showShort("创建成功");
+                            ToastHelper.showToast("创建成功");
                             if (createResponse != null) {
                                 createResponse.onCreate();
                             }
                         } else {
-                            ToastUtils.showShort(postResponse.getMessage());
+                            ToastHelper.showToast(postResponse.getMessage());
                         }
                     }
 
@@ -199,7 +200,7 @@ public class Api {
                             try {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
-                                ToastUtils.showShort(error);
+                                ToastHelper.showToast(error);
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
                             } catch (IOException e1) {
@@ -231,9 +232,9 @@ public class Api {
                     @Override
                     public void onNext(PostResponse postResponse) {
                         if (postResponse != null && postResponse.getStatusCode() == 200) {
-                            ToastUtils.showShort("更新成功");
+                            ToastHelper.showToast("更新成功");
                         } else {
-                            ToastUtils.showShort(postResponse.getMessage());
+                            ToastHelper.showToast(postResponse.getMessage());
                         }
                     }
 
@@ -244,7 +245,7 @@ public class Api {
                             try {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
-                                ToastUtils.showShort(error);
+                                ToastHelper.showToast(error);
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
                             } catch (IOException e1) {
@@ -276,9 +277,9 @@ public class Api {
                     @Override
                     public void onNext(PostResponse postResponse) {
                         if (postResponse != null && postResponse.getStatusCode() == 200) {
-                            ToastUtils.showShort("删除成功");
+                            ToastHelper.showToast("删除成功");
                         } else {
-                            ToastUtils.showShort(postResponse.getMessage());
+                            ToastHelper.showToast(postResponse.getMessage());
                         }
                     }
 
@@ -289,7 +290,7 @@ public class Api {
                             try {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
-                                ToastUtils.showShort(error);
+                                ToastHelper.showToast(error);
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
                             } catch (IOException e1) {
@@ -320,14 +321,13 @@ public class Api {
 
                     @Override
                     public void onNext(GetReadCard getReadCard) {
-                        ToastUtils.showShort("查询");
                         if (getReadCard != null && getReadCard.getStatusCode() == 200) {
-                            ToastUtils.showShort("查询成功");
+                            ToastHelper.showToast("查询成功");
                             if (getResponseListener != null) {
                                 getResponseListener.onRespnse(getReadCard);
                             }
                         } else {
-                            ToastUtils.showShort(getReadCard.getMessage());
+                            ToastHelper.showToast(getReadCard.getMessage());
                         }
                     }
 
@@ -338,7 +338,7 @@ public class Api {
                             try {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
-                                ToastUtils.showShort(error);
+                                ToastHelper.showToast(error);
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
                             } catch (IOException e1) {
@@ -370,12 +370,12 @@ public class Api {
                     @Override
                     public void onNext(SimpleExpense simpleExpense) {
                         if (simpleExpense != null && simpleExpense.getStatusCode() == 200) {
-                            ToastUtils.showShort("消费成功");
+                            ToastHelper.showToast("支付成功");
                             if (getResponseListener != null) {
                                 getResponseListener.onRespnse(simpleExpense);
                             }
                         } else {
-                            ToastUtils.showShort(simpleExpense.getMessage());
+                            ToastHelper.showToast(simpleExpense.getMessage());
                         }
                     }
 
@@ -386,7 +386,7 @@ public class Api {
                             try {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
-                                ToastUtils.showShort(error);
+                                ToastHelper.showToast(error);
                                 if (getResponseListener != null) {
                                     getResponseListener.onFail(error);
                                 }
@@ -421,12 +421,12 @@ public class Api {
                     @Override
                     public void onNext(QRCodeExpense qrCodeExpense) {
                         if (qrCodeExpense != null && qrCodeExpense.getStatusCode() == 200) {
-                            ToastUtils.showShort("消费成功");
+                            ToastHelper.showToast("消费成功");
                             if (getResponseListener != null) {
                                 getResponseListener.onRespnse(qrCodeExpense);
                             }
                         } else {
-                            ToastUtils.showShort(qrCodeExpense.getMessage());
+                            ToastHelper.showToast(qrCodeExpense.getMessage());
                         }
                     }
 
@@ -437,7 +437,7 @@ public class Api {
                             try {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
-                                ToastUtils.showShort(error);
+                                ToastHelper.showToast(error);
                                 if (getResponseListener != null) {
                                     getResponseListener.onFail(error);
                                 }
@@ -472,12 +472,12 @@ public class Api {
                     @Override
                     public void onNext(FaceExpense expense) {
                         if (expense != null && expense.getStatusCode() == 200) {
-                            ToastUtils.showShort("消费成功");
+                            ToastHelper.showToast("支付成功");
                             if (getResponseListener != null) {
                                 getResponseListener.onRespnse(expense);
                             }
                         } else {
-                            ToastUtils.showShort(expense.getMessage());
+                            ToastHelper.showToast(expense.getMessage());
                         }
                     }
 
@@ -488,7 +488,7 @@ public class Api {
                             try {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
-                                ToastUtils.showShort(error);
+                                ToastHelper.showToast(error);
                                 if (getResponseListener != null) {
                                     getResponseListener.onFail(error);
                                 }
@@ -523,12 +523,12 @@ public class Api {
                     @Override
                     public void onNext(DefiniteExpense expense) {
                         if (expense != null && expense.getStatusCode() == 200) {
-                            ToastUtils.showShort("消费成功");
+                            ToastHelper.showToast("消费成功");
                             if (getResponseListener != null) {
                                 getResponseListener.onRespnse(expense);
                             }
                         } else {
-                            ToastUtils.showShort(expense.getMessage());
+                            ToastHelper.showToast(expense.getMessage());
                         }
                     }
 
@@ -539,7 +539,7 @@ public class Api {
                             try {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
-                                ToastUtils.showShort(error);
+                                ToastHelper.showToast(error);
                                 if (getResponseListener != null) {
                                     getResponseListener.onFail(error);
                                 }
@@ -574,12 +574,12 @@ public class Api {
                     @Override
                     public void onNext(GetUserByUserID user) {
                         if (user != null && user.getStatusCode() == 200) {
-                            ToastUtils.showShort("查询成功");
+                            ToastHelper.showToast("查询成功");
                             if (getResponseListener != null) {
                                 getResponseListener.onRespnse(user);
                             }
                         } else {
-                            ToastUtils.showShort(user.getMessage());
+                            ToastHelper.showToast(user.getMessage());
                         }
                     }
 
@@ -590,7 +590,7 @@ public class Api {
                             try {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
-                                ToastUtils.showShort(error);
+                                ToastHelper.showToast(error);
                                 if (getResponseListener != null) {
                                     getResponseListener.onFail(error);
                                 }

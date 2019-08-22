@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="@dimen/height_100"
-    android:background="@color/color_white">
+    android:background="@color/colorPrimaryDark">
     <TextView
         android:id="@+id/tv_wifiname"
         android:layout_width="wrap_content"
@@ -9,7 +9,7 @@
         android:layout_marginLeft="@dimen/margin_30"
         android:layout_centerVertical="true"
         android:text="wifiName"
-        android:textColor="@color/color_black"
+        android:textColor="@color/colorAccent"
         android:textSize="@dimen/textSize_26"
         />
     <TextView

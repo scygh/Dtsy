@@ -157,6 +157,8 @@ public class ManualconsumptionActivity extends BaseActivity {
             public void onRespnse(GetReadCard getReadCard) {
                 String name = getReadCard.getContent().getUserName();
                 double balance = getReadCard.getContent().getBalance();
+                ManualconsumptionName.setText(name);
+                ManualconsumptionBalance.setText(balance+"");
                 int paycount = getReadCard.getContent().getPayCount();
                 int status = getReadCard.getContent().getState();
                 Log.d(TAG, "onRespnse: " + name);
@@ -235,6 +237,8 @@ public class ManualconsumptionActivity extends BaseActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            ManualconsumptionName.setText("");
+                            ManualconsumptionBalance.setText("0.00");
                             ManualconsumptionKeyboardEnterMoney.setText("0.00");
                             consumeSenddown(simpleExpense, status, name);
                             //跳转到支付成功界面
@@ -268,6 +272,8 @@ public class ManualconsumptionActivity extends BaseActivity {
             api.setGetResponseListener(new Api.GetResponseListener<QRCodeExpense>() {
                 @Override
                 public void onRespnse(QRCodeExpense qrCodeExpense) {
+                    ManualconsumptionName.setText("");
+                    ManualconsumptionBalance.setText("0.00");
                     ManualconsumptionKeyboardEnterMoney.setText("0.00");
                     //跳转到支付成功界面
                     startActivity(ConsumeResultActivity.getQRConsumeSuccessActivityIntent(ManualconsumptionActivity.this, qrCodeExpense.getContent()));
@@ -354,6 +360,8 @@ public class ManualconsumptionActivity extends BaseActivity {
                 api.setGetResponseListener(new Api.GetResponseListener<FaceExpense>() {
                     @Override
                     public void onRespnse(FaceExpense faceExpense) {
+                        ManualconsumptionName.setText("");
+                        ManualconsumptionBalance.setText("0.00");
                         ManualconsumptionKeyboardEnterMoney.setText("0.00");
                         startActivity(ConsumeResultActivity.getFaceConsumeSuccessActivityIntent(ManualconsumptionActivity.this, faceExpense.getContent()));
                     }

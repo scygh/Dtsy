@@ -88,7 +88,7 @@ public class NetSettingRvAdapter extends RecyclerView.Adapter<NetSettingRvAdapte
                     tvWifiname.setTextColor(context.getResources().getColor(R.color.color_3EB1b0));
                     tvWifistatus.setText("已连接");
                 } else {
-                    tvWifiname.setTextColor(context.getResources().getColor(R.color.color_black));
+                    tvWifiname.setTextColor(context.getResources().getColor(R.color.colorAccent));
                     if (NetSettingActivity.isWifiSave(scanResult.SSID) != null) {
                         tvWifistatus.setText("已保存");
                     } else {

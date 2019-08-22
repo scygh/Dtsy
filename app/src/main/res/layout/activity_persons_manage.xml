@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:paddingTop="20dp"
-        android:background="@color/color_white"
+        android:background="@color/colorPrimaryDark"
         app:tabIndicatorColor="@color/colorPrimary"
         app:tabIndicatorFullWidth="false"
         app:tabSelectedTextColor="@color/colorPrimary"

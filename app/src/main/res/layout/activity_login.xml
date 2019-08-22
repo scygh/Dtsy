@@ -83,7 +83,7 @@
         android:layout_margin="@dimen/margin_50"
         android:background="@drawable/login_button_bg"
         android:text="@string/login"
-        android:textColor="@color/color_white"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/textSize_26" />
 
 </LinearLayout>

@@ -64,10 +64,12 @@ public class PersonDetailActivity extends BaseActivity {
     List<GetListByPage.ContentBean.RowsBean> arowsBeans = new ArrayList<>();
     //数据定位
     int abposition;
+    //查询传入
     GetListByPage.ContentBean.RowsBean findbean;
+    String userid;
 
     /**
-     * descirption: 得到intent
+     * descirption: 得到列表界面需要intent
      */
     public static Intent getPersonDetailActivityIntent(Context context, int position) {
         Intent intent = new Intent(context, PersonDetailActivity.class);
@@ -76,7 +78,7 @@ public class PersonDetailActivity extends BaseActivity {
     }
 
     /**
-     * descirption: 得到intent
+     * descirption: 得到查询界面需要的intent
      */
     public static Intent getPersonDetailActivityIntent(Context context, String userid) {
         Intent intent = new Intent(context, PersonDetailActivity.class);
@@ -105,7 +107,7 @@ public class PersonDetailActivity extends BaseActivity {
      */
     private void initRequest() {
         abposition = dataIntent.getIntExtra(Constants.INTENT_ROWSBEAN_POSITION, 0);
-        String userid = dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_BEAN);
+        userid = dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_BEAN);
         if (!TextUtils.isEmpty(userid)) {
             api.getListByPage(1, 5000);
             api.setOnResponse(new Api.OnResponse() {
@@ -178,6 +180,9 @@ public class PersonDetailActivity extends BaseActivity {
         }
     }
 
+    /**
+    * descirption: 如果创建成功就调用此方法更新人脸
+    */
     private void updateData() {
         if (bitmap != null) {
             //如果是没录入过，或者是同一个人则可以更新
@@ -191,6 +196,9 @@ public class PersonDetailActivity extends BaseActivity {
         }
     }
 
+    /**
+    * descirption: 列表界面点击设置数据
+    */
     private void setData() {
         persondetailName.setText(arowsBeans.get(abposition).getUser().getName());
         persondetailCardnum.setText(arowsBeans.get(abposition).getUser().getIdCard());
@@ -199,11 +207,15 @@ public class PersonDetailActivity extends BaseActivity {
         if (arowsBeans.get(abposition).getUserFace() != null) {
             exitmemberId = dataIntent.getStringExtra(arowsBeans.get(abposition).getUserFace().getMemberId());
             if (!TextUtils.isEmpty(arowsBeans.get(abposition).getUserFace().getMemberBase64())) {
-                persondetailCamera.setImageBitmap(Base64BitmapUtil.base64ToBitmap(arowsBeans.get(abposition).getUserFace().getMemberBase64()));
+                bitmap = Base64BitmapUtil.base64ToBitmap(arowsBeans.get(abposition).getUserFace().getMemberBase64());
+                persondetailCamera.setImageBitmap(bitmap);
             }
         }
     }
 
+    /**
+    * descirption: 查询界面点击设置数据
+    */
     private void setData(GetListByPage.ContentBean.RowsBean findbean) {
         persondetailName.setText(findbean.getUser().getName());
         persondetailCardnum.setText(findbean.getUser().getIdCard());
@@ -212,7 +224,8 @@ public class PersonDetailActivity extends BaseActivity {
         if (findbean.getUserFace() != null) {
             exitmemberId = dataIntent.getStringExtra(findbean.getUserFace().getMemberId());
             if (!TextUtils.isEmpty(findbean.getUserFace().getMemberBase64())) {
-                persondetailCamera.setImageBitmap(Base64BitmapUtil.base64ToBitmap(findbean.getUserFace().getMemberBase64()));
+                bitmap = Base64BitmapUtil.base64ToBitmap(findbean.getUserFace().getMemberBase64());
+                persondetailCamera.setImageBitmap(bitmap);
             }
         }
     }
@@ -239,9 +252,25 @@ public class PersonDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.personDetail_delete:
+                deletePerson();
+                break;
+        }
+    }
+
+    /**
+    * descirption: 删除创建
+    */
+    private void deletePerson() {
+        if (!TextUtils.isEmpty(userid)) {
+            PostRequestBody postRequestBody = new PostRequestBody(findbean.getUser().getId());
+            api.postDelete(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
+        } else {
+            if (arowsBeans.size() > 0) {
                 PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId());
                 api.postDelete(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
-                break;
+            } else {
+                ToastUtils.showShort("没有找到列表");
+            }
         }
     }
 
@@ -249,9 +278,16 @@ public class PersonDetailActivity extends BaseActivity {
      * descirption: 创建人员
      */
     private synchronized void createPerson() {
-        PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId(), arowsBeans.get(abposition).getUser().getName(),
-                arowsBeans.get(abposition).getUser().getPhone());
-        api.postCreate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
+        if (!TextUtils.isEmpty(userid)) {
+            PostRequestBody postRequestBody = new PostRequestBody(findbean.getUser().getId(), findbean.getUser().getName(),
+                    findbean.getUser().getPhone());
+            api.postCreate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
+        } else {
+            PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId(), arowsBeans.get(abposition).getUser().getName(),
+                    arowsBeans.get(abposition).getUser().getPhone());
+            api.postCreate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
+        }
+
     }
 
     /**
@@ -259,8 +295,13 @@ public class PersonDetailActivity extends BaseActivity {
      */
     private synchronized void updatePerson() {
         String b = Base64BitmapUtil.bitmapToBase64(bitmap, PersonDetailActivity.this);
-        PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId(), b);
-        api.postUpdate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
+        if (!TextUtils.isEmpty(userid)) {
+            PostRequestBody postRequestBody = new PostRequestBody(findbean.getUser().getId(), b);
+            api.postUpdate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
+        } else {
+            PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId(), b);
+            api.postUpdate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
+        }
     }
 
     @Override
@@ -298,5 +339,6 @@ public class PersonDetailActivity extends BaseActivity {
         if (bitmap != null) {
             bitmap = null;
         }
+        userid = null;
     }
 }

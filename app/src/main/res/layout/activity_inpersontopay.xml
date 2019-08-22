@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_10"
             android:text="@string/money"
-            android:textColor="@color/color_white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/textSize_30" />
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/keybordinput_money"
-            android:textColor="@color/color_white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/textSize_35"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -43,7 +43,7 @@
             android:layout_width="@dimen/width_10"
             android:layout_height="@dimen/height_20"
             android:layout_marginLeft="@dimen/margin_10"
-            android:background="@color/color_50BBDC">
+            android:background="@color/colorPrimary">
 
         </LinearLayout>
 
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_10"
             android:text="@string/tip"
-            android:textColor="@color/color_black"
+            android:textColor="@color/colorAccent"
             android:textSize="@dimen/textSize_18"
             android:textStyle="bold" />
     </LinearLayout>

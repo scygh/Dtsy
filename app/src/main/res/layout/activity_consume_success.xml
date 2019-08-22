@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_white"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
     tools:context=".view.activity.ConsumeResultActivity">
 
@@ -16,7 +16,7 @@
         android:layout_marginTop="@dimen/margin_40"
         android:layout_marginRight="@dimen/margin_40"
         android:text="@string/consume_over"
-        android:textColor="@color/color_118EEA"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/textSize_35" />
 
     <ImageView
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/consume_success"
-        android:textColor="@color/color_118EEA"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/textSize_35" />
 
     <LinearLayout
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="￥"
-            android:textColor="@color/color_black"
+            android:textColor="@color/colorAccent"
             android:textSize="@dimen/textSize_40" />
 
         <TextView
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1.00"
-            android:textColor="@color/color_black"
+            android:textColor="@color/colorAccent"
             android:textSize="@dimen/textSize_80" />
     </LinearLayout>
 
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="刷卡"
-                android:textColor="@color/color_black"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/textSize_28" />
         </RelativeLayout>
 
@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="1000.00元"
-                android:textColor="@color/color_black"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/textSize_28" />
         </RelativeLayout>
 
@@ -139,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="15.00元"
-                android:textColor="@color/color_black"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/textSize_28" />
         </RelativeLayout>
 
@@ -165,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="2019-07-26 15:49:00"
-                android:textColor="@color/color_black"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/textSize_28" />
         </RelativeLayout>
 
@@ -191,7 +191,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="自动扣款"
-                android:textColor="@color/color_black"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/textSize_28" />
         </RelativeLayout>
     </LinearLayout>

@@ -8,7 +8,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/color_50BBDC"
+            android:background="@color/colorPrimary"
             android:textSize="@dimen/textSize_26"
             android:text="确定"/>
         <Button

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_80"
-    android:background="@color/color_white"
+    android:background="@color/colorPrimaryDark"
     android:elevation="10dp">
 
     <ImageView
@@ -20,5 +20,5 @@
         android:layout_centerInParent="true"
         android:text="pagename"
         android:textSize="@dimen/textSize_26"
-        android:textColor="@color/color_black"/>
+        android:textColor="@color/colorAccent"/>
 </RelativeLayout>

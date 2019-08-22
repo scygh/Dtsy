@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_100"
         android:layout_marginTop="@dimen/margin_40"
-        android:background="@color/color_white">
+        android:background="@color/colorPrimaryDark">
         <TextView
             android:id="@+id/tv_logout"
             android:layout_width="wrap_content"
@@ -22,7 +22,7 @@
             android:layout_marginLeft="@dimen/margin_30"
             android:layout_centerVertical="true"
             android:text="退出登录"
-            android:textColor="@color/color_black"
+            android:textColor="@color/colorAccent"
             android:textSize="@dimen/textSize_26"
             />
 
@@ -43,7 +43,7 @@
         android:id="@+id/aps_rl2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_100"
-        android:background="@color/color_white">
+        android:background="@color/colorPrimaryDark">
         <TextView
             android:id="@+id/tv_exchange"
             android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
             android:layout_marginLeft="@dimen/margin_30"
             android:layout_centerVertical="true"
             android:text="切换账号"
-            android:textColor="@color/color_black"
+            android:textColor="@color/colorAccent"
             android:textSize="@dimen/textSize_26"
             />
 
