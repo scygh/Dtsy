@@ -2,6 +2,7 @@
 <resources>
     <dimen name="height_200">200dp</dimen>
     <dimen name="width_400">400dp</dimen>
+    <dimen name="height_110">110dp</dimen>
     <dimen name="height_100">100dp</dimen>
     <dimen name="width_100">100dp</dimen>
     <dimen name="height_120">120dp</dimen>

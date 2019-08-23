@@ -141,12 +141,14 @@ public class PersonListFragment extends BaseFragment {
                 ToastHelper.showToast(text);
                 if (arowsBeans.size()>20) {
                     for (int i = 0; i < arowsBeans.size(); i++) {
-                        if (Cn2Spell.getPinYinFirstLetter(arowsBeans.get(i).getUser().getName()).equalsIgnoreCase(text)){
-                            position = i;
-                            break;
+                        if (!text.equalsIgnoreCase("#")) {
+                            if (Cn2Spell.getPinYinFirstLetter(arowsBeans.get(i).getUser().getName()).equalsIgnoreCase(text)) {
+                                position = i;
+                                break;
+                            }
                         }
                     }
-                    personManageRecyclerview.smoothScrollToPosition(position);
+                    smoothMoveToPosition(position);
                 }
             }
 
@@ -155,6 +157,31 @@ public class PersonListFragment extends BaseFragment {
                 api.getListByPage(1,5000);
             }
         });
+    }
+
+    private boolean mShouldScroll;
+    private int mToPosition;
+    private void smoothMoveToPosition(final int position) {
+        int firstItem = personManageRecyclerview.getChildLayoutPosition(personManageRecyclerview.getChildAt(0));
+        int lastItem = personManageRecyclerview.getChildLayoutPosition(personManageRecyclerview.getChildAt(personManageRecyclerview.getChildCount() -1));
+        if (position < firstItem ) {
+            // 如果要跳转的位置在第一个可见项之前，则smoothScrollToPosition可以直接跳转
+            personManageRecyclerview.smoothScrollToPosition(position);
+        } else if (position <= lastItem) {
+            // 如果要跳转的位置在第一个可见项之后，且在最后一个可见项之前
+            // smoothScrollToPosition根本不会动，此时调用smoothScrollBy来滑动到指定位置
+            int movePosition = position - firstItem;
+            if (movePosition >= 0 && movePosition < personManageRecyclerview.getChildCount()) {
+                int top = personManageRecyclerview.getChildAt(movePosition).getTop();
+                personManageRecyclerview.smoothScrollBy(0, top);
+            }
+        } else {
+            // 如果要跳转的位置在最后可见项之后，则先调用smoothScrollToPosition将要跳转的位置滚动到可见位置
+            // 再通过onScrollStateChanged控制再次调用smoothMoveToPosition，进入上一个控制语句
+            personManageRecyclerview.smoothScrollToPosition(position);
+            mShouldScroll = true;
+            mToPosition = position;
+        }
     }
 
     private void updateList() {
@@ -200,6 +227,12 @@ public class PersonListFragment extends BaseFragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (mShouldScroll) {
+                        mShouldScroll = false;
+                        smoothMoveToPosition(mToPosition);
+                    }
+                }
             }
 
             @Override

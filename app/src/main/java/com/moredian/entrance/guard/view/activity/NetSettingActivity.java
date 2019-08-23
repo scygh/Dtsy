@@ -42,6 +42,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.AccessPoint;
+import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.utils.WifiUtil;
 import com.moredian.entrance.guard.view.adapter.NetSettingRvAdapter;
 
@@ -164,7 +165,17 @@ public class NetSettingActivity extends BaseActivity {
         initReceiver();
     }
 
-    //注册广播
+    /**
+     * descirption: 初始化wifi,请求位置权限
+     */
+    public void initWifi() {
+        mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        requestPermission();
+    }
+
+    /**
+    * descirption: 初始化广播接收者
+    */
     public void initReceiver() {
         wifiBroadCastReceiver = new WifiBroadCastReceiver();
         IntentFilter filter = new IntentFilter();
@@ -177,13 +188,6 @@ public class NetSettingActivity extends BaseActivity {
         }
     }
 
-    /**
-     * descirption: 初始化wifi,请求位置权限
-     */
-    public void initWifi() {
-        mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        requestPermission();
-    }
 
     /**
      * descirption: request ACCESS_FINE_LOCATION
@@ -270,7 +274,6 @@ public class NetSettingActivity extends BaseActivity {
 
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(NetSettingActivity.this, "close", Toast.LENGTH_SHORT).show();
                         mWifiManager.disconnect();
                     }
                 });
@@ -299,7 +302,6 @@ public class NetSettingActivity extends BaseActivity {
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
-                        Log.d(TAG, "onDismiss: ");
                         handler.postDelayed(runnable, 1000 * 10);
                     }
                 });
@@ -310,7 +312,7 @@ public class NetSettingActivity extends BaseActivity {
             public boolean onLongItemClick(int position) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(NetSettingActivity.this);
                 alertDialog.setTitle("wifi:" + results.get(position).SSID);
-                alertDialog.setMessage("取消保存");
+                alertDialog.setMessage("是否取消保存此wifi");
                 //  取消选项
                 alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
@@ -323,8 +325,8 @@ public class NetSettingActivity extends BaseActivity {
                 alertDialog.setPositiveButton("取消保存", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        mWifiManager.disconnect();
                        clearExitsMsg(results.get(position).SSID);
-                        Log.d("scy", "onClick: "+isWifiSave(results.get(position).SSID));
                     }
                 });
                 AlertDialog dialog = alertDialog.create();
@@ -419,7 +421,8 @@ public class NetSettingActivity extends BaseActivity {
         if (tempConfig != null) {
             mWifiManager.removeNetwork(tempConfig.networkId);
             mWifiManager.saveConfiguration();
-            Log.d(TAG, "createConfiguration: 清除wifi保存信息");
+        } else {
+            ToastUtils.showShort("此wifi并没有保存");
         }
     }
 
@@ -440,7 +443,7 @@ public class NetSettingActivity extends BaseActivity {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                     openGPSandWIFISetting();
                 } else {
-                    ToastUtils.showShort("你拒绝了权限");
+                    ToastUtils.showShort("你拒绝了位置权限");
                 }
             }
         }
@@ -498,32 +501,29 @@ public class NetSettingActivity extends BaseActivity {
                 int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, -1);
                 switch (wifiState) {
                     case WifiManager.WIFI_STATE_DISABLED:
-                        Log.d("WIFI状态", "wifiState:WIFI_STATE_DISABLED");
+                        ToastUtils.showShort("wifi已关闭");
                         break;
                     case WifiManager.WIFI_STATE_DISABLING:
-                        Log.d("WIFI状态", "wifiState:WIFI_STATE_DISABLING");
+                        ToastUtils.showShort("wifi正在关闭");
                         break;
                     case WifiManager.WIFI_STATE_ENABLED:
-                        Log.d("WIFI状态", "wifiState:WIFI_STATE_ENABLED");
                         //监听到WIFI 已经开启，开始扫描
+                        ToastUtils.showShort("wifi已开启");
                         netSettingSwitch.setChecked(true);
                         results = WifiUtil.getScanResult(mWifiManager);
                         mWifiConfigurations = mWifiManager.getConfiguredNetworks();
                         loadingLl.setVisibility(View.VISIBLE);
                         break;
                     case WifiManager.WIFI_STATE_ENABLING:
-                        Log.d("WIFI状态", "wifiState:WIFI_STATE_ENABLING");
                         ToastUtils.showShort("正在打开wifi...");
                         break;
                     case WifiManager.WIFI_STATE_UNKNOWN:
-                        Log.d("WIFI状态", "wifiState:WIFI_STATE_UNKNOWN");
                         break;
                 }
             } else if (intent.getAction().equals(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION)) {
-                SupplicantState state = intent.getParcelableExtra(WifiManager.EXTRA_NEW_STATE);
-                int error = intent.getIntExtra(EXTRA_SUPPLICANT_ERROR, 0);
-                if (error == WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_ADD_DUPLICATE) {
-                    ToastUtils.showShort("密码有误");
+                int error = intent.getIntExtra(EXTRA_SUPPLICANT_ERROR, 123);
+                if (error == WifiManager.ERROR_AUTHENTICATING) {
+                    ToastUtils.showShort("密码错误");
                 }
             }
         }

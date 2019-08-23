@@ -27,7 +27,7 @@
         <com.moredian.entrance.guard.view.designview.PersonIndexView
             android:id="@+id/personindexview"
             android:layout_width="@dimen/margin_60"
-            android:layout_height="800dp"
+            android:layout_height="850dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"/>
     </RelativeLayout>

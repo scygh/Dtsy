@@ -85,14 +85,14 @@ public class NetSettingRvAdapter extends RecyclerView.Adapter<NetSettingRvAdapte
                 tvWifiname.setText(scanResult.SSID);
                 Log.d(TAG, "bind: " + currentWifiName + "\"" + scanResult.SSID + "\"");
                 if (currentWifiName.equals("\"" + scanResult.SSID + "\"")) {
-                    tvWifiname.setTextColor(context.getResources().getColor(R.color.color_3EB1b0));
+                    tvWifiname.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                     tvWifistatus.setText("已连接");
                 } else {
                     tvWifiname.setTextColor(context.getResources().getColor(R.color.colorAccent));
                     if (NetSettingActivity.isWifiSave(scanResult.SSID) != null) {
                         tvWifistatus.setText("已保存");
                     } else {
-                        tvWifistatus.setText("mac地址" + results.get(getAdapterPosition()).BSSID + scanResult.level);
+                        tvWifistatus.setText("mac地址:" + results.get(getAdapterPosition()).BSSID +"信号强度:"+ scanResult.level);
                     }
                 }
                 int rssi = Math.abs(scanResult.level);
