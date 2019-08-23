@@ -84,6 +84,8 @@ public class NetSettingActivity extends BaseActivity {
     private WifiBroadCastReceiver wifiBroadCastReceiver;
     //已保存的WIFI 列表
     private static List<WifiConfiguration> mWifiConfigurations;
+    Handler handler = new Handler();
+    MyRunnable runnable;
 
     /**
      * descirption: 获取当前activity 的Intent对象
@@ -93,11 +95,10 @@ public class NetSettingActivity extends BaseActivity {
         return intent;
     }
 
-    Handler handler = new Handler();
     /**
      * descirption: 定时刷新任务
      */
-    Runnable runnable = new Runnable() {
+    class MyRunnable implements Runnable {
         @Override
         public void run() {
             results.clear();
@@ -108,7 +109,7 @@ public class NetSettingActivity extends BaseActivity {
                 handler.postDelayed(this, 1000 * 10);
             }
         }
-    };
+    }
 
     @Override
     public int layoutView() {
@@ -118,6 +119,7 @@ public class NetSettingActivity extends BaseActivity {
     @Override
     public void initView() {
         pageName.setText("网络设置");
+        runnable = new MyRunnable();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         netSettingRecyclerview.setLayoutManager(linearLayoutManager);
         netSettingRecyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -153,7 +155,7 @@ public class NetSettingActivity extends BaseActivity {
                     public void run() {
                         netRefresh.setRefreshing(false);
                     }
-                },1000);
+                }, 1000);
 
             }
         });
@@ -174,8 +176,8 @@ public class NetSettingActivity extends BaseActivity {
     }
 
     /**
-    * descirption: 初始化广播接收者
-    */
+     * descirption: 初始化广播接收者
+     */
     public void initReceiver() {
         wifiBroadCastReceiver = new WifiBroadCastReceiver();
         IntentFilter filter = new IntentFilter();
@@ -326,7 +328,7 @@ public class NetSettingActivity extends BaseActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         mWifiManager.disconnect();
-                       clearExitsMsg(results.get(position).SSID);
+                        clearExitsMsg(results.get(position).SSID);
                     }
                 });
                 AlertDialog dialog = alertDialog.create();
@@ -414,8 +416,8 @@ public class NetSettingActivity extends BaseActivity {
     }
 
     /**
-    * descirption: 删除已保存的wifi信息
-    */
+     * descirption: 删除已保存的wifi信息
+     */
     private void clearExitsMsg(String SSID) {
         WifiConfiguration tempConfig = isWifiSave(SSID);
         if (tempConfig != null) {

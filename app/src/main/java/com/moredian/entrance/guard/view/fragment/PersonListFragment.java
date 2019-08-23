@@ -64,6 +64,8 @@ public class PersonListFragment extends BaseFragment {
         }
     };
 
+    
+
     @Override
     public int initView() {
         return R.layout.fragment_person_list;

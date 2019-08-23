@@ -57,13 +57,7 @@ public class PersonFindFragment extends BaseFragment {
     private PersonFindRvAdapter adapter;
     List<GetListByPage.ContentBean.RowsBean> alldata = new ArrayList<>();
     List<GetListByPage.ContentBean.RowsBean> findData = new ArrayList<>();
-    @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-        }
-    };
+    Handler handler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
         public void run() {

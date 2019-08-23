@@ -24,6 +24,7 @@ public class WifiUtil {
      * descirption: 获取当前连接wifi名字 内存溢出？
      */
     public static String getCurrentWifiSSID(Context context) {
+        context = context.getApplicationContext();
         wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = wifiManager.getConnectionInfo();
         return info != null ? info.getSSID() : "null";
@@ -78,31 +79,5 @@ public class WifiUtil {
         list.clear();
         list.addAll(set);
     }
-
-
-    /*private void startScanwifi() {
-        //请求开启wifi
-        boolean isOpen = mWifiManager.setWifiEnabled(true);
-        if (mWifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLING) {
-            ToastUtils.showShort("正在开启wifi");
-        }
-        if (isOpen) {
-            results = WifiUtil.getScanResult(mWifiManager);
-        }
-        mWifiConfigurations = mWifiManager.getConfiguredNetworks();
-        //开启扫描后直接获取是空，所以需要延迟获取
-        if (results.size() == 0) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startScanwifi();
-                }
-            }, 5000);
-        } else {
-            netSettingSwitch.setChecked(true);
-            initRecyclerView();
-            handler.postDelayed(runnable, 1000 * 10);
-        }
-    }*/
 
 }
