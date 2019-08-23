@@ -18,60 +18,56 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/height_100">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/username_tv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_50"
-            android:background="@null"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_60"
+            android:layout_marginRight="@dimen/margin_60"
+            android:background="@color/colorPrimaryDark"
             android:drawableStart="@mipmap/ren"
             android:drawableLeft="@mipmap/ren"
             android:hint="@string/username"
-            android:paddingLeft="@dimen/padding_10"
-            android:paddingTop="@dimen/padding_10"
-            android:paddingBottom="@dimen/padding_20"
+            android:paddingLeft="@dimen/margin_20"
             android:singleLine="true"
             android:textColor="@color/icon"
             android:textCursorDrawable="@null"
             android:textSize="@dimen/textSize_28" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_100"
+        android:layout_marginTop="@dimen/margin_20"
+        app:passwordToggleEnabled="true">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passsword_tv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passsword_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_50"
-                android:background="@null"
-                android:drawableStart="@mipmap/mima"
-                android:drawableLeft="@mipmap/mima"
-                android:hint="@string/password"
-                android:inputType="numberPassword"
-                android:paddingLeft="@dimen/padding_10"
-                android:paddingTop="@dimen/padding_10"
-                android:paddingBottom="@dimen/padding_20"
-                android:singleLine="true"
-                android:textColor="@color/icon"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/textSize_28" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_60"
+            android:layout_marginRight="@dimen/margin_60"
+            android:background="@color/colorPrimaryDark"
+            android:drawableStart="@mipmap/mima"
+            android:drawableLeft="@mipmap/mima"
+            android:hint="@string/password"
+            android:inputType="numberPassword"
+            android:paddingLeft="@dimen/margin_20"
+            android:paddingRight="@dimen/margin_20"
+            android:singleLine="true"
+            android:textColor="@color/icon"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/textSize_26" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <RadioButton
         android:id="@+id/remenberpassword_rb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_50"
+        android:layout_marginLeft="@dimen/margin_60"
+        android:layout_marginTop="@dimen/margin_20"
         android:text="@string/remember_password"
         android:textColor="@color/icon"
         android:textSize="@dimen/textSize_20" />

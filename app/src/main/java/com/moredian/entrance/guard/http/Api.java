@@ -117,15 +117,26 @@ public class Api {
                         ToastHelper.showToast("登录成功");
                         context.startActivity(MainActivity.getMainActivityIntent(context));
                         ((LoginActivity) context).finish();
+                    } else {
+                        ToastHelper.showToast(getToken.getMessage());
                     }
-                } else {
-                    ToastHelper.showToast("用户名或者密码错误");
                 }
             }
 
             @Override
-            public void onFailure(Call<GetToken> call, Throwable t) {
-                ToastHelper.showToast("登录失败");
+            public void onFailure(Call<GetToken> call, Throwable e) {
+                if (e instanceof HttpException) {
+                    ResponseBody body = ((HttpException) e).response().errorBody();
+                    try {
+                        JSONObject jsonObject = new JSONObject(body.string());
+                        String error = jsonObject.getString("Message");
+                        ToastHelper.showToast(error);
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
             }
         });
     }
@@ -151,13 +162,26 @@ public class Api {
                                     onResponse.onResponse(rowsBeans);
                                 }
                             }
+                        } else {
+                            ToastHelper.showToast(getListByPage.getMessage());
                         }
                     }
                 }
 
                 @Override
-                public void onFailure(Call<GetListByPage> call, Throwable t) {
-                    ToastHelper.showToast("获取失败");
+                public void onFailure(Call<GetListByPage> call, Throwable e) {
+                    if (e instanceof HttpException) {
+                        ResponseBody body = ((HttpException) e).response().errorBody();
+                        try {
+                            JSONObject jsonObject = new JSONObject(body.string());
+                            String error = jsonObject.getString("Message");
+                            ToastHelper.showToast(error);
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
                     if (onResponse != null) {
                         onResponse.onFailed();
                     }

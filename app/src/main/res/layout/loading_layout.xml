@@ -9,7 +9,7 @@
         android:layout_width="@dimen/height_30"
         android:layout_height="@dimen/height_30"
         android:layout_centerHorizontal="true"
-        android:indeterminateTint="@color/icon"
+        android:indeterminateTint="@color/colorPrimary"
         android:layout_marginTop="@dimen/margin_20"
         />
     <TextView
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/margin_60"
-        android:textColor="@color/icon"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/textSize_20"
         android:text="@string/loading"/>
 

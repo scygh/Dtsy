@@ -2,13 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="@dimen/height_100"
     android:background="@color/colorPrimaryDark">
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/height_100"
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginRight="@dimen/margin_60">
     <TextView
         android:id="@+id/tv_wifiname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_30"
         android:layout_centerVertical="true"
-        android:text="wifiName"
+        android:text="name"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/textSize_26"
         />
@@ -30,4 +36,5 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_20"
         android:src="@mipmap/youjiantou"/>
+    </RelativeLayout>
 </RelativeLayout>

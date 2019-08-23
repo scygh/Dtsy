@@ -137,6 +137,12 @@ public class PersonDetailActivity extends BaseActivity {
                 public void onFailed() {
                 }
             });
+            api.setCreateResponse(new Api.CreateResponse() {
+                @Override
+                public void onCreate() {
+                    updateData();
+                }
+            });
         } else {
             //拿position去拿数据
             int page = abposition / 20 + 1;

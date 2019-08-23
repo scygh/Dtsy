@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,7 +33,7 @@ public class PersonManageRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private OnMyItemClickListener myItemClickListener;
 
     public interface OnMyItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(String userid);
     }
 
     public void setMyItemClickListener(OnMyItemClickListener myItemClickListener) {
@@ -55,14 +56,16 @@ public class PersonManageRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView tvWifiname;
         @BindView(R.id.tv_isfaceinput)
         TextView tvIsfaceinput;
+        @BindView(R.id.rl)
+        RelativeLayout relativeLayout;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
+            relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    myItemClickListener.onItemClick(getAdapterPosition());
+                    myItemClickListener.onItemClick(rowsBeans.get(getAdapterPosition()).getUser().getId());
                 }
             });
         }

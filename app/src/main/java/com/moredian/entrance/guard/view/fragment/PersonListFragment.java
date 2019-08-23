@@ -1,18 +1,12 @@
 package com.moredian.entrance.guard.view.fragment;
 
-import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,12 +15,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.entity.GetListByPage;
+import com.moredian.entrance.guard.entity.User;
 import com.moredian.entrance.guard.http.Api;
+import com.moredian.entrance.guard.utils.Cn2Spell;
+import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.activity.PersonDetailActivity;
-import com.moredian.entrance.guard.view.activity.PersonsManageActivity;
 import com.moredian.entrance.guard.view.adapter.PersonManageRvAdapter;
+import com.moredian.entrance.guard.view.designview.PersonIndexView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -49,11 +47,16 @@ public class PersonListFragment extends BaseFragment {
     TextView loadingTv;
     @BindView(R.id.loading_ll)
     RelativeLayout loadingLl;
+    @BindView(R.id.personindexview)
+    PersonIndexView personindexview;
     private PersonManageRvAdapter adapter;
     List<GetListByPage.ContentBean.RowsBean> arowsBeans = new ArrayList<>();
+    List<User> users = new ArrayList<>();
     boolean isLoading = false;
     private Handler handler = new Handler();
     private int pageIndex = 1;
+    private int position;
+    private LinearLayoutManager linearLayoutManager;
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -74,15 +77,26 @@ public class PersonListFragment extends BaseFragment {
             public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
                 arowsBeans.clear();
                 arowsBeans.addAll(rowsBeans);
-                if (arowsBeans.size() > 0) {
+                if (arowsBeans.size() > 0 && arowsBeans.size() <= 20) {
                     if (loadingLl != null) {
                         loadingLl.setVisibility(View.GONE);
                     }
-                    if (adapter == null) {
-                        initRecyclerview();
-                    } else {
-                        adapter.notifyDataSetChanged();
+                    updateList();
+                } else if (rowsBeans.size() > 20) {
+                    users.clear();
+                    for (GetListByPage.ContentBean.RowsBean bean: rowsBeans) {
+                        users.add(new User(bean.getUser().getName(),bean.getUser().getId()));
                     }
+                    Collections.sort(users);
+                    arowsBeans.clear();
+                    for (User user : users) {
+                        for (GetListByPage.ContentBean.RowsBean bean: rowsBeans) {
+                            if (bean.getUser().getId().equals(user.getUid())) {
+                                arowsBeans.add(bean);
+                            }
+                        }
+                    }
+                    updateList();
                 } else {
                     if (loadingLl != null) {
                         loadingLl.setVisibility(View.GONE);
@@ -121,11 +135,38 @@ public class PersonListFragment extends BaseFragment {
                 swipeRefresh.setRefreshing(false);
             }
         });
+        personindexview.setOnTouchIndexListener(new PersonIndexView.onTouchIndexListener() {
+            @Override
+            public void onTouchIndex(String text) {
+                ToastHelper.showToast(text);
+                if (arowsBeans.size()>20) {
+                    for (int i = 0; i < arowsBeans.size(); i++) {
+                        if (Cn2Spell.getPinYinFirstLetter(arowsBeans.get(i).getUser().getName()).equalsIgnoreCase(text)){
+                            position = i;
+                            break;
+                        }
+                    }
+                    personManageRecyclerview.smoothScrollToPosition(position);
+                }
+            }
+
+            @Override
+            public void onActionDown() {
+                api.getListByPage(1,5000);
+            }
+        });
+    }
+
+    private void updateList() {
+        if (adapter == null) {
+            initRecyclerview();
+        } else {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
     public void initData() {
-
     }
 
     /**
@@ -150,7 +191,7 @@ public class PersonListFragment extends BaseFragment {
      * descirption: 初始化列表数据
      */
     private void initRecyclerview() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager = new LinearLayoutManager(mContext);
         personManageRecyclerview.setLayoutManager(linearLayoutManager);
         personManageRecyclerview.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         adapter = new PersonManageRvAdapter(mContext, arowsBeans);
@@ -179,8 +220,8 @@ public class PersonListFragment extends BaseFragment {
         });
         adapter.setMyItemClickListener(new PersonManageRvAdapter.OnMyItemClickListener() {
             @Override
-            public void onItemClick(int position) {
-                startActivity(PersonDetailActivity.getPersonDetailActivityIntent(mContext, position));
+            public void onItemClick(String userid) {
+                startActivity(PersonDetailActivity.getPersonDetailActivityIntent(mContext, userid));
             }
         });
     }

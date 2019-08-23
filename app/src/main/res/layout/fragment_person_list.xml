@@ -13,7 +13,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/person_manage_recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                >
             </androidx.recyclerview.widget.RecyclerView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -23,6 +24,12 @@
             android:layout_centerInParent="true"
             android:visibility="gone"
             />
+        <com.moredian.entrance.guard.view.designview.PersonIndexView
+            android:id="@+id/personindexview"
+            android:layout_width="@dimen/margin_60"
+            android:layout_height="800dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
 
 </LinearLayout>
