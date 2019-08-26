@@ -27,7 +27,7 @@
                 android:layout_height="@dimen/margin_60"
                 android:layout_weight="9"
                 android:background="@color/colorPrimaryDark"
-                android:hint="搜索"
+                android:hint="按名字搜索"
                 android:textSize="26sp"
                 android:paddingLeft="@dimen/margin_20"/>
 

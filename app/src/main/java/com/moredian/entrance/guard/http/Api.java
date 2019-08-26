@@ -10,15 +10,20 @@ import com.google.gson.Gson;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.DefiniteExpense;
 import com.moredian.entrance.guard.entity.FaceExpense;
+import com.moredian.entrance.guard.entity.GetCardTypeList;
+import com.moredian.entrance.guard.entity.GetDepartmentList;
 import com.moredian.entrance.guard.entity.GetListByPage;
 import com.moredian.entrance.guard.entity.GetReadCard;
+import com.moredian.entrance.guard.entity.GetSubsidyLevel;
 import com.moredian.entrance.guard.entity.GetToken;
 import com.moredian.entrance.guard.entity.GetUserByUserID;
 import com.moredian.entrance.guard.entity.PostDefiniteExpenseBody;
 import com.moredian.entrance.guard.entity.PostFaceExpenseBody;
 import com.moredian.entrance.guard.entity.PostQRCodeExpenseBody;
+import com.moredian.entrance.guard.entity.PostRegister;
 import com.moredian.entrance.guard.entity.PostResponse;
 import com.moredian.entrance.guard.entity.PostRequestBody;
+import com.moredian.entrance.guard.entity.PostResponseNoContent;
 import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.SimpleExpense;
@@ -618,6 +623,195 @@ public class Api {
                                 if (getResponseListener != null) {
                                     getResponseListener.onFail(error);
                                 }
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 开户
+     */
+    public void postDefiniteExpense(PostRegister body, String token) {
+        ApiUtils.postRegisterService().register(body, token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<PostResponseNoContent>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(PostResponseNoContent postResponseNoContent) {
+                        if (postResponseNoContent != null && postResponseNoContent.getStatusCode() == 200) {
+                            ToastHelper.showToast("开户成功");
+                        } else {
+                            ToastHelper.showToast(postResponseNoContent.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 获取部门列表
+     */
+    public void getDepartmentList(String token) {
+        ApiUtils.getDepartmentListService().getDepartmentList(token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetDepartmentList>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetDepartmentList departmentList) {
+                        if (departmentList != null && departmentList.getStatusCode() == 200) {
+                            ToastHelper.showToast("获取部门列表成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(departmentList);
+                            }
+                        } else {
+                            ToastHelper.showToast(departmentList.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 获取卡片类型列表
+     */
+    public void getCardTypeList(String token) {
+        ApiUtils.getCardTypeListService().getCardTypeListService(token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetCardTypeList>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetCardTypeList cardTypeList) {
+                        if (cardTypeList != null && cardTypeList.getStatusCode() == 200) {
+                            ToastHelper.showToast("获取卡片类型列表成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(cardTypeList);
+                            }
+                        } else {
+                            ToastHelper.showToast(cardTypeList.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 获取补贴等级列表
+     */
+    public void getSubsidyLevel(String token) {
+        ApiUtils.getSubsidyLevelService().getSubsidyLevelService(token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetSubsidyLevel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetSubsidyLevel getSubsidyLevel) {
+                        if (getSubsidyLevel != null && getSubsidyLevel.getStatusCode() == 200) {
+                            ToastHelper.showToast("获取补贴等级成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(getSubsidyLevel);
+                            }
+                        } else {
+                            ToastHelper.showToast(getSubsidyLevel.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
                             } catch (IOException e1) {

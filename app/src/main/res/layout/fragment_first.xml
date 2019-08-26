@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="@dimen/margin_20"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="卡片类型"
+            android:textSize="@dimen/textSize_26" />
+
+        <Spinner
+            android:id="@+id/spinner_cardtype"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_70"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:spinnerMode="dropdown"
+            android:background="@color/colorPrimaryDark"
+            android:layout_weight="6" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="@dimen/margin_20"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="补贴级别"
+            android:textSize="@dimen/textSize_26" />
+
+        <Spinner
+            android:id="@+id/spinner_subsidyLevel"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_70"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:spinnerMode="dropdown"
+            android:background="@color/colorPrimaryDark"
+            android:layout_weight="6" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="@dimen/margin_20"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="工本费"
+            android:textSize="@dimen/textSize_26" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fpa_cost_et"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_70"
+            android:layout_margin="@dimen/margin_20"
+            android:layout_weight="6"
+            android:background="@color/colorPrimaryDark"
+            android:hint="0.00"
+            android:maxLength="18"
+            android:paddingLeft="@dimen/padding_10"
+            android:textSize="@dimen/textSize_22" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="@dimen/margin_20"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="充值金额"
+            android:textSize="@dimen/textSize_26" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fpa_cash_et"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_70"
+            android:layout_margin="@dimen/margin_20"
+            android:layout_weight="6"
+            android:background="@color/colorPrimaryDark"
+            android:hint="0.00"
+            android:maxLength="18"
+            android:paddingLeft="@dimen/padding_10"
+            android:textSize="@dimen/textSize_22" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="@dimen/margin_20"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="赠送金额"
+            android:textSize="@dimen/textSize_26" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fpa_donate_et"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_70"
+            android:layout_margin="@dimen/margin_20"
+            android:layout_weight="6"
+            android:background="@color/colorPrimaryDark"
+            android:hint="0.00"
+            android:maxLength="18"
+            android:paddingLeft="@dimen/padding_10"
+            android:textSize="@dimen/textSize_22" />
+    </LinearLayout>
+
+
+</LinearLayout>

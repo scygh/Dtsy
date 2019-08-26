@@ -1,8 +1,12 @@
 package com.moredian.entrance.guard.http;
 
 import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.http.retrofit.GetCardTypeListService;
+import com.moredian.entrance.guard.http.retrofit.GetDepartmentListService;
 import com.moredian.entrance.guard.http.retrofit.GetListByPageService;
+import com.moredian.entrance.guard.http.retrofit.GetNextNumberService;
 import com.moredian.entrance.guard.http.retrofit.GetReadCardService;
+import com.moredian.entrance.guard.http.retrofit.GetSubsidyLevelService;
 import com.moredian.entrance.guard.http.retrofit.GetTokenService;
 import com.moredian.entrance.guard.http.retrofit.GetUserByUserIdService;
 import com.moredian.entrance.guard.http.retrofit.PostCreate;
@@ -10,6 +14,7 @@ import com.moredian.entrance.guard.http.retrofit.PostDefiniteExpense;
 import com.moredian.entrance.guard.http.retrofit.PostDelete;
 import com.moredian.entrance.guard.http.retrofit.PostFaceExpense;
 import com.moredian.entrance.guard.http.retrofit.PostQRCodeExpense;
+import com.moredian.entrance.guard.http.retrofit.PostRegister;
 import com.moredian.entrance.guard.http.retrofit.PostSimpleExpense;
 import com.moredian.entrance.guard.http.retrofit.PostUpdate;
 
@@ -97,5 +102,40 @@ public class ApiUtils {
      */
     public static PostDefiniteExpense postDefiniteExpenseService() {
         return RetrofitClient.getClient(BASE_URL).create(PostDefiniteExpense.class);
+    }
+
+    /**
+     * descirption:开户
+     */
+    public static PostRegister postRegisterService() {
+        return RetrofitClient.getClient(BASE_URL).create(PostRegister.class);
+    }
+
+    /**
+     * descirption:获取部门列表
+     */
+    public static GetDepartmentListService getDepartmentListService() {
+        return RetrofitClient.getClient(BASE_URL).create(GetDepartmentListService.class);
+    }
+
+    /**
+     * descirption:获取卡类型列表
+     */
+    public static GetCardTypeListService getCardTypeListService() {
+        return RetrofitClient.getClient(BASE_URL).create(GetCardTypeListService.class);
+    }
+
+    /**
+     * descirption:获取下一个卡内码
+     */
+    public static GetNextNumberService getNextNumberService() {
+        return RetrofitClient.getClient(BASE_URL).create(GetNextNumberService.class);
+    }
+
+    /**
+     * descirption:获取补贴等级
+     */
+    public static GetSubsidyLevelService getSubsidyLevelService() {
+        return RetrofitClient.getClient(BASE_URL).create(GetSubsidyLevelService.class);
     }
 }

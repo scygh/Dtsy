@@ -30,8 +30,7 @@
         <activity android:name=".view.activity.FaceInputActivity" />
         <activity android:name=".view.activity.FaceInputConsumeActivity" />
         <activity
-            android:name=".view.activity.PersonDetailActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:name=".view.activity.PersonDetailActivity" />
         <activity android:name=".view.activity.PersonsManageActivity" />
         <activity android:name=".view.activity.NetSettingActivity" />
         <activity

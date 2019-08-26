@@ -80,4 +80,5 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     implementation 'com.belerweb:pinyin4j:2.5.1'
+    implementation 'com.xyz.step:step:1.0.4'
 }

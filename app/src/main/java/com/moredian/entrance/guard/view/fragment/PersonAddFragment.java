@@ -1,28 +1,18 @@
 package com.moredian.entrance.guard.view.fragment;
 
-import android.os.Handler;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.FrameLayout;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
-import com.moredian.entrance.guard.entity.GetListByPage;
-import com.moredian.entrance.guard.http.Api;
-import com.moredian.entrance.guard.view.activity.PersonDetailActivity;
-import com.moredian.entrance.guard.view.adapter.PersonManageRvAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.moredian.entrance.guard.utils.ToastHelper;
+import com.xyz.step.FlowViewHorizontal;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * description ：
@@ -32,6 +22,17 @@ import butterknife.BindView;
  */
 public class PersonAddFragment extends BaseFragment {
 
+    @BindView(R.id.fvh)
+    FlowViewHorizontal fvh;
+    @BindView(R.id.personadd_container)
+    FrameLayout personaddContainer;
+    @BindView(R.id.step_btn)
+    Button stepBtn;
+    @BindView(R.id.step_previous_btn)
+    Button stepPreviousBtn;
+    private FragmentManager fm;
+    private Fragment childfragment;
+
     @Override
     public int initView() {
         return R.layout.fragment_person_add;
@@ -39,7 +40,31 @@ public class PersonAddFragment extends BaseFragment {
 
     @Override
     public void initViewController() {
-
+        stepBtn.setText("下一步");
+        fvh.setProgress(0, 3, getResources().getStringArray(R.array.step), null);
+        fm = this.getChildFragmentManager();
+        childfragment = fm.findFragmentById(R.id.personadd_container);
+        if (childfragment == null) {
+            childfragment = new OrignalFragment();
+            fm.beginTransaction()
+                    .setCustomAnimations(
+                            R.anim.slide_right_in,
+                            R.anim.slide_left_out,
+                            R.anim.slide_left_in,
+                            R.anim.slide_right_out
+                    )
+                    .add(R.id.personadd_container, childfragment).commit();
+        } else {
+            childfragment = new OrignalFragment();
+            fm.beginTransaction()
+                    .setCustomAnimations(
+                            R.anim.slide_right_in,
+                            R.anim.slide_left_out,
+                            R.anim.slide_left_in,
+                            R.anim.slide_right_out
+                    )
+                    .replace(R.id.personadd_container, childfragment).commit();
+        }
     }
 
     @Override
@@ -47,4 +72,70 @@ public class PersonAddFragment extends BaseFragment {
 
     }
 
+    @OnClick({R.id.step_btn, R.id.step_previous_btn})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.step_btn:
+                if (childfragment instanceof OrignalFragment) {
+                    childfragment = new FirstFragment();
+                    fm.beginTransaction()
+                            .setCustomAnimations(
+                                    R.anim.slide_right_in,
+                                    R.anim.slide_left_out,
+                                    R.anim.slide_left_in,
+                                    R.anim.slide_right_out
+                            )
+                            .replace(R.id.personadd_container, childfragment).commit();
+                    stepBtn.setText("下一步");
+                    stepPreviousBtn.setVisibility(View.VISIBLE);
+                    fvh.setProgress(1, 3, getResources().getStringArray(R.array.step), null);
+                } else if (childfragment instanceof FirstFragment) {
+                    childfragment = new SecondFragment();
+                    fm.beginTransaction()
+                            .setCustomAnimations(
+                                    R.anim.slide_right_in,
+                                    R.anim.slide_left_out,
+                                    R.anim.slide_left_in,
+                                    R.anim.slide_right_out
+                            )
+                            .replace(R.id.personadd_container, childfragment).commit();
+                    stepBtn.setText("开户");
+                    stepPreviousBtn.setVisibility(View.VISIBLE);
+                    fvh.setProgress(2, 3, getResources().getStringArray(R.array.step), null);
+                } else if (childfragment instanceof SecondFragment) {
+                    fvh.setProgress(3, 3, getResources().getStringArray(R.array.step), null);
+                    // TODO: 2019/8/26 开户
+                    ToastHelper.showToast("开户成功");
+                }
+                break;
+            case R.id.step_previous_btn:
+                if (childfragment instanceof FirstFragment) {
+                    childfragment = new OrignalFragment();
+                    fm.beginTransaction()
+                            .setCustomAnimations(
+                                    R.anim.slide_left_in,
+                                    R.anim.slide_right_out,
+                                    R.anim.slide_right_in,
+                                    R.anim.slide_left_out
+                            )
+                            .replace(R.id.personadd_container, childfragment).commit();
+                    stepBtn.setText("下一步");
+                    stepPreviousBtn.setVisibility(View.GONE);
+                    fvh.setProgress(0, 3, getResources().getStringArray(R.array.step), null);
+                } else if (childfragment instanceof SecondFragment) {
+                    childfragment = new FirstFragment();
+                    fm.beginTransaction()
+                            .setCustomAnimations(
+                                    R.anim.slide_left_in,
+                                    R.anim.slide_right_out,
+                                    R.anim.slide_right_in,
+                                    R.anim.slide_left_out
+                            )
+                            .replace(R.id.personadd_container, childfragment).commit();
+                    stepBtn.setText("下一步");
+                    fvh.setProgress(1, 3, getResources().getStringArray(R.array.step), null);
+                }
+                break;
+        }
+    }
 }
