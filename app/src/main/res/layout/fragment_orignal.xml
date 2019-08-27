@@ -26,8 +26,9 @@
             android:layout_weight="6"
             android:background="@color/colorPrimaryDark"
             android:hint="选填"
-            android:maxLength="18"
+            android:inputType="textPersonName"
             android:paddingLeft="@dimen/padding_10"
+            android:singleLine="true"
             android:textSize="@dimen/textSize_22" />
     </LinearLayout>
 
@@ -53,8 +54,8 @@
             android:layout_weight="6"
             android:background="@color/colorPrimaryDark"
             android:hint="选填"
-            android:maxLength="18"
             android:paddingLeft="@dimen/padding_10"
+            android:singleLine="true"
             android:textSize="@dimen/textSize_22" />
     </LinearLayout>
 
@@ -82,6 +83,7 @@
             android:hint="选填"
             android:maxLength="18"
             android:paddingLeft="@dimen/padding_10"
+            android:singleLine="true"
             android:textSize="@dimen/textSize_22" />
     </LinearLayout>
 
@@ -107,8 +109,10 @@
             android:layout_weight="6"
             android:background="@color/colorPrimaryDark"
             android:hint="选填"
-            android:maxLength="18"
+            android:inputType="number"
+            android:maxLength="11"
             android:paddingLeft="@dimen/padding_10"
+            android:singleLine="true"
             android:textSize="@dimen/textSize_22" />
     </LinearLayout>
 
@@ -134,8 +138,8 @@
             android:layout_weight="6"
             android:background="@color/colorPrimaryDark"
             android:hint="选填"
-            android:maxLength="18"
             android:paddingLeft="@dimen/padding_10"
+            android:singleLine="true"
             android:textSize="@dimen/textSize_22" />
     </LinearLayout>
 

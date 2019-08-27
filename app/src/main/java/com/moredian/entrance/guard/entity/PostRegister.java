@@ -1,12 +1,15 @@
 package com.moredian.entrance.guard.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * description ：
  * author : scy
  * email : 1797484636@qq.com
  * date : 2019/8/26 09:26
  */
-public class PostRegister {
+public class PostRegister implements Parcelable {
 
     /**
      * address :
@@ -323,4 +326,93 @@ public class PostRegister {
     public void setUserState(int userState) {
         this.userState = userState;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.address);
+        dest.writeInt(this.age);
+        dest.writeInt(this.authType);
+        dest.writeInt(this.cardState);
+        dest.writeInt(this.cardType);
+        dest.writeDouble(this.cash);
+        dest.writeDouble(this.cost);
+        dest.writeString(this.deadline);
+        dest.writeString(this.departmentID);
+        dest.writeString(this.departmentName);
+        dest.writeByte(this.discount ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.discountRate);
+        dest.writeDouble(this.donate);
+        dest.writeString(this.empID);
+        dest.writeInt(this.foregift);
+        dest.writeString(this.iDCard);
+        dest.writeInt(this.integral);
+        dest.writeInt(this.isGotCard);
+        dest.writeString(this.name);
+        dest.writeInt(this.number);
+        dest.writeInt(this.payCount);
+        dest.writeString(this.payKey);
+        dest.writeString(this.phone);
+        dest.writeString(this.serialNo);
+        dest.writeInt(this.sex);
+        dest.writeDouble(this.subsidy);
+        dest.writeInt(this.subsidyDatediff);
+        dest.writeInt(this.subsidyLevel);
+        dest.writeInt(this.times);
+        dest.writeString(this.userCreateTime);
+        dest.writeInt(this.userState);
+    }
+
+    public PostRegister() {
+    }
+
+    protected PostRegister(Parcel in) {
+        this.address = in.readString();
+        this.age = in.readInt();
+        this.authType = in.readInt();
+        this.cardState = in.readInt();
+        this.cardType = in.readInt();
+        this.cash = in.readDouble();
+        this.cost = in.readDouble();
+        this.deadline = in.readString();
+        this.departmentID = in.readString();
+        this.departmentName = in.readString();
+        this.discount = in.readByte() != 0;
+        this.discountRate = in.readInt();
+        this.donate = in.readDouble();
+        this.empID = in.readString();
+        this.foregift = in.readInt();
+        this.iDCard = in.readString();
+        this.integral = in.readInt();
+        this.isGotCard = in.readInt();
+        this.name = in.readString();
+        this.number = in.readInt();
+        this.payCount = in.readInt();
+        this.payKey = in.readString();
+        this.phone = in.readString();
+        this.serialNo = in.readString();
+        this.sex = in.readInt();
+        this.subsidy = in.readDouble();
+        this.subsidyDatediff = in.readInt();
+        this.subsidyLevel = in.readInt();
+        this.times = in.readInt();
+        this.userCreateTime = in.readString();
+        this.userState = in.readInt();
+    }
+
+    public static final Parcelable.Creator<PostRegister> CREATOR = new Parcelable.Creator<PostRegister>() {
+        @Override
+        public PostRegister createFromParcel(Parcel source) {
+            return new PostRegister(source);
+        }
+
+        @Override
+        public PostRegister[] newArray(int size) {
+            return new PostRegister[size];
+        }
+    };
 }

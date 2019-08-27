@@ -26,8 +26,9 @@
             android:layout_weight="6"
             android:background="@color/colorPrimaryDark"
             android:hint="必填"
-            android:maxLength="18"
+            android:inputType="number"
             android:paddingLeft="@dimen/padding_10"
+            android:singleLine="true"
             android:textSize="@dimen/textSize_22" />
     </LinearLayout>
 
@@ -53,8 +54,10 @@
             android:layout_weight="6"
             android:background="@color/colorPrimaryDark"
             android:hint="选填(密码长度4位)"
-            android:maxLength="18"
+            android:inputType="number"
+            android:maxLength="4"
             android:paddingLeft="@dimen/padding_10"
+            android:singleLine="true"
             android:textSize="@dimen/textSize_22" />
     </LinearLayout>
 
@@ -77,8 +80,8 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/height_70"
             android:layout_marginLeft="@dimen/margin_20"
-            android:background="@color/colorPrimaryDark"
-            android:layout_weight="6" />
+            android:layout_weight="6"
+            android:background="@color/colorPrimaryDark" />
     </LinearLayout>
 
     <LinearLayout
@@ -100,7 +103,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/height_70"
             android:layout_marginLeft="@dimen/margin_20"
-            android:background="@color/colorPrimaryDark"
-            android:layout_weight="6" />
+            android:layout_weight="6"
+            android:background="@color/colorPrimaryDark" />
     </LinearLayout>
 </LinearLayout>

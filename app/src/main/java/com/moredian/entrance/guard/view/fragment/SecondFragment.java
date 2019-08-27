@@ -1,5 +1,6 @@
 package com.moredian.entrance.guard.view.fragment;
 
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -9,6 +10,8 @@ import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.GetCardTypeList;
 import com.moredian.entrance.guard.entity.GetDepartmentList;
+import com.moredian.entrance.guard.entity.PostResponse;
+import com.moredian.entrance.guard.entity.ReisterResponse;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.view.adapter.SpinnerAdapter;
 
@@ -34,6 +37,7 @@ public class SecondFragment extends BaseFragment {
     @BindView(R.id.spinner_department)
     Spinner spinnerDepartment;
     private List<String> dlist;
+    private int number;
 
     @Override
     public int initView() {
@@ -46,9 +50,10 @@ public class SecondFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        spinnerDeadtime.setAdapter(new SpinnerAdapter(mContext,new String[] {"2029-12-31 00:00:00"}));
+        spinnerDeadtime.setAdapter(new SpinnerAdapter(mContext, new String[]{"2029-12-31 00:00:00"}));
         String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         api.getDepartmentList(token);
+        api.getNextCardNumber(token);
         api.setGetResponseListener(new Api.GetResponseListener() {
             @Override
             public void onRespnse(Object o) {
@@ -63,7 +68,10 @@ public class SecondFragment extends BaseFragment {
                         dlist.add(((GetDepartmentList) o).getContent().get(i).getName());
                     }
                     String[] darray = dlist.toArray(new String[dlist.size()]);
-                    spinnerDepartment.setAdapter(new SpinnerAdapter(mContext,darray));
+                    spinnerDepartment.setAdapter(new SpinnerAdapter(mContext, darray));
+                }
+                if (o instanceof ReisterResponse) {
+                    number = ((ReisterResponse) o).getContent();
                 }
             }
 
@@ -72,5 +80,13 @@ public class SecondFragment extends BaseFragment {
 
             }
         });
+    }
+
+    public void save() {
+        SPUtils.getInstance().put(Constants.ARGUEMENT_SERIALNO, fpaSerialNoEt.getText().toString());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_PAYPASSWORD, fpaPaypasswordEt.getText().toString());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_DEADLINE, (String) spinnerDeadtime.getSelectedItem());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_DEPARTMENT, (String) spinnerDepartment.getSelectedItem());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_NUMBER, number);
     }
 }

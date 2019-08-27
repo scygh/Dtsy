@@ -12,15 +12,14 @@
         android:layout_margin="@dimen/margin_40"
         android:paddingLeft="@dimen/margin_40"
         android:paddingTop="@dimen/padding_20"
+        app:h_bg_color="@color/color_grey"
         app:h_bg_radius="10dp"
         app:h_bg_width='4dp'
+        app:h_pro_color="@color/colorPrimary"
         app:h_pro_radius='8dp'
         app:h_pro_width="2dp"
         app:h_text_padding='20dp'
-        app:h_textsize='@dimen/textSize_20'
-        app:h_bg_color="@color/color_grey"
-        app:h_pro_color="@color/colorPrimary"
-        />
+        app:h_textsize='@dimen/textSize_20' />
 
     <FrameLayout
         android:id="@+id/personadd_container"
@@ -73,28 +72,28 @@
         android:layout_height="@dimen/height_80"
         android:layout_margin="@dimen/margin_40"
         android:gravity="center">
+
         <Button
             android:id="@+id/step_previous_btn"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="@dimen/height_80"
+            android:layout_marginRight="@dimen/margin_20"
+            android:layout_weight="1"
             android:background="@drawable/login_button_bg"
             android:text="上一步"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/textSize_26"
-            android:layout_marginRight="@dimen/margin_20"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/step_btn"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="@dimen/height_80"
+            android:layout_weight="1"
             android:background="@drawable/login_button_bg"
             android:text="下一步"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/textSize_26"
-            />
+            android:textSize="@dimen/textSize_26" />
     </LinearLayout>
 
 </LinearLayout>

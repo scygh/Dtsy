@@ -1,10 +1,14 @@
 package com.moredian.entrance.guard.view.fragment;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.moredian.entrance.guard.R;
+import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.entity.PostRegister;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -17,6 +21,7 @@ import butterknife.OnClick;
  */
 public class OrignalFragment extends BaseFragment {
 
+    private static final String TAG = "OrignalFragment";
 
     @BindView(R.id.fpa_name_et)
     TextInputEditText fpaNameEt;
@@ -43,5 +48,16 @@ public class OrignalFragment extends BaseFragment {
     public void initData() {
 
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        SPUtils.getInstance().put(Constants.ARGUEMENT_NAME, fpaNameEt.getText().toString());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_EMPID, fpaEmpidEt.getText().toString());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_IDCARD, fpaIdcardEt.getText().toString());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_PHONE, fpaPhoneEt.getText().toString());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_ADDRESS, fpaAddressEt.getText().toString());
+    }
+
 
 }

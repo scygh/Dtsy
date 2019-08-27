@@ -8,6 +8,6 @@
     <string-array name="step">
         <item>个人信息</item>
         <item>卡信息</item>
-        <item>开户</item>
+        <item>开户成功</item>
     </string-array>
 </resources>

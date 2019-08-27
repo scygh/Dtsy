@@ -2,6 +2,7 @@ package com.moredian.entrance.guard.http.retrofit;
 
 import com.moredian.entrance.guard.entity.GetDepartmentList;
 import com.moredian.entrance.guard.entity.PostResponse;
+import com.moredian.entrance.guard.entity.ReisterResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -16,5 +17,5 @@ import retrofit2.http.Header;
 public interface GetNextNumberService {
 
     @GET("Api/User/Card/GetNextNumber")
-    Observable<PostResponse> getNextNumberService(@Header("AccessToken") String token);
+    Observable<ReisterResponse> getNextNumberService(@Header("AccessToken") String token);
 }

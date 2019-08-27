@@ -26,6 +26,7 @@ import com.moredian.entrance.guard.entity.PostRequestBody;
 import com.moredian.entrance.guard.entity.PostResponseNoContent;
 import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
+import com.moredian.entrance.guard.entity.ReisterResponse;
 import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.http.retrofit.PostSimpleExpense;
 import com.moredian.entrance.guard.utils.ToastHelper;
@@ -641,7 +642,7 @@ public class Api {
     /**
      * descirption: 开户
      */
-    public void postDefiniteExpense(PostRegister body, String token) {
+    public void postRegister(PostRegister body, String token) {
         ApiUtils.postRegisterService().register(body, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -655,8 +656,60 @@ public class Api {
                     public void onNext(PostResponseNoContent postResponseNoContent) {
                         if (postResponseNoContent != null && postResponseNoContent.getStatusCode() == 200) {
                             ToastHelper.showToast("开户成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(postResponseNoContent);
+                            }
                         } else {
                             ToastHelper.showToast(postResponseNoContent.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
+    /**
+     * descirption: 获取下一个卡内码
+     */
+    public void getNextCardNumber(String token) {
+        ApiUtils.getNextNumberService().getNextNumberService(token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ReisterResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ReisterResponse postResponse) {
+                        if (postResponse != null && postResponse.getStatusCode() == 200) {
+                            ToastHelper.showToast("获取下一个卡内码成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(postResponse);
+                            }
+                        } else {
+                            ToastHelper.showToast(postResponse.getMessage());
                         }
                     }
 

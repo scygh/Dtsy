@@ -1,6 +1,7 @@
 package com.moredian.entrance.guard.view.fragment;
 
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.SimpleAdapter;
@@ -41,6 +42,8 @@ public class FirstFragment extends BaseFragment {
     TextInputEditText fpaDonateEt;
     private List<String> typelist;
     private List<String> subsidylist;
+    private SpinnerAdapter cardtypeadapter;
+    private SpinnerAdapter subsidydapter;
 
 
     @Override
@@ -72,7 +75,8 @@ public class FirstFragment extends BaseFragment {
                         typelist.add(((GetCardTypeList) o).getContent().get(i).getName());
                     }
                     String[] typearray = typelist.toArray(new String[typelist.size()]);
-                    spinnerCardtype.setAdapter(new SpinnerAdapter(mContext,typearray));
+                    cardtypeadapter = new SpinnerAdapter(mContext, typearray);
+                    spinnerCardtype.setAdapter(cardtypeadapter);
                 } else if (o instanceof GetSubsidyLevel) {
                     int subsidylength = ((GetSubsidyLevel) o).getContent().size();
                     if (subsidylist == null) {
@@ -84,7 +88,8 @@ public class FirstFragment extends BaseFragment {
                         subsidylist.add(((GetSubsidyLevel) o).getContent().get(i).getName());
                     }
                     String[] subsidyarray = subsidylist.toArray(new String[subsidylist.size()]);
-                    spinnerSubsidyLevel.setAdapter(new SpinnerAdapter(mContext,subsidyarray));
+                    subsidydapter = new SpinnerAdapter(mContext, subsidyarray);
+                    spinnerSubsidyLevel.setAdapter(subsidydapter);
                 }
             }
 
@@ -95,4 +100,14 @@ public class FirstFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        SPUtils.getInstance().put(Constants.ARGUEMENT_CONST, fpaCostEt.getText().toString());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_CASH, fpaCashEt.getText().toString());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_DONATE, fpaDonateEt.getText().toString());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_CARDTYPE, (String) spinnerCardtype.getSelectedItem());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_SUBSIDY, (String) spinnerSubsidyLevel.getSelectedItem());
+
+    }
 }

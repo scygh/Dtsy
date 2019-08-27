@@ -55,6 +55,23 @@ public class Constants {
     //fragmentTAG
     public static final String SHOWCARDMESSAGE = "ShowCardMessage";
     public static final String BUNDLE_TAG = "bundle_tag";
+    public static final String ARGUEMENT_NAME = "arguement_name";
+    public static final String ARGUEMENT_EMPID = "arguement_empid";
+    public static final String ARGUEMENT_IDCARD = "arguement_idcard";
+    public static final String ARGUEMENT_PHONE = "arguement_phone";
+    public static final String ARGUEMENT_ADDRESS = "arguement_address";
+
+    public static final String ARGUEMENT_CONST = "arguement_const";
+    public static final String ARGUEMENT_CASH = "arguement_cash";
+    public static final String ARGUEMENT_DONATE = "arguement_donate";
+    public static final String ARGUEMENT_CARDTYPE = "arguement_cardtype";
+    public static final String ARGUEMENT_SUBSIDY = "arguement_subsidy";
+
+    public static final String ARGUEMENT_SERIALNO = "arguement_serialNo";
+    public static final String ARGUEMENT_PAYPASSWORD = "arguement_paypassword";
+    public static final String ARGUEMENT_DEADLINE = "arguement_deadline";
+    public static final String ARGUEMENT_DEPARTMENT = "arguement_department";
+    public static final String ARGUEMENT_NUMBER = "arguement_number";
 
     //code
     public static final int KIND_FIND = 1;
