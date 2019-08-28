@@ -64,7 +64,6 @@ public class PersonListFragment extends BaseFragment {
         }
     };
 
-    
 
     @Override
     public int initView() {
@@ -86,13 +85,13 @@ public class PersonListFragment extends BaseFragment {
                     updateList();
                 } else if (rowsBeans.size() > 20) {
                     users.clear();
-                    for (GetListByPage.ContentBean.RowsBean bean: rowsBeans) {
-                        users.add(new User(bean.getUser().getName(),bean.getUser().getId()));
+                    for (GetListByPage.ContentBean.RowsBean bean : rowsBeans) {
+                        users.add(new User(bean.getUser().getName(), bean.getUser().getId()));
                     }
                     Collections.sort(users);
                     arowsBeans.clear();
                     for (User user : users) {
-                        for (GetListByPage.ContentBean.RowsBean bean: rowsBeans) {
+                        for (GetListByPage.ContentBean.RowsBean bean : rowsBeans) {
                             if (bean.getUser().getId().equals(user.getUid())) {
                                 arowsBeans.add(bean);
                             }
@@ -141,7 +140,7 @@ public class PersonListFragment extends BaseFragment {
             @Override
             public void onTouchIndex(String text) {
                 ToastHelper.showToast(text);
-                if (arowsBeans.size()>20) {
+                if (arowsBeans.size() > 20) {
                     for (int i = 0; i < arowsBeans.size(); i++) {
                         if (!text.equalsIgnoreCase("#")) {
                             if (Cn2Spell.getPinYinFirstLetter(arowsBeans.get(i).getUser().getName()).equalsIgnoreCase(text)) {
@@ -156,17 +155,18 @@ public class PersonListFragment extends BaseFragment {
 
             @Override
             public void onActionDown() {
-                api.getListByPage(1,5000);
+                api.getListByPage(1, 5000);
             }
         });
     }
 
     private boolean mShouldScroll;
     private int mToPosition;
+
     private void smoothMoveToPosition(final int position) {
         int firstItem = personManageRecyclerview.getChildLayoutPosition(personManageRecyclerview.getChildAt(0));
-        int lastItem = personManageRecyclerview.getChildLayoutPosition(personManageRecyclerview.getChildAt(personManageRecyclerview.getChildCount() -1));
-        if (position < firstItem ) {
+        int lastItem = personManageRecyclerview.getChildLayoutPosition(personManageRecyclerview.getChildAt(personManageRecyclerview.getChildCount() - 1));
+        if (position < firstItem) {
             // 如果要跳转的位置在第一个可见项之前，则smoothScrollToPosition可以直接跳转
             personManageRecyclerview.smoothScrollToPosition(position);
         } else if (position <= lastItem) {
@@ -220,7 +220,7 @@ public class PersonListFragment extends BaseFragment {
      * descirption: 初始化列表数据
      */
     private void initRecyclerview() {
-        linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
         personManageRecyclerview.setLayoutManager(linearLayoutManager);
         personManageRecyclerview.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         adapter = new PersonManageRvAdapter(mContext, arowsBeans);

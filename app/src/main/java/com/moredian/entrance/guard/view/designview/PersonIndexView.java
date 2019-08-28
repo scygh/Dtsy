@@ -61,6 +61,7 @@ public class PersonIndexView extends View {
         latticeHeight = getMeasuredHeight() * 1f / indexArr.length;
     }
 
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -69,7 +70,7 @@ public class PersonIndexView extends View {
             float y = latticeHeight / 2 + getTextHeight(indexArr[i]) / 2 + i * latticeHeight;
             paint.setColor(lastIndex == i ? getResources().getColor(R.color.colorPrimaryDark) : Color.GRAY);
             Circlepaint.setColor(lastIndex == i ? getResources().getColor(R.color.colorPrimary) : Color.WHITE);
-            canvas.drawCircle(x, y - 7, 13.0f, Circlepaint);
+            canvas.drawCircle(x, y - getTextHeight(indexArr[i]) / 2, 13.0f, Circlepaint);
             canvas.drawText(indexArr[i], x, y, paint);
         }
     }

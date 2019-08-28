@@ -20,11 +20,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.moredian.entrance.guard.R;
+import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.GetListByPage;
+import com.moredian.entrance.guard.entity.GetUserByUserID;
+import com.moredian.entrance.guard.entity.PostDeregister;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.view.activity.PersonDetailActivity;
 import com.moredian.entrance.guard.view.adapter.PersonFindRvAdapter;
+import com.moredian.entrance.guard.view.designview.SlideRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +46,7 @@ public class PersonFindFragment extends BaseFragment {
 
     private static final String TAG = "PersonFindFragment";
     @BindView(R.id.person_manage_recyclerview)
-    RecyclerView personManageRecyclerview;
+    SlideRecyclerView personManageRecyclerview;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.loading)
@@ -57,6 +62,7 @@ public class PersonFindFragment extends BaseFragment {
     private PersonFindRvAdapter adapter;
     List<GetListByPage.ContentBean.RowsBean> alldata = new ArrayList<>();
     List<GetListByPage.ContentBean.RowsBean> findData = new ArrayList<>();
+    String token;
     Handler handler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
@@ -130,6 +136,7 @@ public class PersonFindFragment extends BaseFragment {
 
     @Override
     public void initData() {
+        token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         api.getListByPage(1, 5000);
         api.setOnResponse(new Api.OnResponse() {
             @Override
@@ -147,6 +154,24 @@ public class PersonFindFragment extends BaseFragment {
 
             @Override
             public void onFailed() {
+
+            }
+        });
+        api.setGetResponseListener(new Api.GetResponseListener() {
+            @Override
+            public void onRespnse(Object o) {
+                if (o instanceof GetUserByUserID) {
+                    //查询到了用户信息去删除
+                    PostDeregister postDeregister = new PostDeregister();
+                    postDeregister.setCost(((GetUserByUserID) o).getContent().getCost());
+                    postDeregister.setMoney(((GetUserByUserID) o).getContent().getCash());
+                    postDeregister.setUserID(((GetUserByUserID) o).getContent().getUserID());
+                    api.postDeRegister(postDeregister,token);
+                }
+            }
+
+            @Override
+            public void onFail(String err) {
 
             }
         });
@@ -173,6 +198,11 @@ public class PersonFindFragment extends BaseFragment {
             @Override
             public void onItemClick(String userid) {
                 startActivity(PersonDetailActivity.getPersonDetailActivityIntent(mContext, userid));
+            }
+
+            @Override
+            public void onDelete(String userID) {
+                api.getUserByuserID(userID,token);
             }
         });
     }

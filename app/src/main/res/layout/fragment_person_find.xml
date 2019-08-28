@@ -29,6 +29,7 @@
                 android:background="@color/colorPrimaryDark"
                 android:hint="按名字搜索"
                 android:textSize="26sp"
+                android:singleLine="true"
                 android:paddingLeft="@dimen/margin_20"/>
 
             <ImageView
@@ -55,10 +56,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.moredian.entrance.guard.view.designview.SlideRecyclerView
                 android:id="@+id/person_manage_recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="match_parent">
+
+            </com.moredian.entrance.guard.view.designview.SlideRecyclerView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <include

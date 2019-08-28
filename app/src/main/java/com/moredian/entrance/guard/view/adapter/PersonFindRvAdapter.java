@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,8 @@ public class PersonFindRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private OnMyItemClickListener myItemClickListener;
 
     public interface OnMyItemClickListener {
-        void onItemClick(String userid);
+        void onItemClick(String userID);
+        void onDelete(String userID);
     }
 
     public void setMyItemClickListener(OnMyItemClickListener myItemClickListener) {
@@ -46,14 +48,24 @@ public class PersonFindRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView tvWifiname;
         @BindView(R.id.tv_isfaceinput)
         TextView tvIsfaceinput;
+        @BindView(R.id.rl)
+        RelativeLayout relativeLayout;
+        @BindView(R.id.tv_delete)
+        TextView textView;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
+            relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     myItemClickListener.onItemClick(rowsBeans.get(getAdapterPosition()).getUser().getId());
+                }
+            });
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    myItemClickListener.onDelete(rowsBeans.get(getAdapterPosition()).getUser().getId());
                 }
             });
         }
@@ -72,7 +84,7 @@ public class PersonFindRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.person_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.person_find_item, parent, false);
         return new ItemViewHolder(view);
     }
 

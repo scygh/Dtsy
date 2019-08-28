@@ -10,6 +10,7 @@ import com.moredian.entrance.guard.http.retrofit.GetSubsidyLevelService;
 import com.moredian.entrance.guard.http.retrofit.GetTokenService;
 import com.moredian.entrance.guard.http.retrofit.GetUserByUserIdService;
 import com.moredian.entrance.guard.http.retrofit.PostCreate;
+import com.moredian.entrance.guard.http.retrofit.PostDeRegister;
 import com.moredian.entrance.guard.http.retrofit.PostDefiniteExpense;
 import com.moredian.entrance.guard.http.retrofit.PostDelete;
 import com.moredian.entrance.guard.http.retrofit.PostFaceExpense;
@@ -109,6 +110,13 @@ public class ApiUtils {
      */
     public static PostRegister postRegisterService() {
         return RetrofitClient.getClient(BASE_URL).create(PostRegister.class);
+    }
+
+    /**
+     * descirption:销户
+     */
+    public static PostDeRegister postDeRegisterService() {
+        return RetrofitClient.getClient(BASE_URL).create(PostDeRegister.class);
     }
 
     /**

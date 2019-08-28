@@ -18,6 +18,7 @@ import com.moredian.entrance.guard.entity.GetSubsidyLevel;
 import com.moredian.entrance.guard.entity.GetToken;
 import com.moredian.entrance.guard.entity.GetUserByUserID;
 import com.moredian.entrance.guard.entity.PostDefiniteExpenseBody;
+import com.moredian.entrance.guard.entity.PostDeregister;
 import com.moredian.entrance.guard.entity.PostFaceExpenseBody;
 import com.moredian.entrance.guard.entity.PostQRCodeExpenseBody;
 import com.moredian.entrance.guard.entity.PostRegister;
@@ -28,6 +29,7 @@ import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.ReisterResponse;
 import com.moredian.entrance.guard.entity.SimpleExpense;
+import com.moredian.entrance.guard.http.retrofit.PostDeRegister;
 import com.moredian.entrance.guard.http.retrofit.PostSimpleExpense;
 import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.activity.LoginActivity;
@@ -152,50 +154,46 @@ public class Api {
      */
     public void getListByPage(int pageIndex, int pageSize) {
         String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
-        Log.d(TAG, "onResponse: tokene" + token);
-        if (token != null) {
-            ApiUtils.getListByPageService().getListByPage(token, pageIndex, pageSize).enqueue(new Callback<GetListByPage>() {
-                @Override
-                public void onResponse(Call<GetListByPage> call, Response<GetListByPage> response) {
-                    GetListByPage getListByPage = response.body();
-                    if (getListByPage != null) {
-                        if (getListByPage.getStatusCode() == 200) {
-                            rowsBeans = getListByPage.getContent().getRows();
-                            if (onResponse != null) {
-                                if (pageIndex > 1) {
-                                    onResponse.onResponseMore(rowsBeans);
-                                } else {
-                                    onResponse.onResponse(rowsBeans);
-                                }
-                            }
+        ApiUtils.getListByPageService().getListByPage(token, pageIndex, pageSize).enqueue(new Callback<GetListByPage>() {
+            @Override
+            public void onResponse(Call<GetListByPage> call, Response<GetListByPage> response) {
+                GetListByPage getListByPage = response.body();
+                if (getListByPage != null && getListByPage.getStatusCode() == 200) {
+                    rowsBeans = getListByPage.getContent().getRows();
+                    if (onResponse != null) {
+                        if (pageIndex > 1) {
+                            onResponse.onResponseMore(rowsBeans);
                         } else {
-                            ToastHelper.showToast(getListByPage.getMessage());
+                            onResponse.onResponse(rowsBeans);
                         }
                     }
-                }
-
-                @Override
-                public void onFailure(Call<GetListByPage> call, Throwable e) {
-                    if (e instanceof HttpException) {
-                        ResponseBody body = ((HttpException) e).response().errorBody();
-                        try {
-                            JSONObject jsonObject = new JSONObject(body.string());
-                            String error = jsonObject.getString("Message");
-                            ToastHelper.showToast(error);
-                        } catch (JSONException e1) {
-                            e1.printStackTrace();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
+                } else {
+                    ToastHelper.showToast("token过期");
                     if (onResponse != null) {
                         onResponse.onFailed();
                     }
                 }
-            });
-        } else {
-            ToastHelper.showToast("Token获取失败");
-        }
+            }
+
+            @Override
+            public void onFailure(Call<GetListByPage> call, Throwable e) {
+                if (e instanceof HttpException) {
+                    ResponseBody body = ((HttpException) e).response().errorBody();
+                    try {
+                        JSONObject jsonObject = new JSONObject(body.string());
+                        String error = jsonObject.getString("Message");
+                        ToastHelper.showToast(error);
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                if (onResponse != null) {
+                    onResponse.onFailed();
+                }
+            }
+        });
     }
 
     /**
@@ -340,8 +338,8 @@ public class Api {
      * descirption: 读取卡信息
      */
     public void getReadCard(Integer companyCode, Integer diviceID, Integer number, String token, String modiantoken) {
-        Observable<GetReadCard> readCardObservable =  ApiUtils.getReadCardService().GetReadCard(companyCode, diviceID, number, token, modiantoken);
-                readCardObservable.subscribeOn(Schedulers.io())
+        Observable<GetReadCard> readCardObservable = ApiUtils.getReadCardService().GetReadCard(companyCode, diviceID, number, token, modiantoken);
+        readCardObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GetReadCard>() {
                     @Override
@@ -687,6 +685,50 @@ public class Api {
                 });
     }
 
+    /**
+     * descirption: 销户
+     */
+    public void postDeRegister(PostDeregister body, String token) {
+        ApiUtils.postDeRegisterService().deregister(body, token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<PostResponseNoContent>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(PostResponseNoContent postResponseNoContent) {
+                        if (postResponseNoContent != null && postResponseNoContent.getStatusCode() == 200) {
+                            ToastHelper.showToast("销户成功");
+                        } else {
+                            ToastHelper.showToast(postResponseNoContent.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 
     /**
      * descirption: 获取下一个卡内码
