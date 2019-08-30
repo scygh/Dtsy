@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="height_200">200dp</dimen>
+    <dimen name="height_300">300dp</dimen>
     <dimen name="width_400">400dp</dimen>
     <dimen name="height_110">110dp</dimen>
     <dimen name="height_100">100dp</dimen>

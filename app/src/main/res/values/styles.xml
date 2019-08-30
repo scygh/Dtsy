@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
 
     <style name="tab_text_size">
@@ -21,6 +22,13 @@
         <item name="android:singleLine">true</item>
         <item name="android:background">@color/colorPrimaryDark</item>
         <item name="android:paddingLeft">@dimen/padding_10</item>
+    </style>
+
+    <style name="NoAnimTheme" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
 </resources>

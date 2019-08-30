@@ -5,6 +5,7 @@ import com.moredian.entrance.guard.entity.GetToken;
 
 import java.util.Map;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -20,5 +21,5 @@ import retrofit2.http.Query;
 public interface GetListByPageService {
 
     @GET("Api/User/GetPage")
-    Call<GetListByPage> getListByPage(@Header("AccessToken") String token, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
+    Observable<GetListByPage> getListByPage(@Header("AccessToken") String token, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
 }

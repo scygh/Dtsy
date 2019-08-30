@@ -4,11 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".view.activity.MainActivity">
+        android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -49,6 +47,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="?android:attr/selectableItemBackground"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -70,6 +69,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="?android:attr/selectableItemBackground"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -91,6 +91,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="?android:attr/selectableItemBackground"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -132,6 +133,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="?android:attr/selectableItemBackground"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -153,6 +155,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="?android:attr/selectableItemBackground"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -173,6 +176,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="?android:attr/selectableItemBackground"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -199,11 +203,6 @@
                     android:layout_margin="@dimen/margin_10"
                     android:orientation="vertical">
 
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:text="发送"
-                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -231,6 +230,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="?android:attr/selectableItemBackground"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -252,6 +252,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="?android:attr/selectableItemBackground"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -273,6 +274,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="?android:attr/selectableItemBackground"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -292,5 +294,6 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
-    </LinearLayout>
+    </FrameLayout>
+
 </com.moredian.entrance.guard.view.designview.ReboundScrollView>

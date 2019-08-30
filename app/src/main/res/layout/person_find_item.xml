@@ -22,6 +22,15 @@
             android:textSize="@dimen/textSize_26" />
 
         <TextView
+            android:id="@+id/tv_user_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/margin_160"
+            android:text="state "
+            android:textSize="@dimen/textSize_20" />
+
+        <TextView
             android:id="@+id/tv_isfaceinput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

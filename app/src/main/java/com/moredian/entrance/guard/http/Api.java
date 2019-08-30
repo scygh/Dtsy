@@ -43,6 +43,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -103,7 +104,6 @@ public class Api {
 
     public interface GetResponseListener<T> {
         void onRespnse(T t);
-
         void onFail(String err);
     }
 
@@ -154,46 +154,52 @@ public class Api {
      */
     public void getListByPage(int pageIndex, int pageSize) {
         String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
-        ApiUtils.getListByPageService().getListByPage(token, pageIndex, pageSize).enqueue(new Callback<GetListByPage>() {
-            @Override
-            public void onResponse(Call<GetListByPage> call, Response<GetListByPage> response) {
-                GetListByPage getListByPage = response.body();
-                if (getListByPage != null && getListByPage.getStatusCode() == 200) {
-                    rowsBeans = getListByPage.getContent().getRows();
-                    if (onResponse != null) {
-                        if (pageIndex > 1) {
-                            onResponse.onResponseMore(rowsBeans);
+        ApiUtils.getListByPageService().getListByPage(token,pageIndex,pageSize)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetListByPage>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetListByPage getListByPage) {
+                        if (getListByPage != null && getListByPage.getStatusCode() == 200) {
+                            rowsBeans = getListByPage.getContent().getRows();
+                            if (onResponse != null) {
+                                if (pageIndex > 1) {
+                                    onResponse.onResponseMore(rowsBeans);
+                                } else {
+                                    onResponse.onResponse(rowsBeans);
+                                }
+                            }
                         } else {
-                            onResponse.onResponse(rowsBeans);
+                            ToastHelper.showToast(getListByPage.getMessage());
                         }
                     }
-                } else {
-                    ToastHelper.showToast("token过期");
-                    if (onResponse != null) {
-                        onResponse.onFailed();
-                    }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<GetListByPage> call, Throwable e) {
-                if (e instanceof HttpException) {
-                    ResponseBody body = ((HttpException) e).response().errorBody();
-                    try {
-                        JSONObject jsonObject = new JSONObject(body.string());
-                        String error = jsonObject.getString("Message");
-                        ToastHelper.showToast(error);
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
                     }
-                }
-                if (onResponse != null) {
-                    onResponse.onFailed();
-                }
-            }
-        });
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     /**

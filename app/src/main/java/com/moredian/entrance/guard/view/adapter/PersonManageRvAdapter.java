@@ -53,7 +53,9 @@ public class PersonManageRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_wifiname)
-        TextView tvWifiname;
+        TextView tvUsername;
+        @BindView(R.id.tv_user_state)
+        TextView tvUserstate;
         @BindView(R.id.tv_isfaceinput)
         TextView tvIsfaceinput;
         @BindView(R.id.rl)
@@ -72,7 +74,13 @@ public class PersonManageRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         public void bind() {
             String name = rowsBeans.get(getAdapterPosition()).getUser().getName();
-            tvWifiname.setText(name);
+            tvUsername.setText(name);
+            int state = rowsBeans.get(getAdapterPosition()).getUser().getState();
+            if (state == 3) {
+                tvUserstate.setText("已销户");
+            } else {
+                tvUserstate.setText("正常");
+            }
             if (rowsBeans.get(getAdapterPosition()).getUserFace().getMemberFace()!= null) {
                 tvIsfaceinput.setVisibility(View.VISIBLE);
             } else {

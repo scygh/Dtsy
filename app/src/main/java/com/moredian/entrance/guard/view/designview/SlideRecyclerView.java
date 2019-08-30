@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.moredian.entrance.guard.utils.ToastHelper;
+
 /**
  * description ：
  * author : scy
@@ -58,6 +60,9 @@ public class SlideRecyclerView extends RecyclerView {
         return super.dispatchTouchEvent(ev);
     }
 
+    /**
+     * descirption: 在按下事件中初始化位置和view，在拖动事件中按要求拦截事件
+     */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
         int x = (int) e.getX();
@@ -183,20 +188,21 @@ public class SlideRecyclerView extends RecyclerView {
     }
 
     public int pointToPosition(int x, int y) {
-        int firstPosition = ((LinearLayoutManager) getLayoutManager()).findFirstVisibleItemPosition();
-        Rect frame = mTouchFrame;
-        if (frame == null) {
-            mTouchFrame = new Rect();
-            frame = mTouchFrame;
-        }
-
         final int count = getChildCount();
-        for (int i = count - 1; i >= 0; i--) {
-            final View child = getChildAt(i);
-            if (child.getVisibility() == View.VISIBLE) {
-                child.getHitRect(frame);
-                if (frame.contains(x, y)) {
-                    return firstPosition + i;
+        if (count > 0) {
+            int firstPosition = ((LinearLayoutManager) getLayoutManager()).findFirstVisibleItemPosition();
+            Rect frame = mTouchFrame;
+            if (frame == null) {
+                mTouchFrame = new Rect();
+                frame = mTouchFrame;
+            }
+            for (int i = count - 1; i >= 0; i--) {
+                final View child = getChildAt(i);
+                if (child.getVisibility() == View.VISIBLE) {
+                    child.getHitRect(frame);
+                    if (frame.contains(x, y)) {
+                        return firstPosition + i;
+                    }
                 }
             }
         }

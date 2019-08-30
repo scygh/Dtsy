@@ -1,5 +1,7 @@
 package com.moredian.entrance.guard.view.activity;
 
+import android.animation.Animator;
+import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -7,15 +9,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,13 +55,13 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-        ActivityManager manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         int heapSize = manager.getMemoryClass();
         int maxHeapSize = manager.getLargeMemoryClass();
-        Log.d("memorya", "onCreate: " + heapSize +":"+ maxHeapSize);//192:384
+        Log.d("memorya", "onCreate: " + heapSize + ":" + maxHeapSize);//192:384
     }
 
-    @OnClick({R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6,R.id.main_ll7,R.id.main_ll8})
+    @OnClick({R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6, R.id.main_ll7, R.id.main_ll8})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.main_ll1:
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(AutomaticconsumptionActivity.getAutomaticconsumptionActivityIntent(this));
                 break;
             case R.id.main_ll3:
-                startActivity(InpersontopayActivity.getInpersontopayActivityIntent(this));
+                startActivity(InpersontopayActivity.getInpersontopayActivityIntent(this, mainLl3));
                 break;
             case R.id.main_ll4:
                 startActivity(PersonsManageActivity.getPersonsManageActivityIntent(this));

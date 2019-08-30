@@ -1,40 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="@dimen/height_100"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_100"
     android:background="@color/colorPrimaryDark">
+
     <RelativeLayout
         android:id="@+id/rl"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/height_100"
-        android:background="@color/colorPrimaryDark"
-        android:layout_marginRight="@dimen/margin_60">
-    <TextView
-        android:id="@+id/tv_wifiname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_30"
-        android:layout_centerVertical="true"
-        android:text="name"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/textSize_26"
-        />
-    <TextView
-        android:id="@+id/tv_isfaceinput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_60"
-        android:text="已录入"
-        android:textSize="@dimen/textSize_20"
-        />
-    <ImageView
-        android:id="@+id/iv_wifi_rssi"
-        android:layout_width="@dimen/height_40"
-        android:layout_height="@dimen/height_40"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/margin_20"
-        android:src="@mipmap/youjiantou"/>
+        android:background="@color/colorPrimaryDark">
+
+        <TextView
+            android:id="@+id/tv_wifiname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30"
+            android:text="name"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/textSize_26" />
+
+        <TextView
+            android:id="@+id/tv_user_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/margin_160"
+            android:text="state "
+            android:textSize="@dimen/textSize_20" />
+
+        <TextView
+            android:id="@+id/tv_isfaceinput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_60"
+            android:text="已录入"
+            android:textSize="@dimen/textSize_20"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iv_wifi_rssi"
+            android:layout_width="@dimen/height_40"
+            android:layout_height="@dimen/height_40"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_20"
+            android:src="@mipmap/youjiantou" />
     </RelativeLayout>
 </RelativeLayout>

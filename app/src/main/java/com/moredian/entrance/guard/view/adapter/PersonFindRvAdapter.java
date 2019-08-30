@@ -45,7 +45,9 @@ public class PersonFindRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_wifiname)
-        TextView tvWifiname;
+        TextView tvUsername;
+        @BindView(R.id.tv_user_state)
+        TextView tvUserstate;
         @BindView(R.id.tv_isfaceinput)
         TextView tvIsfaceinput;
         @BindView(R.id.rl)
@@ -56,23 +58,33 @@ public class PersonFindRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            relativeLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    myItemClickListener.onItemClick(rowsBeans.get(getAdapterPosition()).getUser().getId());
-                }
-            });
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    myItemClickListener.onDelete(rowsBeans.get(getAdapterPosition()).getUser().getId());
-                }
-            });
+            relativeLayout.setOnClickListener(relaticeLayoutlistener);
+            textView.setOnClickListener(textViewListener);
         }
+
+        private View.OnClickListener relaticeLayoutlistener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myItemClickListener.onItemClick(rowsBeans.get(getAdapterPosition()).getUser().getId());
+            }
+        };
+
+        private View.OnClickListener textViewListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myItemClickListener.onDelete(rowsBeans.get(getAdapterPosition()).getUser().getId());
+            }
+        };
 
         public void bind() {
             String name = rowsBeans.get(getAdapterPosition()).getUser().getName();
-            tvWifiname.setText(name);
+            tvUsername.setText(name);
+            int state = rowsBeans.get(getAdapterPosition()).getUser().getState();
+            if (state == 3) {
+                tvUserstate.setText("已销户");
+            } else {
+                tvUserstate.setText("正常");
+            }
             if (rowsBeans.get(getAdapterPosition()).getUserFace().getMemberFace() != null) {
                 tvIsfaceinput.setVisibility(View.VISIBLE);
             } else {
