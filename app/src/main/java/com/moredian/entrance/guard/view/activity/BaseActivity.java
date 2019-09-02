@@ -9,6 +9,8 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.blankj.utilcode.util.SPUtils;
+import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.http.Api;
 
 import butterknife.ButterKnife;
@@ -23,6 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public Api api;
     public abstract int layoutView();
+    public String token;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutView());
         ButterKnife.bind(this);
         api = new Api();
+        token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         setLightMode();
         initView();
         initData();

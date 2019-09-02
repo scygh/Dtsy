@@ -166,7 +166,7 @@ public class PersonFindFragment extends BaseFragment {
                     postDeregister.setCost(((GetUserByUserID) o).getContent().getCost());
                     postDeregister.setMoney(((GetUserByUserID) o).getContent().getCash());
                     postDeregister.setUserID(((GetUserByUserID) o).getContent().getUserID());
-                    api.postDeRegister(postDeregister,token);
+                    api.postDeRegister(postDeregister, token);
                 }
             }
 
@@ -182,7 +182,9 @@ public class PersonFindFragment extends BaseFragment {
      */
     private void refresh() {
         initData();
-        handler.post(runnable);
+        if (findData.size() > 0) {
+            handler.post(runnable);
+        }
     }
 
     /**
@@ -202,7 +204,7 @@ public class PersonFindFragment extends BaseFragment {
 
             @Override
             public void onDelete(String userID) {
-                api.getUserByuserID(userID,token);
+                api.getUserByuserID(userID, token);
             }
         });
     }

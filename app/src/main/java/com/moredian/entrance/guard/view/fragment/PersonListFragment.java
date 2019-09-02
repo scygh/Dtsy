@@ -221,38 +221,40 @@ public class PersonListFragment extends BaseFragment {
      */
     private void initRecyclerview() {
         linearLayoutManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
-        personManageRecyclerview.setLayoutManager(linearLayoutManager);
-        personManageRecyclerview.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
-        adapter = new PersonManageRvAdapter(mContext, arowsBeans);
-        personManageRecyclerview.setAdapter(adapter);
-        personManageRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (mShouldScroll) {
-                        mShouldScroll = false;
-                        smoothMoveToPosition(mToPosition);
+        if (linearLayoutManager != null) {
+            personManageRecyclerview.setLayoutManager(linearLayoutManager);
+            personManageRecyclerview.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
+            adapter = new PersonManageRvAdapter(mContext, arowsBeans);
+            personManageRecyclerview.setAdapter(adapter);
+            personManageRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        if (mShouldScroll) {
+                            mShouldScroll = false;
+                            smoothMoveToPosition(mToPosition);
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
-                if (lastVisibleItemPosition + 1 == adapter.getItemCount()) {
-                    if (isLoading) {
-                        adapter.notifyItemRemoved(adapter.getItemCount());
-                        return;
-                    }
-                    if (!isLoading) {
-                        isLoading = true;
-                        handler.postDelayed(runnable, 1000);
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+                    if (lastVisibleItemPosition + 1 == adapter.getItemCount()) {
+                        if (isLoading) {
+                            adapter.notifyItemRemoved(adapter.getItemCount());
+                            return;
+                        }
+                        if (!isLoading) {
+                            isLoading = true;
+                            handler.postDelayed(runnable, 1000);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
         adapter.setMyItemClickListener(new PersonManageRvAdapter.OnMyItemClickListener() {
             @Override
             public void onItemClick(String userid) {

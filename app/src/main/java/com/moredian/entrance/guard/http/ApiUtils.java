@@ -1,6 +1,7 @@
 package com.moredian.entrance.guard.http;
 
 import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.entity.PostDepositBody;
 import com.moredian.entrance.guard.http.retrofit.GetCardTypeListService;
 import com.moredian.entrance.guard.http.retrofit.GetDepartmentListService;
 import com.moredian.entrance.guard.http.retrofit.GetListByPageService;
@@ -9,10 +10,12 @@ import com.moredian.entrance.guard.http.retrofit.GetReadCardService;
 import com.moredian.entrance.guard.http.retrofit.GetSubsidyLevelService;
 import com.moredian.entrance.guard.http.retrofit.GetTokenService;
 import com.moredian.entrance.guard.http.retrofit.GetUserByUserIdService;
+import com.moredian.entrance.guard.http.retrofit.GetUserService;
 import com.moredian.entrance.guard.http.retrofit.PostCreate;
 import com.moredian.entrance.guard.http.retrofit.PostDeRegister;
 import com.moredian.entrance.guard.http.retrofit.PostDefiniteExpense;
 import com.moredian.entrance.guard.http.retrofit.PostDelete;
+import com.moredian.entrance.guard.http.retrofit.PostDeposit;
 import com.moredian.entrance.guard.http.retrofit.PostFaceExpense;
 import com.moredian.entrance.guard.http.retrofit.PostQRCodeExpense;
 import com.moredian.entrance.guard.http.retrofit.PostRegister;
@@ -145,5 +148,19 @@ public class ApiUtils {
      */
     public static GetSubsidyLevelService getSubsidyLevelService() {
         return RetrofitClient.getClient(BASE_URL).create(GetSubsidyLevelService.class);
+    }
+
+    /**
+     * descirption:按卡号获取用户
+     */
+    public static GetUserService getUserService() {
+        return RetrofitClient.getClient(BASE_URL).create(GetUserService.class);
+    }
+
+    /**
+     * descirption:充值
+     */
+    public static PostDeposit postDeposit() {
+        return RetrofitClient.getClient(BASE_URL).create(PostDeposit.class);
     }
 }

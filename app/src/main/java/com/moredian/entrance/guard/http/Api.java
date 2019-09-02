@@ -16,8 +16,10 @@ import com.moredian.entrance.guard.entity.GetListByPage;
 import com.moredian.entrance.guard.entity.GetReadCard;
 import com.moredian.entrance.guard.entity.GetSubsidyLevel;
 import com.moredian.entrance.guard.entity.GetToken;
+import com.moredian.entrance.guard.entity.GetUser;
 import com.moredian.entrance.guard.entity.GetUserByUserID;
 import com.moredian.entrance.guard.entity.PostDefiniteExpenseBody;
+import com.moredian.entrance.guard.entity.PostDepositBody;
 import com.moredian.entrance.guard.entity.PostDeregister;
 import com.moredian.entrance.guard.entity.PostFaceExpenseBody;
 import com.moredian.entrance.guard.entity.PostQRCodeExpenseBody;
@@ -902,6 +904,99 @@ public class Api {
                             }
                         } else {
                             ToastHelper.showToast(getSubsidyLevel.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 按卡号获取用户
+     */
+    public void getUser(String token,Integer number) {
+        ApiUtils.getUserService().getUserService(token,number)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetUser>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetUser user) {
+                        if (user != null && user.getStatusCode() == 200) {
+                            ToastHelper.showToast("获取用户信息成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(user);
+                            }
+                        } else {
+                            ToastHelper.showToast(user.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 充值
+     */
+    public void postDeposit(String token, PostDepositBody postDepositBody) {
+        ApiUtils.postDeposit().deposit(postDepositBody,token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<PostResponseNoContent>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(PostResponseNoContent postResponseNoContent) {
+                        if (postResponseNoContent != null && postResponseNoContent.getStatusCode() == 200) {
+                            ToastHelper.showToast("充值成功");
+                        } else {
+                            ToastHelper.showToast(postResponseNoContent.getMessage());
                         }
                     }
 

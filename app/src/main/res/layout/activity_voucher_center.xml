@@ -4,6 +4,152 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".view.activity.VoucherCenterActivity">
+
+    <include layout="@layout/header_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_margin="@dimen/margin_30"
+        android:background="@drawable/tip_button_bg"
+        android:elevation="10dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="20dp"
+            android:src="@mipmap/person_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="20dp"
+            android:text="姓名"
+            android:textColor="#fff"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/avc_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="20dp"
+            android:text=""
+            android:textColor="#fff"
+            android:textSize="22sp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="60dp"
+            android:src="@mipmap/qingchu_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="60dp"
+            android:text="卡片轻触设备左侧即刻响应"
+            android:textColor="#fff"
+            android:textSize="22sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="100dp"
+            android:text="余额"
+            android:textColor="#fff"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/avc_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="100dp"
+            android:text="0.00"
+            android:textColor="#fff"
+            android:textSize="40sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="150dp"
+            android:text="(提示:余额包含赠送补贴)"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="@dimen/margin_20"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="充值金额"
+            android:textSize="@dimen/textSize_26" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fpa_cash_et"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_70"
+            android:layout_margin="@dimen/margin_20"
+            android:layout_weight="6"
+            android:background="@color/colorPrimaryDark"
+            android:hint="0.00"
+            android:paddingLeft="@dimen/padding_10"
+            android:singleLine="true"
+            android:inputType="numberDecimal"
+            android:textSize="@dimen/textSize_22" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="@dimen/margin_20"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="赠送金额"
+            android:textSize="@dimen/textSize_26" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fpa_donate_et"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_70"
+            android:layout_margin="@dimen/margin_20"
+            android:layout_weight="6"
+            android:background="@color/colorPrimaryDark"
+            android:hint="0.00"
+            android:inputType="numberDecimal"
+            android:paddingLeft="@dimen/padding_10"
+            android:singleLine="true"
+            android:textSize="@dimen/textSize_22" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/deposit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_80"
+        android:background="@drawable/login_button_bg"
+        android:layout_margin="@dimen/margin_30"
+        android:text="充值"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/textSize_26" />
 
 </LinearLayout>
