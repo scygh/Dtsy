@@ -58,6 +58,7 @@ public class Constants {
     //fragmentTAG
     public static final String SHOWCARDMESSAGE = "ShowCardMessage";
     public static final String BUNDLE_TAG = "bundle_tag";
+    public static final String BUNDLE_USERID = "bundle_userid";
     public static final String ARGUEMENT_NAME = "arguement_name";
     public static final String ARGUEMENT_EMPID = "arguement_empid";
     public static final String ARGUEMENT_IDCARD = "arguement_idcard";

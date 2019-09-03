@@ -17,6 +17,24 @@
         android:elevation="10dp">
 
         <ImageView
+            android:id="@+id/refund"
+            android:layout_width="@dimen/width_50"
+            android:layout_height="@dimen/height_50"
+            android:layout_margin="@dimen/margin_20"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/refund" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_70"
+            android:text="退款"
+            android:layout_alignParentRight="true"
+            android:textColor="#fff"
+            android:textSize="22sp" />
+
+        <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="20dp"

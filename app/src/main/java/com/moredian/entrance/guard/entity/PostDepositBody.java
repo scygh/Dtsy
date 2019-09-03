@@ -23,7 +23,12 @@ public class PostDepositBody {
         UserID = userID;
         Amount = amount;
         Donate = donate;
-        channel = channel;
+        Channel = channel;
+    }
+
+    public PostDepositBody(String userID, double amount) {
+        UserID = userID;
+        Amount = amount;
     }
 
     public String getUserID() {

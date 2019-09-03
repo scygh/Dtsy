@@ -1072,6 +1072,52 @@ public class Api {
     }
 
     /**
+     * descirption: 退款
+     */
+    public void postRefund(String token, PostDepositBody postDepositBody) {
+        ApiUtils.postRefund().postRefund(postDepositBody, token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<PostResponseNoContent>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(PostResponseNoContent postResponseNoContent) {
+                        if (postResponseNoContent != null && postResponseNoContent.getStatusCode() == 200) {
+                            ToastHelper.showToast("退款成功");
+                        } else {
+                            ToastHelper.showToast(postResponseNoContent.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
+    /**
      * descirption: 获取充值报表
      */
     public void getDepositPage(String token, int pageIndex, int pagesize) {

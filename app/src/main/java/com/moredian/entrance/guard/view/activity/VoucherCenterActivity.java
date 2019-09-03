@@ -21,9 +21,9 @@ import com.moredian.entrance.guard.entity.PostDepositBody;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.adapter.SpinnerAdapter;
+import com.moredian.entrance.guard.view.fragment.RefundFragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android_serialport_api.ChangeTool;
@@ -51,6 +51,8 @@ public class VoucherCenterActivity extends BaseActivity {
     String userId;
     @BindView(R.id.spinner_channel)
     Spinner spinnerChannel;
+    @BindView(R.id.refund)
+    ImageView refund;
 
     public static Intent getVoucherCenterActivityIntent(Context context) {
         Intent intent = new Intent(context, VoucherCenterActivity.class);
@@ -154,11 +156,20 @@ public class VoucherCenterActivity extends BaseActivity {
         return namehex;
     }
 
-    @OnClick({R.id.Manualconsumption_back, R.id.deposit})
+    @OnClick({R.id.Manualconsumption_back, R.id.deposit,R.id.refund})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Manualconsumption_back:
                 finish();
+                break;
+            case R.id.refund:
+                if (!TextUtils.isEmpty(userId)) {
+                    RefundFragment fragment = RefundFragment.newInstance(userId);
+                    fragment.show(getSupportFragmentManager(),"refund");
+                } else {
+                    ToastHelper.showToast("请先刷卡");
+                }
+
                 break;
             case R.id.deposit:
                 String deposit = fpaCashEt.getText().toString();

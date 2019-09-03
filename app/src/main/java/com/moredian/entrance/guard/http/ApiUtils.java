@@ -21,6 +21,7 @@ import com.moredian.entrance.guard.http.retrofit.PostDelete;
 import com.moredian.entrance.guard.http.retrofit.PostDeposit;
 import com.moredian.entrance.guard.http.retrofit.PostFaceExpense;
 import com.moredian.entrance.guard.http.retrofit.PostQRCodeExpense;
+import com.moredian.entrance.guard.http.retrofit.PostRefund;
 import com.moredian.entrance.guard.http.retrofit.PostRegister;
 import com.moredian.entrance.guard.http.retrofit.PostSimpleExpense;
 import com.moredian.entrance.guard.http.retrofit.PostUpdate;
@@ -165,6 +166,13 @@ public class ApiUtils {
      */
     public static PostDeposit postDeposit() {
         return RetrofitClient.getClient(BASE_URL).create(PostDeposit.class);
+    }
+
+    /**
+     * descirption:退款
+     */
+    public static PostRefund postRefund() {
+        return RetrofitClient.getClient(BASE_URL).create(PostRefund.class);
     }
 
     /**
