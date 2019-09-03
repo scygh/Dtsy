@@ -150,7 +150,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/main_ll8"
+                        android:id="@+id/main_ll5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -199,9 +199,60 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_160"
-                    android:layout_margin="@dimen/margin_10"
-                    android:orientation="vertical">
+                    android:layout_margin="@dimen/margin_10">
 
+                    <LinearLayout
+                        android:id="@+id/main_ll6"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/height_70"
+                            android:layout_height="@dimen/width_70"
+                            android:src="@mipmap/xiaofeibaobiao" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:text="消费报表"
+                            android:textSize="@dimen/textSize_20" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/main_ll7"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/height_70"
+                            android:layout_height="@dimen/width_70"
+                            android:src="@mipmap/chongzhijiluicon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:text="充值报表"
+                            android:textSize="@dimen/textSize_20" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -225,7 +276,7 @@
                     android:layout_margin="@dimen/margin_10">
 
                     <LinearLayout
-                        android:id="@+id/main_ll5"
+                        android:id="@+id/main_ll8"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -247,7 +298,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/main_ll6"
+                        android:id="@+id/main_ll9"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -269,7 +320,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/main_ll7"
+                        android:id="@+id/main_ll10"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"

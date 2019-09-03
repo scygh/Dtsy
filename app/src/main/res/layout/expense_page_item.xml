@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/margin_30"
+    android:layout_marginRight="@dimen/margin_30"
+    android:layout_marginTop="@dimen/margin_30"
+    android:background="@drawable/loading_bg">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_60"
+        android:layout_margin="@dimen/margin_10"
+        android:background="@color/color_f9f9f9f">
+
+        <ImageView
+            android:layout_width="@dimen/height_40"
+            android:layout_height="@dimen/height_40"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/consume_icon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="消费记录"
+            android:textSize="@dimen/textSize_20"
+            android:layout_marginLeft="@dimen/margin_50"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorAccent"/>
+
+        <TextView
+            android:id="@+id/record_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2019-09-01 08:08:08"
+            android:textSize="@dimen/textSize_20"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/color_grey"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/record_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:layout_marginTop="@dimen/margin_30"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:text="+28.90"
+        android:textSize="@dimen/textSize_30"/>
+    <TextView
+        android:id="@+id/record_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_grey"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:text="description"
+        android:textSize="@dimen/textSize_20"/>
+
+    <RelativeLayout
+        android:id="@+id/record_detail"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_80"
+        android:layout_margin="@dimen/margin_10">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_grey"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查看详情"
+            android:textSize="@dimen/textSize_20"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorAccent"/>
+        <ImageView
+            android:layout_width="@dimen/margin_40"
+            android:layout_height="@dimen/height_40"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/youjiantou"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -110,7 +110,7 @@ public class PersonDetailActivity extends BaseActivity {
         userid = dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_BEAN);
         if (!TextUtils.isEmpty(userid)) {
             api.getListByPage(1, 5000);
-            api.setOnResponse(new Api.OnResponse() {
+            api.setOnResponse(new Api.OnResponse<GetListByPage.ContentBean.RowsBean>() {
                 @Override
                 public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
                     arowsBeans.clear();
@@ -148,7 +148,7 @@ public class PersonDetailActivity extends BaseActivity {
             int page = abposition / 20 + 1;
             abposition = abposition % 20;
             api.getListByPage(page, 20);
-            api.setOnResponse(new Api.OnResponse() {
+            api.setOnResponse(new Api.OnResponse<GetListByPage.ContentBean.RowsBean>() {
                 @Override
                 public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
                     arowsBeans.clear();

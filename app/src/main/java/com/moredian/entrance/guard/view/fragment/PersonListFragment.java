@@ -53,10 +53,10 @@ public class PersonListFragment extends BaseFragment {
     List<GetListByPage.ContentBean.RowsBean> arowsBeans = new ArrayList<>();
     List<User> users = new ArrayList<>();
     boolean isLoading = false;
-    private Handler handler = new Handler();
     private int pageIndex = 1;
     private int position;
     private LinearLayoutManager linearLayoutManager;
+    private Handler handler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -73,7 +73,7 @@ public class PersonListFragment extends BaseFragment {
     @Override
     public void initViewController() {
         refresh();
-        api.setOnResponse(new Api.OnResponse() {
+        api.setOnResponse(new Api.OnResponse<GetListByPage.ContentBean.RowsBean>() {
             @Override
             public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
                 arowsBeans.clear();
@@ -274,5 +274,6 @@ public class PersonListFragment extends BaseFragment {
         super.onDestroy();
         pageIndex = 1;
         handler.removeCallbacks(runnable);
+        linearLayoutManager = null;
     }
 }

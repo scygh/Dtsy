@@ -1,17 +1,17 @@
 package com.moredian.entrance.guard.http;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Advanceable;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
-import com.google.gson.Gson;
+
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.DefiniteExpense;
 import com.moredian.entrance.guard.entity.FaceExpense;
 import com.moredian.entrance.guard.entity.GetCardTypeList;
+import com.moredian.entrance.guard.entity.GetChannel;
 import com.moredian.entrance.guard.entity.GetDepartmentList;
+import com.moredian.entrance.guard.entity.GetDepositPage;
+import com.moredian.entrance.guard.entity.GetExpensePage;
 import com.moredian.entrance.guard.entity.GetListByPage;
 import com.moredian.entrance.guard.entity.GetReadCard;
 import com.moredian.entrance.guard.entity.GetSubsidyLevel;
@@ -31,21 +31,15 @@ import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.ReisterResponse;
 import com.moredian.entrance.guard.entity.SimpleExpense;
-import com.moredian.entrance.guard.http.retrofit.PostDeRegister;
-import com.moredian.entrance.guard.http.retrofit.PostSimpleExpense;
 import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.activity.LoginActivity;
 import com.moredian.entrance.guard.view.activity.MainActivity;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.List;
-
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -63,17 +57,16 @@ import retrofit2.Response;
  */
 public class Api {
 
-    private static final String TAG = "Api";
     List<GetListByPage.ContentBean.RowsBean> rowsBeans;
     /**
      * descirption:回调list状态接口
      */
     private OnResponse onResponse;
 
-    public interface OnResponse {
-        void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans);
+    public interface OnResponse<T> {
+        void onResponse(List<T> rowsBeans);
 
-        void onResponseMore(List<GetListByPage.ContentBean.RowsBean> rowsBeans);
+        void onResponseMore(List<T> rowsBeans);
 
         void onFailed();
     }
@@ -106,6 +99,7 @@ public class Api {
 
     public interface GetResponseListener<T> {
         void onRespnse(T t);
+
         void onFail(String err);
     }
 
@@ -156,7 +150,7 @@ public class Api {
      */
     public void getListByPage(int pageIndex, int pageSize) {
         String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
-        ApiUtils.getListByPageService().getListByPage(token,pageIndex,pageSize)
+        ApiUtils.getListByPageService().getListByPage(token, pageIndex, pageSize)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GetListByPage>() {
@@ -178,6 +172,9 @@ public class Api {
                             }
                         } else {
                             ToastHelper.showToast(getListByPage.getMessage());
+                            if (onResponse != null) {
+                                onResponse.onFailed();
+                            }
                         }
                     }
 
@@ -189,6 +186,9 @@ public class Api {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
                                 ToastHelper.showToast(error);
+                                if (onResponse != null) {
+                                    onResponse.onFailed();
+                                }
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
                             } catch (IOException e1) {
@@ -933,8 +933,8 @@ public class Api {
     /**
      * descirption: 按卡号获取用户
      */
-    public void getUser(String token,Integer number) {
-        ApiUtils.getUserService().getUserService(token,number)
+    public void getUser(String token, Integer number) {
+        ApiUtils.getUserService().getUserService(token, number)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GetUser>() {
@@ -979,10 +979,58 @@ public class Api {
     }
 
     /**
+     * descirption: 充值渠道
+     */
+    public void getChannel(String token) {
+        ApiUtils.getChannel().getChannle(token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetChannel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetChannel channel) {
+                        if (channel != null && channel.getStatusCode() == 200) {
+                            ToastHelper.showToast("获取充值渠道成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(channel);
+                            }
+                        } else {
+                            ToastHelper.showToast(channel.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
      * descirption: 充值
      */
     public void postDeposit(String token, PostDepositBody postDepositBody) {
-        ApiUtils.postDeposit().deposit(postDepositBody,token)
+        ApiUtils.postDeposit().deposit(postDepositBody, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<PostResponseNoContent>() {
@@ -1008,6 +1056,122 @@ public class Api {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
                                 ToastHelper.showToast(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 获取充值报表
+     */
+    public void getDepositPage(String token, int pageIndex, int pagesize) {
+        ApiUtils.getDepositPage().getDepositPage(pageIndex, pagesize, "TradeDateTime", "desc",  token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetDepositPage>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetDepositPage getDepositPage) {
+                        if (getDepositPage != null && getDepositPage.getStatusCode() == 200) {
+                            ToastHelper.showToast("查询充值记录成功");
+                            if (onResponse != null) {
+                                if (pageIndex > 1) {
+                                    onResponse.onResponseMore(getDepositPage.getContent().getRows());
+                                } else {
+                                    onResponse.onResponse(getDepositPage.getContent().getRows());
+                                }
+                            }
+                        } else {
+                            ToastHelper.showToast(getDepositPage.getMessage());
+                            if (onResponse != null) {
+                                onResponse.onFailed();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                                if (onResponse != null) {
+                                    onResponse.onFailed();
+                                }
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 获取消费记录报表
+     */
+    public void getExpensePage(String token, int pageIndex, int pagesize) {
+        ApiUtils.getExpensePage().getExpensePage(pageIndex, pagesize, "TradeDateTime", "desc", token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetExpensePage>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetExpensePage getExpensePage) {
+                        if (getExpensePage != null && getExpensePage.getStatusCode() == 200) {
+                            ToastHelper.showToast("查询消费记录成功");
+                            if (onResponse != null) {
+                                if (pageIndex > 1) {
+                                    onResponse.onResponseMore(getExpensePage.getContent().getRows());
+                                } else {
+                                    onResponse.onResponse(getExpensePage.getContent().getRows());
+                                }
+                            }
+                        } else {
+                            ToastHelper.showToast(getExpensePage.getMessage());
+                            if (onResponse != null) {
+                                onResponse.onFailed();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                                if (onResponse != null) {
+                                    onResponse.onFailed();
+                                }
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
                             } catch (IOException e1) {

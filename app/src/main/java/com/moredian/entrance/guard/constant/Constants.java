@@ -35,6 +35,9 @@ public class Constants {
     public static final String INTENT_CONSUME_FACESUCCESS = "intent_consume_facesuccess";
     public static final String INTENT_FACEINPUT_FLAG = "intent_faceinput_flag";
 
+    public static final String INTENT_CONSUMERECORD = "intent_consume_record";
+    public static final String INTENT_DEPOSITRECORD = "intent_deposit_record";
+
     //permission
     public static final int LOCATION_REQUEST = 1;
     public static final int LOCATION_REQUEST_2 = 2;

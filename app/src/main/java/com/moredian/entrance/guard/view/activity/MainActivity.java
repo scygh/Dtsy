@@ -1,7 +1,5 @@
 package com.moredian.entrance.guard.view.activity;
 
-import android.animation.Animator;
-import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,8 +20,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = "SerialPortUtils";
 
     @BindView(R.id.main_ll1)
     LinearLayout mainLl1;
@@ -41,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout mainLl6;
     @BindView(R.id.main_ll7)
     LinearLayout mainLl7;
+    @BindView(R.id.main_ll8)
+    LinearLayout mainLl8;
+    @BindView(R.id.main_ll9)
+    LinearLayout mainLl9;
+    @BindView(R.id.main_ll10)
+    LinearLayout mainLl10;
+
 
     public static Intent getMainActivityIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("memorya", "onCreate: " + heapSize + ":" + maxHeapSize);//192:384
     }
 
-    @OnClick({R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6, R.id.main_ll7, R.id.main_ll8})
+    @OnClick({R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6, R.id.main_ll7, R.id.main_ll8, R.id.main_ll9, R.id.main_ll10})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.main_ll1:
@@ -77,16 +78,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(PersonsManageActivity.getPersonsManageActivityIntent(this));
                 break;
             case R.id.main_ll5:
-                startActivity(MachinesettingActivity.getMachinesettingActivityIntent(this));
+                startActivity(VoucherCenterActivity.getVoucherCenterActivityIntent(this));
                 break;
             case R.id.main_ll6:
-                startActivity(NetSettingActivity.getNetSettingActivityIntent(this));
+                startActivity(ConsumeRecordActivity.getConsumeRecordActivityIntent(this));
                 break;
             case R.id.main_ll7:
-                startActivity(PersonalSettingActivity.getPersonalSettingActivityIntent(this));
+                startActivity(DepositRecordActivity.getDepositRecordActivityIntent(this));
                 break;
             case R.id.main_ll8:
-                startActivity(VoucherCenterActivity.getVoucherCenterActivityIntent(this));
+                startActivity(MachinesettingActivity.getMachinesettingActivityIntent(this));
+                break;
+            case R.id.main_ll9:
+                startActivity(NetSettingActivity.getNetSettingActivityIntent(this));
+                break;
+            case R.id.main_ll10:
+                startActivity(PersonalSettingActivity.getPersonalSettingActivityIntent(this));
                 break;
         }
     }

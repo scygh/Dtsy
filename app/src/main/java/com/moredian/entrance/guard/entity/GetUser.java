@@ -10,7 +10,7 @@ public class GetUser {
 
 
     /**
-     * Content : {"UserID":"6369e769-ef3b-47fe-b7ce-f7f8e931c29c","DepartmentID":"00000000-0000-0000-0000-000000000001","DepartmentName":"默认部门","Name":"scy11","EmpID":"","IDCard":"","Sex":0,"Age":0,"Address":"","Phone":"","UserCreateTime":"2019-08-01 10:40:10","Password":"","Photo":null,"PayKey":"1111","CardTypeName":"正常卡","UserState":1,"Number":22,"SerialNo":"scy11","CardType":1,"IsDiscount":false,"IsGotCard":1,"DiscountRate":100,"Foregift":0,"SubsidyLevel":0,"SubsidyLevelName":"无补贴","Cost":0,"Deadline":"2029-09-09 00:00:00","PayCount":208,"LastSubsidyDate":"2019-07-01 10:40:10","SubsidyDatediff":2,"CardCreateTime":"2019-08-01 10:40:10","CardState":1,"Cash":92623.68,"Subsidy":0,"Times":0,"Donate":0,"Integral":0,"LastPayDateTime":"2019-08-23 16:07:50","AuthType":null,"AuthUrl":"","AuthResult":"","CreateSqlCommand":null}
+     * Content : {"UserID":"6369e769-ef3b-47fe-b7ce-f7f8e931c29c","DepartmentID":"00000000-0000-0000-0000-000000000001","DepartmentName":"默认部门","Name":"scy11","EmpID":"","IDCard":"","Sex":0,"Age":0,"Address":"","Phone":"","UserCreateTime":"2019-08-01 10:40:10","Password":"","Photo":null,"PayKey":"1111","CardTypeName":"正常卡","UserState":1,"Number":22,"SerialNo":"scy11","CardType":1,"IsDiscount":false,"IsGotCard":1,"DiscountRate":100,"Foregift":0,"SubsidyLevel":0,"SubsidyLevelName":"无补贴","Cost":0,"Deadline":"2029-09-09 00:00:00","PayCount":220,"LastSubsidyDate":"2019-07-01 10:40:10","SubsidyDatediff":2,"CardCreateTime":"2019-08-01 10:40:10","CardState":1,"Cash":92650,"Subsidy":0,"Times":0,"Donate":2.88,"Integral":0,"LastPayDateTime":"2019-09-03 10:37:55","AuthType":null,"AuthUrl":"","AuthResult":"","CreateSqlCommand":null}
      * Result : true
      * Message : Success!
      * StatusCode : 200
@@ -82,17 +82,17 @@ public class GetUser {
          * SubsidyLevelName : 无补贴
          * Cost : 0
          * Deadline : 2029-09-09 00:00:00
-         * PayCount : 208
+         * PayCount : 220
          * LastSubsidyDate : 2019-07-01 10:40:10
          * SubsidyDatediff : 2
          * CardCreateTime : 2019-08-01 10:40:10
          * CardState : 1
-         * Cash : 92623.68
+         * Cash : 92650
          * Subsidy : 0
          * Times : 0
-         * Donate : 0
+         * Donate : 2.88
          * Integral : 0
-         * LastPayDateTime : 2019-08-23 16:07:50
+         * LastPayDateTime : 2019-09-03 10:37:55
          * AuthType : null
          * AuthUrl :
          * AuthResult :
@@ -131,10 +131,10 @@ public class GetUser {
         private int SubsidyDatediff;
         private String CardCreateTime;
         private int CardState;
-        private double Cash;
+        private int Cash;
         private int Subsidy;
         private int Times;
-        private int Donate;
+        private double Donate;
         private int Integral;
         private String LastPayDateTime;
         private Object AuthType;
@@ -398,11 +398,11 @@ public class GetUser {
             this.CardState = CardState;
         }
 
-        public double getCash() {
+        public int getCash() {
             return Cash;
         }
 
-        public void setCash(double Cash) {
+        public void setCash(int Cash) {
             this.Cash = Cash;
         }
 
@@ -422,11 +422,11 @@ public class GetUser {
             this.Times = Times;
         }
 
-        public int getDonate() {
+        public double getDonate() {
             return Donate;
         }
 
-        public void setDonate(int Donate) {
+        public void setDonate(double Donate) {
             this.Donate = Donate;
         }
 

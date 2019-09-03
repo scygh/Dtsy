@@ -138,7 +138,7 @@ public class PersonFindFragment extends BaseFragment {
     public void initData() {
         token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         api.getListByPage(1, 5000);
-        api.setOnResponse(new Api.OnResponse() {
+        api.setOnResponse(new Api.OnResponse<GetListByPage.ContentBean.RowsBean>() {
             @Override
             public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
                 if (alldata != null) {

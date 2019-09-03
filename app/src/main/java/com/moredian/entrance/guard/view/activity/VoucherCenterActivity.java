@@ -7,17 +7,24 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.entity.GetChannel;
 import com.moredian.entrance.guard.entity.GetReadCard;
 import com.moredian.entrance.guard.entity.GetUser;
 import com.moredian.entrance.guard.entity.PostDepositBody;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.ToastHelper;
+import com.moredian.entrance.guard.view.adapter.SpinnerAdapter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import android_serialport_api.ChangeTool;
 import android_serialport_api.SerialPortUtils;
@@ -42,6 +49,8 @@ public class VoucherCenterActivity extends BaseActivity {
     @BindView(R.id.deposit)
     Button deposit;
     String userId;
+    @BindView(R.id.spinner_channel)
+    Spinner spinnerChannel;
 
     public static Intent getVoucherCenterActivityIntent(Context context) {
         Intent intent = new Intent(context, VoucherCenterActivity.class);
@@ -60,6 +69,41 @@ public class VoucherCenterActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        api.getChannel(token);
+        api.setGetResponseListener(new Api.GetResponseListener<Object>() {
+            @Override
+            public void onRespnse(Object o) {
+                if (o instanceof GetReadCard) {
+                    String name = ((GetReadCard) o).getContent().getUserName();
+                    double balance = ((GetReadCard) o).getContent().getBalance();
+                    int paycount = ((GetReadCard) o).getContent().getPayCount();
+                    int status = ((GetReadCard) o).getContent().getState();
+                    String namehex = getNameHex(name);
+                    String balancehex = ChangeTool.numToHex3((int) (balance * 100));
+                    String paycounthex = ChangeTool.numToHex2(paycount);
+                    String statushex = ChangeTool.numToHex1(status);
+                    String sum = "020101000f" + namehex + balancehex + paycounthex + statushex;
+                    MainApplication.getSerialPortUtils().sendSerialPort("A1B103020101000f" + namehex + balancehex + paycounthex + statushex + ChangeTool.makeChecksum(sum));
+                    showCardData(name, balance);
+                } else if (o instanceof GetUser) {
+                    userId = ((GetUser) o).getContent().getUserID();
+                } else if (o instanceof GetChannel) {
+                    List<String> channel = new ArrayList<>();
+                    channel.add(((GetChannel) o).getContent().get_$0());
+                    channel.add(((GetChannel) o).getContent().get_$101());
+                    channel.add(((GetChannel) o).getContent().get_$102());
+                    channel.add(((GetChannel) o).getContent().get_$103());
+                    channel.add(((GetChannel) o).getContent().get_$104());
+                    String[] array = channel.toArray(new String[channel.size()]);
+                    spinnerChannel.setAdapter(new SpinnerAdapter(VoucherCenterActivity.this, array));
+                }
+            }
+
+            @Override
+            public void onFail(String err) {
+                ToastHelper.showToast("读卡失败");
+            }
+        });
         MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
@@ -87,37 +131,12 @@ public class VoucherCenterActivity extends BaseActivity {
      */
     public void getReadCard(Integer companyCode, Integer diviceID, Integer number) {
         api.getReadCard(companyCode, diviceID, number, token, Constants.MODIAN_TOKEN);
-        api.getUser(token,number);
-        api.setGetResponseListener(new Api.GetResponseListener<Object>() {
-            @Override
-            public void onRespnse(Object o) {
-                if (o instanceof GetReadCard) {
-                    String name = ((GetReadCard) o).getContent().getUserName();
-                    double balance = ((GetReadCard) o).getContent().getBalance();
-                    int paycount = ((GetReadCard) o).getContent().getPayCount();
-                    int status = ((GetReadCard) o).getContent().getState();
-                    String namehex = getNameHex(name);
-                    String balancehex = ChangeTool.numToHex3((int) (balance * 100));
-                    String paycounthex = ChangeTool.numToHex2(paycount);
-                    String statushex = ChangeTool.numToHex1(status);
-                    String sum = "020101000f" + namehex + balancehex + paycounthex + statushex;
-                    MainApplication.getSerialPortUtils().sendSerialPort("A1B103020101000f" + namehex + balancehex + paycounthex + statushex + ChangeTool.makeChecksum(sum));
-                    showCardData(name, balance);
-                } else if (o instanceof GetUser) {
-                    userId = ((GetUser) o).getContent().getUserID();
-                }
-            }
-
-            @Override
-            public void onFail(String err) {
-                ToastHelper.showToast("读卡失败");
-            }
-        });
+        api.getUser(token, number);
     }
 
     private void showCardData(String name, double balance) {
         avcName.setText(name);
-        avcBalance.setText(balance+"");
+        avcBalance.setText(balance + "");
     }
 
     /**
@@ -144,20 +163,24 @@ public class VoucherCenterActivity extends BaseActivity {
             case R.id.deposit:
                 String deposit = fpaCashEt.getText().toString();
                 String donate = fpaDonateEt.getText().toString();
+                String channel = (String) spinnerChannel.getSelectedItem();
                 PostDepositBody body = null;
                 if (TextUtils.isEmpty(deposit)) {
                     ToastHelper.showToast("请输入充值金额");
                 } else {
                     if (!TextUtils.isEmpty(userId)) {
                         if (!TextUtils.isEmpty(donate)) {
-                            body = new PostDepositBody(userId, Double.parseDouble(deposit), Double.parseDouble(donate));
+                            body = new PostDepositBody(userId, Double.parseDouble(deposit), Double.parseDouble(donate), channel);
                         } else {
-                            body = new PostDepositBody(userId, Double.parseDouble(deposit), 0.0);
+                            body = new PostDepositBody(userId, Double.parseDouble(deposit), 0.0, channel);
                         }
-                        api.postDeposit(token,body);
+                        api.postDeposit(token, body);
+                    } else {
+                        ToastHelper.showToast("请先刷卡");
                     }
                 }
                 break;
         }
     }
+
 }

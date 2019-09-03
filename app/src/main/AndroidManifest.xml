@@ -19,28 +19,31 @@
     <application
         android:name=".app.MainApplication"
         android:allowBackup="true"
-        tools:ignore="GoogleAppIndexingWarning"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        >
-        <activity android:name=".view.activity.VoucherCenterActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".view.activity.RecordDetailActivity"></activity>
+        <activity android:name=".view.activity.ConsumeRecordActivity" />
+        <activity android:name=".view.activity.DepositRecordActivity" />
+        <activity
+            android:name=".view.activity.VoucherCenterActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".view.activity.PersonalSettingActivity" />
         <activity android:name=".view.activity.ConsumeResultActivity" />
         <activity android:name=".view.activity.FaceInputActivity" />
         <activity android:name=".view.activity.FaceInputConsumeActivity" />
-        <activity
-            android:name=".view.activity.PersonDetailActivity" />
+        <activity android:name=".view.activity.PersonDetailActivity" />
         <activity android:name=".view.activity.PersonsManageActivity" />
         <activity android:name=".view.activity.NetSettingActivity" />
         <activity
             android:name=".view.activity.MachinesettingActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".view.activity.InpersontopayActivity"
-            android:theme="@style/NoAnimTheme"/>
+        <activity
+            android:name=".view.activity.InpersontopayActivity"
+            android:theme="@style/NoAnimTheme" />
         <activity
             android:name=".view.activity.AutomaticconsumptionActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
@@ -56,7 +59,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.activity.MainActivity" />
-
     </application>
 
 </manifest>
