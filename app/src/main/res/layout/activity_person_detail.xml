@@ -29,19 +29,21 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
+            android:background="@drawable/machine_setting_edittext_bg"
             android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:background="@drawable/machine_setting_edittext_bg">
+            android:focusableInTouchMode="true">
 
             <EditText
                 android:id="@+id/persondetail_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_10"
                 android:background="@null"
                 android:textCursorDrawable="@null"
-                android:textSize="26sp" />
+                android:enabled="false"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/textSize_26" />
         </LinearLayout>
 
     </LinearLayout>
@@ -68,9 +70,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
+            android:background="@drawable/machine_setting_edittext_bg"
             android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:background="@drawable/machine_setting_edittext_bg">
+            android:focusableInTouchMode="true">
 
             <EditText
                 android:id="@+id/persondetail_cardnum"
@@ -80,6 +82,8 @@
                 android:layout_marginRight="@dimen/margin_10"
                 android:background="@null"
                 android:textCursorDrawable="@null"
+                android:enabled="false"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/textSize_26" />
         </LinearLayout>
 
@@ -107,19 +111,21 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
+            android:background="@drawable/machine_setting_edittext_bg"
             android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:background="@drawable/machine_setting_edittext_bg">
+            android:focusableInTouchMode="true">
 
             <EditText
                 android:id="@+id/persondetail_stunum"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_10"
                 android:background="@null"
                 android:textCursorDrawable="@null"
-                android:textSize="26sp" />
+                android:enabled="false"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/textSize_26" />
         </LinearLayout>
 
     </LinearLayout>
@@ -145,50 +151,62 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
+            android:background="@drawable/machine_setting_edittext_bg"
             android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:background="@drawable/machine_setting_edittext_bg">
+            android:focusableInTouchMode="true">
 
             <EditText
                 android:id="@+id/persondetail_telephone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_10"
                 android:background="@null"
                 android:textCursorDrawable="@null"
-                android:textSize="26sp" />
+                android:enabled="false"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/textSize_26" />
         </LinearLayout>
 
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="250dp"
-        android:layout_height="310dp"
+        android:layout_width="@dimen/width_250"
+        android:layout_height="@dimen/height_310"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="150dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginTop="@dimen/margin_150"
+        android:layout_marginRight="@dimen/margin_30"
         android:background="#bfbfbf">
 
         <ImageView
             android:id="@+id/persondetail_camera"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="@dimen/width_200"
+            android:layout_height="@dimen/height_200"
             android:layout_centerInParent="true"
             android:src="@mipmap/camera" />
     </RelativeLayout>
 
     <Button
-        android:id="@+id/personDetail_delete"
-        android:layout_width="@dimen/height_200"
+        android:id="@+id/personDetail_create"
+        android:layout_width="@dimen/width_200"
         android:layout_height="@dimen/height_100"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="700dp"
-        android:text="删除创建" />
+        android:layout_marginTop="600dp"
+        android:text="创建此人员" />
+    <Button
+        android:id="@+id/personDetail_update"
+        android:layout_width="@dimen/width_200"
+        android:layout_height="@dimen/height_100"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_700"
+        android:text="添加人脸" />
+    <Button
+        android:id="@+id/personDetail_delete"
+        android:layout_width="@dimen/width_200"
+        android:layout_height="@dimen/height_100"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="800dp"
+        android:text="删除此人员" />
 
-    <include
-        layout="@layout/bottom_btn_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_80"
-        android:layout_alignParentBottom="true" />
+
 </RelativeLayout>

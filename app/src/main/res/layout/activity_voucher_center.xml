@@ -11,7 +11,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="@dimen/height_350"
         android:layout_margin="@dimen/margin_30"
         android:background="@drawable/tip_button_bg"
         android:elevation="10dp">
@@ -20,93 +20,93 @@
             android:id="@+id/refund"
             android:layout_width="@dimen/width_50"
             android:layout_height="@dimen/height_50"
-            android:layout_margin="@dimen/margin_20"
             android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/margin_20"
             android:src="@mipmap/refund" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_20"
-            android:layout_marginTop="@dimen/margin_70"
-            android:text="退款"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/margin_70"
+            android:layout_marginRight="@dimen/margin_20"
+            android:text="退款"
             android:textColor="#fff"
-            android:textSize="22sp" />
+            android:textSize="@dimen/textSize_22" />
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="20dp"
+            android:layout_width="@dimen/width_30"
+            android:layout_height="@dimen/height_30"
+            android:layout_margin="@dimen/margin_20"
             android:src="@mipmap/person_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginLeft="@dimen/margin_60"
+            android:layout_marginTop="@dimen/margin_20"
             android:text="姓名"
             android:textColor="#fff"
-            android:textSize="22sp" />
+            android:textSize="@dimen/textSize_22" />
 
         <TextView
             android:id="@+id/avc_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginLeft="@dimen/margin_120"
+            android:layout_marginTop="@dimen/margin_20"
             android:text=""
             android:textColor="#fff"
-            android:textSize="22sp" />
+            android:textSize="@dimen/textSize_22" />
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="60dp"
+            android:layout_width="@dimen/width_30"
+            android:layout_height="@dimen/height_30"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_60"
             android:src="@mipmap/qingchu_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginLeft="@dimen/margin_60"
+            android:layout_marginTop="@dimen/margin_60"
             android:text="卡片轻触设备左侧即刻响应"
             android:textColor="#fff"
-            android:textSize="22sp" />
+            android:textSize="@dimen/textSize_22" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_100"
             android:text="余额"
             android:textColor="#fff"
-            android:textSize="40sp" />
+            android:textSize="@dimen/textSize_40" />
 
         <TextView
             android:id="@+id/avc_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginLeft="@dimen/margin_120"
+            android:layout_marginTop="@dimen/margin_100"
             android:text="0.00"
             android:textColor="#fff"
-            android:textSize="40sp" />
+            android:textSize="@dimen/textSize_40" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="150dp"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_150"
             android:text="(提示:余额包含赠送补贴)"
             android:textColor="#fff"
-            android:textSize="16sp" />
+            android:textSize="@dimen/textSize_16" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/height_80"
         android:layout_margin="@dimen/margin_20"
         android:gravity="center">
 
@@ -126,15 +126,15 @@
             android:layout_weight="6"
             android:background="@color/colorPrimaryDark"
             android:hint="0.00"
+            android:inputType="numberDecimal"
             android:paddingLeft="@dimen/padding_10"
             android:singleLine="true"
-            android:inputType="numberDecimal"
             android:textSize="@dimen/textSize_22" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/height_80"
         android:layout_margin="@dimen/margin_20"
         android:gravity="center">
 
@@ -162,7 +162,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/height_80"
         android:layout_margin="@dimen/margin_20"
         android:gravity="center">
 
@@ -188,8 +188,8 @@
         android:id="@+id/deposit"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_80"
-        android:background="@drawable/login_button_bg"
         android:layout_margin="@dimen/margin_30"
+        android:background="@drawable/login_button_bg"
         android:text="充值"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/textSize_26" />

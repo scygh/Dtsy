@@ -13,6 +13,7 @@ import com.moredian.entrance.guard.entity.GetDepartmentList;
 import com.moredian.entrance.guard.entity.GetDepositPage;
 import com.moredian.entrance.guard.entity.GetExpensePage;
 import com.moredian.entrance.guard.entity.GetListByPage;
+import com.moredian.entrance.guard.entity.GetMealList;
 import com.moredian.entrance.guard.entity.GetReadCard;
 import com.moredian.entrance.guard.entity.GetSubsidyLevel;
 import com.moredian.entrance.guard.entity.GetToken;
@@ -73,19 +74,6 @@ public class Api {
 
     public void setOnResponse(OnResponse onResponse) {
         this.onResponse = onResponse;
-    }
-
-    /**
-     * descirption: 通知更新接口
-     */
-    private CreateResponse createResponse;
-
-    public void setCreateResponse(CreateResponse createResponse) {
-        this.createResponse = createResponse;
-    }
-
-    public interface CreateResponse {
-        void onCreate();
     }
 
     /**
@@ -221,9 +209,6 @@ public class Api {
                     public void onNext(PostResponse postResponse) {
                         if (postResponse != null && postResponse.getStatusCode() == 200) {
                             ToastHelper.showToast("创建成功");
-                            if (createResponse != null) {
-                                createResponse.onCreate();
-                            }
                         } else {
                             ToastHelper.showToast(postResponse.getMessage());
                         }
@@ -1218,6 +1203,55 @@ public class Api {
                                 if (onResponse != null) {
                                     onResponse.onFailed();
                                 }
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 获取每一个餐段的消费名称
+     */
+    public void getMealList(Integer deviceId, String token) {
+        ApiUtils.getMealList().getMealList(deviceId, token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetMealList>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetMealList getMealList) {
+                        if (getMealList != null && getMealList.getStatusCode() == 200) {
+                            ToastHelper.showToast("查询餐段成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(getMealList);
+                            }
+                        } else {
+                            ToastHelper.showToast(getMealList.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                ToastHelper.showToast(body.string());
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
                             } catch (IOException e1) {

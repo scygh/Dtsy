@@ -1,43 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="height_20">20dp</dimen>
+    <dimen name="height_30">30dp</dimen>
+    <dimen name="height_40">40dp</dimen>
+    <dimen name="height_50">50dp</dimen>
+    <dimen name="height_60">60dp</dimen>
+    <dimen name="height_70">70dp</dimen>
+    <dimen name="height_80">80dp</dimen>
+    <dimen name="height_100">100dp</dimen>
+    <dimen name="height_110">110dp</dimen>
+    <dimen name="height_120">120dp</dimen>
+    <dimen name="height_150">150dp</dimen>
+    <dimen name="height_160">160dp</dimen>
+    <dimen name="height_180">180dp</dimen>
     <dimen name="height_200">200dp</dimen>
     <dimen name="height_250">250dp</dimen>
     <dimen name="height_300">300dp</dimen>
-    <dimen name="width_400">400dp</dimen>
-    <dimen name="height_110">110dp</dimen>
-    <dimen name="height_100">100dp</dimen>
-    <dimen name="width_100">100dp</dimen>
-    <dimen name="height_120">120dp</dimen>
-    <dimen name="height_40">40dp</dimen>
-    <dimen name="height_30">30dp</dimen>
-    <dimen name="height_70">70dp</dimen>
-    <dimen name="width_70">70dp</dimen>
-    <dimen name="width_50">50dp</dimen>
-    <dimen name="height_80">80dp</dimen>
-    <dimen name="height_60">60dp</dimen>
-    <dimen name="height_50">50dp</dimen>
-    <dimen name="width_80">80dp</dimen>
-    <dimen name="width_10">10dp</dimen>
-    <dimen name="height_20">20dp</dimen>
+    <dimen name="height_310">310dp</dimen>
+    <dimen name="height_350">350dp</dimen>
+    <dimen name="height_850">850dp</dimen>
 
+    <dimen name="width_2">2dp</dimen>
+    <dimen name="width_4">4dp</dimen>
+    <dimen name="width_10">10dp</dimen>
+    <dimen name="width_20">20dp</dimen>
+    <dimen name="width_30">30dp</dimen>
+    <dimen name="width_40">40dp</dimen>
+    <dimen name="width_50">50dp</dimen>
+    <dimen name="width_60">60dp</dimen>
+    <dimen name="width_70">70dp</dimen>
+    <dimen name="width_80">80dp</dimen>
+    <dimen name="width_100">100dp</dimen>
+    <dimen name="width_120">120dp</dimen>
+    <dimen name="width_150">150dp</dimen>
+    <dimen name="width_200">200dp</dimen>
+    <dimen name="width_250">250dp</dimen>
+    <dimen name="width_400">400dp</dimen>
+
+    <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_10">10dp</dimen>
     <dimen name="margin_12">12dp</dimen>
-    <dimen name="padding_10">10dp</dimen>
     <dimen name="margin_20">20dp</dimen>
     <dimen name="margin_25">25dp</dimen>
-    <dimen name="padding_20">20dp</dimen>
-    <dimen name="padding_40">40dp</dimen>
     <dimen name="margin_30">30dp</dimen>
     <dimen name="margin_40">40dp</dimen>
     <dimen name="margin_50">50dp</dimen>
     <dimen name="margin_60">60dp</dimen>
     <dimen name="margin_70">70dp</dimen>
     <dimen name="margin_80">80dp</dimen>
-    <dimen name="margin_160">160dp</dimen>
-    <dimen name="margin_150">150dp</dimen>
     <dimen name="margin_100">100dp</dimen>
+    <dimen name="margin_120">120dp</dimen>
+    <dimen name="margin_150">150dp</dimen>
+    <dimen name="margin_160">160dp</dimen>
+    <dimen name="margin_180">180dp</dimen>
+    <dimen name="margin_200">200dp</dimen>
     <dimen name="margin_320">320dp</dimen>
+    <dimen name="margin_580">580dp</dimen>
+    <dimen name="margin_700">700dp</dimen>
 
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="padding_12">12dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+    <dimen name="padding_40">40dp</dimen>
+    <dimen name="padding_80">80dp</dimen>
 
     <dimen name="textSize_16">16sp</dimen>
     <dimen name="textSize_18">18sp</dimen>
@@ -50,5 +76,9 @@
     <dimen name="textSize_35">35sp</dimen>
     <dimen name="textSize_40">40sp</dimen>
     <dimen name="textSize_80">80sp</dimen>
+
+
+    <dimen name="radius_8">8dp</dimen>
+    <dimen name="radius_10">10dp</dimen>
 
 </resources>

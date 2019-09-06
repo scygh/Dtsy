@@ -112,10 +112,10 @@ public class ManualconsumptionActivity extends BaseActivity {
         publiccount += 1;*/
         if (kind == Constants.KIND_FIND) {
             Log.d(TAG, "formatReadCard: " + companyCode + " " + number + " " + publiccount);
-            getReadCard(companyCode, 1, number);
+            getReadCard(companyCode, Constants.DEVICE_ID, number);
         } else if (kind == Constants.KIND_CONSUME) {
             Log.d(TAG, "formatReadCard: " + companyCode + " " + number + " " + publiccount);
-            getReadCardPaycount(companyCode, 1, number);
+            getReadCardPaycount(companyCode, Constants.DEVICE_ID, number);
         }
     }
 
@@ -228,7 +228,7 @@ public class ManualconsumptionActivity extends BaseActivity {
     public void postSimpleExpense(int number, int count, String name, int status) {
         String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         String amount = ManualconsumptionKeyboardEnterMoney.getText().toString();
-        PostSimpleExpenseBody body = new PostSimpleExpenseBody(number, Double.parseDouble(amount), 1, count, "scy", 1, 2);
+        PostSimpleExpenseBody body = new PostSimpleExpenseBody(number, Double.parseDouble(amount), 1, count, "scy", Constants.DEVICE_ID, 2);
         if (token != null) {
             api.postSimpleExpense(body, token);
             api.setGetResponseListener(new Api.GetResponseListener<SimpleExpense>() {
@@ -266,7 +266,7 @@ public class ManualconsumptionActivity extends BaseActivity {
             String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
             String amount = ManualconsumptionKeyboardEnterMoney.getText().toString();
             if (token != null) {
-                PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), 1, 1, 2);
+                PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), 1, Constants.DEVICE_ID, 2);
                 api.postQRCodeExpense(body, token, Constants.MODIAN_TOKEN);
             }
             api.setGetResponseListener(new Api.GetResponseListener<QRCodeExpense>() {

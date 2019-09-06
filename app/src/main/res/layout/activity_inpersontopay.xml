@@ -6,36 +6,37 @@
     android:layout_height="match_parent"
     android:id="@+id/root"
     android:orientation="vertical"
-    android:background="@color/colorPrimaryDark"
     tools:context=".view.activity.ManualconsumptionActivity">
 
     <include layout="@layout/header_bar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_300"
-        android:layout_margin="@dimen/margin_20"
-        android:background="@drawable/tip_button_bg"
-        android:elevation="10dp">
+        android:layout_height="match_parent"
+        android:clipChildren="false">
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/meal_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_180"
+            android:layout_marginRight="@dimen/margin_180"
+            android:layout_marginTop="@dimen/margin_320"
+            android:layout_marginBottom="@dimen/margin_320"
+            android:clipChildren="false"
+            >
 
-        <TextView
+        </androidx.viewpager.widget.ViewPager>
+
+        <ImageView
+            android:id="@+id/inper_face_pay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_10"
-            android:text="am"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/textSize_30" />
-
-        <TextView
-            android:id="@+id/Manualconsumption_keyboard_enter_money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/money"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/textSize_35"
-            android:textStyle="bold" />
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/margin_80"
+            android:src="@mipmap/facepay" />
     </RelativeLayout>
+
 
 
 </LinearLayout>

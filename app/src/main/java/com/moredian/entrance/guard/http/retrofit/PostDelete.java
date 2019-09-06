@@ -16,6 +16,6 @@ import retrofit2.http.POST;
  */
 public interface PostDelete {
 
-    @POST("api/Member/Delete")
+    @POST("Api/MoreDian/Member/Delete")
     Observable<PostResponse> createTask(@Body PostRequestBody postRequestBody, @Header("AccessToken") String token, @Header("moredianToken") String modiantoken);
 }

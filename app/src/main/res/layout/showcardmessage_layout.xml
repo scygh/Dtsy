@@ -3,20 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingTop="@dimen/margin_80"
-    android:paddingBottom="@dimen/margin_80">
+    android:paddingTop="@dimen/padding_80"
+    android:paddingBottom="@dimen/padding_80">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="@dimen/height_70"
         android:background="@color/colorPrimaryDark">
 
         <ImageView
-            android:layout_width="@dimen/height_40"
+            android:layout_width="@dimen/width_40"
             android:layout_height="@dimen/height_40"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_100"
-            android:src="@mipmap/xingming"/>
+            android:src="@mipmap/xingming" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,15 +39,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="@dimen/height_70"
         android:background="@color/color_fafafa">
 
         <ImageView
-            android:layout_width="@dimen/height_40"
+            android:layout_width="@dimen/width_40"
             android:layout_height="@dimen/height_40"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_100"
-            android:src="@mipmap/cardnum"/>
+            android:src="@mipmap/cardnum" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,15 +70,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="@dimen/height_70"
         android:background="@color/colorPrimaryDark">
 
         <ImageView
-            android:layout_width="@dimen/height_40"
+            android:layout_width="@dimen/width_40"
             android:layout_height="@dimen/height_40"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_100"
-            android:src="@mipmap/yue"/>
+            android:src="@mipmap/yue" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -99,7 +102,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="@dimen/height_70"
         android:background="@color/color_fafafa">
 
         <TextView
@@ -123,7 +126,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="@dimen/height_70"
         android:background="@color/colorPrimaryDark">
 
         <TextView

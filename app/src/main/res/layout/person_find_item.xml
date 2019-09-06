@@ -42,7 +42,7 @@
 
         <ImageView
             android:id="@+id/iv_wifi_rssi"
-            android:layout_width="@dimen/height_40"
+            android:layout_width="@dimen/width_40"
             android:layout_height="@dimen/height_40"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -52,12 +52,12 @@
 
     <TextView
         android:id="@+id/tv_delete"
-        android:layout_width="150dp"
+        android:layout_width="@dimen/width_150"
         android:layout_height="match_parent"
         android:background="#FFF55030"
         android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingEnd="@dimen/padding_16"
         android:text="销户"
         android:textColor="#FFFFFFFF"
         android:textSize="@dimen/textSize_26" />

@@ -8,6 +8,7 @@ import com.moredian.entrance.guard.http.retrofit.GetDepartmentListService;
 import com.moredian.entrance.guard.http.retrofit.GetDepositPage;
 import com.moredian.entrance.guard.http.retrofit.GetExpensePage;
 import com.moredian.entrance.guard.http.retrofit.GetListByPageService;
+import com.moredian.entrance.guard.http.retrofit.GetMealList;
 import com.moredian.entrance.guard.http.retrofit.GetNextNumberService;
 import com.moredian.entrance.guard.http.retrofit.GetReadCardService;
 import com.moredian.entrance.guard.http.retrofit.GetSubsidyLevelService;
@@ -194,5 +195,12 @@ public class ApiUtils {
      */
     public static GetExpensePage getExpensePage() {
         return RetrofitClient.getClient(BASE_URL).create(GetExpensePage.class);
+    }
+
+    /**
+     * descirption:获取每一个餐段的消费名称
+     */
+    public static GetMealList getMealList() {
+        return RetrofitClient.getClient(BASE_URL).create(GetMealList.class);
     }
 }

@@ -20,6 +20,11 @@ public class Constants {
     public static final String USERID = "userId";
     public static final String ACCOUNT = "Account";
 
+    public static final String BREAKFEAST = "breakfeast";
+    public static final String LAUNCH = "launch";
+    public static final String DINNER = "dinner";
+    public static final String MIDNIGHTSNACK = "midnightsnack";
+
     //url
     //public static final String SERVER_URL = "http://dev.machine_api.dt128.com/";
     public static final String SERVER_URL = "http://dev.open.api.dt128.com/";
@@ -82,4 +87,6 @@ public class Constants {
     public static final int KIND_CONSUME = 2;//刷卡支付
     public static final int KIND_CONSUME_TDC = 3;//二维码
     public static final int KIND_CONSUME_FACE = 4;//人脸支付
+
+    public static final int DEVICE_ID = 10000;//人脸支付
 }

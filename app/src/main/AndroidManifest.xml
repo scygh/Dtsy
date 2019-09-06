@@ -42,8 +42,7 @@
             android:name=".view.activity.MachinesettingActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".view.activity.InpersontopayActivity"
-            android:theme="@style/NoAnimTheme" />
+            android:name=".view.activity.InpersontopayActivity" />
         <activity
             android:name=".view.activity.AutomaticconsumptionActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />

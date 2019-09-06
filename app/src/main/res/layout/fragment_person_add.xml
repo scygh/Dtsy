@@ -10,15 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_100"
         android:layout_margin="@dimen/margin_40"
-        android:paddingLeft="@dimen/margin_40"
+        android:paddingLeft="@dimen/padding_40"
         android:paddingTop="@dimen/padding_20"
         app:h_bg_color="@color/color_grey"
-        app:h_bg_radius="10dp"
-        app:h_bg_width='4dp'
+        app:h_bg_radius="@dimen/radius_10"
+        app:h_bg_width='@dimen/width_4'
         app:h_pro_color="@color/colorPrimary"
-        app:h_pro_radius='8dp'
-        app:h_pro_width="2dp"
-        app:h_text_padding='20dp'
+        app:h_pro_radius='@dimen/radius_8'
+        app:h_pro_width="@dimen/width_2"
+        app:h_text_padding='@dimen/padding_20'
         app:h_textsize='@dimen/textSize_20' />
 
     <FrameLayout

@@ -82,8 +82,12 @@ public class PersonFindRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             int state = rowsBeans.get(getAdapterPosition()).getUser().getState();
             if (state == 3) {
                 tvUserstate.setText("已销户");
+                relativeLayout.setEnabled(false);
+                textView.setEnabled(false);
             } else {
                 tvUserstate.setText("正常");
+                relativeLayout.setEnabled(true);
+                textView.setEnabled(true);
             }
             if (rowsBeans.get(getAdapterPosition()).getUserFace().getMemberFace() != null) {
                 tvIsfaceinput.setVisibility(View.VISIBLE);

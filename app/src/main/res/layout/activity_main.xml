@@ -39,7 +39,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_160"
+                    android:layout_height="@dimen/height_160"
                     android:layout_margin="@dimen/margin_10">
 
                     <LinearLayout
@@ -52,8 +52,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/height_70"
-                            android:layout_height="@dimen/width_70"
+                            android:layout_width="@dimen/width_70"
+                            android:layout_height="@dimen/height_70"
                             android:src="@mipmap/main_manualconsumption" />
 
                         <TextView
@@ -74,8 +74,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/height_70"
-                            android:layout_height="@dimen/width_70"
+                            android:layout_width="@dimen/width_70"
+                            android:layout_height="@dimen/height_70"
                             android:src="@mipmap/main_auto" />
 
                         <TextView
@@ -95,8 +95,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/height_70"
-                            android:layout_height="@dimen/width_70"
+                            android:layout_width="@dimen/width_70"
+                            android:layout_height="@dimen/height_70"
                             android:src="@mipmap/main_time" />
 
                         <TextView
@@ -124,7 +124,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_160"
+                    android:layout_height="@dimen/height_160"
                     android:layout_margin="@dimen/margin_10">
 
                     <LinearLayout
@@ -137,8 +137,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/height_70"
-                            android:layout_height="@dimen/width_70"
+                            android:layout_width="@dimen/width_70"
+                            android:layout_height="@dimen/height_70"
                             android:src="@mipmap/main_persons" />
 
                         <TextView
@@ -159,8 +159,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/height_70"
-                            android:layout_height="@dimen/width_70"
+                            android:layout_width="@dimen/width_70"
+                            android:layout_height="@dimen/height_70"
                             android:src="@mipmap/vouchercenter" />
 
                         <TextView
@@ -198,7 +198,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_160"
+                    android:layout_height="@dimen/height_160"
                     android:layout_margin="@dimen/margin_10">
 
                     <LinearLayout
@@ -211,8 +211,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/height_70"
-                            android:layout_height="@dimen/width_70"
+                            android:layout_width="@dimen/width_70"
+                            android:layout_height="@dimen/height_70"
                             android:src="@mipmap/xiaofeibaobiao" />
 
                         <TextView
@@ -233,8 +233,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/height_70"
-                            android:layout_height="@dimen/width_70"
+                            android:layout_width="@dimen/width_70"
+                            android:layout_height="@dimen/height_70"
                             android:src="@mipmap/chongzhijiluicon" />
 
                         <TextView
@@ -272,7 +272,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_160"
+                    android:layout_height="@dimen/height_160"
                     android:layout_margin="@dimen/margin_10">
 
                     <LinearLayout
@@ -285,8 +285,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/height_70"
-                            android:layout_height="@dimen/width_70"
+                            android:layout_width="@dimen/width_70"
+                            android:layout_height="@dimen/height_70"
                             android:src="@mipmap/main_machine_setting" />
 
                         <TextView
@@ -307,8 +307,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/height_70"
-                            android:layout_height="@dimen/width_70"
+                            android:layout_width="@dimen/width_70"
+                            android:layout_height="@dimen/height_70"
                             android:src="@mipmap/main_net_setting" />
 
                         <TextView
@@ -329,8 +329,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/height_70"
-                            android:layout_height="@dimen/width_70"
+                            android:layout_width="@dimen/width_70"
+                            android:layout_height="@dimen/height_70"
                             android:src="@mipmap/ps" />
 
                         <TextView

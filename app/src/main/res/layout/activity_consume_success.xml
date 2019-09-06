@@ -20,8 +20,8 @@
         android:textSize="@dimen/textSize_35" />
 
     <ImageView
-        android:layout_width="@dimen/height_80"
-        android:layout_height="@dimen/width_80"
+        android:layout_width="@dimen/width_80"
+        android:layout_height="@dimen/height_80"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/margin_60"
         android:scaleType="centerCrop"
@@ -64,6 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -12,8 +12,8 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/invest_tablayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:paddingTop="20dp"
+        android:layout_height="@dimen/height_80"
+        android:paddingTop="@dimen/padding_20"
         android:background="@color/colorPrimaryDark"
         app:tabIndicatorColor="@color/colorPrimary"
         app:tabIndicatorFullWidth="false"

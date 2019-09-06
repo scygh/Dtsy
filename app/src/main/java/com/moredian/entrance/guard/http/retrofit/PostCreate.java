@@ -17,6 +17,6 @@ import retrofit2.http.POST;
  */
 public interface PostCreate {
 
-    @POST("api/Member/Create")
+    @POST("Api/MoreDian/Member/Create")
     Observable<PostResponse> createTask(@Body PostRequestBody postRequestBody, @Header("AccessToken") String token, @Header("moredianToken") String modiantoken);
 }

@@ -31,17 +31,17 @@
 
     <ImageView
         android:id="@+id/nir_tips"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="@dimen/width_30"
+        android:layout_height="@dimen/height_30"
+        android:layout_marginRight="@dimen/margin_40"
+        android:layout_marginTop="@dimen/margin_30"
         android:layout_alignParentRight="true"
         android:background="@drawable/shap_nir_tip_default"/>
 
     <TextView
         android:id="@+id/detect_tips_tv"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="@dimen/height_150"
         android:gravity="center"
         android:fontFamily="lablack"
         android:textStyle="bold"

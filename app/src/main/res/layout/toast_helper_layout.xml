@@ -11,9 +11,9 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/textSize_20"
         android:textColor="@color/colorPrimaryDark"
-        android:paddingLeft="@dimen/margin_40"
-        android:paddingRight="@dimen/margin_40"
-        android:paddingTop="@dimen/margin_12"
-        android:paddingBottom="@dimen/margin_12"
+        android:paddingLeft="@dimen/padding_40"
+        android:paddingRight="@dimen/padding_40"
+        android:paddingTop="@dimen/padding_12"
+        android:paddingBottom="@dimen/padding_12"
         android:text="aaa"/>
 </LinearLayout>

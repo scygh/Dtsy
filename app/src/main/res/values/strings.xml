@@ -41,5 +41,6 @@
     <string name="consume_success">支付成功</string>
     <string name="consume_over">完成</string>
     <string name="consume_fail">支付失敗</string>
+    <string name="czjl">充值记录</string>
 
 </resources>

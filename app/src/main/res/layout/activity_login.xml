@@ -8,8 +8,8 @@
     tools:context=".view.activity.LoginActivity">
 
     <ImageView
-        android:layout_width="@dimen/height_80"
-        android:layout_height="@dimen/width_80"
+        android:layout_width="@dimen/width_80"
+        android:layout_height="@dimen/height_80"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/margin_160"
         android:layout_marginBottom="@dimen/margin_60"
@@ -30,7 +30,7 @@
             android:drawableStart="@mipmap/ren"
             android:drawableLeft="@mipmap/ren"
             android:hint="@string/username"
-            android:paddingLeft="@dimen/margin_20"
+            android:paddingLeft="@dimen/padding_20"
             android:singleLine="true"
             android:textColor="@color/icon"
             android:textCursorDrawable="@null"
@@ -54,8 +54,8 @@
             android:drawableLeft="@mipmap/mima"
             android:hint="@string/password"
             android:inputType="numberPassword"
-            android:paddingLeft="@dimen/margin_20"
-            android:paddingRight="@dimen/margin_20"
+            android:paddingLeft="@dimen/padding_20"
+            android:paddingRight="@dimen/padding_20"
             android:singleLine="true"
             android:textColor="@color/icon"
             android:textCursorDrawable="@null"

@@ -104,9 +104,9 @@ public class AutomaticconsumptionActivity extends BaseActivity {
         int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
         int number = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
         if (kind == Constants.KIND_FIND) {
-            getReadCard(companyCode, 1, number);
+            getReadCard(companyCode, Constants.DEVICE_ID, number);
         } else if (kind == Constants.KIND_CONSUME) {
-            getReadCardPaycount(companyCode, 1, number);
+            getReadCardPaycount(companyCode, Constants.DEVICE_ID, number);
         }
     }
 
@@ -229,7 +229,7 @@ public class AutomaticconsumptionActivity extends BaseActivity {
     public void postSimpleExpense(int number, int count, String name, int status) {
         String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         String amount = automaticcnsumptionKeyboardEnterMoney.getText().toString();
-        PostSimpleExpenseBody body = new PostSimpleExpenseBody(number, Double.parseDouble(amount), 2, count, "scy", 1, 2);
+        PostSimpleExpenseBody body = new PostSimpleExpenseBody(number, Double.parseDouble(amount), 2, count, "scy", Constants.DEVICE_ID, 2);
         if (token != null) {
             api.postSimpleExpense(body, token);
             api.setGetResponseListener(new Api.GetResponseListener<SimpleExpense>() {
@@ -263,7 +263,7 @@ public class AutomaticconsumptionActivity extends BaseActivity {
             String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
             String amount = automaticcnsumptionKeyboardEnterMoney.getText().toString();
             if (token != null) {
-                PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), 2, 1, 2);
+                PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), 2, Constants.DEVICE_ID, 2);
                 api.postQRCodeExpense(body, token, Constants.MODIAN_TOKEN);
             }
             api.setGetResponseListener(new Api.GetResponseListener<QRCodeExpense>() {

@@ -313,26 +313,26 @@ public class FaceInputActivity extends AppCompatActivity {
     }
 
     private void setMyResult() {
-            if (image != null) {
-                // TODO: 2019/8/6 处理图片质量
-                Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-                if (bitmap.getWidth() < 200 || bitmap.getHeight() < 200) {
-                    ToastUtils.showShort("人脸大小不能小于200x200,请重新录入");
-                } else {
-                    Intent intent2 = new Intent();
-                    intent2.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
-                    if (TextUtils.isEmpty(memberId)) {
-                        intent2.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
-                    } else {
-                        intent2.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
-                        ToastUtils.showShort("人脸已录入过");
-                    }
-                    FaceInputActivity.this.setResult(Constants.FACE_INPUT_RESULTCODE, intent2);
-                    finish();
-                }
+        if (image != null) {
+            // TODO: 2019/8/6 处理图片质量
+            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            if (bitmap.getWidth() < 200 || bitmap.getHeight() < 200) {
+                ToastUtils.showShort("人脸大小不能小于200x200,请重新录入");
             } else {
-                ToastUtils.showShort("没有录到人脸，请重新录入");
+                Intent intent = new Intent();
+                intent.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
+                if (TextUtils.isEmpty(memberId)) {
+                    intent.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
+                } else {
+                    intent.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
+                    ToastUtils.showShort("人脸已录入过");
+                }
+                FaceInputActivity.this.setResult(Constants.FACE_INPUT_RESULTCODE, intent);
+                finish();
             }
+        } else {
+            ToastUtils.showShort("没有录到人脸，请重新录入");
+        }
     }
 
     public class MyReceiver extends BroadcastReceiver {
@@ -396,16 +396,16 @@ public class FaceInputActivity extends AppCompatActivity {
                         long trackid = intent.getLongExtra(TRACK_ID, 0l);
                         image = rgb_data;
                         mNirTipsView.setBackground(getResources().getDrawable(R.drawable.shap_nir_tip_succ));
-                        Log.d(TAG, "NIR_RESULT_ACTION: "+ System.currentTimeMillis());
+                        Log.d(TAG, "NIR_RESULT_ACTION: " + System.currentTimeMillis());
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 setMyResult();
                             }
-                        },2000);
+                        }, 2000);
 
                     } else if (action.equals(OFFLINE_RECOGNIZE_ACTION) || action.equals(ONLINE_RECOGNIZE_ACTION)) {
-                        Log.d(TAG, "OFFLINE_RECOGNIZE_ACTION: "+ System.currentTimeMillis());
+                        Log.d(TAG, "OFFLINE_RECOGNIZE_ACTION: " + System.currentTimeMillis());
                         long trackid = intent.getLongExtra(TRACK_ID, 0l);
                         String username = intent.getStringExtra(USER_NAME);
                         memberId = intent.getStringExtra(PERSON_ID);
