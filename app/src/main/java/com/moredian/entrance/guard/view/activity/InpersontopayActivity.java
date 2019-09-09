@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -21,18 +22,24 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.entity.DefiniteExpense;
 import com.moredian.entrance.guard.entity.FaceExpense;
 import com.moredian.entrance.guard.entity.GetMealList;
 import com.moredian.entrance.guard.entity.GetReadCard;
+import com.moredian.entrance.guard.entity.PostDefiniteExpenseBody;
 import com.moredian.entrance.guard.entity.PostFaceExpenseBody;
 import com.moredian.entrance.guard.entity.PostQRCodeExpenseBody;
 import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.http.Api;
+import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.adapter.MealPagerAdapter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android_serialport_api.ChangeTool;
@@ -58,6 +65,10 @@ public class InpersontopayActivity extends BaseActivity {
     private List<GetMealList.ContentBean> datas = new ArrayList<>();
     MealPagerAdapter adapter;
     private int publiccount;
+    private List<String[]> times = new ArrayList<>();
+    int shouldConsume;
+    private double money;
+    SimpleDateFormat format;
 
     public static Intent getInpersontopayActivityIntent(Context context, LinearLayout mainLl3) {
         Intent intent = new Intent(context, InpersontopayActivity.class);
@@ -90,7 +101,11 @@ public class InpersontopayActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        api.getMealList(1, token);
+        Date date = new Date(System.currentTimeMillis());
+        format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String currentDate = format.format(date).substring(0,11);
+        String currentTime = format.format(date);
+        api.getMealList(Constants.DEVICE_ID, token);
         api.setGetResponseListener(new Api.GetResponseListener() {
             @Override
             public void onRespnse(Object o) {
@@ -105,6 +120,25 @@ public class InpersontopayActivity extends BaseActivity {
                         mealViewpager.setPageTransformer(false, new LoopTransformer());
                         mealViewpager.setOffscreenPageLimit(datas.size());
                     }
+                    for (int i = 0; i < datas.size(); i++) {
+                        String begintime = currentDate + ((GetMealList) o).getContent().get(i).getMeal().getBeginTime();
+                        String endtime = currentDate + ((GetMealList) o).getContent().get(i).getMeal().getEndTime();
+                        String[] timearr = new String[]{begintime, endtime};
+                        times.add(timearr);
+                    }
+                    try {
+                        for (int j = 0; j < times.size(); j++) {
+                            if (format.parse(times.get(j)[0]).getTime() <= format.parse(currentTime).getTime() && format.parse(times.get(j)[1]).getTime() >= format.parse(currentTime).getTime()) {
+                                mealViewpager.setCurrentItem(j);
+                                shouldConsume = j;
+                                break;
+                            } else {
+                                shouldConsume = mealViewpager.getCurrentItem();
+                            }
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -117,7 +151,7 @@ public class InpersontopayActivity extends BaseActivity {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
                 String a = ChangeTool.ByteArrToHex(buffer, 0, size);
-                double money = datas.get(mealViewpager.getCurrentItem()).getDeviceMeal().getMealAmount();
+                money = datas.get(shouldConsume).getDeviceMeal().getMealAmount();
                 if (a.length() == 32) {//接收到刷卡的信息
                     formatReadCard(a, money);
                 } else if (a.length() == 42) {//接收到扫码的信息
@@ -151,7 +185,7 @@ public class InpersontopayActivity extends BaseActivity {
                 String name = getReadCard.getContent().getUserName();
                 int status = getReadCard.getContent().getState();
                 //查询到消费次数之后执行消费
-                postSimpleExpense(number, publiccount, name, status, money);
+                postDefineExpense(number, publiccount, name, status, money);
             }
 
             @Override
@@ -162,20 +196,20 @@ public class InpersontopayActivity extends BaseActivity {
     }
 
     /**
-     * descirption: 刷卡消费
+     * descirption: 定值消费
      */
-    public void postSimpleExpense(int number, int count, String name, int status, double money) {
-        PostSimpleExpenseBody body = new PostSimpleExpenseBody(number, money, 2, count, "scy", Constants.DEVICE_ID, 2);
-        api.postSimpleExpense(body, token);
-        api.setGetResponseListener(new Api.GetResponseListener<SimpleExpense>() {
+    public void postDefineExpense(int number, int count, String name, int status, double money) {
+        PostDefiniteExpenseBody body = new PostDefiniteExpenseBody(number, 0, count, "scy", Constants.DEVICE_ID);
+        api.postDefiniteExpense(body, token);
+        api.setGetResponseListener(new Api.GetResponseListener<DefiniteExpense>() {
             @Override
-            public void onRespnse(SimpleExpense simpleExpense) {
-                consumeSenddown(simpleExpense, status, name);
+            public void onRespnse(DefiniteExpense definiteExpense) {
+                consumeSenddown(definiteExpense, status, name);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         //跳转到支付成功界面
-                        startActivity(ConsumeResultActivity.getConsumeSuccessActivityIntent(InpersontopayActivity.this, simpleExpense.getContent()));
+                        startActivity(ConsumeResultActivity.getDefineConsumeSuccessActivityIntent(InpersontopayActivity.this, definiteExpense.getContent().getExpenseDetail()));
                     }
                 });
             }
@@ -216,7 +250,7 @@ public class InpersontopayActivity extends BaseActivity {
     /**
      * descirption: 消费成功，拼接字符，数据下行
      */
-    private void consumeSenddown(SimpleExpense simpleExpense, int status, String name) {
+    private void consumeSenddown(DefiniteExpense simpleExpense, int status, String name) {
         double amount = simpleExpense.getContent().getExpenseDetail().getAmount();
         double oamount = simpleExpense.getContent().getExpenseDetail().getOriginalAmount();
         double balance = simpleExpense.getContent().getExpenseDetail().getBalance();
@@ -238,7 +272,7 @@ public class InpersontopayActivity extends BaseActivity {
      * descirption: 拼接数据name
      */
     private String getNameHex(String name) {
-        String namehex = ChangeTool.string2Unicode(name);
+        String namehex = ChangeTool.toChineseHex(name);
         StringBuilder stringBuilder = new StringBuilder();
         if (namehex.length() < 18) {
             for (int i = 0; i < (18 - namehex.length()); i++) {
@@ -310,7 +344,7 @@ public class InpersontopayActivity extends BaseActivity {
         return animator;
     }
 
-    @OnClick({R.id.Manualconsumption_back,R.id.inper_face_pay})
+    @OnClick({R.id.Manualconsumption_back, R.id.inper_face_pay})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Manualconsumption_back:
@@ -344,10 +378,9 @@ public class InpersontopayActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == Constants.FACE_INPUT_REQUESTCODE && resultCode == Constants.FACE_INPUT_RESULTCODE) {
             String memberId = data.getStringExtra(Constants.INTENT_FACEINPUT_MEMBERID);
-            double money = datas.get(mealViewpager.getCurrentItem()).getDeviceMeal().getMealAmount();
             if (!TextUtils.isEmpty(memberId)) {
-                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId,money,2,1,2);
-                api.postFaceExpense(postFaceExpenseBody,token,Constants.MODIAN_TOKEN);
+                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, 0, 3, Constants.DEVICE_ID, 2);
+                api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
                 api.setGetResponseListener(new Api.GetResponseListener<FaceExpense>() {
                     @Override
                     public void onRespnse(FaceExpense faceExpense) {
@@ -366,4 +399,10 @@ public class InpersontopayActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        times.clear();
+        MainApplication.getSerialPortUtils().setOnDataReceiveListenerNull();
+    }
 }

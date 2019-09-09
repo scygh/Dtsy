@@ -155,7 +155,7 @@ public class AutomaticconsumptionActivity extends BaseActivity {
      * descirption: 拼接数据name
      */
     private String getNameHex(String name) {
-        String namehex = ChangeTool.string2Unicode(name);
+        String namehex = ChangeTool.toChineseHex(name);
         StringBuilder stringBuilder = new StringBuilder();
         if (namehex.length() < 18) {
             for (int i = 0; i < (18 - namehex.length()); i++) {
@@ -341,7 +341,7 @@ public class AutomaticconsumptionActivity extends BaseActivity {
             String memberId = data.getStringExtra(Constants.INTENT_FACEINPUT_MEMBERID);
             if (!TextUtils.isEmpty(memberId)) {
                 String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
-                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(automaticcnsumptionKeyboardEnterMoney.getText().toString().trim()), 2, 1, 2);
+                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(automaticcnsumptionKeyboardEnterMoney.getText().toString().trim()), 2, Constants.DEVICE_ID, 2);
                 api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
                 api.setGetResponseListener(new Api.GetResponseListener<FaceExpense>() {
                     @Override
@@ -373,4 +373,9 @@ public class AutomaticconsumptionActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MainApplication.getSerialPortUtils().setOnDataReceiveListenerNull();
+    }
 }

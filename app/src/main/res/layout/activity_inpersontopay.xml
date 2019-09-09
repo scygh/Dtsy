@@ -18,10 +18,10 @@
             android:id="@+id/meal_viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/margin_180"
-            android:layout_marginRight="@dimen/margin_180"
-            android:layout_marginTop="@dimen/margin_320"
-            android:layout_marginBottom="@dimen/margin_320"
+            android:layout_marginLeft="@dimen/margin_100"
+            android:layout_marginRight="@dimen/margin_100"
+            android:layout_marginTop="@dimen/margin_200"
+            android:layout_marginBottom="@dimen/margin_200"
             android:clipChildren="false"
             >
 

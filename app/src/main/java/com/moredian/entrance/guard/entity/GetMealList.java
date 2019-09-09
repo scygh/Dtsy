@@ -96,11 +96,11 @@ public class GetMealList {
             private int DeviceId;
             private int MealId;
             private boolean IsLimitMeal;
-            private int MealQuota;
+            private double MealQuota;
             private int MealTimes;
             private boolean IsPreferential;
-            private int PreferentialAmount;
-            private int MealAmount;
+            private double PreferentialAmount;
+            private double MealAmount;
 
             public String getId() {
                 return Id;
@@ -134,11 +134,11 @@ public class GetMealList {
                 this.IsLimitMeal = IsLimitMeal;
             }
 
-            public int getMealQuota() {
+            public double getMealQuota() {
                 return MealQuota;
             }
 
-            public void setMealQuota(int MealQuota) {
+            public void setMealQuota(double MealQuota) {
                 this.MealQuota = MealQuota;
             }
 
@@ -158,19 +158,19 @@ public class GetMealList {
                 this.IsPreferential = IsPreferential;
             }
 
-            public int getPreferentialAmount() {
+            public double getPreferentialAmount() {
                 return PreferentialAmount;
             }
 
-            public void setPreferentialAmount(int PreferentialAmount) {
+            public void setPreferentialAmount(double PreferentialAmount) {
                 this.PreferentialAmount = PreferentialAmount;
             }
 
-            public int getMealAmount() {
+            public double getMealAmount() {
                 return MealAmount;
             }
 
-            public void setMealAmount(int MealAmount) {
+            public void setMealAmount(double MealAmount) {
                 this.MealAmount = MealAmount;
             }
         }

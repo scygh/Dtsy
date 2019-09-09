@@ -253,7 +253,7 @@ public class Api {
                     @Override
                     public void onNext(PostResponse postResponse) {
                         if (postResponse != null && postResponse.getStatusCode() == 200) {
-                            ToastHelper.showToast("更新成功");
+                            ToastHelper.showToast("添加成功");
                         } else {
                             ToastHelper.showToast(postResponse.getMessage());
                         }
@@ -531,8 +531,8 @@ public class Api {
     /**
      * descirption: 定额支付
      */
-    public void postDefiniteExpense(PostDefiniteExpenseBody body, String token, String modiantoken) {
-        ApiUtils.postDefiniteExpenseService().definiteExpense(body, token, modiantoken)
+    public void postDefiniteExpense(PostDefiniteExpenseBody body, String token) {
+        ApiUtils.postDefiniteExpenseService().definiteExpense(body, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DefiniteExpense>() {

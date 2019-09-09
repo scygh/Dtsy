@@ -145,7 +145,7 @@ public class VoucherCenterActivity extends BaseActivity {
      * descirption: 拼接数据name
      */
     private String getNameHex(String name) {
-        String namehex = ChangeTool.string2Unicode(name);
+        String namehex = ChangeTool.toChineseHex(name);
         StringBuilder stringBuilder = new StringBuilder();
         if (namehex.length() < 18) {
             for (int i = 0; i < (18 - namehex.length()); i++) {
@@ -194,4 +194,9 @@ public class VoucherCenterActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MainApplication.getSerialPortUtils().setOnDataReceiveListenerNull();
+    }
 }

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.entity.DefiniteExpense;
 import com.moredian.entrance.guard.entity.FaceExpense;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.SimpleExpense;
@@ -56,6 +57,12 @@ public class ConsumeResultActivity extends BaseActivity {
         }
     };
 
+    public static Intent getDefineConsumeSuccessActivityIntent(Context context, DefiniteExpense.ContentBean.ExpenseDetailBean contentBean) {
+        Intent intent = new Intent(context, ConsumeResultActivity.class);
+        intent.putExtra(Constants.INTENT_CONSUME_DESUCCESS, contentBean);
+        return intent;
+    }
+
     public static Intent getConsumeSuccessActivityIntent(Context context, SimpleExpense.ContentBean contentBean) {
         Intent intent = new Intent(context, ConsumeResultActivity.class);
         intent.putExtra(Constants.INTENT_CONSUME_SPSUCCESS, contentBean);
@@ -94,6 +101,7 @@ public class ConsumeResultActivity extends BaseActivity {
         QRCodeExpense.ContentBean qrcontentbean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_QRSUCCESS);
         SimpleExpense.ContentBean secontentbean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_SPSUCCESS);
         FaceExpense.ContentBean facecontentbean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_FACESUCCESS);
+        DefiniteExpense.ContentBean.ExpenseDetailBean expenseDetailBean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_DESUCCESS);
         if (secontentbean != null) {
             if (secontentbean.getExpenseDetail() != null) {
                 csConsumeResult.setText("支付成功");
@@ -177,7 +185,31 @@ public class ConsumeResultActivity extends BaseActivity {
                 csConsumePattern.setText("订餐模式");
             }
         }
-        if (secontentbean == null && qrcontentbean == null && facecontentbean == null) {
+        if (expenseDetailBean != null) {
+                csConsumeResult.setText("支付成功");
+                csConsumeKind.setText("刷卡支付");
+                csAmountBig.setText(expenseDetailBean.getAmount() + "");
+                csAmountSmall.setText(expenseDetailBean.getAmount() + "");
+                csBalance.setText(expenseDetailBean.getBalance() + "");
+                csDate.setText(expenseDetailBean.getCreateTime());
+                int partern = expenseDetailBean.getPattern();
+                if (partern == 1) {
+                    csConsumePattern.setText("手动消费");
+                } else if (partern == 2) {
+                    csConsumePattern.setText("自动消费");
+                } else if (partern == 3) {
+                    csConsumePattern.setText("定值消费");
+                } else if (partern == 4) {
+                    csConsumePattern.setText("商品消费");
+                } else if (partern == 5) {
+                    csConsumePattern.setText("机器充值");
+                } else if (partern == 6) {
+                    csConsumePattern.setText("机器退款");
+                } else if (partern == 7) {
+                    csConsumePattern.setText("订餐模式");
+                }
+        }
+        if (secontentbean == null && qrcontentbean == null && facecontentbean == null && expenseDetailBean == null) {
             csConsumeResult.setText("支付失败");
             csConsumeResult.setTextColor(getResources().getColor(R.color.color_f00));
             csAmountBigLl.setVisibility(View.GONE);

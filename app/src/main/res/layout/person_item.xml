@@ -26,7 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_margin="@dimen/margin_160"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_160"
             android:text="state "
             android:textSize="@dimen/textSize_20" />
 

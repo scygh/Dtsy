@@ -1,10 +1,12 @@
 package com.moredian.entrance.guard.view.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -39,6 +41,18 @@ public class MealPagerAdapter extends PagerAdapter {
     TextView mealPrice;
     @BindView(R.id.rl)
     RelativeLayout rl;
+    @BindView(R.id.meal_PreferentialAmount)
+    TextView mealPreferentialAmount;
+    @BindView(R.id.meal_MealQuota)
+    TextView mealMealQuota;
+    @BindView(R.id.meal_MealTimes)
+    TextView mealMealTimes;
+    @BindView(R.id.ll_1)
+    LinearLayout ll1;
+    @BindView(R.id.ll_2)
+    LinearLayout ll2;
+    @BindView(R.id.ll_3)
+    LinearLayout ll3;
     private List<GetMealList.ContentBean> data;
     private Context context;
 
@@ -71,6 +85,23 @@ public class MealPagerAdapter extends PagerAdapter {
         } else if (data.get(position).getMeal().getName().equals("夜宵")) {
             mealIcon.setImageResource(R.mipmap.yexiao);
             rl.setBackgroundColor(context.getResources().getColor(R.color.color_4b77be));
+        }
+        if (data.get(position).getDeviceMeal().isIsLimitMeal()) {
+            if (data.get(position).getDeviceMeal().getMealQuota() != 0) {
+                mealMealQuota.setText(data.get(position).getDeviceMeal().getMealQuota() + "元");
+                ll3.setVisibility(View.VISIBLE);
+            }
+            if (data.get(position).getDeviceMeal().getMealTimes()!= 0){
+                mealMealTimes.setText(data.get(position).getDeviceMeal().getMealTimes()+"次");
+                ll1.setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (data.get(position).getDeviceMeal().isIsPreferential()) {
+            if (data.get(position).getDeviceMeal().getPreferentialAmount()!=0) {
+                mealPreferentialAmount.setText(data.get(position).getDeviceMeal().getPreferentialAmount() + "元");
+                ll2.setVisibility(View.VISIBLE);
+            }
         }
         mealStartTime.setText(data.get(position).getMeal().getBeginTime());
         mealEndTime.setText(data.get(position).getMeal().getEndTime());

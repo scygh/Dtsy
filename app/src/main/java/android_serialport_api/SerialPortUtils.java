@@ -148,5 +148,9 @@ public class SerialPortUtils {
         onDataReceiveListener = dataReceiveListener;
     }
 
+    public void setOnDataReceiveListenerNull() {
+        onDataReceiveListener = null;
+    }
+
 
 }

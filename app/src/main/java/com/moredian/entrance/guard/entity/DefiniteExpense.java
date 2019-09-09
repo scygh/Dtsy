@@ -1,6 +1,7 @@
 package com.moredian.entrance.guard.entity;
 
-import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * description ：
@@ -11,9 +12,9 @@ import java.util.List;
 public class DefiniteExpense {
 
     /**
-     * Content : {"ExpenseDetail":{"Id":"00000000-0000-0000-0000-000000000000","UserId":"00000000-0000-0000-0000-000000000000","Number":0,"DeviceType":1,"DeviceId":0,"Pattern":1,"DetailType":0,"PayCount":0,"Finance":0,"OriginalAmount":0,"Amount":0,"Balance":0,"IsDiscount":true,"DiscountRate":0,"TradeDateTime":"2019-08-15T06:52:11.344Z","CreateTime":"2019-08-15T06:52:11.344Z","Description":"string","OfflinePayCount":0},"ListEMGoodsDetail":[{"Id":"00000000-0000-0000-0000-000000000000","Eid":"00000000-0000-0000-0000-000000000000","GoodsNo":0,"OrderNo":0,"GoodsName":"string","Price":0,"Amount":0,"Count":0,"CreateTime":"2019-08-15T06:52:11.344Z"}],"ThirdPartyExpense":{"Id":"00000000-0000-0000-0000-000000000000","DeviceType":1,"DeviceId":0,"Pattern":1,"DetailType":0,"OriginalAmount":0,"Amount":0,"IsDiscount":true,"DiscountRate":0,"TradeDateTime":"2019-08-15T06:52:11.344Z","CreateTime":"2019-08-15T06:52:11.344Z","Description":"string","ThirdPartyUserId":"string","ThirdPartySourceId":"string","OurSourceId":"string","PayWay":0,"Channel":0,"State":0},"TradingState":0}
+     * Content : {"ExpenseDetail":{"Id":"00000000-0000-0000-0000-000000000000","UserId":"6369e769-ef3b-47fe-b7ce-f7f8e931c29c","Number":22,"DeviceType":2,"DeviceId":10000,"Pattern":3,"DetailType":0,"PayCount":256,"Finance":0,"OriginalAmount":10,"Amount":10,"Balance":92341.86,"IsDiscount":false,"DiscountRate":100,"TradeDateTime":"0001-01-01 00:00:00","CreateTime":"0001-01-01 00:00:00","Description":"扣款合计10.00元;账户合计扣款10.00元;账户余额合计92341.86元.","OfflinePayCount":null},"ListEMGoodsDetail":null,"ThirdPartyExpense":null,"TradingState":0}
      * Result : true
-     * Message : string
+     * Message : Success!
      * StatusCode : 200
      */
 
@@ -56,16 +57,16 @@ public class DefiniteExpense {
 
     public static class ContentBean {
         /**
-         * ExpenseDetail : {"Id":"00000000-0000-0000-0000-000000000000","UserId":"00000000-0000-0000-0000-000000000000","Number":0,"DeviceType":1,"DeviceId":0,"Pattern":1,"DetailType":0,"PayCount":0,"Finance":0,"OriginalAmount":0,"Amount":0,"Balance":0,"IsDiscount":true,"DiscountRate":0,"TradeDateTime":"2019-08-15T06:52:11.344Z","CreateTime":"2019-08-15T06:52:11.344Z","Description":"string","OfflinePayCount":0}
-         * ListEMGoodsDetail : [{"Id":"00000000-0000-0000-0000-000000000000","Eid":"00000000-0000-0000-0000-000000000000","GoodsNo":0,"OrderNo":0,"GoodsName":"string","Price":0,"Amount":0,"Count":0,"CreateTime":"2019-08-15T06:52:11.344Z"}]
-         * ThirdPartyExpense : {"Id":"00000000-0000-0000-0000-000000000000","DeviceType":1,"DeviceId":0,"Pattern":1,"DetailType":0,"OriginalAmount":0,"Amount":0,"IsDiscount":true,"DiscountRate":0,"TradeDateTime":"2019-08-15T06:52:11.344Z","CreateTime":"2019-08-15T06:52:11.344Z","Description":"string","ThirdPartyUserId":"string","ThirdPartySourceId":"string","OurSourceId":"string","PayWay":0,"Channel":0,"State":0}
+         * ExpenseDetail : {"Id":"00000000-0000-0000-0000-000000000000","UserId":"6369e769-ef3b-47fe-b7ce-f7f8e931c29c","Number":22,"DeviceType":2,"DeviceId":10000,"Pattern":3,"DetailType":0,"PayCount":256,"Finance":0,"OriginalAmount":10,"Amount":10,"Balance":92341.86,"IsDiscount":false,"DiscountRate":100,"TradeDateTime":"0001-01-01 00:00:00","CreateTime":"0001-01-01 00:00:00","Description":"扣款合计10.00元;账户合计扣款10.00元;账户余额合计92341.86元.","OfflinePayCount":null}
+         * ListEMGoodsDetail : null
+         * ThirdPartyExpense : null
          * TradingState : 0
          */
 
         private ExpenseDetailBean ExpenseDetail;
-        private ThirdPartyExpenseBean ThirdPartyExpense;
+        private Object ListEMGoodsDetail;
+        private Object ThirdPartyExpense;
         private int TradingState;
-        private List<ListEMGoodsDetailBean> ListEMGoodsDetail;
 
         public ExpenseDetailBean getExpenseDetail() {
             return ExpenseDetail;
@@ -75,11 +76,19 @@ public class DefiniteExpense {
             this.ExpenseDetail = ExpenseDetail;
         }
 
-        public ThirdPartyExpenseBean getThirdPartyExpense() {
+        public Object getListEMGoodsDetail() {
+            return ListEMGoodsDetail;
+        }
+
+        public void setListEMGoodsDetail(Object ListEMGoodsDetail) {
+            this.ListEMGoodsDetail = ListEMGoodsDetail;
+        }
+
+        public Object getThirdPartyExpense() {
             return ThirdPartyExpense;
         }
 
-        public void setThirdPartyExpense(ThirdPartyExpenseBean ThirdPartyExpense) {
+        public void setThirdPartyExpense(Object ThirdPartyExpense) {
             this.ThirdPartyExpense = ThirdPartyExpense;
         }
 
@@ -91,35 +100,28 @@ public class DefiniteExpense {
             this.TradingState = TradingState;
         }
 
-        public List<ListEMGoodsDetailBean> getListEMGoodsDetail() {
-            return ListEMGoodsDetail;
-        }
-
-        public void setListEMGoodsDetail(List<ListEMGoodsDetailBean> ListEMGoodsDetail) {
-            this.ListEMGoodsDetail = ListEMGoodsDetail;
-        }
-
-        public static class ExpenseDetailBean {
+        public static class ExpenseDetailBean implements Parcelable {
             /**
              * Id : 00000000-0000-0000-0000-000000000000
-             * UserId : 00000000-0000-0000-0000-000000000000
-             * Number : 0
-             * DeviceType : 1
-             * DeviceId : 0
-             * Pattern : 1
+             * UserId : 6369e769-ef3b-47fe-b7ce-f7f8e931c29c
+             * Number : 22
+             * DeviceType : 2
+             * DeviceId : 10000
+             * Pattern : 3
              * DetailType : 0
-             * PayCount : 0
+             * PayCount : 256
              * Finance : 0
-             * OriginalAmount : 0
-             * Amount : 0
-             * Balance : 0
-             * IsDiscount : true
-             * DiscountRate : 0
-             * TradeDateTime : 2019-08-15T06:52:11.344Z
-             * CreateTime : 2019-08-15T06:52:11.344Z
-             * Description : string
-             * OfflinePayCount : 0
+             * OriginalAmount : 10
+             * Amount : 10
+             * Balance : 92341.86
+             * IsDiscount : false
+             * DiscountRate : 100
+             * TradeDateTime : 0001-01-01 00:00:00
+             * CreateTime : 0001-01-01 00:00:00
+             * Description : 扣款合计10.00元;账户合计扣款10.00元;账户余额合计92341.86元.
+             * OfflinePayCount : null
              */
+
 
             private String Id;
             private String UserId;
@@ -138,7 +140,7 @@ public class DefiniteExpense {
             private String TradeDateTime;
             private String CreateTime;
             private String Description;
-            private int OfflinePayCount;
+            private Object OfflinePayCount;
 
             public String getId() {
                 return Id;
@@ -276,295 +278,74 @@ public class DefiniteExpense {
                 this.Description = Description;
             }
 
-            public int getOfflinePayCount() {
+            public Object getOfflinePayCount() {
                 return OfflinePayCount;
             }
 
-            public void setOfflinePayCount(int OfflinePayCount) {
+            public void setOfflinePayCount(Object OfflinePayCount) {
                 this.OfflinePayCount = OfflinePayCount;
             }
-        }
 
-        public static class ThirdPartyExpenseBean {
-            /**
-             * Id : 00000000-0000-0000-0000-000000000000
-             * DeviceType : 1
-             * DeviceId : 0
-             * Pattern : 1
-             * DetailType : 0
-             * OriginalAmount : 0
-             * Amount : 0
-             * IsDiscount : true
-             * DiscountRate : 0
-             * TradeDateTime : 2019-08-15T06:52:11.344Z
-             * CreateTime : 2019-08-15T06:52:11.344Z
-             * Description : string
-             * ThirdPartyUserId : string
-             * ThirdPartySourceId : string
-             * OurSourceId : string
-             * PayWay : 0
-             * Channel : 0
-             * State : 0
-             */
-
-            private String Id;
-            private int DeviceType;
-            private int DeviceId;
-            private int Pattern;
-            private int DetailType;
-            private double OriginalAmount;
-            private double Amount;
-            private boolean IsDiscount;
-            private int DiscountRate;
-            private String TradeDateTime;
-            private String CreateTime;
-            private String Description;
-            private String ThirdPartyUserId;
-            private String ThirdPartySourceId;
-            private String OurSourceId;
-            private int PayWay;
-            private int Channel;
-            private int State;
-
-            public String getId() {
-                return Id;
+            @Override
+            public int describeContents() {
+                return 0;
             }
 
-            public void setId(String Id) {
-                this.Id = Id;
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.Id);
+                dest.writeString(this.UserId);
+                dest.writeInt(this.Number);
+                dest.writeInt(this.DeviceType);
+                dest.writeInt(this.DeviceId);
+                dest.writeInt(this.Pattern);
+                dest.writeInt(this.DetailType);
+                dest.writeInt(this.PayCount);
+                dest.writeInt(this.Finance);
+                dest.writeDouble(this.OriginalAmount);
+                dest.writeDouble(this.Amount);
+                dest.writeDouble(this.Balance);
+                dest.writeByte(this.IsDiscount ? (byte) 1 : (byte) 0);
+                dest.writeInt(this.DiscountRate);
+                dest.writeString(this.TradeDateTime);
+                dest.writeString(this.CreateTime);
+                dest.writeString(this.Description);
             }
 
-            public int getDeviceType() {
-                return DeviceType;
+            public ExpenseDetailBean() {
             }
 
-            public void setDeviceType(int DeviceType) {
-                this.DeviceType = DeviceType;
+            protected ExpenseDetailBean(Parcel in) {
+                this.Id = in.readString();
+                this.UserId = in.readString();
+                this.Number = in.readInt();
+                this.DeviceType = in.readInt();
+                this.DeviceId = in.readInt();
+                this.Pattern = in.readInt();
+                this.DetailType = in.readInt();
+                this.PayCount = in.readInt();
+                this.Finance = in.readInt();
+                this.OriginalAmount = in.readDouble();
+                this.Amount = in.readDouble();
+                this.Balance = in.readDouble();
+                this.IsDiscount = in.readByte() != 0;
+                this.DiscountRate = in.readInt();
+                this.TradeDateTime = in.readString();
+                this.CreateTime = in.readString();
+                this.Description = in.readString();
             }
 
-            public int getDeviceId() {
-                return DeviceId;
-            }
+            public static final Parcelable.Creator<ExpenseDetailBean> CREATOR = new Parcelable.Creator<ExpenseDetailBean>() {
+                @Override
+                public ExpenseDetailBean createFromParcel(Parcel source) {
+                    return new ExpenseDetailBean(source);
+                }
 
-            public void setDeviceId(int DeviceId) {
-                this.DeviceId = DeviceId;
-            }
-
-            public int getPattern() {
-                return Pattern;
-            }
-
-            public void setPattern(int Pattern) {
-                this.Pattern = Pattern;
-            }
-
-            public int getDetailType() {
-                return DetailType;
-            }
-
-            public void setDetailType(int DetailType) {
-                this.DetailType = DetailType;
-            }
-
-            public double getOriginalAmount() {
-                return OriginalAmount;
-            }
-
-            public void setOriginalAmount(double OriginalAmount) {
-                this.OriginalAmount = OriginalAmount;
-            }
-
-            public double getAmount() {
-                return Amount;
-            }
-
-            public void setAmount(double Amount) {
-                this.Amount = Amount;
-            }
-
-            public boolean isIsDiscount() {
-                return IsDiscount;
-            }
-
-            public void setIsDiscount(boolean IsDiscount) {
-                this.IsDiscount = IsDiscount;
-            }
-
-            public int getDiscountRate() {
-                return DiscountRate;
-            }
-
-            public void setDiscountRate(int DiscountRate) {
-                this.DiscountRate = DiscountRate;
-            }
-
-            public String getTradeDateTime() {
-                return TradeDateTime;
-            }
-
-            public void setTradeDateTime(String TradeDateTime) {
-                this.TradeDateTime = TradeDateTime;
-            }
-
-            public String getCreateTime() {
-                return CreateTime;
-            }
-
-            public void setCreateTime(String CreateTime) {
-                this.CreateTime = CreateTime;
-            }
-
-            public String getDescription() {
-                return Description;
-            }
-
-            public void setDescription(String Description) {
-                this.Description = Description;
-            }
-
-            public String getThirdPartyUserId() {
-                return ThirdPartyUserId;
-            }
-
-            public void setThirdPartyUserId(String ThirdPartyUserId) {
-                this.ThirdPartyUserId = ThirdPartyUserId;
-            }
-
-            public String getThirdPartySourceId() {
-                return ThirdPartySourceId;
-            }
-
-            public void setThirdPartySourceId(String ThirdPartySourceId) {
-                this.ThirdPartySourceId = ThirdPartySourceId;
-            }
-
-            public String getOurSourceId() {
-                return OurSourceId;
-            }
-
-            public void setOurSourceId(String OurSourceId) {
-                this.OurSourceId = OurSourceId;
-            }
-
-            public int getPayWay() {
-                return PayWay;
-            }
-
-            public void setPayWay(int PayWay) {
-                this.PayWay = PayWay;
-            }
-
-            public int getChannel() {
-                return Channel;
-            }
-
-            public void setChannel(int Channel) {
-                this.Channel = Channel;
-            }
-
-            public int getState() {
-                return State;
-            }
-
-            public void setState(int State) {
-                this.State = State;
-            }
-        }
-
-        public static class ListEMGoodsDetailBean {
-            /**
-             * Id : 00000000-0000-0000-0000-000000000000
-             * Eid : 00000000-0000-0000-0000-000000000000
-             * GoodsNo : 0
-             * OrderNo : 0
-             * GoodsName : string
-             * Price : 0
-             * Amount : 0
-             * Count : 0
-             * CreateTime : 2019-08-15T06:52:11.344Z
-             */
-
-            private String Id;
-            private String Eid;
-            private int GoodsNo;
-            private int OrderNo;
-            private String GoodsName;
-            private double Price;
-            private double Amount;
-            private int Count;
-            private String CreateTime;
-
-            public String getId() {
-                return Id;
-            }
-
-            public void setId(String Id) {
-                this.Id = Id;
-            }
-
-            public String getEid() {
-                return Eid;
-            }
-
-            public void setEid(String Eid) {
-                this.Eid = Eid;
-            }
-
-            public int getGoodsNo() {
-                return GoodsNo;
-            }
-
-            public void setGoodsNo(int GoodsNo) {
-                this.GoodsNo = GoodsNo;
-            }
-
-            public int getOrderNo() {
-                return OrderNo;
-            }
-
-            public void setOrderNo(int OrderNo) {
-                this.OrderNo = OrderNo;
-            }
-
-            public String getGoodsName() {
-                return GoodsName;
-            }
-
-            public void setGoodsName(String GoodsName) {
-                this.GoodsName = GoodsName;
-            }
-
-            public double getPrice() {
-                return Price;
-            }
-
-            public void setPrice(double Price) {
-                this.Price = Price;
-            }
-
-            public double getAmount() {
-                return Amount;
-            }
-
-            public void setAmount(double Amount) {
-                this.Amount = Amount;
-            }
-
-            public int getCount() {
-                return Count;
-            }
-
-            public void setCount(int Count) {
-                this.Count = Count;
-            }
-
-            public String getCreateTime() {
-                return CreateTime;
-            }
-
-            public void setCreateTime(String CreateTime) {
-                this.CreateTime = CreateTime;
-            }
+                @Override
+                public ExpenseDetailBean[] newArray(int size) {
+                    return new ExpenseDetailBean[size];
+                }
+            };
         }
     }
 }

@@ -93,7 +93,7 @@ public class ChangeTool {
         int num = 0;
         while (num < len) {
             String s = data.substring(num, num + 2);
-            Log.d("AutoActivity", "makeChecksum: " + s+"\n");
+            Log.d("AutoActivity", "makeChecksum: " + s + "\n");
             total += Integer.parseInt(s, 16);
             num = num + 2;
         }
@@ -124,4 +124,22 @@ public class ChangeTool {
         return unicode.toString();
     }
 
+    public static String toChineseHex(String s) {
+        String ss = s;
+        byte[] bt = new byte[0];
+
+        try {
+            bt = ss.getBytes("GBK");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String s1 = "";
+        for (int i = 0; i < bt.length; i++) {
+            String tempStr = Integer.toHexString(bt[i]);
+            if (tempStr.length() > 2)
+                tempStr = tempStr.substring(tempStr.length() - 2);
+            s1 = s1 + tempStr + "";
+        }
+        return s1.toUpperCase();
+    }
 }

@@ -325,7 +325,6 @@ public class FaceInputActivity extends AppCompatActivity {
                     intent.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
                 } else {
                     intent.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
-                    ToastUtils.showShort("人脸已录入过");
                 }
                 FaceInputActivity.this.setResult(Constants.FACE_INPUT_RESULTCODE, intent);
                 finish();

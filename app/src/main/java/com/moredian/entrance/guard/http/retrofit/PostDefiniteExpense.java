@@ -17,5 +17,5 @@ import retrofit2.http.POST;
 public interface PostDefiniteExpense {
 
     @POST("Api/Expense/DefiniteExpense")
-    Observable<DefiniteExpense> definiteExpense(@Body PostDefiniteExpenseBody postDefiniteExpenseBody, @Header("AccessToken") String token, @Header("moredianToken") String modiantoken);
+    Observable<DefiniteExpense> definiteExpense(@Body PostDefiniteExpenseBody postDefiniteExpenseBody, @Header("AccessToken") String token);
 }
