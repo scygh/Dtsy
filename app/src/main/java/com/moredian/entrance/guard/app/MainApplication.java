@@ -3,6 +3,7 @@ package com.moredian.entrance.guard.app;
 import android.app.Application;
 import android.content.Context;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.moredian.entrance.guard.constant.Constants;
 
 import android_serialport_api.SerialPortUtils;
@@ -28,7 +29,9 @@ public class MainApplication extends Application {
         super.onCreate();
         context = getApplicationContext();
         serialPortUtils = new SerialPortUtils();
-        serialPortUtils.openSerialPort(Constants.SERIALPORT,Constants.BAUDRATE);
+        String port = SPUtils.getInstance().getString(Constants.MACHINE_PORT,Constants.SERIALPORT);
+        String baudrate = SPUtils.getInstance().getString(Constants.MACHINE_BAUDRTE,Constants.BAUDRATE);
+        serialPortUtils.openSerialPort(port,Integer.parseInt(baudrate));
         /*SerialPortFinder finder = new SerialPortFinder();
         String[] attr = finder.getAllDevicesPath();
         for (String path: attr) {

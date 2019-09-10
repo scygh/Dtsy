@@ -128,6 +128,11 @@ public class InpersontopayActivity extends BaseActivity {
                     }
                     try {
                         for (int j = 0; j < times.size(); j++) {
+                            if (format.parse(times.get(j)[0]).getTime() > format.parse(times.get(j)[1]).getTime()) {
+                                mealViewpager.setCurrentItem(times.size()-1);
+                                shouldConsume = times.size()-1;
+                                break;
+                            }
                             if (format.parse(times.get(j)[0]).getTime() <= format.parse(currentTime).getTime() && format.parse(times.get(j)[1]).getTime() >= format.parse(currentTime).getTime()) {
                                 mealViewpager.setCurrentItem(j);
                                 shouldConsume = j;
@@ -403,6 +408,5 @@ public class InpersontopayActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         times.clear();
-        MainApplication.getSerialPortUtils().setOnDataReceiveListenerNull();
     }
 }

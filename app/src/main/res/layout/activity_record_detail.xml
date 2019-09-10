@@ -49,11 +49,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/padding_10"
-            android:paddingBottom="@dimen/padding_10"
+            android:paddingTop="@dimen/padding_20"
+            android:paddingBottom="@dimen/padding_20"
             android:paddingLeft="@dimen/padding_40"
             android:paddingRight="@dimen/padding_40"
-            android:layout_marginTop="@dimen/margin_10"
             android:layout_marginBottom="@dimen/margin_10"
             android:background="@color/colorPrimaryDark"
             android:gravity="center_vertical">
@@ -78,11 +77,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/padding_10"
-            android:paddingBottom="@dimen/padding_10"
+            android:paddingTop="@dimen/padding_20"
+            android:paddingBottom="@dimen/padding_20"
             android:paddingLeft="@dimen/padding_40"
             android:paddingRight="@dimen/padding_40"
-            android:layout_marginTop="@dimen/margin_10"
             android:layout_marginBottom="@dimen/margin_10"
             android:background="@color/colorPrimaryDark"
             android:gravity="center_vertical">
@@ -108,11 +106,10 @@
             android:id="@+id/paycount_rl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/padding_10"
-            android:paddingBottom="@dimen/padding_10"
+            android:paddingTop="@dimen/padding_20"
+            android:paddingBottom="@dimen/padding_20"
             android:paddingLeft="@dimen/padding_40"
             android:paddingRight="@dimen/padding_40"
-            android:layout_marginTop="@dimen/margin_10"
             android:layout_marginBottom="@dimen/margin_10"
             android:background="@color/colorPrimaryDark"
             android:gravity="center_vertical">
@@ -137,11 +134,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/padding_10"
-            android:paddingBottom="@dimen/padding_10"
+            android:paddingTop="@dimen/padding_20"
+            android:paddingBottom="@dimen/padding_20"
             android:paddingLeft="@dimen/padding_40"
             android:paddingRight="@dimen/padding_40"
-            android:layout_marginTop="@dimen/margin_10"
             android:layout_marginBottom="@dimen/margin_10"
             android:background="@color/colorPrimaryDark"
             android:gravity="center_vertical">
@@ -167,11 +163,10 @@
             android:id="@+id/pattern_rl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/padding_10"
-            android:paddingBottom="@dimen/padding_10"
+            android:paddingTop="@dimen/padding_20"
+            android:paddingBottom="@dimen/padding_20"
             android:paddingLeft="@dimen/padding_40"
             android:paddingRight="@dimen/padding_40"
-            android:layout_marginTop="@dimen/margin_10"
             android:layout_marginBottom="@dimen/margin_10"
             android:background="@color/colorPrimaryDark"
             android:gravity="center_vertical">
@@ -196,11 +191,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/padding_10"
-            android:paddingBottom="@dimen/padding_10"
+            android:paddingTop="@dimen/padding_20"
+            android:paddingBottom="@dimen/padding_20"
             android:paddingLeft="@dimen/padding_40"
             android:paddingRight="@dimen/padding_40"
-            android:layout_marginTop="@dimen/margin_10"
             android:layout_marginBottom="@dimen/margin_10"
             android:background="@color/colorPrimaryDark"
             android:gravity="center_vertical">

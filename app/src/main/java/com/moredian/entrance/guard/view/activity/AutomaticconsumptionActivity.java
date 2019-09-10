@@ -2,13 +2,10 @@ package com.moredian.entrance.guard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -34,7 +30,6 @@ import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.view.fragment.ShowCardMessageFragment;
 
-import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 
 import android_serialport_api.ChangeTool;
@@ -51,10 +46,8 @@ public class AutomaticconsumptionActivity extends BaseActivity {
     TextView pageName;
     @BindView(R.id.automaticcnsumption_keyboard_enter_money)
     EditText automaticcnsumptionKeyboardEnterMoney;
-    @BindView(R.id.persondetail_sure)
-    Button persondetailSure;
-    @BindView(R.id.persondetail_cancle)
-    Button persondetailCancle;
+    @BindView(R.id.auto_face_pay)
+    ImageView autoFacePay;
     private int publiccount;
 
 
@@ -311,13 +304,13 @@ public class AutomaticconsumptionActivity extends BaseActivity {
     /**
      * descirption: 点击事件
      */
-    @OnClick({R.id.Manualconsumption_back, R.id.persondetail_sure, R.id.persondetail_cancle})
+    @OnClick({R.id.Manualconsumption_back, R.id.auto_face_pay})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Manualconsumption_back:
                 finish();
                 break;
-            case R.id.persondetail_sure:
+            case R.id.auto_face_pay:
                 // TODO: 2019/8/9  拉起人脸支付
                 String money = automaticcnsumptionKeyboardEnterMoney.getText().toString().trim();
                 if (money.equals("请输入自动扣款金额") || money.equals("0.00") || money.equals("")) {
@@ -327,10 +320,6 @@ public class AutomaticconsumptionActivity extends BaseActivity {
                     closeKeyboard();
                     startActivityForResult(FaceInputConsumeActivity.getFaceInputActivityIntent(AutomaticconsumptionActivity.this), Constants.FACE_INPUT_REQUESTCODE);
                 }
-                break;
-            case R.id.persondetail_cancle:
-                automaticcnsumptionKeyboardEnterMoney.setText("");
-                closeKeyboard();
                 break;
         }
     }
@@ -378,4 +367,5 @@ public class AutomaticconsumptionActivity extends BaseActivity {
         super.onDestroy();
         MainApplication.getSerialPortUtils().setOnDataReceiveListenerNull();
     }
+
 }

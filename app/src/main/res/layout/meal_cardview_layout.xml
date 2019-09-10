@@ -69,7 +69,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="首单优惠价"
+                    android:text="首单优惠 "
                     android:textSize="@dimen/textSize_24" />
 
                 <TextView
@@ -90,7 +90,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="限额"
+                    android:text="限额 "
                     android:textSize="@dimen/textSize_24" />
 
                 <TextView
@@ -111,7 +111,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="仅限"
+                    android:text="仅限 "
                     android:textSize="@dimen/textSize_24" />
 
                 <TextView

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,9 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.view.adapter.SpinnerAdapter;
 
+import android_serialport_api.SerialPortFinder;
 import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +34,7 @@ public class MachinesettingActivity extends BaseActivity {
     @BindView(R.id.machinesetting_machine_number)
     EditText machinesettingMachineNumber;
     @BindView(R.id.machinesetting_port)
-    EditText machinesettingPort;
+    Spinner machinesettingPort;
     @BindView(R.id.machinesetting_baudrate)
     EditText machinesettingBaudrate;
     @BindView(R.id.persondetail_sure)
@@ -52,8 +55,10 @@ public class MachinesettingActivity extends BaseActivity {
     @Override
     public void initView() {
         pageName.setText("机器设置");
+        SerialPortFinder finder = new SerialPortFinder();
+        String[] attr = finder.getAllDevicesPath();
+        machinesettingPort.setAdapter(new SpinnerAdapter(this, attr));
         machinesettingMachineNumber.setText(SPUtils.getInstance().getString(Constants.MACHINE_NUMBER, "001"));
-        machinesettingPort.setText(SPUtils.getInstance().getString(Constants.MACHINE_PORT, "/dev/ttyMT2"));
         machinesettingBaudrate.setText(SPUtils.getInstance().getString(Constants.MACHINE_BAUDRTE, "115200"));
     }
 
@@ -68,7 +73,7 @@ public class MachinesettingActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.persondetail_sure:
                 String machineNumber = machinesettingMachineNumber.getText().toString();
-                String machinePort = machinesettingPort.getText().toString();
+                String machinePort = (String) machinesettingPort.getSelectedItem();
                 String machineBaudrate = machinesettingBaudrate.getText().toString();
                 SPUtils.getInstance().put(Constants.MACHINE_NUMBER, machineNumber);
                 SPUtils.getInstance().put(Constants.MACHINE_PORT, machinePort);

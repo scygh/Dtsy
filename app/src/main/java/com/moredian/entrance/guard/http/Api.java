@@ -299,6 +299,9 @@ public class Api {
                     public void onNext(PostResponse postResponse) {
                         if (postResponse != null && postResponse.getStatusCode() == 200) {
                             ToastHelper.showToast("删除成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(postResponse);
+                            }
                         } else {
                             ToastHelper.showToast(postResponse.getMessage());
                         }

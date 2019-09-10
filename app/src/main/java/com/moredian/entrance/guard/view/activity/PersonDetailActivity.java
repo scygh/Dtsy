@@ -4,24 +4,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.GetListByPage;
 import com.moredian.entrance.guard.entity.PostRequestBody;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.Base64BitmapUtil;
+import com.moredian.entrance.guard.utils.DrawableUtils;
 import com.moredian.entrance.guard.utils.ToastHelper;
 
 import java.util.ArrayList;
@@ -30,6 +35,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.samlss.broccoli.Broccoli;
+import me.samlss.broccoli.PlaceholderParameter;
 
 public class PersonDetailActivity extends BaseActivity {
 
@@ -39,21 +46,21 @@ public class PersonDetailActivity extends BaseActivity {
     @BindView(R.id.page_name)
     TextView pageName;
     @BindView(R.id.persondetail_name)
-    EditText persondetailName;
+    TextView persondetailName;
     @BindView(R.id.persondetail_cardnum)
-    EditText persondetailCardnum;
+    TextView persondetailCardnum;
     @BindView(R.id.persondetail_stunum)
-    EditText persondetailStunum;
+    TextView persondetailStunum;
     @BindView(R.id.persondetail_telephone)
-    EditText persondetailTelephone;
+    TextView persondetailTelephone;
     @BindView(R.id.persondetail_camera)
     ImageView persondetailCamera;
     @BindView(R.id.personDetail_create)
-    Button personDetailCreate;
+    TextView personDetailCreate;
     @BindView(R.id.personDetail_update)
-    Button personDetailUpdate;
+    TextView personDetailUpdate;
     @BindView(R.id.personDetail_delete)
-    Button personDetailDelete;
+    TextView personDetailDelete;
 
     private Bitmap bitmap;
     private Intent dataIntent;
@@ -69,6 +76,7 @@ public class PersonDetailActivity extends BaseActivity {
     GetListByPage.ContentBean.RowsBean findbean;
     String userid;
     String memberId;
+    private Broccoli mBroccoli;
 
     /**
      * descirption: 得到列表界面需要intent
@@ -88,20 +96,57 @@ public class PersonDetailActivity extends BaseActivity {
         return intent;
     }
 
+    private void initPlaceholders() {
+        int placeholderColor = Color.parseColor("#DDDDDD");
+        mBroccoli = new Broccoli();
+        mBroccoli.addPlaceholders(
+                new PlaceholderParameter.Builder()
+                        .setView(persondetailName)
+                        .setDrawable(DrawableUtils.createRectangleDrawable(placeholderColor, 2))
+                        .build(),
+                new PlaceholderParameter.Builder()
+                        .setView(persondetailCardnum)
+                        .setDrawable(DrawableUtils.createRectangleDrawable(placeholderColor, 2))
+                        .build(),
+                new PlaceholderParameter.Builder()
+                        .setView(persondetailStunum)
+                        .setDrawable(DrawableUtils.createRectangleDrawable(placeholderColor, 2))
+                        .build(),
+                new PlaceholderParameter.Builder()
+                        .setView(persondetailTelephone)
+                        .setDrawable(DrawableUtils.createRectangleDrawable(placeholderColor, 2))
+                        .build()
+        );
+        mBroccoli.show();
+    }
+
     @Override
     public int layoutView() {
-        return R.layout.activity_person_detail;
+        return R.layout.activity_person_detail_2;
     }
 
     @Override
     public void initView() {
         pageName.setText("人员详情");
+        initPlaceholders();
     }
 
     @Override
     public void initData() {
         dataIntent = getIntent();
         initRequest();
+        api.setGetResponseListener(new Api.GetResponseListener() {
+            @Override
+            public void onRespnse(Object o) {
+                //如果是删除成功了，就清空ExitMemberId
+                exitmemberId = null;
+            }
+
+            @Override
+            public void onFail(String err) {
+
+            }
+        });
     }
 
     /**
@@ -111,7 +156,7 @@ public class PersonDetailActivity extends BaseActivity {
         abposition = dataIntent.getIntExtra(Constants.INTENT_ROWSBEAN_POSITION, 0);
         userid = dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_BEAN);
         if (!TextUtils.isEmpty(userid)) {
-            api.getListByPage(1, 5000);
+            api.getListByPage(1, 1000);
             api.setOnResponse(new Api.OnResponse<GetListByPage.ContentBean.RowsBean>() {
                 @Override
                 public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
@@ -188,24 +233,31 @@ public class PersonDetailActivity extends BaseActivity {
             exitmemberId = arowsBeans.get(abposition).getUserFace().getMemberId();
             if (!TextUtils.isEmpty(arowsBeans.get(abposition).getUserFace().getMemberBase64())) {
                 bitmap = Base64BitmapUtil.base64ToBitmap(arowsBeans.get(abposition).getUserFace().getMemberBase64());
-                persondetailCamera.setImageBitmap(bitmap);
+                GlideIn();
             }
         }
+    }
+
+    private void GlideIn() {
+        RoundedCorners roundedCorners = new RoundedCorners(30);
+        RequestOptions options = RequestOptions.bitmapTransform(roundedCorners).override(300, 300);
+        Glide.with(this).load(bitmap).apply(options).into(persondetailCamera);
     }
 
     /**
      * descirption: 查询后设置数据
      */
     private void setData(GetListByPage.ContentBean.RowsBean findbean) {
+        mBroccoli.removeAllPlaceholders();
         persondetailName.setText(findbean.getUser().getName());
-        persondetailCardnum.setText(findbean.getUser().getIdCard());
-        persondetailStunum.setText(findbean.getUser().getDepartmentId());
+        persondetailCardnum.setText(findbean.getUser().getId());
+        persondetailStunum.setText(findbean.getUser().getCreateTime());
         persondetailTelephone.setText(findbean.getUser().getPhone());
         if (findbean.getUserFace() != null) {
             exitmemberId = findbean.getUserFace().getMemberId();
             if (!TextUtils.isEmpty(findbean.getUserFace().getMemberBase64())) {
                 bitmap = Base64BitmapUtil.base64ToBitmap(findbean.getUserFace().getMemberBase64());
-                persondetailCamera.setImageBitmap(bitmap);
+                GlideIn();
             }
         }
     }
@@ -225,13 +277,13 @@ public class PersonDetailActivity extends BaseActivity {
                         if (TextUtils.isEmpty(memberId)) {//如果被识别出来，就说明已经入了
                             createPerson();
                         } else {
-                            ToastHelper.showToast("宁已经录入了人脸");
+                            ToastHelper.showToast("您已经有人脸录入过啦！");
                         }
                     } else {
                         ToastHelper.showToast("请先录入人脸");
                     }
                 } else {
-                    ToastHelper.showToast("当前人员已创建");
+                    ToastHelper.showToast("已经创建过了！");
                 }
                 break;
             case R.id.personDetail_update:
@@ -240,13 +292,13 @@ public class PersonDetailActivity extends BaseActivity {
                         if (TextUtils.isEmpty(memberId)) {//如果被识别出来，就说明已经入了
                             updatePerson();
                         } else {
-                            ToastHelper.showToast("宁已经录入了人脸");
+                            ToastHelper.showToast("您已经有人脸录入过啦！");
                         }
                     } else {
                         ToastHelper.showToast("请先录入人脸");
                     }
                 } else {
-                    ToastHelper.showToast("当前人员已创建");
+                    ToastHelper.showToast("已经创建过了！");
                 }
                 break;
             case R.id.personDetail_delete:
@@ -315,12 +367,12 @@ public class PersonDetailActivity extends BaseActivity {
                 }
                 if (image != null && image.length > 0) {
                     bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-                    persondetailCamera.setImageBitmap(bitmap);
+                    GlideIn();
                 }
             } else {
                 if (image != null && image.length > 0) {
                     bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-                    persondetailCamera.setImageBitmap(bitmap);
+                    GlideIn();
                 }
             }
         }
@@ -337,5 +389,12 @@ public class PersonDetailActivity extends BaseActivity {
             bitmap = null;
         }
         userid = null;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

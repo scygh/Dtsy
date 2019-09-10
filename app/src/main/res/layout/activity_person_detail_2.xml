@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.activity.PersonDetailActivity">
+
+    <include layout="@layout/header_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:paddingBottom="@dimen/padding_50">
+
+        <ImageView
+            android:id="@+id/persondetail_camera"
+            android:layout_width="@dimen/width_100"
+            android:layout_height="@dimen/height_100"
+            android:layout_marginLeft="@dimen/margin_50"
+            android:layout_marginTop="@dimen/margin_150"
+            android:src="@mipmap/camera" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_160"
+            android:layout_marginTop="@dimen/margin_150"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/persondetail_name"
+                android:layout_width="@dimen/width_400"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/textSize_30"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="id:"
+                    android:textColor="@color/icon"
+                    android:textSize="@dimen/textSize_24" />
+
+                <TextView
+                    android:id="@+id/persondetail_cardnum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:singleLine="true"
+                    android:textColor="@color/icon"
+                    android:textSize="@dimen/textSize_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="创建时间:"
+                    android:textColor="@color/icon"
+                    android:textSize="@dimen/textSize_24" />
+
+                <TextView
+                    android:id="@+id/persondetail_stunum"
+                    android:layout_width="@dimen/height_300"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:textColor="@color/icon"
+                    android:textSize="@dimen/textSize_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone"
+                    android:textColor="@color/icon"
+                    android:textSize="@dimen/textSize_24" />
+
+                <TextView
+                    android:id="@+id/persondetail_telephone"
+                    android:layout_width="@dimen/width_200"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:textColor="@color/icon"
+                    android:textSize="@dimen/textSize_24" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/personDetail_create"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_100"
+        android:layout_marginTop="@dimen/margin_20"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:text="创建人员"
+        android:textSize="@dimen/textSize_26" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/margin_50"
+        android:layout_marginRight="@dimen/margin_50"
+        android:background="@color/icon" />
+
+    <TextView
+        android:id="@+id/personDetail_update"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_100"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:text="添加人脸"
+        android:textSize="@dimen/textSize_26" />
+
+    <TextView
+        android:id="@+id/personDetail_delete"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_100"
+        android:layout_marginTop="@dimen/margin_20"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:text="删除人员"
+        android:textSize="@dimen/textSize_26" />
+
+
+</LinearLayout>

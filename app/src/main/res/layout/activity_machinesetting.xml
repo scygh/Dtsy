@@ -94,15 +94,14 @@
                 android:focusableInTouchMode="true"
                 android:background="@drawable/machine_setting_edittext_bg">
 
-                <EditText
+                <Spinner
                     android:id="@+id/machinesetting_port"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:spinnerMode="dropdown"
                     android:layout_marginLeft="@dimen/margin_10"
                     android:layout_marginRight="@dimen/margin_10"
-                    android:background="@null"
-                    android:textCursorDrawable="@null"
-                    android:textSize="@dimen/textSize_26" />
+                    android:textSize="@dimen/textSize_26"/>
             </LinearLayout>
 
         </LinearLayout>

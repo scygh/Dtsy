@@ -54,7 +54,7 @@ public class Constants {
 
     //SerialPort
     public static final String SERIALPORT = "/dev/ttyMT2";
-    public static final int BAUDRATE = 115200;
+    public static final String BAUDRATE = "115200";
 
     public static final String BUZZING = "A1 B1 03 00 01 01 00 00 02";
     public static final String SETMONEYOK = "A1 B1 03 01 01 01 00 01 01 05";
