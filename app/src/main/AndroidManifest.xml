@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.activity.RecordDetailActivity"/>
+        <activity android:name=".view.activity.ChartActivity"></activity>
+        <activity android:name=".view.activity.RecordDetailActivity" />
         <activity android:name=".view.activity.ConsumeRecordActivity" />
         <activity android:name=".view.activity.DepositRecordActivity" />
         <activity
@@ -41,8 +42,7 @@
         <activity
             android:name=".view.activity.MachinesettingActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name=".view.activity.InpersontopayActivity" />
+        <activity android:name=".view.activity.InpersontopayActivity" />
         <activity
             android:name=".view.activity.AutomaticconsumptionActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />

@@ -86,4 +86,5 @@ dependencies {
     implementation 'com.belerweb:pinyin4j:2.5.1'
     implementation 'com.xyz.step:step:1.0.4'
     implementation 'me.samlss:broccoli:1.0.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 }

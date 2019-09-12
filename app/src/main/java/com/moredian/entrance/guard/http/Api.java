@@ -1133,6 +1133,9 @@ public class Api {
                                     onResponse.onResponse(getDepositPage.getContent().getRows());
                                 }
                             }
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(getDepositPage);
+                            }
                         } else {
                             ToastHelper.showToast(getDepositPage.getMessage());
                             if (onResponse != null) {
@@ -1190,6 +1193,9 @@ public class Api {
                                 } else {
                                     onResponse.onResponse(getExpensePage.getContent().getRows());
                                 }
+                            }
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(getExpensePage);
                             }
                         } else {
                             ToastHelper.showToast(getExpensePage.getMessage());
