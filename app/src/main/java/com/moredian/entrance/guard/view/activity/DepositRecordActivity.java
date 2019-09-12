@@ -19,10 +19,14 @@ import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.GetDepositPage;
 import com.moredian.entrance.guard.entity.GetExpensePage;
 import com.moredian.entrance.guard.http.Api;
+import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.adapter.ConsumeRecordRvAdapter;
 import com.moredian.entrance.guard.view.adapter.ExpenseRecordRvAdapter;
+import com.moredian.entrance.guard.view.fragment.DatePickerFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -44,6 +48,9 @@ public class DepositRecordActivity extends BaseActivity {
     private ExpenseRecordRvAdapter adapter;
     boolean isLoading = false;
     Handler handler = new Handler();
+    private boolean isLimit = false;
+    String beginTime;
+    String endTime;
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -119,11 +126,12 @@ public class DepositRecordActivity extends BaseActivity {
      * descirption: 刷新一次
      */
     private void refresh() {
-        api.getDepositPage(token, 1, 10);
+        api.getDepositPage(token, 1, 10, new SimpleDateFormat("yyyy-MM-dd").format(new Date().getTime()), new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         if (loadingLl != null) {
             loadingLl.setVisibility(View.VISIBLE);
         }
         pageIndex = 1;
+        isLimit = false;
     }
 
 
@@ -139,7 +147,11 @@ public class DepositRecordActivity extends BaseActivity {
      * descirption: 上拉加载更多
      */
     private void getData() {
-        api.getDepositPage(token, ++pageIndex, 10);
+        if (isLimit) {
+            api.getDepositPage(token, ++pageIndex, 10, beginTime, endTime);
+        } else {
+            api.getDepositPage(token, ++pageIndex, 10, new SimpleDateFormat("yyyy-MM-dd").format(new Date().getTime()), new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        }
     }
 
     /**
@@ -177,17 +189,30 @@ public class DepositRecordActivity extends BaseActivity {
                 @Override
                 public void onItemClick(int position) {
                     GetDepositPage.ContentBean.RowsBean rowsBean = rowsBeans.get(position);
-                    startActivity(RecordDetailActivity.getRecordDetailActivityIntent(DepositRecordActivity.this,rowsBean));
+                    startActivity(RecordDetailActivity.getRecordDetailActivityIntent(DepositRecordActivity.this, rowsBean));
                 }
             });
         }
     }
 
-    @OnClick({R.id.Manualconsumption_back})
+    @OnClick({R.id.Manualconsumption_back, R.id.record_fab})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Manualconsumption_back:
                 finish();
+                break;
+            case R.id.record_fab:
+                DatePickerFragment datePickerFragment = DatePickerFragment.newInstance();
+                datePickerFragment.show(getSupportFragmentManager(), "tag_deposit_record");
+                datePickerFragment.setOnDialogListener(new DatePickerFragment.OnDialogListener() {
+                    @Override
+                    public void onDialogClick(Date date) {
+                        beginTime = new SimpleDateFormat("yyyy-MM-dd").format(date);
+                        endTime = new SimpleDateFormat("yyyy-MM-dd").format(date);
+                        api.getDepositPage(token, 1, 10, beginTime, endTime);
+                        isLimit = true;
+                    }
+                });
                 break;
         }
     }

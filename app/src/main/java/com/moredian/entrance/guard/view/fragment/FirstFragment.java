@@ -1,11 +1,15 @@
 package com.moredian.entrance.guard.view.fragment;
 
+import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+
+import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.google.android.material.textfield.TextInputEditText;

@@ -11,6 +11,7 @@ import com.moredian.entrance.guard.entity.GetCardTypeList;
 import com.moredian.entrance.guard.entity.GetChannel;
 import com.moredian.entrance.guard.entity.GetDepartmentList;
 import com.moredian.entrance.guard.entity.GetDepositPage;
+import com.moredian.entrance.guard.entity.GetDeviceNumList;
 import com.moredian.entrance.guard.entity.GetExpensePage;
 import com.moredian.entrance.guard.entity.GetListByPage;
 import com.moredian.entrance.guard.entity.GetMealList;
@@ -35,10 +36,13 @@ import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.activity.LoginActivity;
 import com.moredian.entrance.guard.view.activity.MainActivity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -948,6 +952,7 @@ public class Api {
                         if (e instanceof HttpException) {
                             ResponseBody body = ((HttpException) e).response().errorBody();
                             try {
+                                ToastHelper.showToast(body.string());
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
                                 ToastHelper.showToast(error);
@@ -1104,12 +1109,11 @@ public class Api {
                 });
     }
 
-
     /**
      * descirption: 获取充值报表
      */
-    public void getDepositPage(String token, int pageIndex, int pagesize) {
-        ApiUtils.getDepositPage().getDepositPage(pageIndex, pagesize, "TradeDateTime", "desc",  token)
+    public void getDepositPage(String token, int pageIndex, int pagesize, String startTime, String endTime) {
+        ApiUtils.getDepositPage().getDepositPage(pageIndex, pagesize, startTime, endTime, "TradeDateTime", "desc", token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GetDepositPage>() {
@@ -1166,8 +1170,8 @@ public class Api {
     /**
      * descirption: 获取消费记录报表
      */
-    public void getExpensePage(String token, int pageIndex, int pagesize) {
-        ApiUtils.getExpensePage().getExpensePage(pageIndex, pagesize, "TradeDateTime", "desc", token)
+    public void getExpensePage(String token, int pageIndex, int pagesize, String startTime, String endTime) {
+        ApiUtils.getExpensePage().getExpensePage(pageIndex, pagesize, startTime, endTime, "TradeDateTime", "desc", token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GetExpensePage>() {
@@ -1252,6 +1256,54 @@ public class Api {
                             ResponseBody body = ((HttpException) e).response().errorBody();
                             try {
                                 ToastHelper.showToast(body.string());
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 获取设备号列表
+     */
+    public void getDeviceNumList(String token) {
+        ApiUtils.getDeviceNumList().getDeviceNumList(token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetDeviceNumList>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetDeviceNumList list) {
+                        if (list != null && list.getStatusCode() == 200) {
+                            ToastHelper.showToast("获取设备号列表成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(list);
+                            }
+                        } else {
+                            ToastHelper.showToast(list.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
                                 ToastHelper.showToast(error);

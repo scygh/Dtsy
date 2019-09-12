@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -23,6 +25,7 @@ import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.adapter.SpinnerAdapter;
 import com.moredian.entrance.guard.view.fragment.RefundFragment;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class VoucherCenterActivity extends BaseActivity {
+public class VoucherCenterActivity extends BaseActivity implements View.OnFocusChangeListener {
 
     @BindView(R.id.Manualconsumption_back)
     ImageView ManualconsumptionBack;
@@ -53,6 +56,7 @@ public class VoucherCenterActivity extends BaseActivity {
     Spinner spinnerChannel;
     @BindView(R.id.refund)
     ImageView refund;
+    private int number;
 
     public static Intent getVoucherCenterActivityIntent(Context context) {
         Intent intent = new Intent(context, VoucherCenterActivity.class);
@@ -67,6 +71,7 @@ public class VoucherCenterActivity extends BaseActivity {
     @Override
     public void initView() {
         pageName.setText("充值");
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
     }
 
     @Override
@@ -87,6 +92,7 @@ public class VoucherCenterActivity extends BaseActivity {
                     String sum = "020101000f" + namehex + balancehex + paycounthex + statushex;
                     MainApplication.getSerialPortUtils().sendSerialPort("A1B103020101000f" + namehex + balancehex + paycounthex + statushex + ChangeTool.makeChecksum(sum));
                     showCardData(name, balance);
+                    api.getUser(token, number);
                 } else if (o instanceof GetUser) {
                     userId = ((GetUser) o).getContent().getUserID();
                 } else if (o instanceof GetChannel) {
@@ -112,9 +118,30 @@ public class VoucherCenterActivity extends BaseActivity {
                 String a = ChangeTool.ByteArrToHex(buffer, 0, size);
                 if (a.length() == 32) {
                     formatReadCard(a, Constants.KIND_FIND);
+                } else if (a.length() == 24) {//接收到键盘输入金额
+                    formatHex(buffer, size);
                 }
             }
         });
+        fpaCashEt.setOnFocusChangeListener(this);
+        fpaDonateEt.setOnFocusChangeListener(this);
+    }
+
+    int flag = -1;
+    @Override
+    public void onFocusChange(View view, boolean b) {
+        switch (view.getId()) {
+            case R.id.fpa_cash_et:
+                if (b) {
+                    flag = 1;
+                }
+                break;
+            case R.id.fpa_donate_et:
+                if (b) {
+                    flag = 2;
+                }
+                break;
+        }
     }
 
     /**
@@ -122,9 +149,35 @@ public class VoucherCenterActivity extends BaseActivity {
      */
     private void formatReadCard(String a, int kind) {
         int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
-        int number = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
+        number = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
         if (kind == Constants.KIND_FIND) {
             getReadCard(companyCode, 1, number);
+        }
+    }
+
+    /**
+     * descirption: 外接键盘输入显示
+     */
+    private void formatHex(byte[] buffer, int size) {
+        try {
+            int money = ChangeTool.HexToInt(ChangeTool.ByteArrToHex(buffer, 0, size).substring(16, 22));
+            float m = (float) money / 100;
+            DecimalFormat decimalFormat = new DecimalFormat("0.00");
+            String formatmomey = decimalFormat.format(m);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (flag == 1) {
+                        fpaCashEt.setText(formatmomey);
+                    } else if (flag == 2) {
+                        fpaDonateEt.setText(formatmomey);
+                    }
+                }
+            });
+            MainApplication.getSerialPortUtils().sendSerialPort(Constants.SETMONEYOK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            MainApplication.getSerialPortUtils().sendSerialPort(Constants.SETMONEYFAIL);
         }
     }
 
@@ -133,7 +186,6 @@ public class VoucherCenterActivity extends BaseActivity {
      */
     public void getReadCard(Integer companyCode, Integer diviceID, Integer number) {
         api.getReadCard(companyCode, diviceID, number, token, Constants.MODIAN_TOKEN);
-        api.getUser(token, number);
     }
 
     private void showCardData(String name, double balance) {
@@ -175,15 +227,27 @@ public class VoucherCenterActivity extends BaseActivity {
                 String deposit = fpaCashEt.getText().toString();
                 String donate = fpaDonateEt.getText().toString();
                 String channel = (String) spinnerChannel.getSelectedItem();
+                int c = 0;
+                if (channel.equals("线上")) {
+                    c = 0;
+                } else if (channel.equals("支付宝转账")) {
+                    c = 101;
+                }else if (channel.equals("微信转账")) {
+                    c = 102;
+                }else if (channel.equals("银行卡转账")) {
+                    c = 103;
+                }else if (channel.equals("其他转账")) {
+                    c = 104;
+                }
                 PostDepositBody body = null;
                 if (TextUtils.isEmpty(deposit)) {
                     ToastHelper.showToast("请输入充值金额");
                 } else {
                     if (!TextUtils.isEmpty(userId)) {
                         if (!TextUtils.isEmpty(donate)) {
-                            body = new PostDepositBody(userId, Double.parseDouble(deposit), Double.parseDouble(donate), channel);
+                            body = new PostDepositBody(userId, Double.parseDouble(deposit), Double.parseDouble(donate), c);
                         } else {
-                            body = new PostDepositBody(userId, Double.parseDouble(deposit), 0.0, channel);
+                            body = new PostDepositBody(userId, Double.parseDouble(deposit), 0.0, c);
                         }
                         api.postDeposit(token, body);
                     } else {

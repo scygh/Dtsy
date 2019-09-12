@@ -238,7 +238,7 @@ public class PersonAddFragment extends BaseFragment {
         }
         String donate = SPUtils.getInstance().getString(Constants.ARGUEMENT_DONATE);
         if (!TextUtils.isEmpty(donate)) {
-            postRegister.setDonate(Double.parseDouble(cash));
+            postRegister.setDonate(Double.parseDouble(donate));
         } else {
             postRegister.setDonate(0.0);
         }

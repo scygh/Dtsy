@@ -97,6 +97,7 @@ public class PersonFindFragment extends BaseFragment {
 
     @Override
     public void initViewController() {
+        refresh();
         swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.icon));
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

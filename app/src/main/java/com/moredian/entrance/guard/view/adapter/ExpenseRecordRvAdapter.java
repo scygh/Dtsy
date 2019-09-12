@@ -74,7 +74,7 @@ public class ExpenseRecordRvAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         public void bind() {
             recordDate.setText(rowsBeans.get(getAdapterPosition()).getTradeDateTime());
-            recordMoney.setText("￥"+rowsBeans.get(getAdapterPosition()).getAmount());
+            recordMoney.setText("￥"+String.valueOf(rowsBeans.get(getAdapterPosition()).getAmount()));
             recordDes.setText( rowsBeans.get(getAdapterPosition()).getDescription());
         }
     }

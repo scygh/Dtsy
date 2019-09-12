@@ -31,6 +31,9 @@ android {
 
     buildTypes {
         release {
+            /*buildConfigField "boolean", "LOG_DEBUG", "false" //不显示log
+            minifyEnabled true//打开混淆
+            shrinkResources true//打开资源压缩*/
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
@@ -41,6 +44,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }
+
         //指定jdk版本
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8

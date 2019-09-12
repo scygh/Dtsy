@@ -28,6 +28,7 @@ import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.http.Api;
+import com.moredian.entrance.guard.utils.KeyBoardUtil;
 import com.moredian.entrance.guard.view.fragment.ShowCardMessageFragment;
 
 import java.text.DecimalFormat;
@@ -96,10 +97,11 @@ public class AutomaticconsumptionActivity extends BaseActivity {
     private void formatReadCard(String a, int kind) {
         int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
         int number = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
+        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
         if (kind == Constants.KIND_FIND) {
-            getReadCard(companyCode, Constants.DEVICE_ID, number);
+            getReadCard(companyCode, Integer.parseInt(deviceId), number);
         } else if (kind == Constants.KIND_CONSUME) {
-            getReadCardPaycount(companyCode, Constants.DEVICE_ID, number);
+            getReadCardPaycount(companyCode, Integer.parseInt(deviceId), number);
         }
     }
 
@@ -220,9 +222,9 @@ public class AutomaticconsumptionActivity extends BaseActivity {
      * descirption: 刷卡消费
      */
     public void postSimpleExpense(int number, int count, String name, int status) {
-        String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         String amount = automaticcnsumptionKeyboardEnterMoney.getText().toString();
-        PostSimpleExpenseBody body = new PostSimpleExpenseBody(number, Double.parseDouble(amount), 2, count, "scy", Constants.DEVICE_ID, 2);
+        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
+        PostSimpleExpenseBody body = new PostSimpleExpenseBody(number, Double.parseDouble(amount), 2, count, "scy", Integer.parseInt(deviceId), 2);
         if (token != null) {
             api.postSimpleExpense(body, token);
             api.setGetResponseListener(new Api.GetResponseListener<SimpleExpense>() {
@@ -253,10 +255,10 @@ public class AutomaticconsumptionActivity extends BaseActivity {
     private void QrCodeConsume(String a, int kind) {
         String qrcode = a.substring(22, 40);
         if (kind == Constants.KIND_CONSUME_TDC) {
-            String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
+            String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
             String amount = automaticcnsumptionKeyboardEnterMoney.getText().toString();
             if (token != null) {
-                PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), 2, Constants.DEVICE_ID, 2);
+                PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), 2, Integer.parseInt(deviceId), 2);
                 api.postQRCodeExpense(body, token, Constants.MODIAN_TOKEN);
             }
             api.setGetResponseListener(new Api.GetResponseListener<QRCodeExpense>() {
@@ -314,10 +316,10 @@ public class AutomaticconsumptionActivity extends BaseActivity {
                 // TODO: 2019/8/9  拉起人脸支付
                 String money = automaticcnsumptionKeyboardEnterMoney.getText().toString().trim();
                 if (money.equals("请输入自动扣款金额") || money.equals("0.00") || money.equals("")) {
-                    closeKeyboard();
+                    KeyBoardUtil.closeKeyboard(this);
                     ToastUtils.showShort("还未设置金额");
                 } else {
-                    closeKeyboard();
+                    KeyBoardUtil.closeKeyboard(this);
                     startActivityForResult(FaceInputConsumeActivity.getFaceInputActivityIntent(AutomaticconsumptionActivity.this), Constants.FACE_INPUT_REQUESTCODE);
                 }
                 break;
@@ -327,10 +329,11 @@ public class AutomaticconsumptionActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == Constants.FACE_INPUT_REQUESTCODE && resultCode == Constants.FACE_INPUT_RESULTCODE) {
+            String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
             String memberId = data.getStringExtra(Constants.INTENT_FACEINPUT_MEMBERID);
             if (!TextUtils.isEmpty(memberId)) {
                 String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
-                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(automaticcnsumptionKeyboardEnterMoney.getText().toString().trim()), 2, Constants.DEVICE_ID, 2);
+                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(automaticcnsumptionKeyboardEnterMoney.getText().toString().trim()), 2, Integer.parseInt(deviceId), 2);
                 api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
                 api.setGetResponseListener(new Api.GetResponseListener<FaceExpense>() {
                     @Override
@@ -346,18 +349,6 @@ public class AutomaticconsumptionActivity extends BaseActivity {
                 });
             } else {
                 ToastUtils.showShort("人脸未录入，不能使用人脸支付");
-            }
-        }
-    }
-
-    /**
-     * descirption: 关闭软键盘
-     */
-    private void closeKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive() && getCurrentFocus() != null) {
-            if (getCurrentFocus().getWindowToken() != null) {
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }
     }

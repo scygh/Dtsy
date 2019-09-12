@@ -13,10 +13,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:gravity="right"
             android:text="卡号"
-            android:textSize="@dimen/textSize_26" />
+            android:textSize="@dimen/textSize_24" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fpa_serialNo_et"
@@ -41,10 +41,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:gravity="right"
             android:text="支付密码"
-            android:textSize="@dimen/textSize_26" />
+            android:textSize="@dimen/textSize_24" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fpa_paypassword_et"
@@ -70,10 +70,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:gravity="right"
             android:text="到期时间"
-            android:textSize="@dimen/textSize_26" />
+            android:textSize="@dimen/textSize_24" />
 
         <Spinner
             android:id="@+id/spinner_deadtime"
@@ -93,10 +93,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:gravity="right"
             android:text="部门"
-            android:textSize="@dimen/textSize_26" />
+            android:textSize="@dimen/textSize_24" />
 
         <Spinner
             android:id="@+id/spinner_department"

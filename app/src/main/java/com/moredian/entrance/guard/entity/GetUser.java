@@ -8,9 +8,8 @@ package com.moredian.entrance.guard.entity;
  */
 public class GetUser {
 
-
     /**
-     * Content : {"UserID":"6369e769-ef3b-47fe-b7ce-f7f8e931c29c","DepartmentID":"00000000-0000-0000-0000-000000000001","DepartmentName":"默认部门","Name":"scy11","EmpID":"","IDCard":"","Sex":0,"Age":0,"Address":"","Phone":"","UserCreateTime":"2019-08-01 10:40:10","Password":"","Photo":null,"PayKey":"1111","CardTypeName":"正常卡","UserState":1,"Number":22,"SerialNo":"scy11","CardType":1,"IsDiscount":false,"IsGotCard":1,"DiscountRate":100,"Foregift":0,"SubsidyLevel":0,"SubsidyLevelName":"无补贴","Cost":0,"Deadline":"2029-09-09 00:00:00","PayCount":220,"LastSubsidyDate":"2019-07-01 10:40:10","SubsidyDatediff":2,"CardCreateTime":"2019-08-01 10:40:10","CardState":1,"Cash":92650,"Subsidy":0,"Times":0,"Donate":2.88,"Integral":0,"LastPayDateTime":"2019-09-03 10:37:55","AuthType":null,"AuthUrl":"","AuthResult":"","CreateSqlCommand":null}
+     * Content : {"UserID":"0346d876-d195-4d50-acf5-24c65b5978d3","DepartmentID":"00000000-0000-0000-0000-000000000001","DepartmentName":"默认部门","Name":"临时卡","EmpID":"","IDCard":"","Sex":0,"Age":0,"Address":"","Phone":"","UserCreateTime":"2019-08-26 09:40:04","Password":"","Photo":null,"PayKey":"1111","CardTypeName":"正常卡","UserState":1,"Number":46,"SerialNo":"12345678080","CardType":1,"IsDiscount":false,"IsGotCard":1,"DiscountRate":100,"Foregift":0,"SubsidyLevel":0,"SubsidyLevelName":"无补贴","Cost":0,"Deadline":"2029-07-04 00:00:00","PayCount":25,"LastSubsidyDate":"2019-07-26 09:40:08","SubsidyDatediff":2,"CardCreateTime":"2019-08-26 09:40:04","CardState":1,"Cash":4989.8,"Subsidy":0,"Times":0,"Donate":0,"Integral":0,"LastPayDateTime":"2019-09-09 14:07:44","AuthType":null,"AuthUrl":"","AuthResult":"","CreateSqlCommand":null}
      * Result : true
      * Message : Success!
      * StatusCode : 200
@@ -55,44 +54,44 @@ public class GetUser {
 
     public static class ContentBean {
         /**
-         * UserID : 6369e769-ef3b-47fe-b7ce-f7f8e931c29c
+         * UserID : 0346d876-d195-4d50-acf5-24c65b5978d3
          * DepartmentID : 00000000-0000-0000-0000-000000000001
          * DepartmentName : 默认部门
-         * Name : scy11
+         * Name : 临时卡
          * EmpID :
          * IDCard :
          * Sex : 0
          * Age : 0
          * Address :
          * Phone :
-         * UserCreateTime : 2019-08-01 10:40:10
+         * UserCreateTime : 2019-08-26 09:40:04
          * Password :
          * Photo : null
          * PayKey : 1111
          * CardTypeName : 正常卡
          * UserState : 1
-         * Number : 22
-         * SerialNo : scy11
+         * Number : 46
+         * SerialNo : 12345678080
          * CardType : 1
          * IsDiscount : false
          * IsGotCard : 1
          * DiscountRate : 100
-         * Foregift : 0
+         * Foregift : 0.0
          * SubsidyLevel : 0
          * SubsidyLevelName : 无补贴
-         * Cost : 0
-         * Deadline : 2029-09-09 00:00:00
-         * PayCount : 220
-         * LastSubsidyDate : 2019-07-01 10:40:10
+         * Cost : 0.0
+         * Deadline : 2029-07-04 00:00:00
+         * PayCount : 25
+         * LastSubsidyDate : 2019-07-26 09:40:08
          * SubsidyDatediff : 2
-         * CardCreateTime : 2019-08-01 10:40:10
+         * CardCreateTime : 2019-08-26 09:40:04
          * CardState : 1
-         * Cash : 92650
-         * Subsidy : 0
-         * Times : 0
-         * Donate : 2.88
-         * Integral : 0
-         * LastPayDateTime : 2019-09-03 10:37:55
+         * Cash : 4989.8
+         * Subsidy : 0.0
+         * Times : 0.0
+         * Donate : 0.0
+         * Integral : 0.0
+         * LastPayDateTime : 2019-09-09 14:07:44
          * AuthType : null
          * AuthUrl :
          * AuthResult :
@@ -121,21 +120,21 @@ public class GetUser {
         private boolean IsDiscount;
         private int IsGotCard;
         private int DiscountRate;
-        private int Foregift;
+        private double Foregift;
         private int SubsidyLevel;
         private String SubsidyLevelName;
-        private int Cost;
+        private double Cost;
         private String Deadline;
         private int PayCount;
         private String LastSubsidyDate;
         private int SubsidyDatediff;
         private String CardCreateTime;
         private int CardState;
-        private int Cash;
-        private int Subsidy;
-        private int Times;
+        private double Cash;
+        private double Subsidy;
+        private double Times;
         private double Donate;
-        private int Integral;
+        private double Integral;
         private String LastPayDateTime;
         private Object AuthType;
         private String AuthUrl;
@@ -318,11 +317,11 @@ public class GetUser {
             this.DiscountRate = DiscountRate;
         }
 
-        public int getForegift() {
+        public double getForegift() {
             return Foregift;
         }
 
-        public void setForegift(int Foregift) {
+        public void setForegift(double Foregift) {
             this.Foregift = Foregift;
         }
 
@@ -342,11 +341,11 @@ public class GetUser {
             this.SubsidyLevelName = SubsidyLevelName;
         }
 
-        public int getCost() {
+        public double getCost() {
             return Cost;
         }
 
-        public void setCost(int Cost) {
+        public void setCost(double Cost) {
             this.Cost = Cost;
         }
 
@@ -398,27 +397,27 @@ public class GetUser {
             this.CardState = CardState;
         }
 
-        public int getCash() {
+        public double getCash() {
             return Cash;
         }
 
-        public void setCash(int Cash) {
+        public void setCash(double Cash) {
             this.Cash = Cash;
         }
 
-        public int getSubsidy() {
+        public double getSubsidy() {
             return Subsidy;
         }
 
-        public void setSubsidy(int Subsidy) {
+        public void setSubsidy(double Subsidy) {
             this.Subsidy = Subsidy;
         }
 
-        public int getTimes() {
+        public double getTimes() {
             return Times;
         }
 
-        public void setTimes(int Times) {
+        public void setTimes(double Times) {
             this.Times = Times;
         }
 
@@ -430,11 +429,11 @@ public class GetUser {
             this.Donate = Donate;
         }
 
-        public int getIntegral() {
+        public double getIntegral() {
             return Integral;
         }
 
-        public void setIntegral(int Integral) {
+        public void setIntegral(double Integral) {
             this.Integral = Integral;
         }
 

@@ -103,9 +103,10 @@ public class InpersontopayActivity extends BaseActivity {
     public void initData() {
         Date date = new Date(System.currentTimeMillis());
         format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String currentDate = format.format(date).substring(0,11);
+        String currentDate = format.format(date).substring(0, 11);
         String currentTime = format.format(date);
-        api.getMealList(Constants.DEVICE_ID, token);
+        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
+        api.getMealList(Integer.parseInt(deviceId), token);
         api.setGetResponseListener(new Api.GetResponseListener() {
             @Override
             public void onRespnse(Object o) {
@@ -129,8 +130,8 @@ public class InpersontopayActivity extends BaseActivity {
                     try {
                         for (int j = 0; j < times.size(); j++) {
                             if (format.parse(times.get(j)[0]).getTime() > format.parse(times.get(j)[1]).getTime()) {
-                                mealViewpager.setCurrentItem(times.size()-1);
-                                shouldConsume = times.size()-1;
+                                mealViewpager.setCurrentItem(times.size() - 1);
+                                shouldConsume = times.size() - 1;
                                 break;
                             }
                             if (format.parse(times.get(j)[0]).getTime() <= format.parse(currentTime).getTime() && format.parse(times.get(j)[1]).getTime() >= format.parse(currentTime).getTime()) {
@@ -173,8 +174,8 @@ public class InpersontopayActivity extends BaseActivity {
     private void formatReadCard(String a, double money) {
         int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
         int number = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
-        getReadCardPaycount(companyCode, Constants.DEVICE_ID, number, money);
-
+        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
+        getReadCardPaycount(companyCode, Integer.parseInt(deviceId), number, money);
     }
 
     /**
@@ -204,7 +205,8 @@ public class InpersontopayActivity extends BaseActivity {
      * descirption: 定值消费
      */
     public void postDefineExpense(int number, int count, String name, int status, double money) {
-        PostDefiniteExpenseBody body = new PostDefiniteExpenseBody(number, 0, count, "scy", Constants.DEVICE_ID);
+        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
+        PostDefiniteExpenseBody body = new PostDefiniteExpenseBody(number, 0, count, "scy", Integer.parseInt(deviceId));
         api.postDefiniteExpense(body, token);
         api.setGetResponseListener(new Api.GetResponseListener<DefiniteExpense>() {
             @Override
@@ -232,7 +234,8 @@ public class InpersontopayActivity extends BaseActivity {
      */
     private void QrCodeConsume(String a, double money) {
         String qrcode = a.substring(22, 40);
-        PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, money, 3, Constants.DEVICE_ID, 2);
+        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
+        PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, money, 3, Integer.parseInt(deviceId), 2);
         api.postQRCodeExpense(body, token, Constants.MODIAN_TOKEN);
         api.setGetResponseListener(new Api.GetResponseListener<QRCodeExpense>() {
             @Override
@@ -383,8 +386,9 @@ public class InpersontopayActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == Constants.FACE_INPUT_REQUESTCODE && resultCode == Constants.FACE_INPUT_RESULTCODE) {
             String memberId = data.getStringExtra(Constants.INTENT_FACEINPUT_MEMBERID);
+            String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
             if (!TextUtils.isEmpty(memberId)) {
-                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, 0, 3, Constants.DEVICE_ID, 2);
+                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, 0, 3, Integer.parseInt(deviceId), 2);
                 api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
                 api.setGetResponseListener(new Api.GetResponseListener<FaceExpense>() {
                     @Override

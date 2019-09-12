@@ -1,99 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <com.xyz.step.FlowViewHorizontal
-        android:id="@+id/fvh"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_100"
-        android:layout_margin="@dimen/margin_40"
-        android:paddingLeft="@dimen/padding_40"
-        android:paddingTop="@dimen/padding_20"
-        app:h_bg_color="@color/color_grey"
-        app:h_bg_radius="@dimen/radius_10"
-        app:h_bg_width='@dimen/width_4'
-        app:h_pro_color="@color/colorPrimary"
-        app:h_pro_radius='@dimen/radius_8'
-        app:h_pro_width="@dimen/width_2"
-        app:h_text_padding='@dimen/padding_20'
-        app:h_textsize='@dimen/textSize_20' />
-
-    <FrameLayout
-        android:id="@+id/personadd_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-    </FrameLayout>
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.xyz.step.FlowViewHorizontal
+            android:id="@+id/fvh"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_100"
+            android:layout_margin="@dimen/margin_40"
+            android:paddingLeft="@dimen/padding_40"
+            android:paddingTop="@dimen/padding_20"
+            app:h_bg_color="@color/color_grey"
+            app:h_bg_radius="@dimen/radius_10"
+            app:h_bg_width='@dimen/width_4'
+            app:h_pro_color="@color/colorPrimary"
+            app:h_pro_radius='@dimen/radius_8'
+            app:h_pro_width="@dimen/width_2"
+            app:h_text_padding='@dimen/padding_20'
+            app:h_textsize='@dimen/textSize_20' />
+
+        <FrameLayout
+            android:id="@+id/personadd_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        </FrameLayout>
 
         <LinearLayout
-            android:layout_width="@dimen/width_10"
-            android:layout_height="@dimen/height_20"
-            android:layout_marginLeft="@dimen/margin_20"
-            android:background="@color/colorPrimary">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:layout_width="@dimen/width_10"
+                android:layout_height="@dimen/height_20"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:background="@color/colorPrimary">
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:text="@string/tip"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/textSize_18"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_10"
-            android:text="@string/tip"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/textSize_18"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:layout_marginLeft="@dimen/margin_40"
+            android:text="1.卡编号不能与之前已经开户的卡编号重复，否则开户失败"
+            android:textColor="@color/icon"
+            android:textSize="@dimen/textSize_16" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_40"
-        android:text="1.卡编号不能与之前已经开户的卡编号重复，否则开户失败"
-        android:textColor="@color/icon"
-        android:textSize="@dimen/textSize_16" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_40"
+            android:text="2.若不填写4位纯数字的支付密码则不设置支付密码"
+            android:textColor="@color/icon"
+            android:textSize="@dimen/textSize_16" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_40"
-        android:text="2.若不填写4位纯数字的支付密码则不设置支付密码"
-        android:textColor="@color/icon"
-        android:textSize="@dimen/textSize_16" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_80"
-        android:layout_margin="@dimen/margin_40"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/step_previous_btn"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="@dimen/height_80"
-            android:layout_marginRight="@dimen/margin_20"
-            android:layout_weight="1"
-            android:background="@drawable/login_button_bg"
-            android:text="上一步"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/textSize_26"
-            android:visibility="gone" />
+            android:layout_margin="@dimen/margin_40"
+            android:gravity="center">
 
-        <Button
-            android:id="@+id/step_btn"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/height_80"
-            android:layout_weight="1"
-            android:background="@drawable/login_button_bg"
-            android:text="下一步"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/textSize_26" />
+            <Button
+                android:id="@+id/step_previous_btn"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/height_80"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_weight="1"
+                android:background="@drawable/login_button_bg"
+                android:text="上一步"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/textSize_26"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/step_btn"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/height_80"
+                android:layout_weight="1"
+                android:background="@drawable/login_button_bg"
+                android:text="下一步"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/textSize_26" />
+        </LinearLayout>
+
     </LinearLayout>
-
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>

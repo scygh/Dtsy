@@ -22,8 +22,11 @@ import com.moredian.entrance.guard.entity.GetListByPage;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.view.adapter.ConsumeRecordRvAdapter;
 import com.moredian.entrance.guard.view.adapter.PersonManageRvAdapter;
+import com.moredian.entrance.guard.view.fragment.DatePickerFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,6 +49,9 @@ public class ConsumeRecordActivity extends BaseActivity {
     private ConsumeRecordRvAdapter adapter;
     boolean isLoading = false;
     Handler handler = new Handler();
+    private boolean isLimit = false;
+    String beginTime;
+    String endTime;
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -121,11 +127,12 @@ public class ConsumeRecordActivity extends BaseActivity {
      * descirption: 刷新一次
      */
     private void refresh() {
-        api.getExpensePage(token, 1, 10);
+        api.getExpensePage(token, 1, 10,new SimpleDateFormat("yyyy-MM-dd").format(new Date()), new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         if (loadingLl != null) {
             loadingLl.setVisibility(View.VISIBLE);
         }
         pageIndex = 1;
+        isLimit = false;
     }
 
 
@@ -141,7 +148,11 @@ public class ConsumeRecordActivity extends BaseActivity {
      * descirption: 上拉加载更多
      */
     private void getData() {
-        api.getExpensePage(token, ++pageIndex, 10);
+        if (isLimit) {
+            api.getExpensePage(token, ++pageIndex, 10, beginTime, endTime);
+        } else {
+            api.getExpensePage(token, ++pageIndex, 10, new SimpleDateFormat("yyyy-MM-dd").format(new Date()), new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        }
     }
 
     /**
@@ -185,11 +196,24 @@ public class ConsumeRecordActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.Manualconsumption_back})
+    @OnClick({R.id.Manualconsumption_back, R.id.record_fab})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Manualconsumption_back:
                 finish();
+                break;
+            case R.id.record_fab:
+                DatePickerFragment datePickerFragment = DatePickerFragment.newInstance();
+                datePickerFragment.show(getSupportFragmentManager(),"tag_consume_record");
+                datePickerFragment.setOnDialogListener(new DatePickerFragment.OnDialogListener() {
+                    @Override
+                    public void onDialogClick(Date date) {
+                        beginTime = new SimpleDateFormat("yyyy-MM-dd").format(date);
+                        endTime = new SimpleDateFormat("yyyy-MM-dd").format(date);
+                        api.getExpensePage(token, 1, 10, beginTime, endTime);
+                        isLimit = true;
+                    }
+                });
                 break;
         }
     }

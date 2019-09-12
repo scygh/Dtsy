@@ -108,14 +108,16 @@ public class ManualconsumptionActivity extends BaseActivity {
     private void formatReadCard(String a, int kind) {
         int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
         int number = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
+        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
         /*publiccount = ChangeTool.HexToInt(a.substring(26, 30));//消费次数
         publiccount += 1;*/
         if (kind == Constants.KIND_FIND) {
             Log.d(TAG, "formatReadCard: " + companyCode + " " + number + " " + publiccount);
-            getReadCard(companyCode, Constants.DEVICE_ID, number);
+            getReadCard(companyCode, Integer.parseInt(deviceId), number);
         } else if (kind == Constants.KIND_CONSUME) {
             Log.d(TAG, "formatReadCard: " + companyCode + " " + number + " " + publiccount);
-            getReadCardPaycount(companyCode, Constants.DEVICE_ID, number);
+            String di = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
+            getReadCardPaycount(companyCode, Integer.parseInt(di), number);
         }
     }
 
@@ -158,7 +160,7 @@ public class ManualconsumptionActivity extends BaseActivity {
                 String name = getReadCard.getContent().getUserName();
                 double balance = getReadCard.getContent().getBalance();
                 ManualconsumptionName.setText(name);
-                ManualconsumptionBalance.setText(balance+"");
+                ManualconsumptionBalance.setText(balance + "");
                 int paycount = getReadCard.getContent().getPayCount();
                 int status = getReadCard.getContent().getState();
                 Log.d(TAG, "onRespnse: " + name);
@@ -226,9 +228,9 @@ public class ManualconsumptionActivity extends BaseActivity {
      * descirption: 刷卡消费
      */
     public void postSimpleExpense(int number, int count, String name, int status) {
-        String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
+        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
         String amount = ManualconsumptionKeyboardEnterMoney.getText().toString();
-        PostSimpleExpenseBody body = new PostSimpleExpenseBody(number, Double.parseDouble(amount), 1, count, "scy", Constants.DEVICE_ID, 2);
+        PostSimpleExpenseBody body = new PostSimpleExpenseBody(number, Double.parseDouble(amount), 1, count, "scy", Integer.parseInt(deviceId), 2);
         if (token != null) {
             api.postSimpleExpense(body, token);
             api.setGetResponseListener(new Api.GetResponseListener<SimpleExpense>() {
@@ -263,10 +265,10 @@ public class ManualconsumptionActivity extends BaseActivity {
         String qrcode = a.substring(22, 40);
         Log.d(TAG, "QrCodeConsume: " + qrcode);
         if (kind == Constants.KIND_CONSUME_TDC) {
-            String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
+            String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
             String amount = ManualconsumptionKeyboardEnterMoney.getText().toString();
             if (token != null) {
-                PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), 1, Constants.DEVICE_ID, 2);
+                PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), 1, Integer.parseInt(deviceId), 2);
                 api.postQRCodeExpense(body, token, Constants.MODIAN_TOKEN);
             }
             api.setGetResponseListener(new Api.GetResponseListener<QRCodeExpense>() {
@@ -330,7 +332,7 @@ public class ManualconsumptionActivity extends BaseActivity {
     /**
      * descirption: 点击事件
      */
-    @OnClick({R.id.Manualconsumption_back, R.id.Manualconsumption_usesdozensmallnotes,R.id.manu_face_pay})
+    @OnClick({R.id.Manualconsumption_back, R.id.Manualconsumption_usesdozensmallnotes, R.id.manu_face_pay})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Manualconsumption_back:
@@ -354,9 +356,9 @@ public class ManualconsumptionActivity extends BaseActivity {
         if (requestCode == Constants.FACE_INPUT_REQUESTCODE && resultCode == Constants.FACE_INPUT_RESULTCODE) {
             String memberId = data.getStringExtra(Constants.INTENT_FACEINPUT_MEMBERID);
             if (!TextUtils.isEmpty(memberId)) {
-                String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
-                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId,Double.parseDouble(ManualconsumptionKeyboardEnterMoney.getText().toString().trim()),1,Constants.DEVICE_ID,2);
-                api.postFaceExpense(postFaceExpenseBody,token,Constants.MODIAN_TOKEN);
+                String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
+                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(ManualconsumptionKeyboardEnterMoney.getText().toString().trim()), 1, Integer.parseInt(deviceId), 2);
+                api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
                 api.setGetResponseListener(new Api.GetResponseListener<FaceExpense>() {
                     @Override
                     public void onRespnse(FaceExpense faceExpense) {

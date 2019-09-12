@@ -13,10 +13,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:gravity="right"
             android:text="卡片类型"
-            android:textSize="@dimen/textSize_26" />
+            android:textSize="@dimen/textSize_24" />
 
         <Spinner
             android:id="@+id/spinner_cardtype"
@@ -37,10 +37,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:gravity="right"
             android:text="补贴级别"
-            android:textSize="@dimen/textSize_26" />
+            android:textSize="@dimen/textSize_24" />
 
         <Spinner
             android:id="@+id/spinner_subsidyLevel"
@@ -61,10 +61,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:gravity="right"
             android:text="工本费"
-            android:textSize="@dimen/textSize_26" />
+            android:textSize="@dimen/textSize_24" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fpa_cost_et"
@@ -89,10 +89,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:gravity="right"
             android:text="充值金额"
-            android:textSize="@dimen/textSize_26" />
+            android:textSize="@dimen/textSize_24" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fpa_cash_et"
@@ -117,10 +117,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:gravity="right"
             android:text="赠送金额"
-            android:textSize="@dimen/textSize_26" />
+            android:textSize="@dimen/textSize_24" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fpa_donate_et"

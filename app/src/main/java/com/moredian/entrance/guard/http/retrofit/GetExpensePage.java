@@ -14,5 +14,5 @@ import retrofit2.http.Query;
 public interface GetExpensePage {
 
     @GET("Api/ReportCenter/Expense/Paging")
-    Observable<com.moredian.entrance.guard.entity.GetExpensePage> getExpensePage(@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Query("orderColumn") String orderColumn, @Query("orderPattern") String orderPattern, @Header("AccessToken") String token);
+    Observable<com.moredian.entrance.guard.entity.GetExpensePage> getExpensePage(@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize,@Query("startTime") String startTime,@Query("endTime") String endTime, @Query("orderColumn") String orderColumn, @Query("orderPattern") String orderPattern, @Header("AccessToken") String token);
 }

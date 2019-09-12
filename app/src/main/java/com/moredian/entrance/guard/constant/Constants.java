@@ -83,11 +83,11 @@ public class Constants {
     public static final String ARGUEMENT_DEPARTMENT = "arguement_department";
     public static final String ARGUEMENT_NUMBER = "arguement_number";
 
+    public static final String DATE = "arguement_date";
+
     //code
     public static final int KIND_FIND = 1;
     public static final int KIND_CONSUME = 2;//刷卡支付
     public static final int KIND_CONSUME_TDC = 3;//二维码
     public static final int KIND_CONSUME_FACE = 4;//人脸支付
-
-    public static final int DEVICE_ID = 10000;//人脸支付
 }

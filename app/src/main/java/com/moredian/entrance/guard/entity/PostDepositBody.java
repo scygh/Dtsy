@@ -17,9 +17,9 @@ public class PostDepositBody {
     private String UserID;
     private double Amount;
     private double Donate;
-    private String Channel;
+    private int Channel;
 
-    public PostDepositBody(String userID, double amount, double donate,String channel) {
+    public PostDepositBody(String userID, double amount, double donate,int channel) {
         UserID = userID;
         Amount = amount;
         Donate = donate;
@@ -55,11 +55,11 @@ public class PostDepositBody {
         this.Donate = Donate;
     }
 
-    public String getChannel() {
+    public int getChannel() {
         return Channel;
     }
 
-    public void setChannel(String channel) {
+    public void setChannel(int channel) {
         Channel = channel;
     }
 }

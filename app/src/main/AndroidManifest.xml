@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.activity.RecordDetailActivity"></activity>
+        <activity android:name=".view.activity.RecordDetailActivity"/>
         <activity android:name=".view.activity.ConsumeRecordActivity" />
         <activity android:name=".view.activity.DepositRecordActivity" />
         <activity

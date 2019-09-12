@@ -14,5 +14,5 @@ import retrofit2.http.Query;
 public interface GetDepositPage {
 
     @GET("Api/ReportCenter/Deposit/Paging")
-    Observable<com.moredian.entrance.guard.entity.GetDepositPage> getDepositPage(@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Query("orderColumn") String orderColumn, @Query("orderPattern") String orderPattern,@Header("AccessToken") String token);
+    Observable<com.moredian.entrance.guard.entity.GetDepositPage> getDepositPage(@Query("pageIndex") int pageIndex,  @Query("pageSize") int pageSize, @Query("startTime") String startTime,@Query("endTime") String endTime,@Query("orderColumn") String orderColumn, @Query("orderPattern") String orderPattern,@Header("AccessToken") String token);
 }

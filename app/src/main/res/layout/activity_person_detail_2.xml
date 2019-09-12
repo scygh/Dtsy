@@ -142,5 +142,42 @@
         android:text="删除人员"
         android:textSize="@dimen/textSize_26" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="@dimen/width_10"
+            android:layout_height="@dimen/height_20"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:background="@color/colorPrimary">
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:text="@string/tip"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/textSize_18"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_20"
+        android:text="1. 先点击照相机，录入一张符合质量的人脸图片，再创建人员，再添加人脸"
+        android:textColor="@color/icon"
+        android:textSize="@dimen/textSize_16" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_20"
+        android:text="2. 如果没有提示成功，请按提示的信息重新操作"
+        android:textColor="@color/icon"
+        android:textSize="@dimen/textSize_16" />
 
 </LinearLayout>

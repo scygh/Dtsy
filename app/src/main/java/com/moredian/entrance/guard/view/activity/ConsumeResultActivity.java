@@ -21,6 +21,9 @@ import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.face.drawface.FaceDefaultDrawer;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -50,6 +53,8 @@ public class ConsumeResultActivity extends BaseActivity {
     @BindView(R.id.cs_ll_detail)
     LinearLayout csLlDetail;
     private Handler handler = new Handler();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private Date date;
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -102,6 +107,8 @@ public class ConsumeResultActivity extends BaseActivity {
         SimpleExpense.ContentBean secontentbean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_SPSUCCESS);
         FaceExpense.ContentBean facecontentbean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_FACESUCCESS);
         DefiniteExpense.ContentBean.ExpenseDetailBean expenseDetailBean = getIntent().getParcelableExtra(Constants.INTENT_CONSUME_DESUCCESS);
+        date = new Date();
+        String time = dateFormat.format(date);
         if (secontentbean != null) {
             if (secontentbean.getExpenseDetail() != null) {
                 csConsumeResult.setText("支付成功");
@@ -109,7 +116,7 @@ public class ConsumeResultActivity extends BaseActivity {
                 csAmountBig.setText(secontentbean.getExpenseDetail().getAmount() + "");
                 csAmountSmall.setText(secontentbean.getExpenseDetail().getAmount() + "");
                 csBalance.setText(secontentbean.getExpenseDetail().getBalance() + "");
-                csDate.setText(secontentbean.getExpenseDetail().getCreateTime());
+                csDate.setText(time);
                 int partern = secontentbean.getExpenseDetail().getPattern();
                 if (partern == 1) {
                     csConsumePattern.setText("手动消费");
@@ -133,7 +140,7 @@ public class ConsumeResultActivity extends BaseActivity {
             csAmountBig.setText(qrcontentbean.getThirdPartyExpense().getAmount() + "");
             csAmountSmall.setText(qrcontentbean.getThirdPartyExpense().getAmount() + "");
             csBalanceRl.setVisibility(View.GONE);
-            csDate.setText(qrcontentbean.getThirdPartyExpense().getCreateTime());
+            csDate.setText(time);
             int partern = qrcontentbean.getThirdPartyExpense().getPattern();
             int qrtype = qrcontentbean.getQRType();
             if (qrtype == 1) {
@@ -166,7 +173,7 @@ public class ConsumeResultActivity extends BaseActivity {
             csAmountBig.setText(facecontentbean.getExpenseDetail().getAmount() + "");
             csAmountSmall.setText(facecontentbean.getExpenseDetail().getAmount() + "");
             csBalance.setText(facecontentbean.getExpenseDetail().getBalance() + "");
-            csDate.setText(facecontentbean.getExpenseDetail().getCreateTime());
+            csDate.setText(time);
             int partern = facecontentbean.getExpenseDetail().getPattern();
             csConsumeKind.setText("人脸支付");
             if (partern == 1) {
@@ -186,28 +193,28 @@ public class ConsumeResultActivity extends BaseActivity {
             }
         }
         if (expenseDetailBean != null) {
-                csConsumeResult.setText("支付成功");
-                csConsumeKind.setText("刷卡支付");
-                csAmountBig.setText(expenseDetailBean.getAmount() + "");
-                csAmountSmall.setText(expenseDetailBean.getAmount() + "");
-                csBalance.setText(expenseDetailBean.getBalance() + "");
-                csDate.setText(expenseDetailBean.getCreateTime());
-                int partern = expenseDetailBean.getPattern();
-                if (partern == 1) {
-                    csConsumePattern.setText("手动消费");
-                } else if (partern == 2) {
-                    csConsumePattern.setText("自动消费");
-                } else if (partern == 3) {
-                    csConsumePattern.setText("定值消费");
-                } else if (partern == 4) {
-                    csConsumePattern.setText("商品消费");
-                } else if (partern == 5) {
-                    csConsumePattern.setText("机器充值");
-                } else if (partern == 6) {
-                    csConsumePattern.setText("机器退款");
-                } else if (partern == 7) {
-                    csConsumePattern.setText("订餐模式");
-                }
+            csConsumeResult.setText("支付成功");
+            csConsumeKind.setText("刷卡支付");
+            csAmountBig.setText(expenseDetailBean.getAmount() + "");
+            csAmountSmall.setText(expenseDetailBean.getAmount() + "");
+            csBalance.setText(expenseDetailBean.getBalance() + "");
+            csDate.setText(time);
+            int partern = expenseDetailBean.getPattern();
+            if (partern == 1) {
+                csConsumePattern.setText("手动消费");
+            } else if (partern == 2) {
+                csConsumePattern.setText("自动消费");
+            } else if (partern == 3) {
+                csConsumePattern.setText("定值消费");
+            } else if (partern == 4) {
+                csConsumePattern.setText("商品消费");
+            } else if (partern == 5) {
+                csConsumePattern.setText("机器充值");
+            } else if (partern == 6) {
+                csConsumePattern.setText("机器退款");
+            } else if (partern == 7) {
+                csConsumePattern.setText("订餐模式");
+            }
         }
         if (secontentbean == null && qrcontentbean == null && facecontentbean == null && expenseDetailBean == null) {
             csConsumeResult.setText("支付失败");
