@@ -220,7 +220,7 @@ public class PersonListFragment extends BaseFragment {
      * descirption: 初始化列表数据
      */
     private void initRecyclerview() {
-        linearLayoutManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
+        linearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         if (linearLayoutManager != null) {
             personManageRecyclerview.setLayoutManager(linearLayoutManager);
             personManageRecyclerview.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));

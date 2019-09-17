@@ -3,6 +3,7 @@ package com.moredian.entrance.guard.view.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,11 +33,8 @@ public class SplashActivity extends AppCompatActivity {
     private class SplashTask implements Runnable {
         @Override
         public void run() {
-            if (SPUtils.getInstance().getBoolean(Constants.ISLOGIN)) {
-                SplashActivity.this.startActivity(MainActivity.getMainActivityIntent(SplashActivity.this));
-            } else {
-                SplashActivity.this.startActivity(LoginActivity.getLoginActivityIntent(SplashActivity.this));
-            }
+            Intent intent = new Intent(SplashActivity.this,DsyActivity.class);
+            startActivity(intent);
             finish();
         }
     }

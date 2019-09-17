@@ -13,30 +13,39 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.blankj.utilcode.util.ToastUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.moredian.entrance.guard.R;
+import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
+import com.moredian.entrance.guard.entity.GetDevicePattern;
 import com.moredian.entrance.guard.face.CameraUtil;
 import com.moredian.entrance.guard.face.CameraView;
 import com.moredian.entrance.guard.face.drawface.DrawerSurfaceView;
+import com.moredian.entrance.guard.http.Api;
+import com.moredian.entrance.guard.utils.ToastHelper;
 
+import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FaceInputConsumeActivity extends AppCompatActivity {
+/**
+ * description ：
+ * author : scy
+ * email : 1797484636@qq.com
+ * date : 2019/9/16 17:43
+ */
+public class DsyActivity extends BaseActivity {
 
-    private static final String TAG = "FTCActivity";
+    private static final String TAG = "DsyActivity";
 
     @BindView(R.id.camera_view)
     CameraView mRgbCameraView;
@@ -52,35 +61,95 @@ public class FaceInputConsumeActivity extends AppCompatActivity {
     ImageView mRgbFaceView;
     @BindView(R.id.iv_nir)
     ImageView mNirFaceView;
-    @BindView(R.id.persondetail_sure)
-    Button beSure;
-    @BindView(R.id.persondetail_cancle)
-    Button beCancle;
+    @BindView(R.id.tv_pattern_title)
+    TextView tvPatternTitle;
+    @BindView(R.id.tv_pattern)
+    TextView tvPattern;
+    @BindView(R.id.tv_money)
+    TextView tvMoney;
     private byte[] rgb_data;
     private byte[] image;
     private String memberId;
+    private Bitmap bitmap;
     private static boolean mShowCallbackFace = false;
     private static int mCheckRgbCameraOpenCount = 0;
-    private int faceflag;
     private MyReceiver mReceiver = new MyReceiver();
+    private int pattern;
 
-    public static Intent getFaceInputActivityIntent(Context context) {
-        Intent intent = new Intent(context, FaceInputConsumeActivity.class);
-        return intent;
+    @Override
+    public int layoutView() {
+        return R.layout.activity_dsy;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void initView() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-        setContentView(R.layout.activity_face_input);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        ButterKnife.bind(this);
-        faceflag = getIntent().getIntExtra(Constants.INTENT_FACEINPUT_FLAG, 0);
+    }
+
+    @Override
+    public void initData() {
         initCamera();
+        initRequest();
+        initPort();
         initReceiver();
+
+    }
+
+    private void initCamera() {
+        int display_degree = CameraUtil.getRotation(this);
+        if (mRgbCameraView != null) {
+            mRgbCameraView.init(CameraUtil.getBackCameraId(), display_degree, previewCallback, faceDetectionListener, 2);
+            mRgbCameraView.requestLayout();
+            mRgbCameraView.start();
+        }
+        if (mNirCameraView != null) {
+            mNirCameraView.init(CameraUtil.getFrontCameraId(), display_degree, nirPreviewCallback, null, 2);
+            mNirCameraView.requestLayout();
+            mNirCameraView.start();
+        }
+    }
+
+    private void initRequest() {
+        api.getDevicePattern(Integer.parseInt(deviceId), token);
+        api.setGetResponseListener(new Api.GetResponseListener() {
+            @Override
+            public void onRespnse(Object o) {
+                if (o instanceof GetDevicePattern) {
+                    pattern = ((GetDevicePattern) o).getContent().getPattern();
+                    if (pattern == 1) {
+                        tvPattern.setText("手动消费");
+                    } else if (pattern == 2) {
+                        tvPattern.setText("自动消费");
+                    } else if (pattern == 3) {
+                        tvPattern.setText("定值消费");
+                    } else if (pattern == 4) {
+                        tvPattern.setText("商品消费");
+                    } else if (pattern == 5) {
+                        tvPattern.setText("机器充值");
+                    } else if (pattern == 6) {
+                        tvPattern.setText("机器退款");
+                    } else if (pattern == 7) {
+                        tvPattern.setText("订餐模式");
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(String err) {
+
+            }
+        });
+    }
+
+    private void initPort() {
+        MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
+            @Override
+            public void onDataReceive(byte[] buffer, int size) {
+
+            }
+        });
     }
 
     private void initReceiver() {
@@ -92,20 +161,6 @@ public class FaceInputConsumeActivity extends AppCompatActivity {
         registerReceiver(mReceiver, intentFilter2);
         registerReceiver(mReceiver, intentFilter3);
         registerReceiver(mReceiver, intentFilter4);
-    }
-
-    private void initCamera() {
-        int display_degree = CameraUtil.getRotation(this);
-        if (mRgbCameraView != null) {
-            mRgbCameraView.init(CameraUtil.getBackCameraId(), display_degree, previewCallback, faceDetectionListener,1);
-            mRgbCameraView.requestLayout();
-            mRgbCameraView.start();
-        }
-        if (mNirCameraView != null) {
-            mNirCameraView.init(CameraUtil.getFrontCameraId(), display_degree, nirPreviewCallback, null,1);
-            mNirCameraView.requestLayout();
-            mNirCameraView.start();
-        }
     }
 
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
@@ -267,26 +322,37 @@ public class FaceInputConsumeActivity extends AppCompatActivity {
         }
     };
 
-    @OnClick({R.id.persondetail_sure, R.id.persondetail_cancle})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.persondetail_sure:
-                break;
-            case R.id.persondetail_cancle:
-                finish();
-                break;
+
+    private void imageCheck() {
+        if (image != null) {
+            bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            Log.d(TAG, "imageCheck: " + bitmap.getHeight() + bitmap.getWidth());
+            setResult();
+        } else {
+            ToastHelper.showToast("没有识别到人脸");
         }
     }
 
-    private void setMyResult() {
-        if (image != null) {
-            Intent intent = new Intent();
-            intent.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
-            intent.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
-            FaceInputConsumeActivity.this.setResult(Constants.FACE_INPUT_RESULTCODE, intent);
-            finish();
-        } else {
-            ToastUtils.showShort("没有识别到人脸，请重新录入");
+    private void setResult() {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
+        intent.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
+        DsyActivity.this.setResult(Constants.FACE_INPUT_RESULTCODE, intent);
+        finish();
+    }
+
+    @OnClick({R.id.tv_pattern_title, R.id.tv_money})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_pattern_title:
+                if (SPUtils.getInstance().getBoolean(Constants.ISLOGIN)) {
+                    startActivity(MainActivity.getMainActivityIntent(DsyActivity.this));
+                } else {
+                    startActivity(LoginActivity.getLoginActivityIntent(DsyActivity.this));
+                }
+                break;
+            case R.id.tv_money:
+                break;
         }
     }
 
@@ -351,13 +417,16 @@ public class FaceInputConsumeActivity extends AppCompatActivity {
                         long trackid = intent.getLongExtra(Constants.TRACK_ID, 0l);
                         image = rgb_data;
                         mNirTipsView.setBackground(getResources().getDrawable(R.drawable.shap_nir_tip_succ));
+                        Log.d(TAG, "NIR_RESULT_ACTION: " + System.currentTimeMillis());
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                setMyResult();
+                                imageCheck();
                             }
                         }, 2000);
+
                     } else if (action.equals(Constants.OFFLINE_RECOGNIZE_ACTION) || action.equals(Constants.ONLINE_RECOGNIZE_ACTION)) {
+                        Log.d(TAG, "OFFLINE_RECOGNIZE_ACTION: " + System.currentTimeMillis());
                         long trackid = intent.getLongExtra(Constants.TRACK_ID, 0l);
                         String username = intent.getStringExtra(Constants.USER_NAME);
                         memberId = intent.getStringExtra(Constants.PERSON_ID);

@@ -31,6 +31,7 @@ public class PersonFindRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public interface OnMyItemClickListener {
         void onItemClick(String userID);
+
         void onDelete(String userID);
     }
 

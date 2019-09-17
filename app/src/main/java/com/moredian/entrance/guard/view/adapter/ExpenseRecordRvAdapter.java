@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 public class ExpenseRecordRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
+    private static final int TYPE_OVER = 2;
     private Context context;
     List<GetDepositPage.ContentBean.RowsBean> rowsBeans;
     private OnMyItemClickListener myItemClickListener;
@@ -47,6 +48,12 @@ public class ExpenseRecordRvAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public class FootViewHolder extends RecyclerView.ViewHolder {
         public FootViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
+    public class OverViewHolder extends RecyclerView.ViewHolder {
+        public OverViewHolder(@NonNull View itemView) {
             super(itemView);
         }
     }
@@ -88,6 +95,9 @@ public class ExpenseRecordRvAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } else if (viewType == TYPE_FOOTER) {
             View view = LayoutInflater.from(context).inflate(R.layout.item_foot, parent, false);
             return new FootViewHolder(view);
+        } else if (viewType == TYPE_OVER) {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_over, parent, false);
+            return new OverViewHolder(view);
         }
         return null;
     }
@@ -107,7 +117,11 @@ public class ExpenseRecordRvAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemViewType(int position) {
         if (position + 1 == getItemCount()) {
-            return TYPE_FOOTER;
+            if (getItemCount() <= 4) {
+                return TYPE_OVER;
+            } else {
+                return TYPE_FOOTER;
+            }
         } else {
             return TYPE_ITEM;
         }

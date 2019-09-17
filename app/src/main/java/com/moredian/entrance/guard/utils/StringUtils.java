@@ -38,15 +38,15 @@ public class StringUtils {
      * 将double转为数值，并最多保留num位小数。
      *
      * @param d
-     * @param num 小数个数
+     * @param num      小数个数
      * @param defValue 默认值。当d为null时，返回该值。
      * @return
      */
-    public static String double2String(Double d, int num, String defValue){
-        if(d==null){
+    public static String double2String(Double d, int num, String defValue) {
+        if (d == null) {
             return defValue;
         }
 
-        return double2String(d,num);
+        return double2String(d, num);
     }
 }

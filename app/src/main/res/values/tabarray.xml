@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="tab">
-        <item>顾客列表</item>
-        <item>添加顾客</item>
-        <item>查找顾客</item>
+        <item>人员列表</item>
+        <item>添加人员</item>
+        <item>查找人员</item>
     </string-array>
     <string-array name="step">
         <item>个人信息</item>

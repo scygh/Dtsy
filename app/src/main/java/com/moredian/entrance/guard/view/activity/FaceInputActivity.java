@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +30,9 @@ import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.face.CameraUtil;
 import com.moredian.entrance.guard.face.CameraView;
 import com.moredian.entrance.guard.face.drawface.DrawerSurfaceView;
+import com.moredian.entrance.guard.utils.ToastHelper;
+
+import java.io.ByteArrayOutputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,45 +63,10 @@ public class FaceInputActivity extends AppCompatActivity {
     private byte[] rgb_data;
     private byte[] image;
     private String memberId;
+    private Bitmap bitmap;
     private static boolean mShowCallbackFace = false;
     private static int mCheckRgbCameraOpenCount = 0;
     private MyReceiver mReceiver = new MyReceiver();
-    private static final int KEY_DETECT_HIDE = 0;
-    private static final int KEY_DETECT_FACE_SIZE_ERROR = 1;
-    private static final int KEY_DETECT_FACE_ANGLE_ERROR = 2;
-    private static final int KEY_DETECT_FACE_QUALITY_ERROR = 3;
-    private static final int KEY_DETECT_USER_NAME = 4;
-
-    private static final int KEY_OPEN_NIR_CAMERA = 1000;
-    private static final int OPEN_MIR_CAMERA_DELAY = 3 * 1000;
-
-    private static final String SIZE_INCORRECT_TIPS = "请让我看清全部的脸";
-    private static final String ANGLE_INCORRECT_TIPS = "请摆正脸";
-    private static final String QUALITY_INCORRECT_TIPS = "请保持静止";
-
-    private static final String DETECT_RESULT_ACTION = "com.moredian.facetrack.detectResult";
-    private static final String NIR_RESULT_ACTION = "com.moredian.facetrack.nirResult";
-    private static final String OFFLINE_RECOGNIZE_ACTION = "com.moredian.facetrack.offLineRecognize";
-    private static final String ONLINE_RECOGNIZE_ACTION = "com.moredian.facetrack.onLineRecognize";
-
-    private static final String CHECK_STATUS = "status";
-    private static final String CHECK_FAIL_REASON = "failed_reason";
-    private static final String RGB_DATA = "rgb_data";
-    private static final String NIR_DATA = "nir_data";
-    private static final String FACE_COUNT = "face_count";
-    private static final String TRACK_ID = "track_id";
-    private static final String USER_NAME = "user_name";
-    private static final String PERSON_ID = "memberID";
-
-    private static final String DETECT_FAIL_REASON_NOFACE = "detect_no_face";
-    private static final String DETECT_FAIL_REASON_FACE_SIZE_INCORRECT = "detect_size_incorrect";
-    private static final String DETECT_FAIL_REASON_FACE_ANGLE_INCORRECT = "detect_angle_incorrect";
-    private static final String DETECT_FAIL_REASON_FACE_QUALITY_TOO_LOW = "detect_quality_too_low";
-
-    private static final String NIR_DETECT_FAIL_REASON = "track_fmp_fail";
-    private static final String RECOGNIZE_FAIL_REASON1 = "track_id_has_no_state";
-    private static final String RECOGNIZE_FAIL_REASON2 = "track_id_has_no_local_userid";
-    private static final String RECOGNIZE_FAIL_REASON3 = "track_id_has_no_online_response";
 
     public static Intent getFaceInputActivityIntent(Context context) {
         Intent intent = new Intent(context, FaceInputActivity.class);
@@ -118,10 +87,10 @@ public class FaceInputActivity extends AppCompatActivity {
     }
 
     private void initReceiver() {
-        IntentFilter intentFilter1 = new IntentFilter(DETECT_RESULT_ACTION);
-        IntentFilter intentFilter2 = new IntentFilter(NIR_RESULT_ACTION);
-        IntentFilter intentFilter3 = new IntentFilter(OFFLINE_RECOGNIZE_ACTION);
-        IntentFilter intentFilter4 = new IntentFilter(ONLINE_RECOGNIZE_ACTION);
+        IntentFilter intentFilter1 = new IntentFilter(Constants.DETECT_RESULT_ACTION);
+        IntentFilter intentFilter2 = new IntentFilter(Constants.NIR_RESULT_ACTION);
+        IntentFilter intentFilter3 = new IntentFilter(Constants.OFFLINE_RECOGNIZE_ACTION);
+        IntentFilter intentFilter4 = new IntentFilter(Constants.ONLINE_RECOGNIZE_ACTION);
         registerReceiver(mReceiver, intentFilter1);
         registerReceiver(mReceiver, intentFilter2);
         registerReceiver(mReceiver, intentFilter3);
@@ -131,12 +100,12 @@ public class FaceInputActivity extends AppCompatActivity {
     private void initCamera() {
         int display_degree = CameraUtil.getRotation(this);
         if (mRgbCameraView != null) {
-            mRgbCameraView.init(CameraUtil.getBackCameraId(), display_degree, previewCallback, faceDetectionListener);
+            mRgbCameraView.init(CameraUtil.getBackCameraId(), display_degree, previewCallback, faceDetectionListener,1);
             mRgbCameraView.requestLayout();
             mRgbCameraView.start();
         }
         if (mNirCameraView != null) {
-            mNirCameraView.init(CameraUtil.getFrontCameraId(), display_degree, nirPreviewCallback, null);
+            mNirCameraView.init(CameraUtil.getFrontCameraId(), display_degree, nirPreviewCallback, null,1);
             mNirCameraView.requestLayout();
             mNirCameraView.start();
         }
@@ -177,7 +146,7 @@ public class FaceInputActivity extends AppCompatActivity {
             if (mRgbCameraView.hasOpened()) {
                 mNirCameraView.onResume();
             } else {
-                mHandler.sendEmptyMessageDelayed(KEY_OPEN_NIR_CAMERA, OPEN_MIR_CAMERA_DELAY);
+                mHandler.sendEmptyMessageDelayed(Constants.KEY_OPEN_NIR_CAMERA, Constants.OPEN_MIR_CAMERA_DELAY);
             }
         }
     }
@@ -228,71 +197,71 @@ public class FaceInputActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 //如果人脸识别已打开，红外生物识别获取焦点，如果没打开则延迟重来
-                case KEY_OPEN_NIR_CAMERA:
+                case Constants.KEY_OPEN_NIR_CAMERA:
                     if (mRgbCameraView != null) {
                         if (mRgbCameraView.hasOpened()) {
                             mNirCameraView.onResume();
                         } else {
                             mCheckRgbCameraOpenCount++;
-                            mHandler.sendEmptyMessageDelayed(KEY_OPEN_NIR_CAMERA, OPEN_MIR_CAMERA_DELAY + mCheckRgbCameraOpenCount * 1000);
+                            mHandler.sendEmptyMessageDelayed(Constants.KEY_OPEN_NIR_CAMERA, Constants.OPEN_MIR_CAMERA_DELAY + mCheckRgbCameraOpenCount * 1000);
                         }
                     }
                     break;
                 //隐藏显示的文字
-                case KEY_DETECT_HIDE:
-                    mHandler.removeMessages(KEY_DETECT_HIDE);
+                case Constants.KEY_DETECT_HIDE:
+                    mHandler.removeMessages(Constants.KEY_DETECT_HIDE);
                     Log.e(TAG, "hide detect result");
                     if (mDetectResultView.getVisibility() != View.GONE) {
                         mDetectResultView.setVisibility(View.GONE);
                     }
                     break;
                 //靠近一点提醒，后隐藏
-                case KEY_DETECT_FACE_SIZE_ERROR:
-                    mHandler.removeMessages(KEY_DETECT_FACE_SIZE_ERROR);
+                case Constants.KEY_DETECT_FACE_SIZE_ERROR:
+                    mHandler.removeMessages(Constants.KEY_DETECT_FACE_SIZE_ERROR);
                     Log.e(TAG, "face size incorrect");
-                    if (!SIZE_INCORRECT_TIPS.equals(mDetectResultView.getText())) {
-                        mDetectResultView.setText(SIZE_INCORRECT_TIPS);
+                    if (!Constants.SIZE_INCORRECT_TIPS.equals(mDetectResultView.getText())) {
+                        mDetectResultView.setText(Constants.SIZE_INCORRECT_TIPS);
                     }
                     if (mDetectResultView.getVisibility() != View.VISIBLE) {
                         mDetectResultView.setVisibility(View.VISIBLE);
                     }
-                    mHandler.sendEmptyMessageDelayed(KEY_DETECT_HIDE, 2000);
+                    mHandler.sendEmptyMessageDelayed(Constants.KEY_DETECT_HIDE, 2000);
                     break;
                 //摆正提醒，后隐藏
-                case KEY_DETECT_FACE_ANGLE_ERROR:
-                    mHandler.removeMessages(KEY_DETECT_FACE_ANGLE_ERROR);
+                case Constants.KEY_DETECT_FACE_ANGLE_ERROR:
+                    mHandler.removeMessages(Constants.KEY_DETECT_FACE_ANGLE_ERROR);
                     Log.e(TAG, "face angle incorrect");
-                    if (!ANGLE_INCORRECT_TIPS.equals(mDetectResultView.getText())) {
-                        mDetectResultView.setText(ANGLE_INCORRECT_TIPS);
+                    if (!Constants.ANGLE_INCORRECT_TIPS.equals(mDetectResultView.getText())) {
+                        mDetectResultView.setText(Constants.ANGLE_INCORRECT_TIPS);
                     }
                     if (mDetectResultView.getVisibility() != View.VISIBLE) {
                         mDetectResultView.setVisibility(View.VISIBLE);
                     }
-                    mHandler.sendEmptyMessageDelayed(KEY_DETECT_HIDE, 2000);
+                    mHandler.sendEmptyMessageDelayed(Constants.KEY_DETECT_HIDE, 2000);
                     break;
                 //提醒保持静止提醒，后隐藏
-                case KEY_DETECT_FACE_QUALITY_ERROR:
-                    mHandler.removeMessages(KEY_DETECT_FACE_QUALITY_ERROR);
+                case Constants.KEY_DETECT_FACE_QUALITY_ERROR:
+                    mHandler.removeMessages(Constants.KEY_DETECT_FACE_QUALITY_ERROR);
                     Log.e(TAG, "face quality incorrect");
-                    if (!QUALITY_INCORRECT_TIPS.equals(mDetectResultView.getText())) {
-                        mDetectResultView.setText(QUALITY_INCORRECT_TIPS);
+                    if (!Constants.QUALITY_INCORRECT_TIPS.equals(mDetectResultView.getText())) {
+                        mDetectResultView.setText(Constants.QUALITY_INCORRECT_TIPS);
                     }
                     if (mDetectResultView.getVisibility() != View.VISIBLE) {
                         mDetectResultView.setVisibility(View.VISIBLE);
                     }
-                    mHandler.sendEmptyMessageDelayed(KEY_DETECT_HIDE, 2000);
+                    mHandler.sendEmptyMessageDelayed(Constants.KEY_DETECT_HIDE, 2000);
                     break;
                 //显示识别获取的名字后隐藏
-                case KEY_DETECT_USER_NAME:
-                    mHandler.removeMessages(KEY_DETECT_USER_NAME);
-                    String username = msg.getData().getString(USER_NAME);
+                case Constants.KEY_DETECT_USER_NAME:
+                    mHandler.removeMessages(Constants.KEY_DETECT_USER_NAME);
+                    String username = msg.getData().getString(Constants.USER_NAME);
                     if (!username.equals(mDetectResultView.getText())) {
                         mDetectResultView.setText(username);
                     }
                     if (mDetectResultView.getVisibility() != View.VISIBLE) {
                         mDetectResultView.setVisibility(View.VISIBLE);
                     }
-                    mHandler.sendEmptyMessageDelayed(KEY_DETECT_HIDE, 2000);
+                    mHandler.sendEmptyMessageDelayed(Constants.KEY_DETECT_HIDE, 2000);
                     break;
                 default:
                     break;
@@ -312,26 +281,22 @@ public class FaceInputActivity extends AppCompatActivity {
         }
     }
 
-    private void setMyResult() {
+    private void imageCheck() {
         if (image != null) {
-            // TODO: 2019/8/6 处理图片质量
-            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-            if (bitmap.getWidth() < 200 || bitmap.getHeight() < 200) {
-                ToastUtils.showShort("人脸大小不能小于200x200,请重新录入");
-            } else {
-                Intent intent = new Intent();
-                intent.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
-                if (TextUtils.isEmpty(memberId)) {
-                    intent.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
-                } else {
-                    intent.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
-                }
-                FaceInputActivity.this.setResult(Constants.FACE_INPUT_RESULTCODE, intent);
-                finish();
-            }
+            bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            Log.d(TAG, "imageCheck: " + bitmap.getHeight() + bitmap.getWidth());
+            setResult();
         } else {
-            ToastUtils.showShort("没有录到人脸，请重新录入");
+            ToastHelper.showToast("没有识别到人脸");
         }
+    }
+
+    private void setResult() {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.INTENT_FACEINPUT_RGBDATA, image);
+        intent.putExtra(Constants.INTENT_FACEINPUT_MEMBERID, memberId);
+        FaceInputActivity.this.setResult(Constants.FACE_INPUT_RESULTCODE, intent);
+        finish();
     }
 
     public class MyReceiver extends BroadcastReceiver {
@@ -340,8 +305,8 @@ public class FaceInputActivity extends AppCompatActivity {
             String action = intent.getAction();
             //判断是否有信息
             if (action != null && !action.equals("")) {
-                boolean status = intent.getBooleanExtra(CHECK_STATUS, false);
-                rgb_data = intent.getByteArrayExtra(RGB_DATA);
+                boolean status = intent.getBooleanExtra(Constants.CHECK_STATUS, false);
+                rgb_data = intent.getByteArrayExtra(Constants.RGB_DATA);
                 // 彩色摄像头抓到的人脸
                 if (rgb_data != null && rgb_data.length > 0) {
                     Bitmap rgbBitmap = BitmapFactory.decodeByteArray(rgb_data, 0, rgb_data.length);
@@ -351,7 +316,7 @@ public class FaceInputActivity extends AppCompatActivity {
                     }
                 }
                 //红外摄像头抓到的人脸
-                byte[] nir_data = intent.getByteArrayExtra(NIR_DATA);
+                byte[] nir_data = intent.getByteArrayExtra(Constants.NIR_DATA);
                 if (nir_data != null && nir_data.length > 0) {
                     Bitmap rgbBitmap = BitmapFactory.decodeByteArray(nir_data, 0, nir_data.length);
                     mNirFaceView.setImageBitmap(rgbBitmap);
@@ -362,56 +327,56 @@ public class FaceInputActivity extends AppCompatActivity {
                 //如果获取失败则做相应的处理
                 String reason = "";
                 if (!status) {
-                    reason = intent.getStringExtra(CHECK_FAIL_REASON);
+                    reason = intent.getStringExtra(Constants.CHECK_FAIL_REASON);
                     Log.d(TAG, "receive:" + action + ",status:  " + status + ",reason  :" + reason);
                     //人脸质量不合格
-                    if (action.equals(DETECT_RESULT_ACTION)) {
-                        if (reason.contains(DETECT_FAIL_REASON_FACE_SIZE_INCORRECT)) {
-                            mHandler.sendEmptyMessage(KEY_DETECT_FACE_SIZE_ERROR);
-                        } else if (reason.contains(DETECT_FAIL_REASON_NOFACE)) {
+                    if (action.equals(Constants.DETECT_RESULT_ACTION)) {
+                        if (reason.contains(Constants.DETECT_FAIL_REASON_FACE_SIZE_INCORRECT)) {
+                            mHandler.sendEmptyMessage(Constants.KEY_DETECT_FACE_SIZE_ERROR);
+                        } else if (reason.contains(Constants.DETECT_FAIL_REASON_NOFACE)) {
                             mNirTipsView.setBackground(getResources().getDrawable(R.drawable.shap_nir_tip_default));
-                        } else if (reason.contains(DETECT_FAIL_REASON_FACE_ANGLE_INCORRECT)) {
-                            mHandler.sendEmptyMessage(KEY_DETECT_FACE_ANGLE_ERROR);
-                        } else if (reason.contains(DETECT_FAIL_REASON_FACE_QUALITY_TOO_LOW)) {
-                            mHandler.sendEmptyMessage(KEY_DETECT_FACE_QUALITY_ERROR);
+                        } else if (reason.contains(Constants.DETECT_FAIL_REASON_FACE_ANGLE_INCORRECT)) {
+                            mHandler.sendEmptyMessage(Constants.KEY_DETECT_FACE_ANGLE_ERROR);
+                        } else if (reason.contains(Constants.DETECT_FAIL_REASON_FACE_QUALITY_TOO_LOW)) {
+                            mHandler.sendEmptyMessage(Constants.KEY_DETECT_FACE_QUALITY_ERROR);
                         }
                         //是否是活体
-                    } else if (action.equals(NIR_RESULT_ACTION)) {
+                    } else if (action.equals(Constants.NIR_RESULT_ACTION)) {
                         mNirTipsView.setBackground(getResources().getDrawable(R.drawable.shap_nir_tip_fail));
                     }
                 } else {
                     //人脸质量合格
-                    if (action.equals(DETECT_RESULT_ACTION)) {
-                        int facecount = intent.getIntExtra(FACE_COUNT, 0);
+                    if (action.equals(Constants.DETECT_RESULT_ACTION)) {
+                        int facecount = intent.getIntExtra(Constants.FACE_COUNT, 0);
                         String trackids = "";
                         long trackid = 0l;
                         if (facecount > 0) {
                             for (int i = 0; i < facecount; i++) {
-                                trackid = intent.getLongExtra(TRACK_ID + i, 0l);
+                                trackid = intent.getLongExtra(Constants.TRACK_ID + i, 0l);
                                 trackids = trackids + "," + trackid;
                             }
                         }
-                    } else if (action.equals(NIR_RESULT_ACTION)) {
-                        long trackid = intent.getLongExtra(TRACK_ID, 0l);
+                    } else if (action.equals(Constants.NIR_RESULT_ACTION)) {
+                        long trackid = intent.getLongExtra(Constants.TRACK_ID, 0l);
                         image = rgb_data;
                         mNirTipsView.setBackground(getResources().getDrawable(R.drawable.shap_nir_tip_succ));
                         Log.d(TAG, "NIR_RESULT_ACTION: " + System.currentTimeMillis());
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                setMyResult();
+                                imageCheck();
                             }
                         }, 2000);
 
-                    } else if (action.equals(OFFLINE_RECOGNIZE_ACTION) || action.equals(ONLINE_RECOGNIZE_ACTION)) {
+                    } else if (action.equals(Constants.OFFLINE_RECOGNIZE_ACTION) || action.equals(Constants.ONLINE_RECOGNIZE_ACTION)) {
                         Log.d(TAG, "OFFLINE_RECOGNIZE_ACTION: " + System.currentTimeMillis());
-                        long trackid = intent.getLongExtra(TRACK_ID, 0l);
-                        String username = intent.getStringExtra(USER_NAME);
-                        memberId = intent.getStringExtra(PERSON_ID);
+                        long trackid = intent.getLongExtra(Constants.TRACK_ID, 0l);
+                        String username = intent.getStringExtra(Constants.USER_NAME);
+                        memberId = intent.getStringExtra(Constants.PERSON_ID);
                         Message msg = new Message();
-                        msg.what = KEY_DETECT_USER_NAME;
+                        msg.what = Constants.KEY_DETECT_USER_NAME;
                         Bundle b = new Bundle();
-                        b.putString(USER_NAME, username);
+                        b.putString(Constants.USER_NAME, username);
                         msg.setData(b);
                         mHandler.sendMessage(msg);
                     }

@@ -97,7 +97,6 @@ public class AutomaticconsumptionActivity extends BaseActivity {
     private void formatReadCard(String a, int kind) {
         int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
         int number = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
-        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
         if (kind == Constants.KIND_FIND) {
             getReadCard(companyCode, Integer.parseInt(deviceId), number);
         } else if (kind == Constants.KIND_CONSUME) {
@@ -223,7 +222,6 @@ public class AutomaticconsumptionActivity extends BaseActivity {
      */
     public void postSimpleExpense(int number, int count, String name, int status) {
         String amount = automaticcnsumptionKeyboardEnterMoney.getText().toString();
-        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
         PostSimpleExpenseBody body = new PostSimpleExpenseBody(number, Double.parseDouble(amount), 2, count, "scy", Integer.parseInt(deviceId), 2);
         if (token != null) {
             api.postSimpleExpense(body, token);
@@ -255,7 +253,6 @@ public class AutomaticconsumptionActivity extends BaseActivity {
     private void QrCodeConsume(String a, int kind) {
         String qrcode = a.substring(22, 40);
         if (kind == Constants.KIND_CONSUME_TDC) {
-            String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
             String amount = automaticcnsumptionKeyboardEnterMoney.getText().toString();
             if (token != null) {
                 PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), 2, Integer.parseInt(deviceId), 2);
@@ -329,7 +326,6 @@ public class AutomaticconsumptionActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == Constants.FACE_INPUT_REQUESTCODE && resultCode == Constants.FACE_INPUT_RESULTCODE) {
-            String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
             String memberId = data.getStringExtra(Constants.INTENT_FACEINPUT_MEMBERID);
             if (!TextUtils.isEmpty(memberId)) {
                 String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);

@@ -12,6 +12,7 @@ import com.moredian.entrance.guard.entity.GetChannel;
 import com.moredian.entrance.guard.entity.GetDepartmentList;
 import com.moredian.entrance.guard.entity.GetDepositPage;
 import com.moredian.entrance.guard.entity.GetDeviceNumList;
+import com.moredian.entrance.guard.entity.GetDevicePattern;
 import com.moredian.entrance.guard.entity.GetExpensePage;
 import com.moredian.entrance.guard.entity.GetListByPage;
 import com.moredian.entrance.guard.entity.GetMealList;
@@ -93,6 +94,16 @@ public class Api {
         void onRespnse(T t);
 
         void onFail(String err);
+    }
+
+    private OnCreate onCreate;
+
+    public void setOnCreate(OnCreate onCreate) {
+        this.onCreate = onCreate;
+    }
+
+    public interface OnCreate {
+        void created();
     }
 
     /**
@@ -213,6 +224,9 @@ public class Api {
                     public void onNext(PostResponse postResponse) {
                         if (postResponse != null && postResponse.getStatusCode() == 200) {
                             ToastHelper.showToast("创建成功");
+                            if (onCreate != null) {
+                                onCreate.created();
+                            }
                         } else {
                             ToastHelper.showToast(postResponse.getMessage());
                         }
@@ -257,7 +271,7 @@ public class Api {
                     @Override
                     public void onNext(PostResponse postResponse) {
                         if (postResponse != null && postResponse.getStatusCode() == 200) {
-                            ToastHelper.showToast("添加成功");
+                            ToastHelper.showToast("添加人脸成功");
                         } else {
                             ToastHelper.showToast(postResponse.getMessage());
                         }
@@ -1302,6 +1316,54 @@ public class Api {
                             }
                         } else {
                             ToastHelper.showToast(list.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                ToastHelper.showToast(error);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 获取设备号对应的餐段
+     */
+    public void getDevicePattern(Integer id,String token) {
+        ApiUtils.getDevicePattern().getDevicePattern(id,token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetDevicePattern>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetDevicePattern pattern) {
+                        if (pattern != null && pattern.getStatusCode() == 200) {
+                            ToastHelper.showToast("获取消费模式成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(pattern);
+                            }
+                        } else {
+                            ToastHelper.showToast(pattern.getMessage());
                         }
                     }
 

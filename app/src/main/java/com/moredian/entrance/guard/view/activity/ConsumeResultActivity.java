@@ -222,7 +222,7 @@ public class ConsumeResultActivity extends BaseActivity {
             csAmountBigLl.setVisibility(View.GONE);
             csLlDetail.setVisibility(View.GONE);
         }
-        handler.postDelayed(runnable, 10000);
+        handler.postDelayed(runnable, 2000);
     }
 
     @OnClick({R.id.cs_over})

@@ -90,4 +90,37 @@ public class Constants {
     public static final int KIND_CONSUME = 2;//刷卡支付
     public static final int KIND_CONSUME_TDC = 3;//二维码
     public static final int KIND_CONSUME_FACE = 4;//人脸支付
+    
+    //face
+    public static final int KEY_DETECT_HIDE = 0;
+    public static final int KEY_DETECT_FACE_SIZE_ERROR = 1;
+    public static final int KEY_DETECT_FACE_ANGLE_ERROR = 2;
+    public static final int KEY_DETECT_FACE_QUALITY_ERROR = 3;
+    public static final int KEY_DETECT_USER_NAME = 4;
+
+    public static final int KEY_OPEN_NIR_CAMERA = 1000;
+    public static final int OPEN_MIR_CAMERA_DELAY = 3 * 1000;
+
+    public static final String SIZE_INCORRECT_TIPS = "请让我看清全部的脸";
+    public static final String ANGLE_INCORRECT_TIPS = "请摆正脸";
+    public static final String QUALITY_INCORRECT_TIPS = "请保持静止";
+
+    public static final String DETECT_RESULT_ACTION = "com.moredian.facetrack.detectResult";
+    public static final String NIR_RESULT_ACTION = "com.moredian.facetrack.nirResult";
+    public static final String OFFLINE_RECOGNIZE_ACTION = "com.moredian.facetrack.offLineRecognize";
+    public static final String ONLINE_RECOGNIZE_ACTION = "com.moredian.facetrack.onLineRecognize";
+
+    public static final String CHECK_STATUS = "status";
+    public static final String CHECK_FAIL_REASON = "failed_reason";
+    public static final String RGB_DATA = "rgb_data";
+    public static final String NIR_DATA = "nir_data";
+    public static final String FACE_COUNT = "face_count";
+    public static final String TRACK_ID = "track_id";
+    public static final String USER_NAME = "user_name";
+    public static final String PERSON_ID = "memberID";
+
+    public static final String DETECT_FAIL_REASON_NOFACE = "detect_no_face";
+    public static final String DETECT_FAIL_REASON_FACE_SIZE_INCORRECT = "detect_size_incorrect";
+    public static final String DETECT_FAIL_REASON_FACE_ANGLE_INCORRECT = "detect_angle_incorrect";
+    public static final String DETECT_FAIL_REASON_FACE_QUALITY_TOO_LOW = "detect_quality_too_low";
 }

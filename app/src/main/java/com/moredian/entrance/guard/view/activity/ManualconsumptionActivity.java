@@ -30,6 +30,7 @@ import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.http.Api;
+import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.fragment.ShowCardMessageFragment;
 
 import java.text.DecimalFormat;
@@ -108,9 +109,6 @@ public class ManualconsumptionActivity extends BaseActivity {
     private void formatReadCard(String a, int kind) {
         int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
         int number = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
-        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
-        /*publiccount = ChangeTool.HexToInt(a.substring(26, 30));//消费次数
-        publiccount += 1;*/
         if (kind == Constants.KIND_FIND) {
             Log.d(TAG, "formatReadCard: " + companyCode + " " + number + " " + publiccount);
             getReadCard(companyCode, Integer.parseInt(deviceId), number);
@@ -228,7 +226,7 @@ public class ManualconsumptionActivity extends BaseActivity {
      * descirption: 刷卡消费
      */
     public void postSimpleExpense(int number, int count, String name, int status) {
-        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
+
         String amount = ManualconsumptionKeyboardEnterMoney.getText().toString();
         PostSimpleExpenseBody body = new PostSimpleExpenseBody(number, Double.parseDouble(amount), 1, count, "scy", Integer.parseInt(deviceId), 2);
         if (token != null) {
@@ -265,7 +263,6 @@ public class ManualconsumptionActivity extends BaseActivity {
         String qrcode = a.substring(22, 40);
         Log.d(TAG, "QrCodeConsume: " + qrcode);
         if (kind == Constants.KIND_CONSUME_TDC) {
-            String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
             String amount = ManualconsumptionKeyboardEnterMoney.getText().toString();
             if (token != null) {
                 PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), 1, Integer.parseInt(deviceId), 2);
@@ -356,7 +353,6 @@ public class ManualconsumptionActivity extends BaseActivity {
         if (requestCode == Constants.FACE_INPUT_REQUESTCODE && resultCode == Constants.FACE_INPUT_RESULTCODE) {
             String memberId = data.getStringExtra(Constants.INTENT_FACEINPUT_MEMBERID);
             if (!TextUtils.isEmpty(memberId)) {
-                String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
                 PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(ManualconsumptionKeyboardEnterMoney.getText().toString().trim()), 1, Integer.parseInt(deviceId), 2);
                 api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
                 api.setGetResponseListener(new Api.GetResponseListener<FaceExpense>() {

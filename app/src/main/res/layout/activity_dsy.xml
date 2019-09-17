@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6">
+
+        <com.moredian.entrance.guard.face.CameraView
+            android:id="@+id/camera_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:previewheight="720"
+            app:previewwidth="768" />
+
+        <com.moredian.entrance.guard.face.CameraView
+            android:id="@+id/nir_camera"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            app:previewheight="720"
+            app:previewwidth="768" />
+
+        <com.moredian.entrance.guard.face.drawface.DrawerSurfaceView
+            android:id="@+id/faceView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/nir_tips"
+            android:layout_width="@dimen/width_30"
+            android:layout_height="@dimen/height_30"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/margin_30"
+            android:layout_marginRight="@dimen/margin_40"
+            android:background="@drawable/shap_nir_tip_default" />
+
+        <TextView
+            android:id="@+id/detect_tips_tv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_150"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:fontFamily="lablack"
+            android:gravity="center"
+            android:lines="1"
+            android:textColor="@android:color/white"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iv_rgb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iv_nir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4">
+
+        <TextView
+            android:id="@+id/tv_pattern_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_50"
+            android:text="消费模式:"
+            android:textSize="@dimen/textSize_26" />
+
+        <TextView
+            android:id="@+id/tv_pattern"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_50"
+            android:layout_toRightOf="@+id/tv_pattern_title"
+            android:text="请在网站设置"
+            android:textSize="@dimen/textSize_26"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="键盘输入金额"
+            android:textSize="@dimen/textSize_30"
+            android:textStyle="bold" />
+    </RelativeLayout>
+</LinearLayout>

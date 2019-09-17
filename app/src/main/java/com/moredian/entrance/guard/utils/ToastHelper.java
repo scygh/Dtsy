@@ -25,7 +25,7 @@ public class ToastHelper {
     /**
      * 弹出Toast
      *
-     * @param text     提示的文本
+     * @param text 提示的文本
      */
     public static void showToast(String text) {
         try {

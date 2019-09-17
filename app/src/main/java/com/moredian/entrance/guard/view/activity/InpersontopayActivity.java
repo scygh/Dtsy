@@ -105,8 +105,6 @@ public class InpersontopayActivity extends BaseActivity {
         format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String currentDate = format.format(date).substring(0, 11);
         String currentTime = format.format(date);
-        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
-        api.getMealList(Integer.parseInt(deviceId), token);
         api.setGetResponseListener(new Api.GetResponseListener() {
             @Override
             public void onRespnse(Object o) {
@@ -174,7 +172,6 @@ public class InpersontopayActivity extends BaseActivity {
     private void formatReadCard(String a, double money) {
         int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
         int number = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
-        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
         getReadCardPaycount(companyCode, Integer.parseInt(deviceId), number, money);
     }
 
@@ -205,7 +202,6 @@ public class InpersontopayActivity extends BaseActivity {
      * descirption: 定值消费
      */
     public void postDefineExpense(int number, int count, String name, int status, double money) {
-        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
         PostDefiniteExpenseBody body = new PostDefiniteExpenseBody(number, 0, count, "scy", Integer.parseInt(deviceId));
         api.postDefiniteExpense(body, token);
         api.setGetResponseListener(new Api.GetResponseListener<DefiniteExpense>() {
@@ -234,7 +230,6 @@ public class InpersontopayActivity extends BaseActivity {
      */
     private void QrCodeConsume(String a, double money) {
         String qrcode = a.substring(22, 40);
-        String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
         PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, money, 3, Integer.parseInt(deviceId), 2);
         api.postQRCodeExpense(body, token, Constants.MODIAN_TOKEN);
         api.setGetResponseListener(new Api.GetResponseListener<QRCodeExpense>() {
@@ -386,7 +381,6 @@ public class InpersontopayActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == Constants.FACE_INPUT_REQUESTCODE && resultCode == Constants.FACE_INPUT_RESULTCODE) {
             String memberId = data.getStringExtra(Constants.INTENT_FACEINPUT_MEMBERID);
-            String deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
             if (!TextUtils.isEmpty(memberId)) {
                 PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, 0, 3, Integer.parseInt(deviceId), 2);
                 api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);

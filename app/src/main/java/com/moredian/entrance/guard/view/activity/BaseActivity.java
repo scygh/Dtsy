@@ -3,6 +3,7 @@ package com.moredian.entrance.guard.view.activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -26,6 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public Api api;
     public abstract int layoutView();
     public String token;
+    public String deviceId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +36,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         api = new Api();
         token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
+        deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
+        if (TextUtils.isEmpty(deviceId)) {
+            deviceId = "10000";
+        }
         setLightMode();
         initView();
         initData();

@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
@@ -29,6 +31,7 @@ import com.moredian.entrance.guard.utils.Base64BitmapUtil;
 import com.moredian.entrance.guard.utils.DrawableUtils;
 import com.moredian.entrance.guard.utils.ToastHelper;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,6 +150,12 @@ public class PersonDetailActivity extends BaseActivity {
 
             }
         });
+        api.setOnCreate(new Api.OnCreate() {
+            @Override
+            public void created() {
+                updateCheck();
+            }
+        });
     }
 
     /**
@@ -238,6 +247,9 @@ public class PersonDetailActivity extends BaseActivity {
         }
     }
 
+    /**
+    * descirption: 设置头像
+    */
     private void GlideIn() {
         RoundedCorners roundedCorners = new RoundedCorners(30);
         RequestOptions options = RequestOptions.bitmapTransform(roundedCorners).override(300, 300);
@@ -269,37 +281,11 @@ public class PersonDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.persondetail_camera:
-                startActivityForResult(FaceInputActivity.getFaceInputActivityIntent(PersonDetailActivity.this), Constants.FACE_INPUT_REQUESTCODE);
                 break;
             case R.id.personDetail_create:
-                if (TextUtils.isEmpty(exitmemberId)) {//已创建就不会再创建
-                    if (bitmap != null) {
-                        if (TextUtils.isEmpty(memberId)) {//如果被识别出来，就说明已经入了
-                            createPerson();
-                        } else {
-                            ToastHelper.showToast("您已经有人脸录入过啦！");
-                        }
-                    } else {
-                        ToastHelper.showToast("请先录入人脸");
-                    }
-                } else {
-                    ToastHelper.showToast("已经创建过了！");
-                }
+                startActivityForResult(FaceInputActivity.getFaceInputActivityIntent(PersonDetailActivity.this), Constants.FACE_INPUT_REQUESTCODE);
                 break;
             case R.id.personDetail_update:
-                if (TextUtils.isEmpty(exitmemberId)) {//已创建就不会再更新
-                    if (bitmap != null) {
-                        if (TextUtils.isEmpty(memberId)) {//如果被识别出来，就说明已经入了
-                            updatePerson();
-                        } else {
-                            ToastHelper.showToast("您已经有人脸录入过啦！");
-                        }
-                    } else {
-                        ToastHelper.showToast("请先录入人脸");
-                    }
-                } else {
-                    ToastHelper.showToast("已经创建过了！");
-                }
                 break;
             case R.id.personDetail_delete:
                 deletePerson();
@@ -339,6 +325,22 @@ public class PersonDetailActivity extends BaseActivity {
 
     }
 
+    private void createCheck() {
+        if (TextUtils.isEmpty(exitmemberId)) {//已创建就不会再创建
+            if (bitmap != null) {
+                if (TextUtils.isEmpty(memberId)) {//如果被识别出来，就说明已经入了
+                    createPerson();
+                } else {
+                    ToastHelper.showToast("您已经添加过人脸了！");
+                }
+            } else {
+                ToastHelper.showToast("请先录入人脸");
+            }
+        } else {
+            ToastHelper.showToast("您已经添加过人脸了");
+        }
+    }
+
     /**
      * descirption: 更新人脸
      */
@@ -353,13 +355,28 @@ public class PersonDetailActivity extends BaseActivity {
         }
     }
 
+    private void updateCheck() {
+        if (TextUtils.isEmpty(exitmemberId)) {//已创建就不会再更新
+            if (bitmap != null) {
+                if (TextUtils.isEmpty(memberId)) {//如果被识别出来，就说明已经入了
+                    updatePerson();
+                } else {
+                    ToastHelper.showToast("您已经有人脸录入过啦！");
+                }
+            } else {
+                ToastHelper.showToast("请先录入人脸");
+            }
+        } else {
+            ToastHelper.showToast("已经创建过了！");
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == Constants.FACE_INPUT_REQUESTCODE && resultCode == Constants.FACE_INPUT_RESULTCODE) {
             byte[] image = data.getByteArrayExtra(Constants.INTENT_FACEINPUT_RGBDATA);
             memberId = data.getStringExtra(Constants.INTENT_FACEINPUT_MEMBERID);
             if (!TextUtils.isEmpty(memberId)) {
-                //如果当前人员已经录过，且两者是同一个人，就允许更新人脸
                 if (!TextUtils.isEmpty(exitmemberId)) {
                     if (memberId == exitmemberId) {
                         istheSameFace = true;
@@ -375,6 +392,7 @@ public class PersonDetailActivity extends BaseActivity {
                     GlideIn();
                 }
             }
+            createCheck();
         }
     }
 
@@ -391,10 +409,4 @@ public class PersonDetailActivity extends BaseActivity {
         userid = null;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

@@ -7,6 +7,7 @@ import com.moredian.entrance.guard.http.retrofit.GetChannel;
 import com.moredian.entrance.guard.http.retrofit.GetDepartmentListService;
 import com.moredian.entrance.guard.http.retrofit.GetDepositPage;
 import com.moredian.entrance.guard.http.retrofit.GetDeviceNumList;
+import com.moredian.entrance.guard.http.retrofit.GetDevicePattern;
 import com.moredian.entrance.guard.http.retrofit.GetExpensePage;
 import com.moredian.entrance.guard.http.retrofit.GetListByPageService;
 import com.moredian.entrance.guard.http.retrofit.GetMealList;
@@ -210,5 +211,12 @@ public class ApiUtils {
      */
     public static GetDeviceNumList getDeviceNumList() {
         return RetrofitClient.getClient(BASE_URL).create(GetDeviceNumList.class);
+    }
+
+    /**
+     * descirption:获取所有的设备号对应的餐段类型
+     */
+    public static GetDevicePattern getDevicePattern() {
+        return RetrofitClient.getClient(BASE_URL).create(GetDevicePattern.class);
     }
 }
