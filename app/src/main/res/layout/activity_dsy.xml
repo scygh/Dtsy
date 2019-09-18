@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6">
+        android:layout_height="match_parent">
 
         <com.moredian.entrance.guard.face.CameraView
             android:id="@+id/camera_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:previewheight="720"
-            app:previewwidth="768" />
+            app:previewwidth="720"
+            app:previewheight="1280" />
 
         <com.moredian.entrance.guard.face.CameraView
             android:id="@+id/nir_camera"
             android:layout_width="1dp"
             android:layout_height="1dp"
-            app:previewheight="720"
-            app:previewwidth="768" />
+            app:previewheight="480"
+            app:previewwidth="800" />
 
         <com.moredian.entrance.guard.face.drawface.DrawerSurfaceView
             android:id="@+id/faceView"
@@ -49,9 +47,8 @@
             android:gravity="center"
             android:lines="1"
             android:textColor="@android:color/white"
-            android:textSize="50sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:textSize="@dimen/textSize_35"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/iv_rgb"
@@ -72,8 +69,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4">
+        android:layout_height="@dimen/height_250"
+        android:layout_alignParentBottom="true"
+        android:background="#88000000">
 
         <TextView
             android:id="@+id/tv_pattern_title"
@@ -81,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_50"
             android:text="消费模式:"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/textSize_26" />
 
         <TextView
@@ -89,17 +88,94 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_50"
             android:layout_toRightOf="@+id/tv_pattern_title"
-            android:text="请在网站设置"
+            android:text="未设置"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/textSize_26"
             android:textStyle="bold" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/height_100"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_50">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="姓名："
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/textSize_26" />
+
+                <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="@dimen/width_250"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="@dimen/textSize_26"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_50">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="余额："
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/textSize_26" />
+
+                <TextView
+                    android:id="@+id/tv_balance"
+                    android:layout_width="@dimen/width_250"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/textSize_26"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_50">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="消费次数："
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/textSize_26" />
+
+                <TextView
+                    android:id="@+id/tv_paycount"
+                    android:layout_width="@dimen/width_250"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="@dimen/textSize_26"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+
         <TextView
             android:id="@+id/tv_money"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="键盘输入金额"
-            android:textSize="@dimen/textSize_30"
+            android:gravity="center"
+            android:text="0.00"
+            android:textSize="@dimen/textSize_40"
+            android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold" />
     </RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

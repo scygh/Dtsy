@@ -30,6 +30,7 @@ import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.http.Api;
+import com.moredian.entrance.guard.utils.SerialPortApi;
 import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.fragment.ShowCardMessageFragment;
 
@@ -113,9 +114,7 @@ public class ManualconsumptionActivity extends BaseActivity {
             Log.d(TAG, "formatReadCard: " + companyCode + " " + number + " " + publiccount);
             getReadCard(companyCode, Integer.parseInt(deviceId), number);
         } else if (kind == Constants.KIND_CONSUME) {
-            Log.d(TAG, "formatReadCard: " + companyCode + " " + number + " " + publiccount);
-            String di = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
-            getReadCardPaycount(companyCode, Integer.parseInt(di), number);
+            getReadCardPaycount(companyCode, Integer.parseInt(deviceId), number);
         }
     }
 
@@ -162,7 +161,7 @@ public class ManualconsumptionActivity extends BaseActivity {
                 int paycount = getReadCard.getContent().getPayCount();
                 int status = getReadCard.getContent().getState();
                 Log.d(TAG, "onRespnse: " + name);
-                String namehex = getNameHex(name);
+                String namehex = SerialPortApi.getNameHex(name);
                 Log.d(TAG, "onRespnse: " + namehex);
                 Log.d(TAG, "onRespnse: " + balance);
                 String balancehex = ChangeTool.numToHex3((int) (balance * 100));
@@ -240,7 +239,7 @@ public class ManualconsumptionActivity extends BaseActivity {
                             ManualconsumptionName.setText("");
                             ManualconsumptionBalance.setText("0.00");
                             ManualconsumptionKeyboardEnterMoney.setText("0.00");
-                            consumeSenddown(simpleExpense, status, name);
+                            SerialPortApi.consumeSenddown(simpleExpense, status, name);
                             //跳转到支付成功界面
                             startActivity(ConsumeResultActivity.getConsumeSuccessActivityIntent(ManualconsumptionActivity.this, simpleExpense.getContent()));
                         }
@@ -286,44 +285,6 @@ public class ManualconsumptionActivity extends BaseActivity {
                 }
             });
         }
-    }
-
-    /**
-     * descirption: 拼接name
-     */
-    private String getNameHex(String name) {
-        String namehex = ChangeTool.toChineseHex(name);
-        StringBuilder stringBuilder = new StringBuilder();
-        if (namehex.length() < 18) {
-            for (int i = 0; i < (18 - namehex.length()); i++) {
-                stringBuilder.append("0");
-            }
-        }
-        namehex = namehex + stringBuilder.toString();
-        return namehex;
-    }
-
-    /**
-     * descirption: 消费成功，拼接字符，数据下行
-     */
-    private void consumeSenddown(SimpleExpense simpleExpense, int status, String name) {
-        double amount = simpleExpense.getContent().getExpenseDetail().getAmount();
-        double oamount = simpleExpense.getContent().getExpenseDetail().getOriginalAmount();
-        double balance = simpleExpense.getContent().getExpenseDetail().getBalance();
-        int paycount = simpleExpense.getContent().getExpenseDetail().getPayCount();
-        int discountrate = simpleExpense.getContent().getExpenseDetail().getDiscountRate();
-        String consumestatus = ChangeTool.numToHex1(simpleExpense.getContent().getTradingState());
-        String discountratehex = ChangeTool.numToHex1(discountrate);
-        String namehex = getNameHex(name);
-        String balancehex = ChangeTool.numToHex3((int) (balance * 100));
-        String amounthex = ChangeTool.numToHex3((int) (amount * 100));
-        String oamounthex = ChangeTool.numToHex3((int) (oamount * 100));
-        String paycounthex = ChangeTool.numToHex2(paycount);
-        String statushex = ChangeTool.numToHex1(status);
-        String sum = "0301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus;
-        MainApplication.getSerialPortUtils().sendSerialPort("A1B1030301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus + ChangeTool.makeChecksum(sum));
-        //MainApplication.getSerialPortUtils().sendSerialPort("A1B10303010100177363793131000000001e05280003840003846400380000c2");
-        Log.d(TAG, "consumeSenddown: " + "A1B1030301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus + ChangeTool.makeChecksum(sum));
     }
 
     /**

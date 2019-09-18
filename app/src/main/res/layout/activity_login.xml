@@ -8,6 +8,7 @@
     tools:context=".view.activity.LoginActivity">
 
     <ImageView
+        android:id="@+id/iv_come_back"
         android:layout_width="@dimen/width_80"
         android:layout_height="@dimen/height_80"
         android:layout_gravity="center_horizontal"

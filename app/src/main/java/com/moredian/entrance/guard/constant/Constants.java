@@ -97,6 +97,7 @@ public class Constants {
     public static final int KEY_DETECT_FACE_ANGLE_ERROR = 2;
     public static final int KEY_DETECT_FACE_QUALITY_ERROR = 3;
     public static final int KEY_DETECT_USER_NAME = 4;
+    public static final int KEY_SET_TEXT = 5;
 
     public static final int KEY_OPEN_NIR_CAMERA = 1000;
     public static final int OPEN_MIR_CAMERA_DELAY = 3 * 1000;

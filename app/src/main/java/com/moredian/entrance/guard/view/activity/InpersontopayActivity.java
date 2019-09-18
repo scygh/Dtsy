@@ -33,6 +33,7 @@ import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.http.Api;
+import com.moredian.entrance.guard.utils.SerialPortApi;
 import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.adapter.MealPagerAdapter;
 
@@ -261,7 +262,7 @@ public class InpersontopayActivity extends BaseActivity {
         int discountrate = simpleExpense.getContent().getExpenseDetail().getDiscountRate();
         String consumestatus = ChangeTool.numToHex1(simpleExpense.getContent().getTradingState());
         String discountratehex = ChangeTool.numToHex1(discountrate);
-        String namehex = getNameHex(name);
+        String namehex = SerialPortApi.getNameHex(name);
         String balancehex = ChangeTool.numToHex3((int) (balance * 100));
         String amounthex = ChangeTool.numToHex3((int) (amount * 100));
         String oamounthex = ChangeTool.numToHex3((int) (oamount * 100));
@@ -270,22 +271,6 @@ public class InpersontopayActivity extends BaseActivity {
         String sum = "0301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus;
         MainApplication.getSerialPortUtils().sendSerialPort("A1B1030301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus + ChangeTool.makeChecksum(sum));
     }
-
-    /**
-     * descirption: 拼接数据name
-     */
-    private String getNameHex(String name) {
-        String namehex = ChangeTool.toChineseHex(name);
-        StringBuilder stringBuilder = new StringBuilder();
-        if (namehex.length() < 18) {
-            for (int i = 0; i < (18 - namehex.length()); i++) {
-                stringBuilder.append("0");
-            }
-        }
-        namehex = namehex + stringBuilder.toString();
-        return namehex;
-    }
-
 
     @TargetApi(21)
     private Animator createCircleReveal(int x, int y) {

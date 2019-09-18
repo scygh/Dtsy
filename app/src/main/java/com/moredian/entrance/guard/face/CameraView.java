@@ -91,7 +91,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
                 mVideoPreviewHeight = 1280;
             } else if (flag == 2) {
                 mVideoPreviewWidth = 720;
-                mVideoPreviewHeight = 768;
+                mVideoPreviewHeight = 1280;
             }
         } else {
             mVideoPreviewWidth = 1280;

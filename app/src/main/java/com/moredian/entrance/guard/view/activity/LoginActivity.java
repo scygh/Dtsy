@@ -67,7 +67,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.remenberpassword_rb, R.id.login_btn})
+    @OnClick({R.id.remenberpassword_rb, R.id.login_btn,R.id.iv_come_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.remenberpassword_rb:
@@ -78,6 +78,9 @@ public class LoginActivity extends BaseActivity {
                 String name = usernameTv.getText().toString().trim();
                 String password = passswordTv.getText().toString().trim();
                 api.getToken(name, password, LoginActivity.this);
+                break;
+            case R.id.iv_come_back:
+                finish();
                 break;
         }
     }

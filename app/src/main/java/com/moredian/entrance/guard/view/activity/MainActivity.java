@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,7 +42,10 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout mainLl9;
     @BindView(R.id.main_ll10)
     LinearLayout mainLl10;
-
+    @BindView(R.id.iv_come_back)
+    ImageView ivComeBack;
+    @BindView(R.id.main_ll11)
+    LinearLayout mainLl11;
 
     public static Intent getMainActivityIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -62,9 +66,12 @@ public class MainActivity extends AppCompatActivity {
         Log.d("memorya", "onCreate: " + heapSize + ":" + maxHeapSize);//192:384
     }
 
-    @OnClick({R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6, R.id.main_ll7, R.id.main_ll8, R.id.main_ll9, R.id.main_ll10, R.id.main_ll11})
+    @OnClick({R.id.iv_come_back,R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6, R.id.main_ll7, R.id.main_ll8, R.id.main_ll9, R.id.main_ll10, R.id.main_ll11})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_come_back:
+                finish();
+                break;
             case R.id.main_ll1:
                 startActivity(ManualconsumptionActivity.getManualconsumptionActivityIntent(this));
                 break;

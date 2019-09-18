@@ -29,6 +29,7 @@ import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.KeyBoardUtil;
+import com.moredian.entrance.guard.utils.SerialPortApi;
 import com.moredian.entrance.guard.view.fragment.ShowCardMessageFragment;
 
 import java.text.DecimalFormat;
@@ -121,7 +122,7 @@ public class AutomaticconsumptionActivity extends BaseActivity {
                 int paycount = getReadCard.getContent().getPayCount();
                 int status = getReadCard.getContent().getState();
                 Log.d(TAG, "onRespnse: " + name);
-                String namehex = getNameHex(name);
+                String namehex = SerialPortApi.getNameHex(name);
                 Log.d(TAG, "onRespnse: " + namehex);
                 Log.d(TAG, "onRespnse: " + balance);
                 String balancehex = ChangeTool.numToHex3((int) (balance * 100));
@@ -143,21 +144,6 @@ public class AutomaticconsumptionActivity extends BaseActivity {
 
             }
         });
-    }
-
-    /**
-     * descirption: 拼接数据name
-     */
-    private String getNameHex(String name) {
-        String namehex = ChangeTool.toChineseHex(name);
-        StringBuilder stringBuilder = new StringBuilder();
-        if (namehex.length() < 18) {
-            for (int i = 0; i < (18 - namehex.length()); i++) {
-                stringBuilder.append("0");
-            }
-        }
-        namehex = namehex + stringBuilder.toString();
-        return namehex;
     }
 
     /**
@@ -228,7 +214,7 @@ public class AutomaticconsumptionActivity extends BaseActivity {
             api.setGetResponseListener(new Api.GetResponseListener<SimpleExpense>() {
                 @Override
                 public void onRespnse(SimpleExpense simpleExpense) {
-                    consumeSenddown(simpleExpense, status, name);
+                    SerialPortApi.consumeSenddown(simpleExpense, status, name);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -275,29 +261,6 @@ public class AutomaticconsumptionActivity extends BaseActivity {
                 }
             });
         }
-    }
-
-    /**
-     * descirption: 消费成功，拼接字符，数据下行
-     */
-    private void consumeSenddown(SimpleExpense simpleExpense, int status, String name) {
-        double amount = simpleExpense.getContent().getExpenseDetail().getAmount();
-        double oamount = simpleExpense.getContent().getExpenseDetail().getOriginalAmount();
-        double balance = simpleExpense.getContent().getExpenseDetail().getBalance();
-        int paycount = simpleExpense.getContent().getExpenseDetail().getPayCount();
-        int discountrate = simpleExpense.getContent().getExpenseDetail().getDiscountRate();
-        String consumestatus = ChangeTool.numToHex1(simpleExpense.getContent().getTradingState());
-        String discountratehex = ChangeTool.numToHex1(discountrate);
-        String namehex = getNameHex(name);
-        String balancehex = ChangeTool.numToHex3((int) (balance * 100));
-        String amounthex = ChangeTool.numToHex3((int) (amount * 100));
-        String oamounthex = ChangeTool.numToHex3((int) (oamount * 100));
-        String paycounthex = ChangeTool.numToHex2(paycount);
-        String statushex = ChangeTool.numToHex1(status);
-        String sum = "0301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus;
-        MainApplication.getSerialPortUtils().sendSerialPort("A1B1030301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus + ChangeTool.makeChecksum(sum));
-        //MainApplication.getSerialPortUtils().sendSerialPort("A1B10303010100177363793131000000001e05280003840003846400380000c2");
-        Log.d(TAG, "consumeSenddown: " + "A1B1030301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus + ChangeTool.makeChecksum(sum));
     }
 
     /**
