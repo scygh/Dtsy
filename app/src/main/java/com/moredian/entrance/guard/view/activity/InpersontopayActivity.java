@@ -102,6 +102,7 @@ public class InpersontopayActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        api.getMealList(Integer.parseInt(deviceId), token);
         Date date = new Date(System.currentTimeMillis());
         format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String currentDate = format.format(date).substring(0, 11);
@@ -208,7 +209,7 @@ public class InpersontopayActivity extends BaseActivity {
         api.setGetResponseListener(new Api.GetResponseListener<DefiniteExpense>() {
             @Override
             public void onRespnse(DefiniteExpense definiteExpense) {
-                consumeSenddown(definiteExpense, status, name);
+                SerialPortApi.consumeSenddown(definiteExpense, status, name);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -249,27 +250,6 @@ public class InpersontopayActivity extends BaseActivity {
                 startActivity(ConsumeResultActivity.getConsumeFailActivityIntent(InpersontopayActivity.this));
             }
         });
-    }
-
-    /**
-     * descirption: 消费成功，拼接字符，数据下行
-     */
-    private void consumeSenddown(DefiniteExpense simpleExpense, int status, String name) {
-        double amount = simpleExpense.getContent().getExpenseDetail().getAmount();
-        double oamount = simpleExpense.getContent().getExpenseDetail().getOriginalAmount();
-        double balance = simpleExpense.getContent().getExpenseDetail().getBalance();
-        int paycount = simpleExpense.getContent().getExpenseDetail().getPayCount();
-        int discountrate = simpleExpense.getContent().getExpenseDetail().getDiscountRate();
-        String consumestatus = ChangeTool.numToHex1(simpleExpense.getContent().getTradingState());
-        String discountratehex = ChangeTool.numToHex1(discountrate);
-        String namehex = SerialPortApi.getNameHex(name);
-        String balancehex = ChangeTool.numToHex3((int) (balance * 100));
-        String amounthex = ChangeTool.numToHex3((int) (amount * 100));
-        String oamounthex = ChangeTool.numToHex3((int) (oamount * 100));
-        String paycounthex = ChangeTool.numToHex2(paycount);
-        String statushex = ChangeTool.numToHex1(status);
-        String sum = "0301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus;
-        MainApplication.getSerialPortUtils().sendSerialPort("A1B1030301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus + ChangeTool.makeChecksum(sum));
     }
 
     @TargetApi(21)

@@ -31,12 +31,14 @@
                     android:text="@string/xfms"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/textSize_26"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/colorAccent" />
+                    android:background="@color/colorAccent"
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

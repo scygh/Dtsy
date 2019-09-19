@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_come_back:
+                startActivity(DsyActivity.getDsyActivityIntent(this));
                 finish();
                 break;
             case R.id.main_ll1:
@@ -108,10 +110,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+    * descirption: 自动会finish
+    */
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        MainApplication.getSerialPortUtils().closeSerialPort();
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(DsyActivity.getDsyActivityIntent(this));
     }
-
 }

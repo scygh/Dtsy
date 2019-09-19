@@ -35,6 +35,7 @@ import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.ReisterResponse;
 import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.utils.ToastHelper;
+import com.moredian.entrance.guard.view.activity.DsyActivity;
 import com.moredian.entrance.guard.view.activity.LoginActivity;
 import com.moredian.entrance.guard.view.activity.MainActivity;
 
@@ -122,7 +123,7 @@ public class Api {
                         SPUtils.getInstance().put(Constants.USERID, contentBean.getUserID());
                         SPUtils.getInstance().put(Constants.ACCOUNT, contentBean.getAccount());
                         ToastHelper.showToast("登录成功");
-                        context.startActivity(MainActivity.getMainActivityIntent(context));
+                        context.startActivity(DsyActivity.getDsyActivityIntent(context));
                         ((LoginActivity) context).finish();
                     } else {
                         ToastHelper.showToast(getToken.getMessage());
@@ -418,6 +419,9 @@ public class Api {
                             }
                         } else {
                             ToastHelper.showToast(simpleExpense.getMessage());
+                            if (getResponseListener != null) {
+                                getResponseListener.onFail(Constants.CONSUME_ERROR);
+                            }
                         }
                     }
 
@@ -430,7 +434,7 @@ public class Api {
                                 String error = jsonObject.getString("Message");
                                 ToastHelper.showToast(error);
                                 if (getResponseListener != null) {
-                                    getResponseListener.onFail(error);
+                                    getResponseListener.onFail(Constants.CONSUME_ERROR);
                                 }
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
@@ -469,6 +473,9 @@ public class Api {
                             }
                         } else {
                             ToastHelper.showToast(qrCodeExpense.getMessage());
+                            if (getResponseListener != null) {
+                                getResponseListener.onFail(Constants.CONSUME_ERROR);
+                            }
                         }
                     }
 
@@ -481,7 +488,7 @@ public class Api {
                                 String error = jsonObject.getString("Message");
                                 ToastHelper.showToast(error);
                                 if (getResponseListener != null) {
-                                    getResponseListener.onFail(error);
+                                    getResponseListener.onFail(Constants.CONSUME_ERROR);
                                 }
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
@@ -520,6 +527,9 @@ public class Api {
                             }
                         } else {
                             ToastHelper.showToast(expense.getMessage());
+                            if (getResponseListener != null) {
+                                getResponseListener.onFail(Constants.CONSUME_ERROR);
+                            }
                         }
                     }
 
@@ -532,7 +542,7 @@ public class Api {
                                 String error = jsonObject.getString("Message");
                                 ToastHelper.showToast(error);
                                 if (getResponseListener != null) {
-                                    getResponseListener.onFail(error);
+                                    getResponseListener.onFail(Constants.CONSUME_ERROR);
                                 }
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
@@ -571,6 +581,9 @@ public class Api {
                             }
                         } else {
                             ToastHelper.showToast(expense.getMessage());
+                            if (getResponseListener != null) {
+                                getResponseListener.onFail(Constants.CONSUME_ERROR);
+                            }
                         }
                     }
 
@@ -583,7 +596,7 @@ public class Api {
                                 String error = jsonObject.getString("Message");
                                 ToastHelper.showToast(error);
                                 if (getResponseListener != null) {
-                                    getResponseListener.onFail(error);
+                                    getResponseListener.onFail(Constants.CONSUME_ERROR);
                                 }
                             } catch (JSONException e1) {
                                 e1.printStackTrace();

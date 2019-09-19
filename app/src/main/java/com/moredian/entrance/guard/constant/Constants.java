@@ -20,10 +20,8 @@ public class Constants {
     public static final String USERID = "userId";
     public static final String ACCOUNT = "Account";
 
-    public static final String BREAKFEAST = "breakfeast";
-    public static final String LAUNCH = "launch";
-    public static final String DINNER = "dinner";
-    public static final String MIDNIGHTSNACK = "midnightsnack";
+    public static final String DEVICE_PATTERN = "device_pattern";
+    public static final String CONSUME_ERROR = "consume_error";
 
     //url
     //public static final String SERVER_URL = "http://dev.machine_api.dt128.com/";

@@ -161,6 +161,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
                     e.printStackTrace();
                     CameraUtil.closeCamera(mCamera);
                     mCamera = null;
+                    //这里有空指针异常
                     mCameraHandler.postDelayed(startCameraPreviewRunnable, 1000);
                 }
             } else {

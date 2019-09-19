@@ -58,8 +58,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.MainActivity" android:launchMode="singleTop" />
-        <activity android:name=".view.activity.DsyActivity" android:launchMode="singleTop"/>
+        <activity android:name=".view.activity.MainActivity" android:launchMode="singleTask" />
+        <activity android:name=".view.activity.DsyActivity" android:launchMode="singleTask"/>
 
         <receiver android:name=".receiver.BootCompletedBroadcastReceiver"
             android:enabled="true"

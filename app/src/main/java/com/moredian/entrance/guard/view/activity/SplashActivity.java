@@ -13,37 +13,52 @@ import android.view.WindowManager;
 import com.blankj.utilcode.util.SPUtils;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.R;
+import com.moredian.entrance.guard.entity.GetDevicePattern;
+import com.moredian.entrance.guard.http.Api;
 
-public class SplashActivity extends AppCompatActivity {
-    SplashHandler handler = null;
-    SplashTask task = null;
+public class SplashActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+    public int layoutView() {
+        return R.layout.activity_splash;
+    }
+
+    @Override
+    public void initView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-        handler = new SplashHandler();
-        task = new SplashTask();
-        handler.postDelayed(task, 2000);
+        api.getDevicePattern(Integer.parseInt(deviceId), token);
+        api.setGetResponseListener(new Api.GetResponseListener() {
+            @Override
+            public void onRespnse(Object o) {
+                if (o instanceof GetDevicePattern) {
+                    int devicePattern = ((GetDevicePattern) o).getContent().getPattern();
+                    SPUtils.getInstance().put(Constants.DEVICE_PATTERN,devicePattern);
+                }
+            }
+
+            @Override
+            public void onFail(String err) {
+
+            }
+        });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (SPUtils.getInstance().getBoolean(Constants.ISLOGIN)) {
+                    startActivity(DsyActivity.getDsyActivityIntent(SplashActivity.this));
+                } else {
+                    startActivity(LoginActivity.getLoginActivityIntent(SplashActivity.this));
+                }
+                finish();
+            }
+        },2500);
     }
 
-    private class SplashTask implements Runnable {
-        @Override
-        public void run() {
-            Intent intent = new Intent(SplashActivity.this,DsyActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
+    @Override
+    public void initData() {
 
-    private static class SplashHandler extends Handler {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-        }
     }
 
     @Override

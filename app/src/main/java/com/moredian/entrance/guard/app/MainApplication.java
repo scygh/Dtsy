@@ -32,10 +32,5 @@ public class MainApplication extends Application {
         String port = SPUtils.getInstance().getString(Constants.MACHINE_PORT,Constants.SERIALPORT);
         String baudrate = SPUtils.getInstance().getString(Constants.MACHINE_BAUDRTE,Constants.BAUDRATE);
         serialPortUtils.openSerialPort(port,Integer.parseInt(baudrate));
-        /*SerialPortFinder finder = new SerialPortFinder();
-        String[] attr = finder.getAllDevicesPath();
-        for (String path: attr) {
-            Log.d(TAG, "onCreate: " + path );
-        }*/
     }
 }

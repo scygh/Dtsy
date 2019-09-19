@@ -30,6 +30,7 @@ import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.face.CameraUtil;
 import com.moredian.entrance.guard.face.CameraView;
 import com.moredian.entrance.guard.face.drawface.DrawerSurfaceView;
+import com.moredian.entrance.guard.utils.StatusBarUtil;
 import com.moredian.entrance.guard.utils.ToastHelper;
 
 import java.io.ByteArrayOutputStream;
@@ -38,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FaceInputActivity extends AppCompatActivity {
+public class FaceInputActivity extends BaseActivity {
 
     private static final String TAG = "FaceInputActivity";
 
@@ -74,14 +75,17 @@ public class FaceInputActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-        setContentView(R.layout.activity_face_input);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        ButterKnife.bind(this);
+    public int layoutView() {
+        return R.layout.activity_face_input;
+    }
+
+    @Override
+    public void initView() {
+        StatusBarUtil.fitStatusBar(this);
+    }
+
+    @Override
+    public void initData() {
         initCamera();
         initReceiver();
     }

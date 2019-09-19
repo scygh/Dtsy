@@ -16,6 +16,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.R;
+import com.moredian.entrance.guard.entity.GetDevicePattern;
 import com.moredian.entrance.guard.entity.GetToken;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.http.ApiUtils;
@@ -52,22 +53,34 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initView() {
-
     }
 
     @Override
     public void initData() {
-        if (usernameTv != null && passswordTv != null) {
-            String existsUsername = SPUtils.getInstance().getString(Constants.USRTNAME);
-            String existsPassword = SPUtils.getInstance().getString(Constants.PASSWORD);
-            if (existsUsername != null && existsPassword != null) {
-                usernameTv.setText(existsUsername);
-                passswordTv.setText(existsPassword);
-            }
+        String existsUsername = SPUtils.getInstance().getString(Constants.USRTNAME);
+        String existsPassword = SPUtils.getInstance().getString(Constants.PASSWORD);
+        if (existsUsername != null && existsPassword != null) {
+            usernameTv.setText(existsUsername);
+            passswordTv.setText(existsPassword);
         }
+        api.getDevicePattern(Integer.parseInt(deviceId), token);
+        api.setGetResponseListener(new Api.GetResponseListener() {
+            @Override
+            public void onRespnse(Object o) {
+                if (o instanceof GetDevicePattern) {
+                    int devicePattern = ((GetDevicePattern) o).getContent().getPattern();
+                    SPUtils.getInstance().put(Constants.DEVICE_PATTERN, devicePattern);
+                }
+            }
+
+            @Override
+            public void onFail(String err) {
+
+            }
+        });
     }
 
-    @OnClick({R.id.remenberpassword_rb, R.id.login_btn,R.id.iv_come_back})
+    @OnClick({R.id.remenberpassword_rb, R.id.login_btn, R.id.iv_come_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.remenberpassword_rb:

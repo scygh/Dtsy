@@ -25,9 +25,12 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
 
     public Api api;
-    public abstract int layoutView();
     public String token;
     public String deviceId;
+    public String pattern;
+    public int p;
+
+    public abstract int layoutView();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +42,22 @@ public abstract class BaseActivity extends AppCompatActivity {
         deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
         if (TextUtils.isEmpty(deviceId)) {
             deviceId = "10000";
+        }
+        p = SPUtils.getInstance().getInt(Constants.DEVICE_PATTERN);
+        if (p == 1) {
+            pattern = "手动消费";
+        } else if (p == 2) {
+            pattern = "自动消费";
+        } else if (p == 3) {
+            pattern = "定值消费";
+        } else if (p == 4) {
+            pattern = "商品消费";
+        } else if (p == 5) {
+            pattern = "机器充值";
+        } else if (p == 6) {
+            pattern = "机器退款";
+        } else if (p == 7) {
+            pattern = "订餐模式";
         }
         setLightMode();
         initView();
