@@ -30,8 +30,6 @@ import retrofit2.Response;
 
 public class LoginActivity extends BaseActivity {
 
-    private static final String TAG = "LoginActivity";
-
     @BindView(R.id.username_tv)
     TextInputEditText usernameTv;
     @BindView(R.id.passsword_tv)
@@ -63,6 +61,7 @@ public class LoginActivity extends BaseActivity {
             usernameTv.setText(existsUsername);
             passswordTv.setText(existsPassword);
         }
+        //第一次打开未登录，没有查询结果，所以重复查一次。
         api.getDevicePattern(Integer.parseInt(deviceId), token);
         api.setGetResponseListener(new Api.GetResponseListener() {
             @Override

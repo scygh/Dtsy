@@ -7,11 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -19,6 +16,7 @@ import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.GetDeviceNumList;
+import com.moredian.entrance.guard.entity.PostsetDevicePattern;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.view.adapter.SpinnerAdapter;
 
@@ -26,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android_serialport_api.SerialPortFinder;
-import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -47,6 +44,8 @@ public class MachinesettingActivity extends BaseActivity {
     Button persondetailSure;
     @BindView(R.id.persondetail_cancle)
     Button persondetailCancle;
+    @BindView(R.id.machinesetting_device_pattern)
+    Spinner machinesettingDevicePattern;
     private List<String> deviceNums = new ArrayList<>();
 
     public static Intent getMachinesettingActivityIntent(Context context) {
@@ -72,6 +71,9 @@ public class MachinesettingActivity extends BaseActivity {
                 machinesettingPort.setSelection(j);
             }
         }
+        //消费模式
+        String[] devicePattern = getResources().getStringArray(R.array.devicepattern);
+        machinesettingDevicePattern.setAdapter(new SpinnerAdapter(this,devicePattern));
     }
 
     @Override
@@ -111,10 +113,14 @@ public class MachinesettingActivity extends BaseActivity {
                 String machineNumber = (String) machinesettingMachineNumber.getSelectedItem();
                 String machinePort = (String) machinesettingPort.getSelectedItem();
                 String machineBaudrate = machinesettingBaudrate.getText().toString();
+                String devicepattern =  (String)machinesettingDevicePattern.getSelectedItem();
                 SPUtils.getInstance().put(Constants.MACHINE_NUMBER, machineNumber);
                 SPUtils.getInstance().put(Constants.MACHINE_PORT, machinePort);
                 SPUtils.getInstance().put(Constants.MACHINE_BAUDRTE, machineBaudrate);
+                SPUtils.getInstance().put(Constants.DEVICE_PATTERN,Integer.parseInt(devicepattern));
                 ToastUtils.showShort("保存成功");
+                PostsetDevicePattern postsetDevicePattern = new PostsetDevicePattern("0",devicepattern);
+                api.setDevicePattern(postsetDevicePattern,Integer.parseInt(deviceId),token);
                 MainApplication.getSerialPortUtils().closeSerialPort();
                 MainApplication.getSerialPortUtils().openSerialPort(machinePort, Integer.parseInt(machineBaudrate));
                 break;

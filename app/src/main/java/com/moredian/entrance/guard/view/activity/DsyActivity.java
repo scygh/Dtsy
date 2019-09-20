@@ -53,7 +53,6 @@ import java.util.List;
 import android_serialport_api.ChangeTool;
 import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -107,6 +106,7 @@ public class DsyActivity extends BaseActivity {
     private int cardnumber;
     private String name;
     private int status;
+    private String username;
     private double balance;
     private int paycount;
     private List<GetMealList.ContentBean> datas = new ArrayList<>();
@@ -141,8 +141,12 @@ public class DsyActivity extends BaseActivity {
         initCamera();
         initReceiver();
         initPort();
+        initRequest();
     }
 
+    /**
+     * descirption: 初始化相机
+     */
     private void initCamera() {
         int display_degree = CameraUtil.getRotation(this);
         if (mRgbCameraView != null) {
@@ -157,16 +161,71 @@ public class DsyActivity extends BaseActivity {
         }
     }
 
+    /**
+     * descirption: 初始化广播
+     */
+    private void initReceiver() {
+        IntentFilter intentFilter1 = new IntentFilter(Constants.DETECT_RESULT_ACTION);
+        IntentFilter intentFilter2 = new IntentFilter(Constants.NIR_RESULT_ACTION);
+        IntentFilter intentFilter3 = new IntentFilter(Constants.OFFLINE_RECOGNIZE_ACTION);
+        IntentFilter intentFilter4 = new IntentFilter(Constants.ONLINE_RECOGNIZE_ACTION);
+        registerReceiver(mReceiver, intentFilter1);
+        registerReceiver(mReceiver, intentFilter2);
+        registerReceiver(mReceiver, intentFilter3);
+        registerReceiver(mReceiver, intentFilter4);
+    }
+
+    /**
+     * descirption: 监听串口接收
+     */
+    private void initPort() {
+        MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
+            @Override
+            public void onDataReceive(byte[] buffer, int size) {
+                String hexStr = ChangeTool.ByteArrToHex(buffer, 0, size);
+                String money = tvMoney.getText().toString();
+                if (hexStr.length() == 24) {//接收到键盘输入金额
+                    formatMoneyHex(buffer, size);
+                } else if (hexStr.length() == 32) {//接收到刷卡的信息
+                    if (p != 3) {
+                        if (money.equals("0.00")) {
+                            formatReadCard(hexStr, Constants.KIND_FIND);
+                        } else {
+                            //刷卡消费
+                            formatReadCard(hexStr, Constants.KIND_CONSUME);
+                        }
+                    } else {
+                        defineConsume(hexStr);
+                    }
+                } else if (hexStr.length() == 42) {//接收到扫码的信息
+                    if (p != 3) {
+                        if (money.equals("0.00")) {
+                            ToastHelper.showToast("键盘还未输入金额");
+                        } else {
+                            //扫码消费 011103040101000C00000028731343776464974922
+                            QrCodeConsume(hexStr, Constants.KIND_CONSUME_TDC);
+                        }
+                    } else {
+                        ToastHelper.showToast("定值消费模式不支持二维码消费");
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * descirption: 初始化请求返回
+     */
     private void initRequest() {
         api.setGetResponseListener(new Api.GetResponseListener() {
             @Override
             public void onRespnse(Object o) {
-                if (o instanceof GetReadCard) {
+                if (o instanceof GetReadCard) {//如果是刷卡
                     name = ((GetReadCard) o).getContent().getUserName();
                     status = ((GetReadCard) o).getContent().getState();
                     balance = ((GetReadCard) o).getContent().getBalance();
                     paycount = ((GetReadCard) o).getContent().getPayCount();
-                    if (!allowdConsume) {
+                    if (!allowdConsume) {//如果不允许消费，查询，数据下行
                         updateText();
                         String namehex = SerialPortApi.getNameHex(name);
                         String balancehex = ChangeTool.numToHex3((int) (balance * 100));
@@ -174,7 +233,7 @@ public class DsyActivity extends BaseActivity {
                         String statushex = ChangeTool.numToHex1(status);
                         String sum = "020101000f" + namehex + balancehex + paycounthex + statushex;
                         MainApplication.getSerialPortUtils().sendSerialPort("A1B103020101000f" + namehex + balancehex + paycounthex + statushex + ChangeTool.makeChecksum(sum));
-                    } else {
+                    } else {//如果允许消费，消费，数据下行
                         Log.d(TAG, "onRespnse: allowed");
                         publiccount = ((GetReadCard) o).getContent().getPayCount();
                         publiccount++;
@@ -185,29 +244,30 @@ public class DsyActivity extends BaseActivity {
                             postSimpleExpense(cardnumber, publiccount);
                         }
                     }
-                } else if (o instanceof SimpleExpense) {
+                } else if (o instanceof SimpleExpense) {//刷卡简单消费
                     SerialPortApi.consumeSenddown(((SimpleExpense) o), status, name);
-                    if (p == 1) {
+                    if (p == 1) {//如果是手动消费
                         clearData();
                         //跳转到支付成功界面
                         startActivity(ConsumeResultActivity.getConsumeSuccessActivityIntent(DsyActivity.this, ((SimpleExpense) o).getContent()));
-                    } else if (p == 2) {
+                    } else if (p == 2) {//如果是自动消费
                         updateText();
                         ToastHelper.showToast("刷卡消费成功啦！");
                     }
-                } else if (o instanceof DefiniteExpense) {
+                } else if (o instanceof DefiniteExpense) {//定值消费
                     SerialPortApi.consumeSenddown(((DefiniteExpense) o), status, name);
                     startActivity(ConsumeResultActivity.getDefineConsumeSuccessActivityIntent(DsyActivity.this, ((DefiniteExpense) o).getContent().getExpenseDetail()));
-                } else if (o instanceof QRCodeExpense) {
+                } else if (o instanceof QRCodeExpense) {//二维码消费
                     if (p == 1) {
                         clearData();
                         //跳转到支付成功界面
                         startActivity(ConsumeResultActivity.getQRConsumeSuccessActivityIntent(DsyActivity.this, ((QRCodeExpense) o).getContent()));
-                    } else {
+                    } else if (p == 2) {
                         autoUpdateData(tvUsername, "", tvBalance, tvPaycount);
                         ToastHelper.showToast("二维码消费成功啦");
                     }
-                } else if (o instanceof FaceExpense) {
+                } else if (o instanceof FaceExpense) {//人脸消费
+                    SerialPortApi.consumeSenddown(((FaceExpense) o), 0, username);
                     if (p == 1 || p == 3) {
                         clearData();
                         startActivity(ConsumeResultActivity.getFaceConsumeSuccessActivityIntent(DsyActivity.this, ((FaceExpense) o).getContent()));
@@ -240,6 +300,9 @@ public class DsyActivity extends BaseActivity {
         });
     }
 
+    /**
+     * descirption: 跳转到当前Pager
+     */
     private void setDefiCurrentItem(GetMealList o) {
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -267,25 +330,8 @@ public class DsyActivity extends BaseActivity {
         }
     }
 
-    public class LoopTransformer implements ViewPager.PageTransformer {
-        private static final float MIN_SCALE = 0.8f;
-
-        @Override
-        public void transformPage(View view, float position) {
-            if (position < -1) {
-                position = -1;
-            } else if (position > 1) {
-                position = 1;
-            }
-            float tempScale = position < 0 ? 1 + position : 1 - position;
-            float scaleValue = MIN_SCALE + tempScale * 0.2f;
-            view.setScaleX(scaleValue);
-            view.setScaleY(scaleValue);
-        }
-    }
-
     /**
-     * descirption: 清除数据
+     * descirption: 清空数据
      */
     private void clearData() {
         autoUpdateData(tvMoney, "0.00", tvUsername, tvBalance);
@@ -293,7 +339,7 @@ public class DsyActivity extends BaseActivity {
     }
 
     /**
-     * descirption: 清除数据
+     * descirption: 清除人员信息
      */
     private void autoUpdateData(TextView tvUsername, String s, TextView tvBalance, TextView tvPaycount) {
         tvUsername.setText(s);
@@ -313,48 +359,6 @@ public class DsyActivity extends BaseActivity {
         message.setData(bundle);
         message.what = Constants.KEY_SET_TEXT;
         mHandler.sendMessage(message);
-    }
-
-    private void initPort() {
-        MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
-            @Override
-            public void onDataReceive(byte[] buffer, int size) {
-                String hexStr = ChangeTool.ByteArrToHex(buffer, 0, size);
-                String money = tvMoney.getText().toString();
-                if (hexStr.length() == 24) {//接收到键盘输入金额
-                    formatMoneyHex(buffer, size);
-                } else if (hexStr.length() == 32) {//接收到刷卡的信息
-                    if (p != 3) {
-                        if (money.equals("0.00")) {
-                            formatReadCard(hexStr, Constants.KIND_FIND);
-                        } else {
-                            //刷卡消费
-                            formatReadCard(hexStr, Constants.KIND_CONSUME);
-                        }
-                    } else {
-                        defineConsume(hexStr);
-                    }
-                } else if (hexStr.length() == 42) {//接收到扫码的信息
-                    if (money.equals("0.00")) {
-                        ToastUtils.showShort("键盘还未输入金额");
-                    } else {
-                        //扫码消费 011103040101000C00000028731343776464974922
-                        QrCodeConsume(hexStr, Constants.KIND_CONSUME_TDC);
-                    }
-                }
-            }
-        });
-    }
-
-    private void initReceiver() {
-        IntentFilter intentFilter1 = new IntentFilter(Constants.DETECT_RESULT_ACTION);
-        IntentFilter intentFilter2 = new IntentFilter(Constants.NIR_RESULT_ACTION);
-        IntentFilter intentFilter3 = new IntentFilter(Constants.OFFLINE_RECOGNIZE_ACTION);
-        IntentFilter intentFilter4 = new IntentFilter(Constants.ONLINE_RECOGNIZE_ACTION);
-        registerReceiver(mReceiver, intentFilter1);
-        registerReceiver(mReceiver, intentFilter2);
-        registerReceiver(mReceiver, intentFilter3);
-        registerReceiver(mReceiver, intentFilter4);
     }
 
     /**
@@ -492,7 +496,6 @@ public class DsyActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        initRequest();
         allowdConsume = false;
         if (mRgbCameraView != null) {
             mRgbCameraView.onResume();
@@ -632,10 +635,10 @@ public class DsyActivity extends BaseActivity {
         }
     };
 
-    @OnClick({R.id.tv_pattern_title, R.id.tv_money})
+    @OnClick({R.id.go_main_fb, R.id.tv_money})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_pattern_title:
+            case R.id.go_main_fb:
                 startActivity(MainActivity.getMainActivityIntent(DsyActivity.this));
                 finish();
                 break;
@@ -708,7 +711,7 @@ public class DsyActivity extends BaseActivity {
                     } else if (action.equals(Constants.OFFLINE_RECOGNIZE_ACTION) || action.equals(Constants.ONLINE_RECOGNIZE_ACTION)) {
                         Log.d(TAG, "OFFLINE_RECOGNIZE_ACTION: " + System.currentTimeMillis());
                         long trackid = intent.getLongExtra(Constants.TRACK_ID, 0l);
-                        String username = intent.getStringExtra(Constants.USER_NAME);
+                        username = intent.getStringExtra(Constants.USER_NAME);
                         memberId = intent.getStringExtra(Constants.PERSON_ID);
                         Message msg = new Message();
                         msg.what = Constants.KEY_DETECT_USER_NAME;
@@ -719,6 +722,23 @@ public class DsyActivity extends BaseActivity {
                     }
                 }
             }
+        }
+    }
+
+    public class LoopTransformer implements ViewPager.PageTransformer {
+        private static final float MIN_SCALE = 0.8f;
+
+        @Override
+        public void transformPage(View view, float position) {
+            if (position < -1) {
+                position = -1;
+            } else if (position > 1) {
+                position = 1;
+            }
+            float tempScale = position < 0 ? 1 + position : 1 - position;
+            float scaleValue = MIN_SCALE + tempScale * 0.2f;
+            view.setScaleX(scaleValue);
+            view.setScaleY(scaleValue);
         }
     }
 }

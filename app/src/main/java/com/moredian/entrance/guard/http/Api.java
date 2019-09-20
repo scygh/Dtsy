@@ -31,6 +31,7 @@ import com.moredian.entrance.guard.entity.PostResponse;
 import com.moredian.entrance.guard.entity.PostRequestBody;
 import com.moredian.entrance.guard.entity.PostResponseNoContent;
 import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
+import com.moredian.entrance.guard.entity.PostsetDevicePattern;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.ReisterResponse;
 import com.moredian.entrance.guard.entity.SimpleExpense;
@@ -138,7 +139,11 @@ public class Api {
                     try {
                         JSONObject jsonObject = new JSONObject(body.string());
                         String error = jsonObject.getString("Message");
-                        ToastHelper.showToast(error);
+                        if (error != null) {
+                            ToastHelper.showToast(error);
+                        } else {
+                            ToastHelper.showToast(body.string());
+                        }
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     } catch (IOException e1) {
@@ -1387,7 +1392,60 @@ public class Api {
                             try {
                                 JSONObject jsonObject = new JSONObject(body.string());
                                 String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
+                                if (error != null) {
+                                    ToastHelper.showToast(error);
+                                } else {
+                                    ToastHelper.showToast(body.string());
+                                }
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 获取设备号对应的餐段
+     */
+    public void setDevicePattern(PostsetDevicePattern postsetDevicePattern,Integer id, String token) {
+        ApiUtils.setDevicePattern().postSetDevicePattern(postsetDevicePattern,id,token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<PostResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(PostResponse response) {
+                        if (response != null && response.getStatusCode() == 200) {
+                            ToastHelper.showToast("设置消费模式成功");
+                        } else {
+                            ToastHelper.showToast(response.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                if (error != null) {
+                                    ToastHelper.showToast(error);
+                                } else {
+                                    ToastHelper.showToast(body.string());
+                                }
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
                             } catch (IOException e1) {

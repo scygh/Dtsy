@@ -1,13 +1,7 @@
 package com.moredian.entrance.guard.view.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.WindowManager;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -28,13 +22,17 @@ public class SplashActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
+    }
+
+    @Override
+    public void initData() {
         api.getDevicePattern(Integer.parseInt(deviceId), token);
         api.setGetResponseListener(new Api.GetResponseListener() {
             @Override
             public void onRespnse(Object o) {
                 if (o instanceof GetDevicePattern) {
                     int devicePattern = ((GetDevicePattern) o).getContent().getPattern();
-                    SPUtils.getInstance().put(Constants.DEVICE_PATTERN,devicePattern);
+                    SPUtils.getInstance().put(Constants.DEVICE_PATTERN, devicePattern);
                 }
             }
 
@@ -53,12 +51,7 @@ public class SplashActivity extends BaseActivity {
                 }
                 finish();
             }
-        },2500);
-    }
-
-    @Override
-    public void initData() {
-
+        }, 2500);
     }
 
     @Override

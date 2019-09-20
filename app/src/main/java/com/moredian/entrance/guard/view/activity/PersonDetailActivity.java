@@ -297,8 +297,10 @@ public class PersonDetailActivity extends BaseActivity {
      */
     private void deletePerson() {
         if (!TextUtils.isEmpty(userid)) {
-            PostRequestBody postRequestBody = new PostRequestBody(findbean.getUser().getId());
-            api.postDelete(postRequestBody, token, Constants.MODIAN_TOKEN);
+            if (findbean != null) {
+                PostRequestBody postRequestBody = new PostRequestBody(findbean.getUser().getId());
+                api.postDelete(postRequestBody, token, Constants.MODIAN_TOKEN);
+            }
         } else {
             if (arowsBeans.size() > 0) {
                 PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId());

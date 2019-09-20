@@ -26,6 +26,7 @@ import com.moredian.entrance.guard.http.retrofit.PostFaceExpense;
 import com.moredian.entrance.guard.http.retrofit.PostQRCodeExpense;
 import com.moredian.entrance.guard.http.retrofit.PostRefund;
 import com.moredian.entrance.guard.http.retrofit.PostRegister;
+import com.moredian.entrance.guard.http.retrofit.PostSetDevicePattern;
 import com.moredian.entrance.guard.http.retrofit.PostSimpleExpense;
 import com.moredian.entrance.guard.http.retrofit.PostUpdate;
 
@@ -218,5 +219,12 @@ public class ApiUtils {
      */
     public static GetDevicePattern getDevicePattern() {
         return RetrofitClient.getClient(BASE_URL).create(GetDevicePattern.class);
+    }
+
+    /**
+     * descirption:设置设备号对应设备的消费模式
+     */
+    public static PostSetDevicePattern setDevicePattern() {
+        return RetrofitClient.getClient(BASE_URL).create(PostSetDevicePattern.class);
     }
 }

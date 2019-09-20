@@ -191,4 +191,14 @@
         android:layout_alignParentBottom="true"
         android:clipChildren="false"
         android:visibility="gone"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/go_main_fb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_10"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:background="@color/colorPrimaryDark"
+        app:borderWidth="0dp"
+        android:src="@mipmap/set"/>
 </RelativeLayout>
