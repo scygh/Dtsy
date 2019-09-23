@@ -104,12 +104,12 @@ public class FaceInputActivity extends BaseActivity {
     private void initCamera() {
         int display_degree = CameraUtil.getRotation(this);
         if (mRgbCameraView != null) {
-            mRgbCameraView.init(CameraUtil.getBackCameraId(), display_degree, previewCallback, faceDetectionListener,1);
+            mRgbCameraView.init(CameraUtil.getBackCameraId(), display_degree, previewCallback, faceDetectionListener, 1);
             mRgbCameraView.requestLayout();
             mRgbCameraView.start();
         }
         if (mNirCameraView != null) {
-            mNirCameraView.init(CameraUtil.getFrontCameraId(), display_degree, nirPreviewCallback, null,1);
+            mNirCameraView.init(CameraUtil.getFrontCameraId(), display_degree, nirPreviewCallback, null, 1);
             mNirCameraView.requestLayout();
             mNirCameraView.start();
         }
@@ -274,12 +274,15 @@ public class FaceInputActivity extends BaseActivity {
         }
     };
 
-    @OnClick({R.id.persondetail_sure, R.id.persondetail_cancle})
+    @OnClick({R.id.persondetail_sure, R.id.persondetail_cancle, R.id.face_exit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.persondetail_sure:
                 break;
             case R.id.persondetail_cancle:
+                finish();
+                break;
+            case R.id.face_exit:
                 finish();
                 break;
         }

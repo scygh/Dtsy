@@ -3,6 +3,8 @@ package com.moredian.entrance.guard.view.activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
+import com.moredian.entrance.guard.utils.RenderScriptUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,9 +68,10 @@ public class MainActivity extends AppCompatActivity {
         int heapSize = manager.getMemoryClass();
         int maxHeapSize = manager.getLargeMemoryClass();
         Log.d("memorya", "onCreate: " + heapSize + ":" + maxHeapSize);//192:384
+        getWindow().getDecorView().setBackground(new BitmapDrawable(RenderScriptUtil.rsBlur(this, BitmapFactory.decodeResource(getResources(), R.mipmap.splash_iv), 10)));
     }
 
-    @OnClick({R.id.iv_come_back,R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6, R.id.main_ll7, R.id.main_ll8, R.id.main_ll9, R.id.main_ll10, R.id.main_ll11})
+    @OnClick({R.id.iv_come_back, R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6, R.id.main_ll7, R.id.main_ll8, R.id.main_ll9, R.id.main_ll10, R.id.main_ll11})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_come_back:
@@ -111,11 +115,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-    * descirption: 自动会finish
-    */
+     * descirption: 自动会finish
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(DsyActivity.getDsyActivityIntent(this));
     }
+
+
 }

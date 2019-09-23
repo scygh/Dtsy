@@ -42,6 +42,9 @@ import com.moredian.entrance.guard.utils.SerialPortApi;
 import com.moredian.entrance.guard.utils.StatusBarUtil;
 import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.adapter.MealPagerAdapter;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
+import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton;
+import com.nightonke.boommenu.BoomMenuButton;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -53,6 +56,7 @@ import java.util.List;
 import android_serialport_api.ChangeTool;
 import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -95,6 +99,8 @@ public class DsyActivity extends BaseActivity {
     RelativeLayout rlData;
     @BindView(R.id.meal_viewpager)
     ViewPager mealViewpager;
+    @BindView(R.id.bmb)
+    BoomMenuButton bmb;
 
     private byte[] rgb_data;
     private String memberId;
@@ -112,6 +118,20 @@ public class DsyActivity extends BaseActivity {
     private List<GetMealList.ContentBean> datas = new ArrayList<>();
     private List<String[]> times = new ArrayList<>();
     MealPagerAdapter adapter;
+    private static int index = 0;
+    private static int imageResourceIndex = 0;
+    private static String[] text = new String[]{"退出", "菜单"};
+    private static int[] imageResources = new int[]{R.mipmap.face_tuichu, R.mipmap.face_menu,};
+    static int getImageResource() {
+        if (imageResourceIndex >= imageResources.length) imageResourceIndex = 0;
+        return imageResources[imageResourceIndex++];
+    }
+    static String getext() {
+        if (index >= text.length) index = 0;
+        return text[index++];
+    }
+
+
 
     public static Intent getDsyActivityIntent(Context context) {
         Intent intent = new Intent(context, DsyActivity.class);
@@ -128,6 +148,23 @@ public class DsyActivity extends BaseActivity {
         StatusBarUtil.fitStatusBar(this);
         if (!TextUtils.isEmpty(pattern)) {
             tvPattern.setText(pattern);
+        }
+        for (int i = 0; i < bmb.getPiecePlaceEnum().pieceNumber(); i++) {
+            TextOutsideCircleButton.Builder builder = new TextOutsideCircleButton.Builder()
+                    .listener(new OnBMClickListener() {
+                        @Override
+                        public void onBoomButtonClick(int index) {
+                            if (index == 0) {
+                                finish();
+                            } else if (index == 1) {
+                                startActivity(MainActivity.getMainActivityIntent(DsyActivity.this));
+                                finish();
+                            }
+                        }
+                    })
+                    .normalImageRes(getImageResource())
+                    .normalText(getext());
+            bmb.addBuilder(builder);
         }
         if (p == 3) {
             rlData.setVisibility(View.GONE);
@@ -148,6 +185,7 @@ public class DsyActivity extends BaseActivity {
      * descirption: 初始化相机
      */
     private void initCamera() {
+        Log.d(TAG, "initCamera: ");
         int display_degree = CameraUtil.getRotation(this);
         if (mRgbCameraView != null) {
             mRgbCameraView.init(CameraUtil.getBackCameraId(), display_degree, previewCallback, faceDetectionListener, 2);
@@ -396,6 +434,9 @@ public class DsyActivity extends BaseActivity {
         }
     }
 
+    /**
+     * descirption: 去定值消费
+     */
     private void defineConsume(String a) {
         int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
         cardnumber = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
@@ -496,6 +537,7 @@ public class DsyActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume: ");
         allowdConsume = false;
         if (mRgbCameraView != null) {
             mRgbCameraView.onResume();
@@ -515,6 +557,7 @@ public class DsyActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause: ");
         if (mNirTipsView != null) {
             mNirTipsView.setBackground(getResources().getDrawable(R.drawable.shap_nir_tip_default));
         }
@@ -532,6 +575,7 @@ public class DsyActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
         if (mRgbCameraView != null) {
             mRgbCameraView.stop();
             mRgbCameraView = null;
@@ -635,16 +679,11 @@ public class DsyActivity extends BaseActivity {
         }
     };
 
-    @OnClick({R.id.go_main_fb, R.id.tv_money})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.go_main_fb:
-                startActivity(MainActivity.getMainActivityIntent(DsyActivity.this));
-                finish();
-                break;
-            case R.id.tv_money:
-                break;
-        }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
     public class MyReceiver extends BroadcastReceiver {

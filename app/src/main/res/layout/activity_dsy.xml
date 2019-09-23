@@ -192,16 +192,16 @@
         android:clipChildren="false"
         android:visibility="gone"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/go_main_fb"
+    <com.nightonke.boommenu.BoomMenuButton
+        android:id="@+id/bmb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/height_350"
-        android:layout_marginRight="@dimen/margin_50"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:background="@color/colorPrimaryDark"
-        app:borderWidth="0dp"
-        android:src="@mipmap/set"/>
+        app:bmb_buttonEnum="textOutsideCircle"
+        app:bmb_piecePlaceEnum="piecePlace_dot_2_1"
+        app:bmb_buttonPlaceEnum="buttonPlace_sc_2_1"
+        app:bmb_boomInWholeScreen="false"
+        android:layout_margin="@dimen/margin_30"
+        app:bmb_normalColor="@color/color_F38A23"
+        />
+
 </RelativeLayout>

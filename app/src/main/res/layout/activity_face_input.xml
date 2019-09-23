@@ -77,4 +77,16 @@
         layout="@layout/bottom_btn_layout"
         android:visibility="gone"
         />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/face_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_30"
+        android:backgroundTint="@color/color_F38A23"
+        android:background="@color/colorPrimaryDark"
+        app:borderWidth="0dp"
+        android:src="@mipmap/face_tuichu"
+
+        />
 </RelativeLayout>
