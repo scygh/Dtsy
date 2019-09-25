@@ -124,8 +124,9 @@ public class Api {
                         SPUtils.getInstance().put(Constants.USERID, contentBean.getUserID());
                         SPUtils.getInstance().put(Constants.ACCOUNT, contentBean.getAccount());
                         ToastHelper.showToast("登录成功");
-                        context.startActivity(DsyActivity.getDsyActivityIntent(context));
-                        ((LoginActivity) context).finish();
+                        if (onCreate != null) {
+                            onCreate.created();
+                        }
                     } else {
                         ToastHelper.showToast(getToken.getMessage());
                     }
@@ -1428,7 +1429,7 @@ public class Api {
                     @Override
                     public void onNext(PostResponse response) {
                         if (response != null && response.getStatusCode() == 200) {
-                            ToastHelper.showToast("设置消费模式成功");
+                            ToastHelper.showToast("设置成功");
                         } else {
                             ToastHelper.showToast(response.getMessage());
                         }

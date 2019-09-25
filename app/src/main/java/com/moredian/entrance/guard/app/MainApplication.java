@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.moredian.entrance.guard.constant.Constants;
+import com.squareup.leakcanary.LeakCanary;
 
 import android_serialport_api.SerialPortUtils;
 
@@ -32,5 +33,13 @@ public class MainApplication extends Application {
         String port = SPUtils.getInstance().getString(Constants.MACHINE_PORT,Constants.SERIALPORT);
         String baudrate = SPUtils.getInstance().getString(Constants.MACHINE_BAUDRTE,Constants.BAUDRATE);
         serialPortUtils.openSerialPort(port,Integer.parseInt(baudrate));
+        /*//检测内存泄漏
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);*/
+
     }
 }

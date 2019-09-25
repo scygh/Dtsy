@@ -39,7 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         api = new Api();
         token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
-        deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER);
+        deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER, "10000");
         if (TextUtils.isEmpty(deviceId)) {
             deviceId = "10000";
         }

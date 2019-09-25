@@ -57,7 +57,7 @@ import android_serialport_api.ChangeTool;
 import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 
 /**
  * description ：
@@ -155,6 +155,7 @@ public class DsyActivity extends BaseActivity {
                         @Override
                         public void onBoomButtonClick(int index) {
                             if (index == 0) {
+                                MainApplication.getSerialPortUtils().closeSerialPort();
                                 finish();
                             } else if (index == 1) {
                                 startActivity(MainActivity.getMainActivityIntent(DsyActivity.this));
@@ -185,7 +186,6 @@ public class DsyActivity extends BaseActivity {
      * descirption: 初始化相机
      */
     private void initCamera() {
-        Log.d(TAG, "initCamera: ");
         int display_degree = CameraUtil.getRotation(this);
         if (mRgbCameraView != null) {
             mRgbCameraView.init(CameraUtil.getBackCameraId(), display_degree, previewCallback, faceDetectionListener, 2);
@@ -589,6 +589,7 @@ public class DsyActivity extends BaseActivity {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     @SuppressLint("HandlerLeak")
@@ -678,13 +679,6 @@ public class DsyActivity extends BaseActivity {
             super.handleMessage(msg);
         }
     };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     public class MyReceiver extends BroadcastReceiver {
         @Override

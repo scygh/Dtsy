@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.textfield.TextInputEditText;
+import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.entity.GetDevicePattern;
@@ -61,20 +62,28 @@ public class LoginActivity extends BaseActivity {
             usernameTv.setText(existsUsername);
             passswordTv.setText(existsPassword);
         }
-        //第一次打开未登录，没有查询结果，所以重复查一次。
-        api.getDevicePattern(Integer.parseInt(deviceId), token);
         api.setGetResponseListener(new Api.GetResponseListener() {
             @Override
             public void onRespnse(Object o) {
                 if (o instanceof GetDevicePattern) {
                     int devicePattern = ((GetDevicePattern) o).getContent().getPattern();
                     SPUtils.getInstance().put(Constants.DEVICE_PATTERN, devicePattern);
+                    startActivity(DsyActivity.getDsyActivityIntent(LoginActivity.this));
+                    finish();
                 }
             }
 
             @Override
             public void onFail(String err) {
 
+            }
+        });
+        api.setOnCreate(new Api.OnCreate() {
+            @Override
+            public void created() {
+                //第一次打开未登录，没有查询结果，所以重复查一次。
+                token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
+                api.getDevicePattern(Integer.parseInt(deviceId), token);
             }
         });
     }
@@ -93,6 +102,7 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.iv_come_back:
                 finish();
+                MainApplication.getSerialPortUtils().closeSerialPort();
                 break;
         }
     }

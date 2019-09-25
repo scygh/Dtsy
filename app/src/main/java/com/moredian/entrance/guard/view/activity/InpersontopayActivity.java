@@ -371,5 +371,6 @@ public class InpersontopayActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         times.clear();
+        MainApplication.getSerialPortUtils().setOnDataReceiveListenerNull();
     }
 }

@@ -69,11 +69,19 @@ public class MachinesettingActivity extends BaseActivity {
         for (int j = 0; j < attr.length; j++) {
             if (attr[j].equals(port)) {
                 machinesettingPort.setSelection(j);
+                break;
             }
         }
         //消费模式
         String[] devicePattern = getResources().getStringArray(R.array.devicepattern);
-        machinesettingDevicePattern.setAdapter(new SpinnerAdapter(this,devicePattern));
+        machinesettingDevicePattern.setAdapter(new SpinnerAdapter(this, devicePattern));
+        int pattern = SPUtils.getInstance().getInt(Constants.DEVICE_PATTERN);
+        for (int k = 0; k < devicePattern.length; k++) {
+            if (Integer.parseInt(devicePattern[k]) == pattern) {
+                machinesettingDevicePattern.setSelection(k);
+                break;
+            }
+        }
     }
 
     @Override
@@ -113,14 +121,13 @@ public class MachinesettingActivity extends BaseActivity {
                 String machineNumber = (String) machinesettingMachineNumber.getSelectedItem();
                 String machinePort = (String) machinesettingPort.getSelectedItem();
                 String machineBaudrate = machinesettingBaudrate.getText().toString();
-                String devicepattern =  (String)machinesettingDevicePattern.getSelectedItem();
+                String devicepattern = (String) machinesettingDevicePattern.getSelectedItem();
                 SPUtils.getInstance().put(Constants.MACHINE_NUMBER, machineNumber);
                 SPUtils.getInstance().put(Constants.MACHINE_PORT, machinePort);
                 SPUtils.getInstance().put(Constants.MACHINE_BAUDRTE, machineBaudrate);
-                SPUtils.getInstance().put(Constants.DEVICE_PATTERN,Integer.parseInt(devicepattern));
-                ToastUtils.showShort("保存成功");
-                PostsetDevicePattern postsetDevicePattern = new PostsetDevicePattern("0",devicepattern);
-                api.setDevicePattern(postsetDevicePattern,Integer.parseInt(deviceId),token);
+                SPUtils.getInstance().put(Constants.DEVICE_PATTERN, Integer.parseInt(devicepattern));
+                PostsetDevicePattern postsetDevicePattern = new PostsetDevicePattern("0", devicepattern);
+                api.setDevicePattern(postsetDevicePattern, Integer.parseInt(deviceId), token);
                 MainApplication.getSerialPortUtils().closeSerialPort();
                 MainApplication.getSerialPortUtils().openSerialPort(machinePort, Integer.parseInt(machineBaudrate));
                 break;
