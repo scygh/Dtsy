@@ -104,12 +104,12 @@ public class FaceInputActivity extends BaseActivity {
     private void initCamera() {
         int display_degree = CameraUtil.getRotation(this);
         if (mRgbCameraView != null) {
-            mRgbCameraView.init(CameraUtil.getBackCameraId(), display_degree, previewCallback, faceDetectionListener, 1);
+            mRgbCameraView.init(CameraUtil.getBackCameraId(), display_degree, previewCallback, faceDetectionListener);
             mRgbCameraView.requestLayout();
             mRgbCameraView.start();
         }
         if (mNirCameraView != null) {
-            mNirCameraView.init(CameraUtil.getFrontCameraId(), display_degree, nirPreviewCallback, null, 1);
+            mNirCameraView.init(CameraUtil.getFrontCameraId(), display_degree, nirPreviewCallback, null);
             mNirCameraView.requestLayout();
             mNirCameraView.start();
         }

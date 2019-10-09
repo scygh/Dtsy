@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -56,7 +57,6 @@ import java.util.List;
 import android_serialport_api.ChangeTool;
 import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 /**
@@ -101,7 +101,7 @@ public class DsyActivity extends BaseActivity {
     ViewPager mealViewpager;
     @BindView(R.id.bmb)
     BoomMenuButton bmb;
-
+    private Mytask mytask;
     private byte[] rgb_data;
     private String memberId;
     private static boolean mShowCallbackFace = false;
@@ -176,24 +176,50 @@ public class DsyActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        initCamera();
+        /*mytask = new Mytask();
+        mytask.execute();*/
         initReceiver();
         initPort();
         initRequest();
+        initCamera();
+    }
+
+    private class Mytask extends AsyncTask<Void,Integer,Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            initCamera();
+            return null;
+        }
     }
 
     /**
      * descirption: 初始化相机
      */
     private void initCamera() {
-        int display_degree = CameraUtil.getRotation(this);
+        int display_degree = CameraUtil.getRotation(DsyActivity.this);
         if (mRgbCameraView != null) {
-            mRgbCameraView.init(CameraUtil.getBackCameraId(), display_degree, previewCallback, faceDetectionListener, 2);
+            mRgbCameraView.init(CameraUtil.getBackCameraId(), display_degree, previewCallback, faceDetectionListener);
             mRgbCameraView.requestLayout();
             mRgbCameraView.start();
         }
         if (mNirCameraView != null) {
-            mNirCameraView.init(CameraUtil.getFrontCameraId(), display_degree, nirPreviewCallback, null, 2);
+            mNirCameraView.init(CameraUtil.getFrontCameraId(), display_degree, nirPreviewCallback, null);
             mNirCameraView.requestLayout();
             mNirCameraView.start();
         }
@@ -203,14 +229,12 @@ public class DsyActivity extends BaseActivity {
      * descirption: 初始化广播
      */
     private void initReceiver() {
-        IntentFilter intentFilter1 = new IntentFilter(Constants.DETECT_RESULT_ACTION);
-        IntentFilter intentFilter2 = new IntentFilter(Constants.NIR_RESULT_ACTION);
-        IntentFilter intentFilter3 = new IntentFilter(Constants.OFFLINE_RECOGNIZE_ACTION);
-        IntentFilter intentFilter4 = new IntentFilter(Constants.ONLINE_RECOGNIZE_ACTION);
-        registerReceiver(mReceiver, intentFilter1);
-        registerReceiver(mReceiver, intentFilter2);
-        registerReceiver(mReceiver, intentFilter3);
-        registerReceiver(mReceiver, intentFilter4);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.DETECT_RESULT_ACTION);
+        filter.addAction(Constants.NIR_RESULT_ACTION);
+        filter.addAction(Constants.OFFLINE_RECOGNIZE_ACTION);
+        filter.addAction(Constants.ONLINE_RECOGNIZE_ACTION);
+        registerReceiver(mReceiver, filter);
     }
 
     /**
@@ -537,7 +561,6 @@ public class DsyActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: ");
         allowdConsume = false;
         if (mRgbCameraView != null) {
             mRgbCameraView.onResume();
@@ -590,6 +613,7 @@ public class DsyActivity extends BaseActivity {
             ex.printStackTrace();
         }
         mHandler.removeCallbacksAndMessages(null);
+
     }
 
     @SuppressLint("HandlerLeak")

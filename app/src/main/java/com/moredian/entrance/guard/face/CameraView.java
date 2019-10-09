@@ -76,47 +76,38 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
     /**
      * descirption: 初始化mCameraId mDisplayDegree 俩接口对象
      */
-    public void init(int cameraId, int displayDegree, Camera.PreviewCallback previewCallback,
-                     Camera.FaceDetectionListener faceDetectionListener, int flag) {
+    public void init(int cameraId, int displayDegree, Camera.PreviewCallback previewCallback, Camera.FaceDetectionListener faceDetectionListener) {
         this.mCameraId = cameraId;
         this.mDisplayDegree = displayDegree;
         this.mPreviewCallback = previewCallback;
         this.mFaceDetectionListener = faceDetectionListener;
-        if (DeviceType.isG2()) {
+        mVideoPreviewWidth = 720;
+        mVideoPreviewHeight = 1280;
+        /*if (DeviceType.isG2()) {
             mVideoPreviewWidth = 480;
             mVideoPreviewHeight = 800;
         } else if (DeviceType.isMg1()) {
-            if (flag == 1) {
                 mVideoPreviewWidth = 720;
                 mVideoPreviewHeight = 1280;
-            } else if (flag == 2) {
-                mVideoPreviewWidth = 720;
-                mVideoPreviewHeight = 1280;
-            }
         } else {
             mVideoPreviewWidth = 1280;
             mVideoPreviewHeight = 720;
-        }
+        }*/
     }
 
 
     private Runnable startCameraPreviewRunnable = new Runnable() {
         @Override
         public void run() {
-            Log.d(TAG, "startCameraPreviewRunnable mCameraId:" + mCameraId + ",mSurface:" + mSurface + ",mCamera:" + mCamera);
             if (mSurface == null || mCamera != null || mCameraId == -1) {
-                mCameraHandler.postDelayed(startCameraPreviewRunnable, 1000);
+                mCameraHandler.postDelayed(startCameraPreviewRunnable, 500);
                 return;
             }
-
             final int pw = mPreviewWidth;
             final int ph = mPreviewHeight;
-            Log.d(TAG, "startCameraPreviewRunnable onCameraCreate mPreviewWidth:" + mPreviewWidth + ",mPreviewHeight:" + mPreviewHeight);
-
             mCamera = CameraUtil.openCamera(mCameraId, new CameraUtil.CameraWritter() {
                 @Override
                 public void onCameraCreate(Camera camera) {
-                    Log.d(TAG, "startCameraPreviewRunnable onCameraCreate mCameraId:" + mCameraId);
                     Camera.Parameters parameters = camera.getParameters();
                     //取到最大的误差不大于10的Camera Size
                     Camera.Size size = CameraUtil.choosePreferredSize(parameters.getSupportedPreviewSizes(),
@@ -163,12 +154,12 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
                     mCamera = null;
                     //这里有空指针异常
                     if (mCameraHandler != null) {
-                        mCameraHandler.postDelayed(startCameraPreviewRunnable, 1000);
+                        mCameraHandler.postDelayed(startCameraPreviewRunnable, 500);
                     }
                 }
             } else {
                 if (mCameraHandler != null) {
-                    mCameraHandler.postDelayed(startCameraPreviewRunnable, 1000);
+                    mCameraHandler.postDelayed(startCameraPreviewRunnable, 500);
                 }
             }
         }

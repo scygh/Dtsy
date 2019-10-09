@@ -98,7 +98,7 @@ public class Constants {
     public static final int KEY_SET_TEXT = 5;
 
     public static final int KEY_OPEN_NIR_CAMERA = 1000;
-    public static final int OPEN_MIR_CAMERA_DELAY = 3 * 1000;
+    public static final int OPEN_MIR_CAMERA_DELAY = 1000;
 
     public static final String SIZE_INCORRECT_TIPS = "请让我看清全部的脸";
     public static final String ANGLE_INCORRECT_TIPS = "请摆正脸";

@@ -40,9 +40,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         api = new Api();
         token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER, "10000");
-        if (TextUtils.isEmpty(deviceId)) {
-            deviceId = "10000";
-        }
         p = SPUtils.getInstance().getInt(Constants.DEVICE_PATTERN);
         if (p == 1) {
             pattern = "手动消费";

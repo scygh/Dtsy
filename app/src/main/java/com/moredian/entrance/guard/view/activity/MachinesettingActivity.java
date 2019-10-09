@@ -64,8 +64,8 @@ public class MachinesettingActivity extends BaseActivity {
         SerialPortFinder finder = new SerialPortFinder();
         String[] attr = finder.getAllDevicesPath();
         machinesettingPort.setAdapter(new SpinnerAdapter(this, attr));
-        machinesettingBaudrate.setText(SPUtils.getInstance().getString(Constants.MACHINE_BAUDRTE, "115200"));
-        String port = SPUtils.getInstance().getString(Constants.MACHINE_PORT, "/dev/ttyMT2");
+        machinesettingBaudrate.setText(SPUtils.getInstance().getString(Constants.MACHINE_BAUDRTE, Constants.BAUDRATE));
+        String port = SPUtils.getInstance().getString(Constants.MACHINE_PORT, Constants.SERIALPORT);
         for (int j = 0; j < attr.length; j++) {
             if (attr[j].equals(port)) {
                 machinesettingPort.setSelection(j);
