@@ -106,6 +106,7 @@ public class MealPagerAdapter extends PagerAdapter {
         mealStartTime.setText(data.get(position).getMeal().getBeginTime());
         mealEndTime.setText(data.get(position).getMeal().getEndTime());
         container.addView(view);
+        view.setTag(R.id.tag_pos,position);
         return view;
     }
 
@@ -117,6 +118,26 @@ public class MealPagerAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
+    }
+
+    private int mCurrentPosition;
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        View view = (View) object;
+        Object o = view.getTag(R.id.tag_pos);
+        if (o != null) {
+            final int curPos = (Integer) o;
+            //只刷新当前页面
+            if (mCurrentPosition != curPos) {
+                return POSITION_UNCHANGED;
+            }
+        }
+        return POSITION_NONE;
+    }
+
+    public void setCurrentPosition(int mCurrentPosition) {
+        this.mCurrentPosition = mCurrentPosition;
     }
 }
 

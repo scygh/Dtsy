@@ -12,15 +12,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.tu.loadingdialog.LoadingDailog;
 import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
@@ -53,6 +57,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import android_serialport_api.ChangeTool;
 import android_serialport_api.SerialPortUtils;
@@ -65,7 +70,7 @@ import butterknife.BindView;
  * email : 1797484636@qq.com
  * date : 2019/9/16 17:43
  */
-public class DsyActivity extends BaseActivity {
+public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitListener {
 
     private static final String TAG = "DsyActivity";
 
@@ -101,7 +106,8 @@ public class DsyActivity extends BaseActivity {
     ViewPager mealViewpager;
     @BindView(R.id.bmb)
     BoomMenuButton bmb;
-    private Mytask mytask;
+    @BindView(R.id.dsy_refresh)
+    SwipeRefreshLayout refreshLayout;
     private byte[] rgb_data;
     private String memberId;
     private static boolean mShowCallbackFace = false;
@@ -122,15 +128,18 @@ public class DsyActivity extends BaseActivity {
     private static int imageResourceIndex = 0;
     private static String[] text = new String[]{"退出", "菜单"};
     private static int[] imageResources = new int[]{R.mipmap.face_tuichu, R.mipmap.face_menu,};
+    private LoadingDailog dialog;
+    private TextToSpeech textToSpeech;
+
     static int getImageResource() {
         if (imageResourceIndex >= imageResources.length) imageResourceIndex = 0;
         return imageResources[imageResourceIndex++];
     }
+
     static String getext() {
         if (index >= text.length) index = 0;
         return text[index++];
     }
-
 
 
     public static Intent getDsyActivityIntent(Context context) {
@@ -172,39 +181,63 @@ public class DsyActivity extends BaseActivity {
             mealViewpager.setVisibility(View.VISIBLE);
             api.getMealList(Integer.parseInt(deviceId), token);
         }
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (p == 3) {
+                    api.getMealList(Integer.parseInt(deviceId), token);
+                }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.setRefreshing(false);
+                    }
+                }, 1000);
+            }
+        });
     }
 
     @Override
     public void initData() {
-        /*mytask = new Mytask();
-        mytask.execute();*/
         initReceiver();
         initPort();
         initRequest();
         initCamera();
+        textToSpeech = new TextToSpeech(this, this);
+        LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(this)
+                .setMessage("初始化...")
+                .setCancelable(true)
+                .setCancelOutside(true);
+        dialog = loadBuilder.create();
+        dialog.show();
     }
 
-    private class Mytask extends AsyncTask<Void,Integer,Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+    @Override
+    public void onInit(int i) {
+        if (i == TextToSpeech.SUCCESS) {
+            int result = textToSpeech.setLanguage(Locale.CHINA);
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                ToastHelper.showToast("数据丢失或不支持");
+            }
         }
+    }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        textToSpeech.stop();
+        textToSpeech.shutdown();
+    }
 
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            initCamera();
-            return null;
+    private void speakChinese(String msg) {
+        if (textToSpeech != null && !textToSpeech.isSpeaking()) {
+            // 设置音调，值越大声音越尖（女生），值越小则变成男声,1.0是常规
+            textToSpeech.setPitch(0.5f);
+            //设定语速 ，默认1.0正常语速
+            textToSpeech.setSpeechRate(1.2f);
+            //朗读，注意这里三个参数的added in API level 4   四个参数的added in API level 21
+            textToSpeech.speak(msg, TextToSpeech.QUEUE_FLUSH, null);
         }
     }
 
@@ -288,13 +321,14 @@ public class DsyActivity extends BaseActivity {
                     balance = ((GetReadCard) o).getContent().getBalance();
                     paycount = ((GetReadCard) o).getContent().getPayCount();
                     if (!allowdConsume) {//如果不允许消费，查询，数据下行
-                        updateText();
+                        updateText(name, balance, paycount);
                         String namehex = SerialPortApi.getNameHex(name);
                         String balancehex = ChangeTool.numToHex3((int) (balance * 100));
                         String paycounthex = ChangeTool.numToHex2(paycount);
                         String statushex = ChangeTool.numToHex1(status);
                         String sum = "020101000f" + namehex + balancehex + paycounthex + statushex;
                         MainApplication.getSerialPortUtils().sendSerialPort("A1B103020101000f" + namehex + balancehex + paycounthex + statushex + ChangeTool.makeChecksum(sum));
+                        mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 3000);
                     } else {//如果允许消费，消费，数据下行
                         Log.d(TAG, "onRespnse: allowed");
                         publiccount = ((GetReadCard) o).getContent().getPayCount();
@@ -313,20 +347,21 @@ public class DsyActivity extends BaseActivity {
                         //跳转到支付成功界面
                         startActivity(ConsumeResultActivity.getConsumeSuccessActivityIntent(DsyActivity.this, ((SimpleExpense) o).getContent()));
                     } else if (p == 2) {//如果是自动消费
-                        updateText();
-                        ToastHelper.showToast("刷卡消费成功啦！");
+                        updateText(name, ((SimpleExpense) o).getContent().getExpenseDetail().getBalance(), ((SimpleExpense) o).getContent().getExpenseDetail().getPayCount());
+                        ToastHelper.showToast("自动消费" + ((SimpleExpense) o).getContent().getExpenseDetail().getAmount() + "元");
+                        mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 3000);
                     }
-                } else if (o instanceof DefiniteExpense) {//定值消费
+                } else if (o instanceof DefiniteExpense) {//时段定额
                     SerialPortApi.consumeSenddown(((DefiniteExpense) o), status, name);
                     startActivity(ConsumeResultActivity.getDefineConsumeSuccessActivityIntent(DsyActivity.this, ((DefiniteExpense) o).getContent().getExpenseDetail()));
                 } else if (o instanceof QRCodeExpense) {//二维码消费
+                    SerialPortApi.consumeSenddown(((QRCodeExpense) o), status, name);
                     if (p == 1) {
                         clearData();
                         //跳转到支付成功界面
                         startActivity(ConsumeResultActivity.getQRConsumeSuccessActivityIntent(DsyActivity.this, ((QRCodeExpense) o).getContent()));
                     } else if (p == 2) {
-                        autoUpdateData(tvUsername, "", tvBalance, tvPaycount);
-                        ToastHelper.showToast("二维码消费成功啦");
+                        ToastHelper.showToast("二维码消费" + ((QRCodeExpense) o).getContent().getThirdPartyExpense().getAmount() + "元");
                     }
                 } else if (o instanceof FaceExpense) {//人脸消费
                     SerialPortApi.consumeSenddown(((FaceExpense) o), 0, username);
@@ -334,8 +369,7 @@ public class DsyActivity extends BaseActivity {
                         clearData();
                         startActivity(ConsumeResultActivity.getFaceConsumeSuccessActivityIntent(DsyActivity.this, ((FaceExpense) o).getContent()));
                     } else if (p == 2) {
-                        autoUpdateData(tvUsername, "", tvBalance, tvPaycount);
-                        ToastHelper.showToast("人脸消费成功啦！");
+                        ToastHelper.showToast("人脸消费" + ((FaceExpense) o).getContent().getExpenseDetail().getAmount() + "元");
                     }
                 } else if (o instanceof GetMealList) {
                     datas.clear();
@@ -345,6 +379,7 @@ public class DsyActivity extends BaseActivity {
                     } else {
                         adapter = new MealPagerAdapter(datas, DsyActivity.this);
                         mealViewpager.setAdapter(adapter);
+                        mealViewpager.setPageMargin(20);
                         mealViewpager.setPageTransformer(false, new LoopTransformer());
                         mealViewpager.setOffscreenPageLimit(datas.size());
                     }
@@ -370,6 +405,7 @@ public class DsyActivity extends BaseActivity {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String currentDate = format.format(date).substring(0, 11);
         String currentTime = format.format(date);
+        times.clear();
         for (int i = 0; i < datas.size(); i++) {
             String begintime = currentDate + o.getContent().get(i).getMeal().getBeginTime();
             String endtime = currentDate + o.getContent().get(i).getMeal().getEndTime();
@@ -380,10 +416,12 @@ public class DsyActivity extends BaseActivity {
             for (int j = 0; j < times.size(); j++) {
                 if (format.parse(times.get(j)[0]).getTime() > format.parse(times.get(j)[1]).getTime()) {
                     mealViewpager.setCurrentItem(times.size() - 1);
+                    adapter.setCurrentPosition(times.size() - 1);
                     break;
                 }
                 if (format.parse(times.get(j)[0]).getTime() <= format.parse(currentTime).getTime() && format.parse(times.get(j)[1]).getTime() >= format.parse(currentTime).getTime()) {
                     mealViewpager.setCurrentItem(j);
+                    adapter.setCurrentPosition(j);
                     break;
                 }
             }
@@ -396,23 +434,16 @@ public class DsyActivity extends BaseActivity {
      * descirption: 清空数据
      */
     private void clearData() {
-        autoUpdateData(tvMoney, "0.00", tvUsername, tvBalance);
-        tvPaycount.setText("");
-    }
-
-    /**
-     * descirption: 清除人员信息
-     */
-    private void autoUpdateData(TextView tvUsername, String s, TextView tvBalance, TextView tvPaycount) {
-        tvUsername.setText(s);
-        tvBalance.setText("");
-        tvPaycount.setText("");
+        tvUsername.setText("请先刷卡");
+        tvBalance.setText("0.0元");
+        tvPaycount.setText("0次");
+        tvMoney.setText("0.00");
     }
 
     /**
      * descirption: 更新数据
      */
-    private void updateText() {
+    private void updateText(String name, double balance, int paycount) {
         Message message = Message.obtain();
         Bundle bundle = new Bundle();
         bundle.putString("name", name);
@@ -613,7 +644,9 @@ public class DsyActivity extends BaseActivity {
             ex.printStackTrace();
         }
         mHandler.removeCallbacksAndMessages(null);
-
+        if (dialog != null) {
+            dialog.cancel();
+        }
     }
 
     @SuppressLint("HandlerLeak")
@@ -621,6 +654,9 @@ public class DsyActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
+                case Constants.KEY_CLEAR:
+                    updateText("请先刷卡", 0, 0);
+                    break;
                 case Constants.KEY_SET_TEXT:
                     String name = msg.getData().getString("name");
                     double balance = msg.getData().getDouble("balance");
@@ -634,6 +670,7 @@ public class DsyActivity extends BaseActivity {
                     if (mRgbCameraView != null) {
                         if (mRgbCameraView.hasOpened()) {
                             mNirCameraView.onResume();
+                            dialog.dismiss();
                         } else {
                             mCheckRgbCameraOpenCount++;
                             mHandler.sendEmptyMessageDelayed(Constants.KEY_OPEN_NIR_CAMERA, Constants.OPEN_MIR_CAMERA_DELAY + mCheckRgbCameraOpenCount * 1000);
@@ -784,6 +821,7 @@ public class DsyActivity extends BaseActivity {
 
     public class LoopTransformer implements ViewPager.PageTransformer {
         private static final float MIN_SCALE = 0.8f;
+        private static final float MIN_ALPHA = 0.5f;
 
         @Override
         public void transformPage(View view, float position) {
@@ -796,6 +834,18 @@ public class DsyActivity extends BaseActivity {
             float scaleValue = MIN_SCALE + tempScale * 0.2f;
             view.setScaleX(scaleValue);
             view.setScaleY(scaleValue);
+
+            if (position < -1 || position > 1) {
+                view.setAlpha(MIN_ALPHA);
+            } else {
+                //不透明->半透明
+                if (position < 0) {//[0,-1]
+                    view.setAlpha(MIN_ALPHA + (1 + position) * (1 - MIN_ALPHA));
+                } else {//[1,0]                //半透明->不透明
+                    view.setAlpha(MIN_ALPHA + (1 - position) * (1 - MIN_ALPHA));
+                }
+            }
+
         }
     }
 }

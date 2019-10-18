@@ -8,9 +8,8 @@ package com.moredian.entrance.guard.entity;
  */
 public class GetUserByUserID {
 
-
     /**
-     * Content : {"UserID":"e160b61a-4301-4676-9da7-1f3f91e123c6","DepartmentID":"00000000-0000-0000-0000-000000000001","DepartmentName":"默认部门","Name":"scy12","EmpID":"","IDCard":"","Sex":0,"Age":0,"Address":"","Phone":"","UserCreateTime":"2019-08-20T15:12:31.2","Password":"","Photo":null,"PayKey":"","CardTypeName":"正常卡","UserState":1,"Number":25,"SerialNo":"2","CardType":1,"IsDiscount":false,"IsGotCard":0,"DiscountRate":100,"Foregift":0,"SubsidyLevel":0,"SubsidyLevelName":"无补贴","Cost":0,"Deadline":"2029-06-28T00:00:00","PayCount":0,"LastSubsidyDate":"2019-07-20T15:12:31.22","SubsidyDatediff":1,"CardCreateTime":"2019-08-20T15:12:31.233","CardState":1,"Cash":0,"Subsidy":0,"Times":0,"Donate":0,"Integral":0,"LastPayDateTime":null,"AuthType":null,"AuthUrl":"","AuthResult":"","CreateSqlCommand":null}
+     * Content : {"UserID":"fc50b477-0431-4ad8-8bc5-1ae0b6334603","DepartmentID":"00000000-0000-0000-0000-000000000001","DepartmentName":"默认部门","Name":"天天","EmpID":"","IDCard":"","Sex":0,"Age":0,"Address":"","Phone":"","UserCreateTime":"2019-10-15 13:37:53","Password":"","Photo":null,"PayKey":"","CardTypeName":"正常卡","UserState":1,"Number":71,"SerialNo":"00707","CardType":1,"IsDiscount":false,"IsGotCard":0,"DiscountRate":100,"Foregift":0,"SubsidyLevel":0,"SubsidyLevelName":"无补贴","Cost":0,"Deadline":"2029-12-31 00:00:00","PayCount":43,"LastSubsidyDate":"2019-09-15 13:37:54","SubsidyDatediff":1,"CardCreateTime":"2019-10-15 13:37:53","CardState":1,"Cash":152.76,"Subsidy":0,"Times":0,"Donate":0,"Integral":0,"LastPayDateTime":"2019-10-15 15:10:59","AuthType":null,"AuthUrl":"","AuthResult":""}
      * Result : true
      * Message : Success!
      * StatusCode : 200
@@ -55,24 +54,24 @@ public class GetUserByUserID {
 
     public static class ContentBean {
         /**
-         * UserID : e160b61a-4301-4676-9da7-1f3f91e123c6
+         * UserID : fc50b477-0431-4ad8-8bc5-1ae0b6334603
          * DepartmentID : 00000000-0000-0000-0000-000000000001
          * DepartmentName : 默认部门
-         * Name : scy12
+         * Name : 天天
          * EmpID :
          * IDCard :
          * Sex : 0
          * Age : 0
          * Address :
          * Phone :
-         * UserCreateTime : 2019-08-20T15:12:31.2
+         * UserCreateTime : 2019-10-15 13:37:53
          * Password :
          * Photo : null
          * PayKey :
          * CardTypeName : 正常卡
          * UserState : 1
-         * Number : 25
-         * SerialNo : 2
+         * Number : 71
+         * SerialNo : 00707
          * CardType : 1
          * IsDiscount : false
          * IsGotCard : 0
@@ -81,22 +80,21 @@ public class GetUserByUserID {
          * SubsidyLevel : 0
          * SubsidyLevelName : 无补贴
          * Cost : 0
-         * Deadline : 2029-06-28T00:00:00
-         * PayCount : 0
-         * LastSubsidyDate : 2019-07-20T15:12:31.22
+         * Deadline : 2029-12-31 00:00:00
+         * PayCount : 43
+         * LastSubsidyDate : 2019-09-15 13:37:54
          * SubsidyDatediff : 1
-         * CardCreateTime : 2019-08-20T15:12:31.233
+         * CardCreateTime : 2019-10-15 13:37:53
          * CardState : 1
-         * Cash : 0
+         * Cash : 152.76
          * Subsidy : 0
          * Times : 0
          * Donate : 0
          * Integral : 0
-         * LastPayDateTime : null
+         * LastPayDateTime : 2019-10-15 15:10:59
          * AuthType : null
          * AuthUrl :
          * AuthResult :
-         * CreateSqlCommand : null
          */
 
         private String UserID;
@@ -121,26 +119,25 @@ public class GetUserByUserID {
         private boolean IsDiscount;
         private int IsGotCard;
         private int DiscountRate;
-        private int Foregift;
+        private double Foregift;
         private int SubsidyLevel;
         private String SubsidyLevelName;
-        private int Cost;
+        private double Cost;
         private String Deadline;
         private int PayCount;
         private String LastSubsidyDate;
         private int SubsidyDatediff;
         private String CardCreateTime;
         private int CardState;
-        private int Cash;
+        private double Cash;
         private int Subsidy;
         private int Times;
-        private int Donate;
+        private double Donate;
         private int Integral;
-        private Object LastPayDateTime;
+        private String LastPayDateTime;
         private Object AuthType;
         private String AuthUrl;
         private String AuthResult;
-        private Object CreateSqlCommand;
 
         public String getUserID() {
             return UserID;
@@ -318,11 +315,11 @@ public class GetUserByUserID {
             this.DiscountRate = DiscountRate;
         }
 
-        public int getForegift() {
+        public double getForegift() {
             return Foregift;
         }
 
-        public void setForegift(int Foregift) {
+        public void setForegift(double Foregift) {
             this.Foregift = Foregift;
         }
 
@@ -342,11 +339,11 @@ public class GetUserByUserID {
             this.SubsidyLevelName = SubsidyLevelName;
         }
 
-        public int getCost() {
+        public double getCost() {
             return Cost;
         }
 
-        public void setCost(int Cost) {
+        public void setCost(double Cost) {
             this.Cost = Cost;
         }
 
@@ -398,11 +395,11 @@ public class GetUserByUserID {
             this.CardState = CardState;
         }
 
-        public int getCash() {
+        public double getCash() {
             return Cash;
         }
 
-        public void setCash(int Cash) {
+        public void setCash(double Cash) {
             this.Cash = Cash;
         }
 
@@ -422,11 +419,11 @@ public class GetUserByUserID {
             this.Times = Times;
         }
 
-        public int getDonate() {
+        public double getDonate() {
             return Donate;
         }
 
-        public void setDonate(int Donate) {
+        public void setDonate(double Donate) {
             this.Donate = Donate;
         }
 
@@ -438,11 +435,11 @@ public class GetUserByUserID {
             this.Integral = Integral;
         }
 
-        public Object getLastPayDateTime() {
+        public String getLastPayDateTime() {
             return LastPayDateTime;
         }
 
-        public void setLastPayDateTime(Object LastPayDateTime) {
+        public void setLastPayDateTime(String LastPayDateTime) {
             this.LastPayDateTime = LastPayDateTime;
         }
 
@@ -468,14 +465,6 @@ public class GetUserByUserID {
 
         public void setAuthResult(String AuthResult) {
             this.AuthResult = AuthResult;
-        }
-
-        public Object getCreateSqlCommand() {
-            return CreateSqlCommand;
-        }
-
-        public void setCreateSqlCommand(Object CreateSqlCommand) {
-            this.CreateSqlCommand = CreateSqlCommand;
         }
     }
 }

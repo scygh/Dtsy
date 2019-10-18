@@ -5,6 +5,7 @@ import android.util.Log;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.entity.DefiniteExpense;
 import com.moredian.entrance.guard.entity.FaceExpense;
+import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.SimpleExpense;
 
 import android_serialport_api.ChangeTool;
@@ -39,12 +40,12 @@ public class SerialPortApi {
      */
     public static void consumeSenddown(Object simpleExpense, int status, String name) {
         if (simpleExpense instanceof SimpleExpense) {
-            double amount = ((SimpleExpense)simpleExpense).getContent().getExpenseDetail().getAmount();
-            double oamount = ((SimpleExpense)simpleExpense).getContent().getExpenseDetail().getOriginalAmount();
-            double balance = ((SimpleExpense)simpleExpense).getContent().getExpenseDetail().getBalance();
-            int paycount = ((SimpleExpense)simpleExpense).getContent().getExpenseDetail().getPayCount();
-            int discountrate = ((SimpleExpense)simpleExpense).getContent().getExpenseDetail().getDiscountRate();
-            String consumestatus = ChangeTool.numToHex1(((SimpleExpense)simpleExpense).getContent().getTradingState());
+            double amount = ((SimpleExpense) simpleExpense).getContent().getExpenseDetail().getAmount();
+            double oamount = ((SimpleExpense) simpleExpense).getContent().getExpenseDetail().getOriginalAmount();
+            double balance = ((SimpleExpense) simpleExpense).getContent().getExpenseDetail().getBalance();
+            int paycount = ((SimpleExpense) simpleExpense).getContent().getExpenseDetail().getPayCount();
+            int discountrate = ((SimpleExpense) simpleExpense).getContent().getExpenseDetail().getDiscountRate();
+            String consumestatus = ChangeTool.numToHex1(((SimpleExpense) simpleExpense).getContent().getTradingState());
             String discountratehex = ChangeTool.numToHex1(discountrate);
             String namehex = getNameHex(name);
             String balancehex = ChangeTool.numToHex3((int) (balance * 100));
@@ -55,12 +56,12 @@ public class SerialPortApi {
             String sum = "0301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus;
             MainApplication.getSerialPortUtils().sendSerialPort("A1B1030301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus + ChangeTool.makeChecksum(sum));
         } else if (simpleExpense instanceof DefiniteExpense) {
-            double amount = ((DefiniteExpense)simpleExpense).getContent().getExpenseDetail().getAmount();
-            double oamount = ((DefiniteExpense)simpleExpense).getContent().getExpenseDetail().getOriginalAmount();
-            double balance = ((DefiniteExpense)simpleExpense).getContent().getExpenseDetail().getBalance();
-            int paycount = ((DefiniteExpense)simpleExpense).getContent().getExpenseDetail().getPayCount();
-            int discountrate = ((DefiniteExpense)simpleExpense).getContent().getExpenseDetail().getDiscountRate();
-            String consumestatus = ChangeTool.numToHex1(((DefiniteExpense)simpleExpense).getContent().getTradingState());
+            double amount = ((DefiniteExpense) simpleExpense).getContent().getExpenseDetail().getAmount();
+            double oamount = ((DefiniteExpense) simpleExpense).getContent().getExpenseDetail().getOriginalAmount();
+            double balance = ((DefiniteExpense) simpleExpense).getContent().getExpenseDetail().getBalance();
+            int paycount = ((DefiniteExpense) simpleExpense).getContent().getExpenseDetail().getPayCount();
+            int discountrate = ((DefiniteExpense) simpleExpense).getContent().getExpenseDetail().getDiscountRate();
+            String consumestatus = ChangeTool.numToHex1(((DefiniteExpense) simpleExpense).getContent().getTradingState());
             String discountratehex = ChangeTool.numToHex1(discountrate);
             String namehex = SerialPortApi.getNameHex(name);
             String balancehex = ChangeTool.numToHex3((int) (balance * 100));
@@ -71,12 +72,12 @@ public class SerialPortApi {
             String sum = "0301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus;
             MainApplication.getSerialPortUtils().sendSerialPort("A1B1030301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus + ChangeTool.makeChecksum(sum));
         } else if (simpleExpense instanceof FaceExpense) {
-            double amount = ((FaceExpense)simpleExpense).getContent().getExpenseDetail().getAmount();
-            double oamount = ((FaceExpense)simpleExpense).getContent().getExpenseDetail().getOriginalAmount();
-            double balance = ((FaceExpense)simpleExpense).getContent().getExpenseDetail().getBalance();
-            int paycount = ((FaceExpense)simpleExpense).getContent().getExpenseDetail().getPayCount();
-            int discountrate = ((FaceExpense)simpleExpense).getContent().getExpenseDetail().getDiscountRate();
-            String consumestatus = ChangeTool.numToHex1(((FaceExpense)simpleExpense).getContent().getTradingState());
+            double amount = ((FaceExpense) simpleExpense).getContent().getExpenseDetail().getAmount();
+            double oamount = ((FaceExpense) simpleExpense).getContent().getExpenseDetail().getOriginalAmount();
+            double balance = ((FaceExpense) simpleExpense).getContent().getExpenseDetail().getBalance();
+            int paycount = ((FaceExpense) simpleExpense).getContent().getExpenseDetail().getPayCount();
+            int discountrate = ((FaceExpense) simpleExpense).getContent().getExpenseDetail().getDiscountRate();
+            String consumestatus = ChangeTool.numToHex1(((FaceExpense) simpleExpense).getContent().getTradingState());
             String discountratehex = ChangeTool.numToHex1(discountrate);
             String namehex = SerialPortApi.getNameHex(name);
             String balancehex = ChangeTool.numToHex3((int) (balance * 100));
@@ -86,6 +87,20 @@ public class SerialPortApi {
             String statushex = ChangeTool.numToHex1(status);
             String sum = "0301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus;
             MainApplication.getSerialPortUtils().sendSerialPort("A1B1030301010017" + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus + ChangeTool.makeChecksum(sum));
+        } else if (simpleExpense instanceof QRCodeExpense) {
+            double amount = ((QRCodeExpense) simpleExpense).getContent().getThirdPartyExpense().getAmount();
+            double oamount = ((QRCodeExpense) simpleExpense).getContent().getThirdPartyExpense().getOriginalAmount();
+            String qrtype = "0" + ((QRCodeExpense) simpleExpense).getContent().getQRType();
+            String consumestatus = ChangeTool.numToHex1(((QRCodeExpense) simpleExpense).getContent().getTradingState());
+            String discountratehex = "00";
+            String namehex = SerialPortApi.getNameHex(name);
+            String balancehex = "000000";
+            String amounthex = ChangeTool.numToHex3((int) (amount * 100));
+            String oamounthex = ChangeTool.numToHex3((int) (oamount * 100));
+            String paycounthex = "0000";
+            String statushex = ChangeTool.numToHex1(status);
+            String sum = "0501010018" + qrtype + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus;
+            MainApplication.getSerialPortUtils().sendSerialPort("A1B1030501010018" + qrtype + namehex + balancehex + oamounthex + amounthex + discountratehex + paycounthex + statushex + consumestatus + ChangeTool.makeChecksum(sum));
         }
     }
 }

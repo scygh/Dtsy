@@ -81,6 +81,7 @@ public class VoucherCenterActivity extends BaseActivity implements View.OnFocusC
             @Override
             public void onRespnse(Object o) {
                 if (o instanceof GetReadCard) {
+                    Log.d("scy", "GetReadCard: ");
                     String name = ((GetReadCard) o).getContent().getUserName();
                     double balance = ((GetReadCard) o).getContent().getBalance();
                     int paycount = ((GetReadCard) o).getContent().getPayCount();
@@ -115,6 +116,7 @@ public class VoucherCenterActivity extends BaseActivity implements View.OnFocusC
         MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
+                Log.d("scy", "onDataReceive: ");
                 String a = ChangeTool.ByteArrToHex(buffer, 0, size);
                 if (a.length() == 32) {
                     formatReadCard(a, Constants.KIND_FIND);
@@ -128,6 +130,7 @@ public class VoucherCenterActivity extends BaseActivity implements View.OnFocusC
     }
 
     int flag = -1;
+
     @Override
     public void onFocusChange(View view, boolean b) {
         switch (view.getId()) {
@@ -208,7 +211,7 @@ public class VoucherCenterActivity extends BaseActivity implements View.OnFocusC
         return namehex;
     }
 
-    @OnClick({R.id.Manualconsumption_back, R.id.deposit,R.id.refund})
+    @OnClick({R.id.Manualconsumption_back, R.id.deposit, R.id.refund})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Manualconsumption_back:
@@ -217,7 +220,7 @@ public class VoucherCenterActivity extends BaseActivity implements View.OnFocusC
             case R.id.refund:
                 if (!TextUtils.isEmpty(userId)) {
                     RefundFragment fragment = RefundFragment.newInstance(userId);
-                    fragment.show(getSupportFragmentManager(),"refund");
+                    fragment.show(getSupportFragmentManager(), "refund");
                 } else {
                     ToastHelper.showToast("请先刷卡");
                 }
@@ -227,16 +230,19 @@ public class VoucherCenterActivity extends BaseActivity implements View.OnFocusC
                 String deposit = fpaCashEt.getText().toString();
                 String donate = fpaDonateEt.getText().toString();
                 String channel = (String) spinnerChannel.getSelectedItem();
+                fpaCashEt.setText("");
+                fpaDonateEt.setText("");
+                spinnerChannel.setSelection(0);
                 int c = 0;
                 if (channel.equals("线上")) {
                     c = 0;
                 } else if (channel.equals("支付宝转账")) {
                     c = 101;
-                }else if (channel.equals("微信转账")) {
+                } else if (channel.equals("微信转账")) {
                     c = 102;
-                }else if (channel.equals("银行卡转账")) {
+                } else if (channel.equals("银行卡转账")) {
                     c = 103;
-                }else if (channel.equals("其他转账")) {
+                } else if (channel.equals("其他转账")) {
                     c = 104;
                 }
                 PostDepositBody body = null;
@@ -256,6 +262,60 @@ public class VoucherCenterActivity extends BaseActivity implements View.OnFocusC
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("scy", "onResume: ");
+        api.setGetResponseListener(new Api.GetResponseListener<Object>() {
+            @Override
+            public void onRespnse(Object o) {
+                if (o instanceof GetReadCard) {
+                    Log.d("scy", "GetReadCard: ");
+                    String name = ((GetReadCard) o).getContent().getUserName();
+                    double balance = ((GetReadCard) o).getContent().getBalance();
+                    int paycount = ((GetReadCard) o).getContent().getPayCount();
+                    int status = ((GetReadCard) o).getContent().getState();
+                    String namehex = getNameHex(name);
+                    String balancehex = ChangeTool.numToHex3((int) (balance * 100));
+                    String paycounthex = ChangeTool.numToHex2(paycount);
+                    String statushex = ChangeTool.numToHex1(status);
+                    String sum = "020101000f" + namehex + balancehex + paycounthex + statushex;
+                    MainApplication.getSerialPortUtils().sendSerialPort("A1B103020101000f" + namehex + balancehex + paycounthex + statushex + ChangeTool.makeChecksum(sum));
+                    showCardData(name, balance);
+                    api.getUser(token, number);
+                } else if (o instanceof GetUser) {
+                    userId = ((GetUser) o).getContent().getUserID();
+                } else if (o instanceof GetChannel) {
+                    List<String> channel = new ArrayList<>();
+                    channel.add(((GetChannel) o).getContent().get_$0());
+                    channel.add(((GetChannel) o).getContent().get_$101());
+                    channel.add(((GetChannel) o).getContent().get_$102());
+                    channel.add(((GetChannel) o).getContent().get_$103());
+                    channel.add(((GetChannel) o).getContent().get_$104());
+                    String[] array = channel.toArray(new String[channel.size()]);
+                    spinnerChannel.setAdapter(new SpinnerAdapter(VoucherCenterActivity.this, array));
+                }
+            }
+
+            @Override
+            public void onFail(String err) {
+                ToastHelper.showToast("读卡失败");
+            }
+        });
+        MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
+            @Override
+            public void onDataReceive(byte[] buffer, int size) {
+                Log.d("scy", "onDataReceive: ");
+                String a = ChangeTool.ByteArrToHex(buffer, 0, size);
+                if (a.length() == 32) {
+                    formatReadCard(a, Constants.KIND_FIND);
+                } else if (a.length() == 24) {//接收到键盘输入金额
+                    formatHex(buffer, size);
+                }
+            }
+        });
     }
 
     @Override

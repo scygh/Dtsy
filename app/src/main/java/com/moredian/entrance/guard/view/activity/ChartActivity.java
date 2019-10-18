@@ -85,7 +85,7 @@ public class ChartActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        pageName.setText("一周报表");
+        pageName.setText("七天报表");
     }
 
     @Override

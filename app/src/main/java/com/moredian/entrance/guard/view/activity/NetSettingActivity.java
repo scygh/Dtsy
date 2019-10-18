@@ -1,6 +1,7 @@
 package com.moredian.entrance.guard.view.activity;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,6 +17,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -38,6 +40,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
@@ -75,7 +78,7 @@ public class NetSettingActivity extends BaseActivity {
     SwipeRefreshLayout netRefresh;
 
     //WIFI 统一管理类
-    private WifiManager mWifiManager;
+    private static WifiManager mWifiManager;
     //WIFI热点信息列表
     private List<ScanResult> results;
     //列表适配器类对象
@@ -270,6 +273,10 @@ public class NetSettingActivity extends BaseActivity {
                 alertDialog.setTitle("连接到wifi:" + results.get(position).SSID);
                 View view = View.inflate(NetSettingActivity.this, R.layout.wifi_alert_view, null);
                 EditText et = view.findViewById(R.id.wifi_alert_view_et);
+                String password = SPUtils.getInstance().getString(results.get(position).SSID,"");
+                if (!TextUtils.isEmpty(password)) {
+                    et.setText(password);
+                }
                 alertDialog.setView(view);
                 //  取消选项
                 alertDialog.setNegativeButton("断开", new DialogInterface.OnClickListener() {
@@ -289,6 +296,7 @@ public class NetSettingActivity extends BaseActivity {
                         //如果你设置的wifi是设备已经存储过的，那么这个networkId会返回小于0的值。
                         int networkId = mWifiManager.addNetwork(wifiConfiguration);
                         Log.d(TAG, "onClick: " + results.get(position).SSID + results.get(position).capabilities + et.getText().toString() + "networkid" + networkId);
+                        SPUtils.getInstance().put(results.get(position).SSID,et.getText().toString());
                         mWifiManager.enableNetwork(networkId, true);
                     }
                 });
@@ -329,6 +337,7 @@ public class NetSettingActivity extends BaseActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         mWifiManager.disconnect();
                         clearExitsMsg(results.get(position).SSID);
+                        SPUtils.getInstance().remove(results.get(position).SSID);
                     }
                 });
                 AlertDialog dialog = alertDialog.create();
@@ -353,6 +362,7 @@ public class NetSettingActivity extends BaseActivity {
      * descirption: 判断wifi是否已保存
      */
     public static WifiConfiguration isWifiSave(String SSID) {
+        mWifiConfigurations = mWifiManager.getConfiguredNetworks();
         if (mWifiConfigurations != null) {
             for (WifiConfiguration existingConfig : mWifiConfigurations) {
                 if (existingConfig.SSID.equals("\"" + SSID + "\"")) {
@@ -418,13 +428,20 @@ public class NetSettingActivity extends BaseActivity {
     /**
      * descirption: 删除已保存的wifi信息
      */
+    @TargetApi(18)
     private void clearExitsMsg(String SSID) {
         WifiConfiguration tempConfig = isWifiSave(SSID);
         if (tempConfig != null) {
             mWifiManager.removeNetwork(tempConfig.networkId);
+            Log.d(TAG, "clearExitsMsg: " + tempConfig.networkId);
+            Log.d(TAG, "clearExitsMsg: " + tempConfig.SSID);
+            Log.d(TAG, "clearExitsMsg: " + tempConfig.hiddenSSID);
+            Log.d(TAG, "clearExitsMsg: " + tempConfig.wepKeys);
+            Log.d(TAG, "clearExitsMsg: " + tempConfig.enterpriseConfig.getPassword());
             mWifiManager.saveConfiguration();
+            ToastHelper.showToast(tempConfig.SSID +"删除成功");
         } else {
-            ToastUtils.showShort("此wifi并没有保存");
+            ToastHelper.showToast("此wifi并没有保存");
         }
     }
 

@@ -3,8 +3,10 @@ package com.moredian.entrance.guard.view.fragment;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,6 +27,7 @@ import com.moredian.entrance.guard.entity.PostDepositBody;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.KeyBoardUtil;
 import com.moredian.entrance.guard.utils.ToastHelper;
+import com.moredian.entrance.guard.view.activity.VoucherCenterActivity;
 
 import java.text.DecimalFormat;
 
@@ -32,6 +35,7 @@ import android_serialport_api.ChangeTool;
 import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.blankj.utilcode.util.Utils.runOnUiThread;
 
 /**
@@ -119,5 +123,27 @@ public class RefundFragment extends DialogFragment {
                 .setTitle("退款")
                 .setView(view)
                 .create();
+    }
+
+    @Override
+    public void dismiss() {
+        try {
+            VoucherCenterActivity fragmentActivity = (VoucherCenterActivity) getActivity();
+            // 触发背景 activity 重新 onresume
+            Intent intent = new Intent(getActivity(), fragmentActivity.getClass());
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+        } catch (NullPointerException e) {
+            Log.i(TAG, "dialog dismiss, resume activity failed, null pointer exception occurs");
+        }
+
+        super.dismiss();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        MainApplication.getSerialPortUtils().setOnDataReceiveListenerNull();
     }
 }

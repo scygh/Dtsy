@@ -1,207 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dsy_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipChildren="false"
-    >
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clipChildren="false">
 
-        <com.moredian.entrance.guard.face.CameraView
-            android:id="@+id/camera_view"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:previewwidth="1280"
-            app:previewheight="720" />
+            android:layout_height="match_parent">
 
-        <com.moredian.entrance.guard.face.CameraView
-            android:id="@+id/nir_camera"
-            android:layout_width="1dp"
-            android:layout_height="1dp"
-            app:previewheight="480"
-            app:previewwidth="800" />
+            <com.moredian.entrance.guard.face.CameraView
+                android:id="@+id/camera_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:previewheight="720"
+                app:previewwidth="1280" />
 
-        <com.moredian.entrance.guard.face.drawface.DrawerSurfaceView
-            android:id="@+id/faceView"
+            <com.moredian.entrance.guard.face.CameraView
+                android:id="@+id/nir_camera"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                app:previewheight="480"
+                app:previewwidth="800" />
+
+            <com.moredian.entrance.guard.face.drawface.DrawerSurfaceView
+                android:id="@+id/faceView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/nir_tips"
+                android:layout_width="@dimen/width_30"
+                android:layout_height="@dimen/height_30"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/margin_30"
+                android:layout_marginRight="@dimen/margin_40"
+                android:background="@drawable/shap_nir_tip_default" />
+
+            <TextView
+                android:id="@+id/detect_tips_tv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_150"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:fontFamily="lablack"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize_35"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iv_rgb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/iv_nir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_data"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible" />
+            android:layout_height="@dimen/height_300"
+            android:layout_alignParentBottom="true">
 
-        <ImageView
-            android:id="@+id/nir_tips"
-            android:layout_width="@dimen/width_30"
-            android:layout_height="@dimen/height_30"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/margin_30"
-            android:layout_marginRight="@dimen/margin_40"
-            android:background="@drawable/shap_nir_tip_default" />
+            <TextView
+                android:id="@+id/tv_pattern_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_50"
+                android:text="消费模式:"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/textSize_26" />
 
-        <TextView
-            android:id="@+id/detect_tips_tv"
+            <TextView
+                android:id="@+id/tv_pattern"
+                android:layout_width="@dimen/width_250"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_50"
+                android:layout_toRightOf="@+id/tv_pattern_title"
+                android:text="未设置"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/textSize_26"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/height_100"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_50">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="姓名："
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/textSize_26" />
+
+                    <TextView
+                        android:id="@+id/tv_username"
+                        android:layout_width="@dimen/width_250"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/textSize_26"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_50">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="余额："
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/textSize_26" />
+
+                    <TextView
+                        android:id="@+id/tv_balance"
+                        android:layout_width="@dimen/width_250"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/textSize_26"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_50">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="消费次数："
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/textSize_26" />
+
+                    <TextView
+                        android:id="@+id/tv_paycount"
+                        android:layout_width="@dimen/width_250"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/textSize_26"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="0.00"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/textSize_40"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/meal_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_150"
+            android:layout_height="@dimen/height_300"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginRight="@dimen/margin_20"
             android:layout_marginBottom="@dimen/margin_20"
-            android:fontFamily="lablack"
-            android:gravity="center"
-            android:lines="1"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textSize_35"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/iv_rgb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
+            android:clipChildren="false"
             android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/iv_nir"
+        <com.nightonke.boommenu.BoomMenuButton
+            android:id="@+id/bmb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:visibility="gone" />
+            android:layout_margin="@dimen/margin_30"
+            app:bmb_boomInWholeScreen="false"
+            app:bmb_buttonEnum="textOutsideCircle"
+            app:bmb_buttonPlaceEnum="buttonPlace_sc_2_1"
+            app:bmb_normalColor="@color/color_F38A23"
+            app:bmb_piecePlaceEnum="piecePlace_dot_2_1" />
+
     </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_data"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_300"
-        android:layout_alignParentBottom="true"
-        >
-
-        <TextView
-            android:id="@+id/tv_pattern_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_50"
-            android:text="消费模式:"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/textSize_26" />
-
-        <TextView
-            android:id="@+id/tv_pattern"
-            android:layout_width="@dimen/width_250"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_50"
-            android:layout_toRightOf="@+id/tv_pattern_title"
-            android:text="未设置"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/textSize_26"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/height_100"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_50">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="姓名："
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/textSize_26" />
-
-                <TextView
-                    android:id="@+id/tv_username"
-                    android:layout_width="@dimen/width_250"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="@dimen/textSize_26"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_50">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="余额："
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/textSize_26" />
-
-                <TextView
-                    android:id="@+id/tv_balance"
-                    android:layout_width="@dimen/width_250"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/textSize_26"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_50">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="消费次数："
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/textSize_26" />
-
-                <TextView
-                    android:id="@+id/tv_paycount"
-                    android:layout_width="@dimen/width_250"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="@dimen/textSize_26"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/tv_money"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="0.00"
-            android:textSize="@dimen/textSize_40"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/meal_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_300"
-        android:layout_marginLeft="@dimen/margin_100"
-        android:layout_marginRight="@dimen/margin_100"
-        android:layout_marginBottom="@dimen/margin_50"
-        android:layout_alignParentBottom="true"
-        android:clipChildren="false"
-        android:visibility="gone"/>
-
-    <com.nightonke.boommenu.BoomMenuButton
-        android:id="@+id/bmb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:bmb_buttonEnum="textOutsideCircle"
-        app:bmb_piecePlaceEnum="piecePlace_dot_2_1"
-        app:bmb_buttonPlaceEnum="buttonPlace_sc_2_1"
-        app:bmb_boomInWholeScreen="false"
-        android:layout_margin="@dimen/margin_30"
-        app:bmb_normalColor="@color/color_F38A23"
-        />
-
-</RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
