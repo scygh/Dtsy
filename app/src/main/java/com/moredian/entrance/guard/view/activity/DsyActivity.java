@@ -480,8 +480,10 @@ public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitList
      * descirption: 把接收到刷卡的16进制数转化去消费、查询
      */
     private void formatReadCard(String a, int kind) {
+        Log.d(TAG, "formatReadCard:" + a);
         int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
         cardnumber = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
+        Log.d(TAG, "formatReadCard:" + companyCode + "" +cardnumber);
         if (kind == Constants.KIND_FIND) {
             getReadCard(companyCode, Integer.parseInt(deviceId), cardnumber);
         } else if (kind == Constants.KIND_CONSUME) {
