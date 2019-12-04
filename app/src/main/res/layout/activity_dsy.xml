@@ -34,14 +34,48 @@
                 android:layout_height="match_parent"
                 android:visibility="visible" />
 
-            <ImageView
-                android:id="@+id/nir_tips"
-                android:layout_width="@dimen/width_30"
-                android:layout_height="@dimen/height_30"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/margin_30"
-                android:layout_marginRight="@dimen/margin_40"
-                android:background="@drawable/shap_nir_tip_default" />
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/nir_tips"
+                    android:layout_width="@dimen/width_30"
+                    android:layout_height="@dimen/height_30"
+                    android:layout_margin="@dimen/margin_40"
+                    android:background="@drawable/shap_nir_tip_default" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/face_exit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimaryDark"
+                    android:backgroundTint="#AAA"
+                    android:src="@mipmap/face_tuichu"
+                    app:borderWidth="0dp" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/main_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_40"
+                    android:background="@color/colorPrimaryDark"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:src="@mipmap/face_menu"
+                    app:borderWidth="0dp" />
+
+                <Switch
+                    android:id="@+id/dsy_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_40"
+                    android:thumb="@drawable/switch_custom_thumb_selector"
+                    android:track="@drawable/switch_custom_track_selector" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/detect_tips_tv"
@@ -78,109 +112,123 @@
             android:layout_height="@dimen/height_300"
             android:layout_alignParentBottom="true">
 
-            <TextView
-                android:id="@+id/tv_pattern_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_50"
-                android:text="消费模式:"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/textSize_26" />
-
-            <TextView
-                android:id="@+id/tv_pattern"
-                android:layout_width="@dimen/width_250"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_50"
-                android:layout_toRightOf="@+id/tv_pattern_title"
-                android:text="未设置"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/textSize_26"
-                android:textStyle="bold" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/height_100"
+                android:layout_height="@dimen/height_100"
+                android:layout_alignParentBottom="true"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_50">
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
                         android:text="姓名："
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/textSize_26" />
+                        android:textSize="@dimen/textSize_26"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_username"
-                        android:layout_width="@dimen/width_250"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:layout_weight="1"
+                        android:text="请先刷卡"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/textSize_26"
                         android:textStyle="bold" />
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_50">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
                         android:text="余额："
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/textSize_26" />
+                        android:textSize="@dimen/textSize_26"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_balance"
-                        android:layout_width="@dimen/width_250"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:layout_weight="1"
+                        android:text="0.0元"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/textSize_26"
                         android:textStyle="bold" />
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_50">
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
                         android:text="消费次数："
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/textSize_26" />
+                        android:textSize="@dimen/textSize_24"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_paycount"
-                        android:layout_width="@dimen/width_250"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:layout_weight="1"
+                        android:text="0次"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/textSize_26"
+                        android:textSize="@dimen/textSize_24"
                         android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
 
+
+                    <TextView
+                        android:id="@+id/tv_pattern_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="消费模式："
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/textSize_24"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_pattern"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="未设置"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/textSize_24"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_money"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:gravity="center"
                 android:text="0.00"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/textSize_40"
+                android:textSize="@dimen/textSize_80"
                 android:textStyle="bold" />
         </RelativeLayout>
 
@@ -194,17 +242,6 @@
             android:layout_marginBottom="@dimen/margin_20"
             android:clipChildren="false"
             android:visibility="gone" />
-
-        <com.nightonke.boommenu.BoomMenuButton
-            android:id="@+id/bmb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_30"
-            app:bmb_boomInWholeScreen="false"
-            app:bmb_buttonEnum="textOutsideCircle"
-            app:bmb_buttonPlaceEnum="buttonPlace_sc_2_1"
-            app:bmb_normalColor="@color/color_F38A23"
-            app:bmb_piecePlaceEnum="piecePlace_dot_2_1" />
 
     </RelativeLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

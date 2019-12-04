@@ -11,7 +11,7 @@
         android:layout_height="@dimen/height_50"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin_20"
-        android:src="@mipmap/fanhui" />
+        android:src="@mipmap/back_header" />
 
     <TextView
         android:id="@+id/page_name"

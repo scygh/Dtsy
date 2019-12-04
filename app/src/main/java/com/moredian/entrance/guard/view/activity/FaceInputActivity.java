@@ -5,26 +5,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
-import android.media.ThumbnailUtils;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.face.CameraUtil;
@@ -34,9 +26,8 @@ import com.moredian.entrance.guard.utils.StatusBarUtil;
 import com.moredian.entrance.guard.utils.ToastHelper;
 
 import java.io.ByteArrayOutputStream;
-
+import java.io.IOException;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class FaceInputActivity extends BaseActivity {
@@ -289,9 +280,31 @@ public class FaceInputActivity extends BaseActivity {
     }
 
     private void imageCheck() {
+        ByteArrayOutputStream baos = null;
         if (image != null) {
             bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
             Log.d(TAG, "imageCheck: " + bitmap.getHeight() + bitmap.getWidth());
+            int width = bitmap.getWidth();
+            int height = bitmap.getHeight();
+            // 设置想要的大小
+            int newWidth = 350;
+            int newHeight = 350;
+            // 计算缩放比例
+            float scaleWidth = ((float) newWidth) / width;
+            float scaleHeight = ((float) newHeight) / height;
+            // 取得想要缩放的matrix参数
+            Matrix matrix = new Matrix();
+            matrix.postScale(scaleWidth, scaleHeight);
+            // 得到新的图片
+            try {
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+                baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                image = baos.toByteArray();
+                baos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             setResult();
         } else {
             ToastHelper.showToast("没有识别到人脸");
@@ -364,7 +377,7 @@ public class FaceInputActivity extends BaseActivity {
                             }
                         }
                     } else if (action.equals(Constants.NIR_RESULT_ACTION)) {
-                        long trackid = intent.getLongExtra(Constants.TRACK_ID, 0l);
+                        //long trackid = intent.getLongExtra(Constants.TRACK_ID, 0l);
                         image = rgb_data;
                         mNirTipsView.setBackground(getResources().getDrawable(R.drawable.shap_nir_tip_succ));
                         Log.d(TAG, "NIR_RESULT_ACTION: " + System.currentTimeMillis());

@@ -3,6 +3,7 @@ package com.moredian.entrance.guard.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import com.moredian.entrance.guard.entity.GetDevicePattern;
 import com.moredian.entrance.guard.entity.GetToken;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.http.ApiUtils;
+import com.moredian.entrance.guard.utils.ToastHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,7 +100,11 @@ public class LoginActivity extends BaseActivity {
             case R.id.login_btn:
                 String name = usernameTv.getText().toString().trim();
                 String password = passswordTv.getText().toString().trim();
-                api.getToken(name, password, LoginActivity.this);
+                if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
+                    api.getToken(name, password, LoginActivity.this);
+                } else {
+                    ToastHelper.showToast("用户名或者密码不能为空！");
+                }
                 break;
             case R.id.iv_come_back:
                 finish();

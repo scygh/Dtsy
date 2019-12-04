@@ -29,14 +29,6 @@
         android:visibility="visible"
         />
 
-    <ImageView
-        android:id="@+id/nir_tips"
-        android:layout_width="@dimen/width_30"
-        android:layout_height="@dimen/height_30"
-        android:layout_marginRight="@dimen/margin_40"
-        android:layout_marginTop="@dimen/margin_30"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/shap_nir_tip_default"/>
 
     <TextView
         android:id="@+id/detect_tips_tv"
@@ -78,15 +70,27 @@
         android:visibility="gone"
         />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/face_exit"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_30"
-        android:backgroundTint="@color/color_F38A23"
-        android:background="@color/colorPrimaryDark"
-        app:borderWidth="0dp"
-        android:src="@mipmap/face_tuichu"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/nir_tips"
+            android:layout_width="@dimen/width_30"
+            android:layout_height="@dimen/height_30"
+            android:layout_margin="@dimen/margin_40"
+            android:background="@drawable/shap_nir_tip_default"/>
 
-        />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/face_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#AAA"
+            android:background="@color/colorPrimaryDark"
+            app:borderWidth="0dp"
+            android:src="@mipmap/face_tuichu"
+            />
+    </LinearLayout>
 </RelativeLayout>

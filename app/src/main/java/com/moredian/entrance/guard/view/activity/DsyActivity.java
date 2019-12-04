@@ -8,24 +8,24 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.tu.loadingdialog.LoadingDailog;
 import com.blankj.utilcode.util.ToastUtils;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
@@ -47,9 +47,6 @@ import com.moredian.entrance.guard.utils.SerialPortApi;
 import com.moredian.entrance.guard.utils.StatusBarUtil;
 import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.adapter.MealPagerAdapter;
-import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
-import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton;
-import com.nightonke.boommenu.BoomMenuButton;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -57,11 +54,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import android_serialport_api.ChangeTool;
 import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -70,7 +68,7 @@ import butterknife.BindView;
  * email : 1797484636@qq.com
  * date : 2019/9/16 17:43
  */
-public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitListener {
+public class DsyActivity extends BaseActivity {
 
     private static final String TAG = "DsyActivity";
 
@@ -104,10 +102,15 @@ public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitList
     RelativeLayout rlData;
     @BindView(R.id.meal_viewpager)
     ViewPager mealViewpager;
-    @BindView(R.id.bmb)
-    BoomMenuButton bmb;
     @BindView(R.id.dsy_refresh)
     SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.dsy_switch)
+    Switch able_switch;
+    @BindView(R.id.face_exit)
+    FloatingActionButton faceExit;
+    @BindView(R.id.main_menu)
+    FloatingActionButton mainMenu;
+    private boolean ableTag = true;
     private byte[] rgb_data;
     private String memberId;
     private static boolean mShowCallbackFace = false;
@@ -124,22 +127,7 @@ public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitList
     private List<GetMealList.ContentBean> datas = new ArrayList<>();
     private List<String[]> times = new ArrayList<>();
     MealPagerAdapter adapter;
-    private static int index = 0;
-    private static int imageResourceIndex = 0;
-    private static String[] text = new String[]{"退出", "菜单"};
-    private static int[] imageResources = new int[]{R.mipmap.face_tuichu, R.mipmap.face_menu,};
     private LoadingDailog dialog;
-    private TextToSpeech textToSpeech;
-
-    static int getImageResource() {
-        if (imageResourceIndex >= imageResources.length) imageResourceIndex = 0;
-        return imageResources[imageResourceIndex++];
-    }
-
-    static String getext() {
-        if (index >= text.length) index = 0;
-        return text[index++];
-    }
 
 
     public static Intent getDsyActivityIntent(Context context) {
@@ -157,24 +145,6 @@ public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitList
         StatusBarUtil.fitStatusBar(this);
         if (!TextUtils.isEmpty(pattern)) {
             tvPattern.setText(pattern);
-        }
-        for (int i = 0; i < bmb.getPiecePlaceEnum().pieceNumber(); i++) {
-            TextOutsideCircleButton.Builder builder = new TextOutsideCircleButton.Builder()
-                    .listener(new OnBMClickListener() {
-                        @Override
-                        public void onBoomButtonClick(int index) {
-                            if (index == 0) {
-                                MainApplication.getSerialPortUtils().closeSerialPort();
-                                finish();
-                            } else if (index == 1) {
-                                startActivity(MainActivity.getMainActivityIntent(DsyActivity.this));
-                                finish();
-                            }
-                        }
-                    })
-                    .normalImageRes(getImageResource())
-                    .normalText(getext());
-            bmb.addBuilder(builder);
         }
         if (p == 3) {
             rlData.setVisibility(View.GONE);
@@ -195,6 +165,17 @@ public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitList
                 }, 1000);
             }
         });
+        able_switch.setChecked(true);
+        able_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    ableTag = true;
+                } else {
+                    ableTag = false;
+                }
+            }
+        });
     }
 
     @Override
@@ -203,7 +184,6 @@ public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitList
         initPort();
         initRequest();
         initCamera();
-        textToSpeech = new TextToSpeech(this, this);
         LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(this)
                 .setMessage("初始化...")
                 .setCancelable(true)
@@ -213,32 +193,8 @@ public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitList
     }
 
     @Override
-    public void onInit(int i) {
-        if (i == TextToSpeech.SUCCESS) {
-            int result = textToSpeech.setLanguage(Locale.CHINA);
-            if (result == TextToSpeech.LANG_MISSING_DATA
-                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                ToastHelper.showToast("数据丢失或不支持");
-            }
-        }
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
-        textToSpeech.stop();
-        textToSpeech.shutdown();
-    }
-
-    private void speakChinese(String msg) {
-        if (textToSpeech != null && !textToSpeech.isSpeaking()) {
-            // 设置音调，值越大声音越尖（女生），值越小则变成男声,1.0是常规
-            textToSpeech.setPitch(0.5f);
-            //设定语速 ，默认1.0正常语速
-            textToSpeech.setSpeechRate(1.2f);
-            //朗读，注意这里三个参数的added in API level 4   四个参数的added in API level 21
-            textToSpeech.speak(msg, TextToSpeech.QUEUE_FLUSH, null);
-        }
     }
 
     /**
@@ -331,13 +287,17 @@ public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitList
                         mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 3000);
                     } else {//如果允许消费，消费，数据下行
                         Log.d(TAG, "onRespnse: allowed");
-                        publiccount = ((GetReadCard) o).getContent().getPayCount();
-                        publiccount++;
-                        //查询到消费次数之后执行消费
-                        if (p == 3) {
-                            postDefineExpense(cardnumber, publiccount, name, status);
+                        if (ableTag) {
+                            publiccount = ((GetReadCard) o).getContent().getPayCount();
+                            publiccount++;
+                            //查询到消费次数之后执行消费
+                            if (p == 3) {
+                                postDefineExpense(cardnumber, publiccount, name, status);
+                            } else {
+                                postSimpleExpense(cardnumber, publiccount);
+                            }
                         } else {
-                            postSimpleExpense(cardnumber, publiccount);
+                            ToastHelper.showToast("请先打开消费开关");
                         }
                     }
                 } else if (o instanceof SimpleExpense) {//刷卡简单消费
@@ -355,21 +315,29 @@ public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitList
                     SerialPortApi.consumeSenddown(((DefiniteExpense) o), status, name);
                     startActivity(ConsumeResultActivity.getDefineConsumeSuccessActivityIntent(DsyActivity.this, ((DefiniteExpense) o).getContent().getExpenseDetail()));
                 } else if (o instanceof QRCodeExpense) {//二维码消费
-                    SerialPortApi.consumeSenddown(((QRCodeExpense) o), status, name);
-                    if (p == 1) {
-                        clearData();
-                        //跳转到支付成功界面
-                        startActivity(ConsumeResultActivity.getQRConsumeSuccessActivityIntent(DsyActivity.this, ((QRCodeExpense) o).getContent()));
-                    } else if (p == 2) {
-                        ToastHelper.showToast("二维码消费" + ((QRCodeExpense) o).getContent().getThirdPartyExpense().getAmount() + "元");
+                    if (ableTag) {
+                        SerialPortApi.consumeSenddown(((QRCodeExpense) o), status, name);
+                        if (p == 1) {
+                            clearData();
+                            //跳转到支付成功界面
+                            startActivity(ConsumeResultActivity.getQRConsumeSuccessActivityIntent(DsyActivity.this, ((QRCodeExpense) o).getContent()));
+                        } else if (p == 2) {
+                            ToastHelper.showToast("二维码消费" + ((QRCodeExpense) o).getContent().getThirdPartyExpense().getAmount() + "元");
+                        }
+                    } else {
+                        ToastHelper.showToast("请先打开消费开关");
                     }
                 } else if (o instanceof FaceExpense) {//人脸消费
-                    SerialPortApi.consumeSenddown(((FaceExpense) o), 0, username);
-                    if (p == 1 || p == 3) {
-                        clearData();
-                        startActivity(ConsumeResultActivity.getFaceConsumeSuccessActivityIntent(DsyActivity.this, ((FaceExpense) o).getContent()));
-                    } else if (p == 2) {
-                        ToastHelper.showToast("人脸消费" + ((FaceExpense) o).getContent().getExpenseDetail().getAmount() + "元");
+                    if (ableTag) {
+                        SerialPortApi.consumeSenddown(((FaceExpense) o), 0, username);
+                        if (p == 1 || p == 3) {
+                            clearData();
+                            startActivity(ConsumeResultActivity.getFaceConsumeSuccessActivityIntent(DsyActivity.this, ((FaceExpense) o).getContent()));
+                        } else if (p == 2) {
+                            ToastHelper.showToast("人脸消费" + ((FaceExpense) o).getContent().getExpenseDetail().getAmount() + "元");
+                        }
+                    } else {
+                        ToastHelper.showToast("请先打开消费开关");
                     }
                 } else if (o instanceof GetMealList) {
                     datas.clear();
@@ -483,7 +451,7 @@ public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitList
         Log.d(TAG, "formatReadCard:" + a);
         int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
         cardnumber = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
-        Log.d(TAG, "formatReadCard:" + companyCode + "" +cardnumber);
+        Log.d(TAG, "formatReadCard:" + companyCode + "" + cardnumber);
         if (kind == Constants.KIND_FIND) {
             getReadCard(companyCode, Integer.parseInt(deviceId), cardnumber);
         } else if (kind == Constants.KIND_CONSUME) {
@@ -649,6 +617,7 @@ public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitList
         if (dialog != null) {
             dialog.cancel();
         }
+        ableTag = true;
     }
 
     @SuppressLint("HandlerLeak")
@@ -742,6 +711,21 @@ public class DsyActivity extends BaseActivity implements TextToSpeech.OnInitList
             super.handleMessage(msg);
         }
     };
+
+
+    @OnClick({R.id.face_exit, R.id.main_menu})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.face_exit:
+                MainApplication.getSerialPortUtils().closeSerialPort();
+                finish();
+                break;
+            case R.id.main_menu:
+                startActivity(MainActivity.getMainActivityIntent(DsyActivity.this));
+                finish();
+                break;
+        }
+    }
 
     public class MyReceiver extends BroadcastReceiver {
         @Override

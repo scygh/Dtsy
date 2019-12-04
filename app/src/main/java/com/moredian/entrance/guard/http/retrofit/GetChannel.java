@@ -13,6 +13,6 @@ import retrofit2.http.Header;
  */
 public interface GetChannel {
 
-    @GET("Api/Enum/GetChannel")
+    @GET("Api/Enum/GetDepositChannel")
     Observable<com.moredian.entrance.guard.entity.GetChannel> getChannle(@Header("AccessToken") String token);
 }

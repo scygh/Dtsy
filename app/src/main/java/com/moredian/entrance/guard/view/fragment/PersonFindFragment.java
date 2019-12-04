@@ -26,6 +26,8 @@ import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.GetListByPage;
 import com.moredian.entrance.guard.entity.GetUserByUserID;
 import com.moredian.entrance.guard.entity.PostDeregister;
+import com.moredian.entrance.guard.entity.PostRequestBody;
+import com.moredian.entrance.guard.entity.PostResponse;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.view.activity.PersonDetailActivity;
 import com.moredian.entrance.guard.view.adapter.PersonFindRvAdapter;
@@ -70,6 +72,7 @@ public class PersonFindFragment extends BaseFragment {
             updateData();
         }
     };
+    private String toDeleteUserId;
 
     private void updateData() {
         String data = fpfFindEt.getText().toString();
@@ -168,6 +171,9 @@ public class PersonFindFragment extends BaseFragment {
                     postDeregister.setMoney(((GetUserByUserID) o).getContent().getCash());
                     postDeregister.setUserID(((GetUserByUserID) o).getContent().getUserID());
                     api.postDeRegister(postDeregister, token);
+                    refresh();
+                } else if (o instanceof PostResponse) {
+                    api.getUserByuserID(toDeleteUserId, token);
                 }
             }
 
@@ -205,7 +211,10 @@ public class PersonFindFragment extends BaseFragment {
 
             @Override
             public void onDelete(String userID) {
-                api.getUserByuserID(userID, token);
+                //先删除人脸
+                PostRequestBody postRequestBody = new PostRequestBody(userID);
+                api.postDelete(postRequestBody, token, Constants.MODIAN_TOKEN);
+                toDeleteUserId = userID;
             }
         });
     }

@@ -1,6 +1,6 @@
 package com.moredian.entrance.guard.entity;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
 /**
  * description ：
@@ -12,24 +12,16 @@ public class GetChannel {
 
 
     /**
-     * Content : {"0":"线上","101":"支付宝转账","102":"微信转账","103":"银行卡转账","104":"其它转账"}
+     * Content : [{"Value":0,"Text":"线上"},{"Value":101,"Text":"支付宝转账"},{"Value":102,"Text":"微信转账"},{"Value":103,"Text":"银行卡转账"},{"Value":104,"Text":"其它转账"}]
      * Result : true
      * Message : Success!
      * StatusCode : 200
      */
 
-    private ContentBean Content;
     private boolean Result;
     private String Message;
     private int StatusCode;
-
-    public ContentBean getContent() {
-        return Content;
-    }
-
-    public void setContent(ContentBean Content) {
-        this.Content = Content;
-    }
+    private List<ContentBean> Content;
 
     public boolean isResult() {
         return Result;
@@ -55,64 +47,37 @@ public class GetChannel {
         this.StatusCode = StatusCode;
     }
 
+    public List<ContentBean> getContent() {
+        return Content;
+    }
+
+    public void setContent(List<ContentBean> Content) {
+        this.Content = Content;
+    }
+
     public static class ContentBean {
         /**
-         * 0 : 线上
-         * 101 : 支付宝转账
-         * 102 : 微信转账
-         * 103 : 银行卡转账
-         * 104 : 其它转账
+         * Value : 0
+         * Text : 线上
          */
 
-        @SerializedName("0")
-        private String _$0;
-        @SerializedName("101")
-        private String _$101;
-        @SerializedName("102")
-        private String _$102;
-        @SerializedName("103")
-        private String _$103;
-        @SerializedName("104")
-        private String _$104;
+        private int Value;
+        private String Text;
 
-        public String get_$0() {
-            return _$0;
+        public int getValue() {
+            return Value;
         }
 
-        public void set_$0(String _$0) {
-            this._$0 = _$0;
+        public void setValue(int Value) {
+            this.Value = Value;
         }
 
-        public String get_$101() {
-            return _$101;
+        public String getText() {
+            return Text;
         }
 
-        public void set_$101(String _$101) {
-            this._$101 = _$101;
-        }
-
-        public String get_$102() {
-            return _$102;
-        }
-
-        public void set_$102(String _$102) {
-            this._$102 = _$102;
-        }
-
-        public String get_$103() {
-            return _$103;
-        }
-
-        public void set_$103(String _$103) {
-            this._$103 = _$103;
-        }
-
-        public String get_$104() {
-            return _$104;
-        }
-
-        public void set_$104(String _$104) {
-            this._$104 = _$104;
+        public void setText(String Text) {
+            this.Text = Text;
         }
     }
 }

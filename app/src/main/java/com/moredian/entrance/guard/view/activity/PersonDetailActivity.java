@@ -19,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -143,6 +144,12 @@ public class PersonDetailActivity extends BaseActivity {
             public void onRespnse(Object o) {
                 //如果是删除成功了，就清空ExitMemberId
                 exitmemberId = null;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        persondetailCamera.setImageResource(R.mipmap.camera);
+                    }
+                });
             }
 
             @Override
@@ -162,10 +169,9 @@ public class PersonDetailActivity extends BaseActivity {
      * descirption: 请求数据初始化
      */
     private void initRequest() {
-        abposition = dataIntent.getIntExtra(Constants.INTENT_ROWSBEAN_POSITION, 0);
         userid = dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_BEAN);
         if (!TextUtils.isEmpty(userid)) {
-            api.getListByPage(1, 1000);
+            api.getListByPage(1, 5000);
             api.setOnResponse(new Api.OnResponse<GetListByPage.ContentBean.RowsBean>() {
                 @Override
                 public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
@@ -194,62 +200,13 @@ public class PersonDetailActivity extends BaseActivity {
                 }
             });
         } else {
-            //拿position去拿数据
-            int page = abposition / 20 + 1;
-            abposition = abposition % 20;
-            api.getListByPage(page, 20);
-            api.setOnResponse(new Api.OnResponse<GetListByPage.ContentBean.RowsBean>() {
-                @Override
-                public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
-                    arowsBeans.clear();
-                    arowsBeans.addAll(rowsBeans);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            setData();
-                        }
-                    });
-                }
-
-                @Override
-                public void onResponseMore(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
-                    arowsBeans = rowsBeans;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            setData();
-                        }
-                    });
-                }
-
-                @Override
-                public void onFailed() {
-
-                }
-            });
+            ToastUtils.showShort("userid 为空");
         }
     }
 
     /**
-     * descirption: 列表界面点击设置数据
+     * descirption: 设置头像
      */
-    private void setData() {
-        persondetailName.setText(arowsBeans.get(abposition).getUser().getName());
-        persondetailCardnum.setText(arowsBeans.get(abposition).getUser().getIdCard());
-        persondetailStunum.setText(arowsBeans.get(abposition).getUser().getDepartmentId());
-        persondetailTelephone.setText(arowsBeans.get(abposition).getUser().getPhone());
-        if (arowsBeans.get(abposition).getUserFace() != null) {
-            exitmemberId = arowsBeans.get(abposition).getUserFace().getMemberId();
-            if (!TextUtils.isEmpty(arowsBeans.get(abposition).getUserFace().getMemberBase64())) {
-                bitmap = Base64BitmapUtil.base64ToBitmap(arowsBeans.get(abposition).getUserFace().getMemberBase64());
-                GlideIn();
-            }
-        }
-    }
-
-    /**
-    * descirption: 设置头像
-    */
     private void GlideIn() {
         RoundedCorners roundedCorners = new RoundedCorners(30);
         RequestOptions options = RequestOptions.bitmapTransform(roundedCorners).override(300, 300);
@@ -302,12 +259,7 @@ public class PersonDetailActivity extends BaseActivity {
                 api.postDelete(postRequestBody, token, Constants.MODIAN_TOKEN);
             }
         } else {
-            if (arowsBeans.size() > 0) {
-                PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId());
-                api.postDelete(postRequestBody, token, Constants.MODIAN_TOKEN);
-            } else {
-                ToastHelper.showToast("没有找到列表");
-            }
+            ToastUtils.showShort("createPerson userid 为空");
         }
     }
 
@@ -320,11 +272,8 @@ public class PersonDetailActivity extends BaseActivity {
                     findbean.getUser().getPhone());
             api.postCreate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
         } else {
-            PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId(), arowsBeans.get(abposition).getUser().getName(),
-                    arowsBeans.get(abposition).getUser().getPhone());
-            api.postCreate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
+            ToastUtils.showShort("createPerson userid 为空");
         }
-
     }
 
     private void createCheck() {
@@ -347,13 +296,13 @@ public class PersonDetailActivity extends BaseActivity {
      * descirption: 更新人脸
      */
     private synchronized void updatePerson() {
-        String b = Base64BitmapUtil.bitmapToBase64(bitmap, PersonDetailActivity.this);
+        Log.d("imageCheck", "updatePerson: " + bitmap.getHeight() + ":" + bitmap.getWidth());
+        String base64 = Base64BitmapUtil.bitmapToBase64(bitmap, PersonDetailActivity.this);
         if (!TextUtils.isEmpty(userid)) {
-            PostRequestBody postRequestBody = new PostRequestBody(findbean.getUser().getId(), b);
+            PostRequestBody postRequestBody = new PostRequestBody(findbean.getUser().getId(), base64);
             api.postUpdate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
         } else {
-            PostRequestBody postRequestBody = new PostRequestBody(arowsBeans.get(abposition).getUser().getId(), b);
-            api.postUpdate(postRequestBody, SPUtils.getInstance().getString(Constants.ACCESSTOKEN), Constants.MODIAN_TOKEN);
+            ToastUtils.showShort("updatePerson userid 为空");
         }
     }
 

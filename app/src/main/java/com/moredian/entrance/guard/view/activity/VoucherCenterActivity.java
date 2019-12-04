@@ -76,7 +76,7 @@ public class VoucherCenterActivity extends BaseActivity implements View.OnFocusC
 
     @Override
     public void initData() {
-        api.getChannel(token);
+        api. getChannel(token);
         api.setGetResponseListener(new Api.GetResponseListener<Object>() {
             @Override
             public void onRespnse(Object o) {
@@ -98,11 +98,11 @@ public class VoucherCenterActivity extends BaseActivity implements View.OnFocusC
                     userId = ((GetUser) o).getContent().getUserID();
                 } else if (o instanceof GetChannel) {
                     List<String> channel = new ArrayList<>();
-                    channel.add(((GetChannel) o).getContent().get_$0());
-                    channel.add(((GetChannel) o).getContent().get_$101());
-                    channel.add(((GetChannel) o).getContent().get_$102());
-                    channel.add(((GetChannel) o).getContent().get_$103());
-                    channel.add(((GetChannel) o).getContent().get_$104());
+                    channel.add(((GetChannel) o).getContent().get(0).getText());
+                    channel.add(((GetChannel) o).getContent().get(1).getText());
+                    channel.add(((GetChannel) o).getContent().get(2).getText());
+                    channel.add(((GetChannel) o).getContent().get(3).getText());
+                    channel.add(((GetChannel) o).getContent().get(4).getText());
                     String[] array = channel.toArray(new String[channel.size()]);
                     spinnerChannel.setAdapter(new SpinnerAdapter(VoucherCenterActivity.this, array));
                 }
@@ -289,11 +289,11 @@ public class VoucherCenterActivity extends BaseActivity implements View.OnFocusC
                     userId = ((GetUser) o).getContent().getUserID();
                 } else if (o instanceof GetChannel) {
                     List<String> channel = new ArrayList<>();
-                    channel.add(((GetChannel) o).getContent().get_$0());
-                    channel.add(((GetChannel) o).getContent().get_$101());
-                    channel.add(((GetChannel) o).getContent().get_$102());
-                    channel.add(((GetChannel) o).getContent().get_$103());
-                    channel.add(((GetChannel) o).getContent().get_$104());
+                    channel.add(((GetChannel) o).getContent().get(0).getText());
+                    channel.add(((GetChannel) o).getContent().get(1).getText());
+                    channel.add(((GetChannel) o).getContent().get(2).getText());
+                    channel.add(((GetChannel) o).getContent().get(3).getText());
+                    channel.add(((GetChannel) o).getContent().get(4).getText());
                     String[] array = channel.toArray(new String[channel.size()]);
                     spinnerChannel.setAdapter(new SpinnerAdapter(VoucherCenterActivity.this, array));
                 }

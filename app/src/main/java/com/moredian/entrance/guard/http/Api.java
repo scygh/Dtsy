@@ -323,7 +323,7 @@ public class Api {
                     @Override
                     public void onNext(PostResponse postResponse) {
                         if (postResponse != null && postResponse.getStatusCode() == 200) {
-                            ToastHelper.showToast("删除成功");
+                            ToastHelper.showToast("人脸删除成功");
                             if (getResponseListener != null) {
                                 getResponseListener.onRespnse(postResponse);
                             }

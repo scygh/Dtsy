@@ -62,12 +62,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        if(Build.VERSION.SDK_INT >= 21){
+        if (Build.VERSION.SDK_INT >= 21) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    |View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
-        getWindow().getDecorView().setBackground(new BitmapDrawable(RenderScriptUtil.rsBlur(this, BitmapFactory.decodeResource(getResources(), R.mipmap.splash_iv), 10)));
+        //getWindow().getDecorView().setBackground(new BitmapDrawable(RenderScriptUtil.rsBlur(this, BitmapFactory.decodeResource(getResources(), R.mipmap.splash_iv), 10)));
     }
 
     @OnClick({R.id.iv_come_back, R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6, R.id.main_ll7, R.id.main_ll8, R.id.main_ll9, R.id.main_ll10, R.id.main_ll11})
