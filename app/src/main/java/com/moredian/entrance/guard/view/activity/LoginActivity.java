@@ -18,12 +18,16 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.R;
+import com.moredian.entrance.guard.entity.GetCardPassword;
 import com.moredian.entrance.guard.entity.GetDevicePattern;
 import com.moredian.entrance.guard.entity.GetToken;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.http.ApiUtils;
+import com.moredian.entrance.guard.utils.SerialPortApi;
 import com.moredian.entrance.guard.utils.ToastHelper;
 
+import android_serialport_api.ChangeTool;
+import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -72,6 +76,9 @@ public class LoginActivity extends BaseActivity {
                     SPUtils.getInstance().put(Constants.DEVICE_PATTERN, devicePattern);
                     startActivity(DsyActivity.getDsyActivityIntent(LoginActivity.this));
                     finish();
+                } else if (o instanceof GetCardPassword) {
+                    SerialPortApi.givePassword(((GetCardPassword) o).getContent());
+                    SPUtils.getInstance().put(Constants.CARDPASSWORD,((GetCardPassword) o).getContent());
                 }
             }
 
@@ -86,6 +93,17 @@ public class LoginActivity extends BaseActivity {
                 //第一次打开未登录，没有查询结果，所以重复查一次。
                 token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
                 api.getDevicePattern(Integer.parseInt(deviceId), token);
+                api.getCardPassword(token);
+            }
+        });
+        MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
+            @Override
+            public void onDataReceive(byte[] buffer, int size) {
+                String hexStr = ChangeTool.ByteArrToHex(buffer, 0, size);
+                ToastHelper.showToast(hexStr);
+                if (hexStr.length() == 20) {//接收到下发卡密码成功信息
+                    ToastHelper.showToast("下发卡密码成功");
+                }
             }
         });
     }

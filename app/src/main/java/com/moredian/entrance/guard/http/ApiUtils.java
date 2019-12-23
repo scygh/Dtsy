@@ -2,6 +2,7 @@ package com.moredian.entrance.guard.http;
 
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.PostDepositBody;
+import com.moredian.entrance.guard.http.retrofit.GetCardPassword;
 import com.moredian.entrance.guard.http.retrofit.GetCardTypeListService;
 import com.moredian.entrance.guard.http.retrofit.GetChannel;
 import com.moredian.entrance.guard.http.retrofit.GetDepartmentListService;
@@ -226,5 +227,12 @@ public class ApiUtils {
      */
     public static PostSetDevicePattern setDevicePattern() {
         return RetrofitClient.getClient(BASE_URL).create(PostSetDevicePattern.class);
+    }
+
+    /**
+     * descirption:获取卡密码
+     */
+    public static GetCardPassword getCardPassword() {
+        return RetrofitClient.getClient(BASE_URL).create(GetCardPassword.class);
     }
 }

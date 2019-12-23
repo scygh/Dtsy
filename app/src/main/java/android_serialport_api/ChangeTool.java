@@ -24,6 +24,25 @@ public class ChangeTool {
         return String.format("%06x", b);
     }
 
+    public static String numToHex12(int b) {
+        return String.format("%024x", b);
+    }
+
+    /**
+     * 字符串转化成为16进制字符串
+     * @param s
+     * @return
+     */
+    public static String strTo16(String s) {
+        String str = "";
+        for (int i = 0; i < s.length(); i++) {
+            int ch = (int) s.charAt(i);
+            String s4 = Integer.toHexString(ch);
+            str = str + s4;
+        }
+        return str;
+    }
+
     //Hex字符串转int
     //输出16进制数inGEx在十进制下的数.
     public static int HexToInt(String inHex) {

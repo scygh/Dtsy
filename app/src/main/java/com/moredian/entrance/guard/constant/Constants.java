@@ -19,6 +19,7 @@ public class Constants {
     public static final String ACCESSTOKEN = "AccessToken";
     public static final String USERID = "userId";
     public static final String ACCOUNT = "Account";
+    public static final String CARDPASSWORD = "CARDPASSWORD";
 
     public static final String DEVICE_PATTERN = "device_pattern";
     public static final String CONSUME_ERROR = "consume_error";

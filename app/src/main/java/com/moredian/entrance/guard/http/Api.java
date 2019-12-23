@@ -7,6 +7,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.DefiniteExpense;
 import com.moredian.entrance.guard.entity.FaceExpense;
+import com.moredian.entrance.guard.entity.GetCardPassword;
 import com.moredian.entrance.guard.entity.GetCardTypeList;
 import com.moredian.entrance.guard.entity.GetChannel;
 import com.moredian.entrance.guard.entity.GetDepartmentList;
@@ -977,6 +978,9 @@ public class Api {
                             }
                         } else {
                             ToastHelper.showToast(user.getMessage());
+                            if (user.getMessage().equals("Parameter error: number ")) {
+                                ToastHelper.showToast("卡号错误");
+                            }
                         }
                     }
 
@@ -1432,6 +1436,58 @@ public class Api {
                             ToastHelper.showToast("设置成功");
                         } else {
                             ToastHelper.showToast(response.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ResponseBody body = ((HttpException) e).response().errorBody();
+                            try {
+                                JSONObject jsonObject = new JSONObject(body.string());
+                                String error = jsonObject.getString("Message");
+                                if (error != null) {
+                                    ToastHelper.showToast(error);
+                                } else {
+                                    ToastHelper.showToast(body.string());
+                                }
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * descirption: 获取卡的密码 商户密码
+     */
+    public void getCardPassword(String token) {
+        ApiUtils.getCardPassword().getCardPassword(token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetCardPassword>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetCardPassword getCardPassword) {
+                        if (getCardPassword != null && getCardPassword.getStatusCode() == 200) {
+                            ToastHelper.showToast("获取卡密码成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(getCardPassword);
+                            }
+                        } else {
+                            ToastHelper.showToast(getCardPassword.getMessage());
                         }
                     }
 

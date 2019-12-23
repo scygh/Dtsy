@@ -27,6 +27,7 @@ import com.moredian.entrance.guard.view.fragment.RefundFragment;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android_serialport_api.ChangeTool;
@@ -76,7 +77,7 @@ public class VoucherCenterActivity extends BaseActivity implements View.OnFocusC
 
     @Override
     public void initData() {
-        api. getChannel(token);
+        api.getChannel(token);
         api.setGetResponseListener(new Api.GetResponseListener<Object>() {
             @Override
             public void onRespnse(Object o) {
@@ -98,13 +99,10 @@ public class VoucherCenterActivity extends BaseActivity implements View.OnFocusC
                     userId = ((GetUser) o).getContent().getUserID();
                 } else if (o instanceof GetChannel) {
                     List<String> channel = new ArrayList<>();
-                    channel.add(((GetChannel) o).getContent().get(0).getText());
-                    channel.add(((GetChannel) o).getContent().get(1).getText());
-                    channel.add(((GetChannel) o).getContent().get(2).getText());
-                    channel.add(((GetChannel) o).getContent().get(3).getText());
-                    channel.add(((GetChannel) o).getContent().get(4).getText());
-                    String[] array = channel.toArray(new String[channel.size()]);
-                    spinnerChannel.setAdapter(new SpinnerAdapter(VoucherCenterActivity.this, array));
+                    for (int i = 0; i < ((GetChannel) o).getContent().size(); i++) {
+                        channel.add(((GetChannel) o).getContent().get(i).getText());
+                    }
+                    spinnerChannel.setAdapter(new SpinnerAdapter(VoucherCenterActivity.this, channel.toArray(new String[channel.size()])));
                 }
             }
 
@@ -148,7 +146,7 @@ public class VoucherCenterActivity extends BaseActivity implements View.OnFocusC
     }
 
     /**
-     * descirption: 把接收到刷卡的16进制数转化去消费查询
+     * descirption:
      */
     private void formatReadCard(String a, int kind) {
         int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码

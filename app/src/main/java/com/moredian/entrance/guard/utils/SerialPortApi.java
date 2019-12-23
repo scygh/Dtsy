@@ -36,6 +36,36 @@ public class SerialPortApi {
     }
 
     /**
+     * descirption: 下发卡密码
+     */
+    public static void givePassword(String password) {
+        //12位
+        /*String cp = ChangeTool.strTo16(password);
+        Log.d("givePassword", "givePassword: " + cp);
+        if (cp.length() > 24) {
+            cp = cp.substring(0,24);
+        }
+        StringBuilder sb = new StringBuilder();
+        if (cp.length() < 24) {
+            int count = 24 - cp.length();
+            for (int i = 0; i < count; i++) {
+                sb.append("0");
+            }
+            sb.append(cp);
+            String sum = "650101000C" + sb.toString();
+            MainApplication.getSerialPortUtils().sendSerialPort("A1B103" + sum + ChangeTool.makeChecksum(sum));
+            Log.d("givePassword", "givePassword: " + "A1B103" + sum + ChangeTool.makeChecksum(sum));
+            return;
+        }
+        String sum = "650101000C" + cp;
+        MainApplication.getSerialPortUtils().sendSerialPort("A1B103" + sum + ChangeTool.makeChecksum(sum));
+        Log.d("givePassword", "givePassword: " + "A1B103" + sum + ChangeTool.makeChecksum(sum));*/
+        String sum = "6501010006" + password;
+        MainApplication.getSerialPortUtils().sendSerialPort("A1B103" + sum + ChangeTool.makeChecksum(sum));
+        Log.d("givePassword", "givePassword: " + "A1B103" + sum + ChangeTool.makeChecksum(sum));
+    }
+
+    /**
      * descirption: 消费成功，拼接字符，数据下行
      */
     public static void consumeSenddown(Object simpleExpense, int status, String name) {
