@@ -140,8 +140,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="请先刷卡"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:text="请先识别"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHint="@color/colorPrimary"
                         android:textSize="@dimen/textSize_26"
                         android:textStyle="bold" />
 
@@ -161,8 +162,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="0.0元"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:text="请先识别"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHint="@color/colorPrimary"
                         android:textSize="@dimen/textSize_26"
                         android:textStyle="bold" />
 
@@ -190,8 +192,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="0次"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:hint="请先识别"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHint="@color/colorPrimary"
                         android:textSize="@dimen/textSize_24"
                         android:textStyle="bold" />
 
@@ -212,8 +215,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="未设置"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:hint="未设置"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHint="@color/colorPrimary"
                         android:textSize="@dimen/textSize_24"
                         android:textStyle="bold" />
 
@@ -221,15 +225,23 @@
 
             </LinearLayout>
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_money"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="0.00"
-                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:hint="刷脸支付"
+                android:textColorHint="@color/colorPrimary"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/textSize_80"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:cursorVisible="false"
+                android:background="@null"
+                android:inputType="numberDecimal"
+                android:textCursorDrawable="@null"
+                android:clickable="false"
+                />
         </RelativeLayout>
 
         <androidx.viewpager.widget.ViewPager

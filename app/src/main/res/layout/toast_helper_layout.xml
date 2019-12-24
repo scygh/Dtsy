@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="@dimen/width_200"
+    android:layout_height="@dimen/height_80"
     android:gravity="center"
     android:background="@drawable/toast_bg">
     <TextView
         android:id="@+id/tv_issue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/textSize_20"
+        android:textSize="@dimen/textSize_26"
         android:textColor="@color/colorPrimaryDark"
-        android:paddingLeft="@dimen/padding_40"
-        android:paddingRight="@dimen/padding_40"
-        android:paddingTop="@dimen/padding_12"
-        android:paddingBottom="@dimen/padding_12"
+        android:paddingLeft="@dimen/padding_50"
+        android:paddingRight="@dimen/padding_50"
+        android:paddingTop="@dimen/padding_20"
+        android:paddingBottom="@dimen/padding_20"
         android:text="aaa"/>
 </LinearLayout>

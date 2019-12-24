@@ -13,8 +13,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -91,7 +93,7 @@ public class DsyActivity extends BaseActivity {
     @BindView(R.id.tv_pattern)
     TextView tvPattern;
     @BindView(R.id.tv_money)
-    TextView tvMoney;
+    EditText tvMoney;
     @BindView(R.id.tv_username)
     TextView tvUsername;
     @BindView(R.id.tv_balance)
@@ -141,6 +143,14 @@ public class DsyActivity extends BaseActivity {
     }
 
     @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int e = event.getKeyCode();
+        tvMoney.setFocusable(true);
+        ToastHelper.showToast(e + "");
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
     public void initView() {
         StatusBarUtil.fitStatusBar(this);
         if (!TextUtils.isEmpty(pattern)) {
@@ -181,7 +191,6 @@ public class DsyActivity extends BaseActivity {
     @Override
     public void initData() {
         initReceiver();
-        initPort();
         initRequest();
         initCamera();
         LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(this)
@@ -190,11 +199,6 @@ public class DsyActivity extends BaseActivity {
                 .setCancelOutside(true);
         dialog = loadBuilder.create();
         dialog.show();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     /**
@@ -227,114 +231,23 @@ public class DsyActivity extends BaseActivity {
     }
 
     /**
-     * descirption: 监听串口接收
-     */
-    private void initPort() {
-        MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
-            @Override
-            public void onDataReceive(byte[] buffer, int size) {
-                String hexStr = ChangeTool.ByteArrToHex(buffer, 0, size);
-                String money = tvMoney.getText().toString();
-                if (hexStr.length() == 24) {//接收到键盘输入金额
-                    formatMoneyHex(buffer, size);
-                } else if (hexStr.length() == 32) {//接收到刷卡的信息
-                    if (p != 3) {
-                        if (money.equals("0.00")) {
-                            formatReadCard(hexStr, Constants.KIND_FIND);
-                        } else {
-                            //刷卡消费
-                            formatReadCard(hexStr, Constants.KIND_CONSUME);
-                        }
-                    } else {
-                        defineConsume(hexStr);
-                    }
-                } else if (hexStr.length() == 42) {//接收到扫码的信息
-                    if (p != 3) {
-                        if (money.equals("0.00")) {
-                            ToastHelper.showToast("键盘还未输入金额");
-                        } else {
-                            //扫码消费 011103040101000C00000028731343776464974922
-                            QrCodeConsume(hexStr, Constants.KIND_CONSUME_TDC);
-                        }
-                    } else {
-                        ToastHelper.showToast("定值消费模式不支持二维码消费");
-                    }
-                }
-            }
-        });
-    }
-
-    /**
      * descirption: 初始化请求返回
      */
     private void initRequest() {
         api.setGetResponseListener(new Api.GetResponseListener() {
             @Override
             public void onRespnse(Object o) {
-                if (o instanceof GetReadCard) {//如果是刷卡
-                    name = ((GetReadCard) o).getContent().getUserName();
-                    status = ((GetReadCard) o).getContent().getState();
-                    balance = ((GetReadCard) o).getContent().getBalance();
-                    paycount = ((GetReadCard) o).getContent().getPayCount();
-                    if (!allowdConsume) {//如果不允许消费，查询，数据下行
-                        updateText(name, balance, paycount);
-                        String namehex = SerialPortApi.getNameHex(name);
-                        String balancehex = ChangeTool.numToHex3((int) (balance * 100));
-                        String paycounthex = ChangeTool.numToHex2(paycount);
-                        String statushex = ChangeTool.numToHex1(status);
-                        String sum = "020101000f" + namehex + balancehex + paycounthex + statushex;
-                        MainApplication.getSerialPortUtils().sendSerialPort("A1B103020101000f" + namehex + balancehex + paycounthex + statushex + ChangeTool.makeChecksum(sum));
-                        mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 3000);
-                    } else {//如果允许消费，消费，数据下行
-                        Log.d(TAG, "onRespnse: allowed");
-                        if (ableTag) {
-                            publiccount = ((GetReadCard) o).getContent().getPayCount();
-                            publiccount++;
-                            //查询到消费次数之后执行消费
-                            if (p == 3) {
-                                postDefineExpense(cardnumber, publiccount, name, status);
-                            } else {
-                                postSimpleExpense(cardnumber, publiccount);
-                            }
-                        } else {
-                            ToastHelper.showToast("请先打开消费开关");
-                        }
-                    }
-                } else if (o instanceof SimpleExpense) {//刷卡简单消费
-                    SerialPortApi.consumeSenddown(((SimpleExpense) o), status, name);
-                    if (p == 1) {//如果是手动消费
-                        clearData();
-                        //跳转到支付成功界面
-                        startActivity(ConsumeResultActivity.getConsumeSuccessActivityIntent(DsyActivity.this, ((SimpleExpense) o).getContent()));
-                    } else if (p == 2) {//如果是自动消费
-                        updateText(name, ((SimpleExpense) o).getContent().getExpenseDetail().getBalance(), ((SimpleExpense) o).getContent().getExpenseDetail().getPayCount());
-                        ToastHelper.showToast("自动消费" + ((SimpleExpense) o).getContent().getExpenseDetail().getAmount() + "元");
-                        mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 3000);
-                    }
-                } else if (o instanceof DefiniteExpense) {//时段定额
-                    SerialPortApi.consumeSenddown(((DefiniteExpense) o), status, name);
-                    startActivity(ConsumeResultActivity.getDefineConsumeSuccessActivityIntent(DsyActivity.this, ((DefiniteExpense) o).getContent().getExpenseDetail()));
-                } else if (o instanceof QRCodeExpense) {//二维码消费
+                //{"Content":{"ExpenseDetail":{"Id":"00000000-0000-0000-0000-000000000000","UserId":"48aa1ec4-3dda-403c-b1a8-904532123fbe","Number":120,"DeviceType":2,"DeviceId":10000,"Pattern":2,"DetailType":0,"PayCount":46,"Finance":0,"OriginalAmount":1.0,"Amount":1.0,"Balance":9975.75,"IsDiscount":false,"DiscountRate":100,"TradeDateTime":"0001-01-01 00:00:00","CreateTime":"0001-01-01 00:00:00","Description":"扣款合计1.0元;账户合计扣款1.0元;账户余额合计9975.75元.","OfflinePayCount":null},"ListEMGoodsDetail":null,"ThirdPartyExpense":null,"TradingState":0},"Result":true,"Message":"Success!","StatusCode":200}
+                if (o instanceof FaceExpense) {//人脸消费
                     if (ableTag) {
-                        SerialPortApi.consumeSenddown(((QRCodeExpense) o), status, name);
-                        if (p == 1) {
-                            clearData();
-                            //跳转到支付成功界面
-                            startActivity(ConsumeResultActivity.getQRConsumeSuccessActivityIntent(DsyActivity.this, ((QRCodeExpense) o).getContent()));
-                        } else if (p == 2) {
-                            ToastHelper.showToast("二维码消费" + ((QRCodeExpense) o).getContent().getThirdPartyExpense().getAmount() + "元");
-                        }
-                    } else {
-                        ToastHelper.showToast("请先打开消费开关");
-                    }
-                } else if (o instanceof FaceExpense) {//人脸消费
-                    if (ableTag) {
-                        SerialPortApi.consumeSenddown(((FaceExpense) o), 0, username);
                         if (p == 1 || p == 3) {
-                            clearData();
                             startActivity(ConsumeResultActivity.getFaceConsumeSuccessActivityIntent(DsyActivity.this, ((FaceExpense) o).getContent()));
+                            if (p == 1) {
+                                updateText(((FaceExpense) o).getContent().getExpenseDetail().getUserId(), ((FaceExpense) o).getContent().getExpenseDetail().getBalance(), ((FaceExpense) o).getContent().getExpenseDetail().getPayCount());
+                            }
                         } else if (p == 2) {
                             ToastHelper.showToast("人脸消费" + ((FaceExpense) o).getContent().getExpenseDetail().getAmount() + "元");
+                            updateText(((FaceExpense) o).getContent().getExpenseDetail().getUserId(), ((FaceExpense) o).getContent().getExpenseDetail().getBalance(), ((FaceExpense) o).getContent().getExpenseDetail().getPayCount());
                         }
                     } else {
                         ToastHelper.showToast("请先打开消费开关");
@@ -358,7 +271,7 @@ public class DsyActivity extends BaseActivity {
             @Override
             public void onFail(String err) {
                 if (err.equals(Constants.CONSUME_ERROR)) {
-                    clearData();
+                    mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 5000);
                     startActivity(ConsumeResultActivity.getConsumeFailActivityIntent(DsyActivity.this));
                 }
             }
@@ -399,16 +312,6 @@ public class DsyActivity extends BaseActivity {
     }
 
     /**
-     * descirption: 清空数据
-     */
-    private void clearData() {
-        tvUsername.setText("请先刷卡");
-        tvBalance.setText("0.0元");
-        tvPaycount.setText("0次");
-        tvMoney.setText("0.00");
-    }
-
-    /**
      * descirption: 更新数据
      */
     private void updateText(String name, double balance, int paycount) {
@@ -420,97 +323,7 @@ public class DsyActivity extends BaseActivity {
         message.setData(bundle);
         message.what = Constants.KEY_SET_TEXT;
         mHandler.sendMessage(message);
-    }
-
-    /**
-     * descirption: 将接受到的金额字节数组转化为实际金额并展示，并下发接受结果
-     */
-    private void formatMoneyHex(byte[] buffer, int size) {
-        try {
-            int money = ChangeTool.HexToInt(ChangeTool.ByteArrToHex(buffer, 0, size).substring(16, 22));
-            float m = (float) money / 100;
-            DecimalFormat decimalFormat = new DecimalFormat("0.00");
-            String formatmomey = decimalFormat.format(m);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    tvMoney.setText(formatmomey);
-                }
-            });
-            MainApplication.getSerialPortUtils().sendSerialPort(Constants.SETMONEYOK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            MainApplication.getSerialPortUtils().sendSerialPort(Constants.SETMONEYFAIL);
-        }
-    }
-
-    /**
-     * descirption: 把接收到刷卡的16进制数转化去消费、查询
-     */
-    private void formatReadCard(String a, int kind) {
-        Log.d(TAG, "formatReadCard:" + a);
-        int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
-        cardnumber = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
-        Log.d(TAG, "formatReadCard:" + companyCode + "" + cardnumber);
-        if (kind == Constants.KIND_FIND) {
-            getReadCard(companyCode, Integer.parseInt(deviceId), cardnumber);
-        } else if (kind == Constants.KIND_CONSUME) {
-            getReadCardPaycount(companyCode, Integer.parseInt(deviceId), cardnumber);
-        }
-    }
-
-    /**
-     * descirption: 去定值消费
-     */
-    private void defineConsume(String a) {
-        int companyCode = ChangeTool.HexToInt(a.substring(16, 20));//单位代码
-        cardnumber = ChangeTool.HexToInt(a.substring(20, 26));//卡内码
-        getReadCardPaycount(companyCode, Integer.parseInt(deviceId), cardnumber);
-    }
-
-    /**
-     * descirption: 查询卡信息，数据下行
-     */
-    public void getReadCard(Integer companyCode, Integer diviceID, Integer number) {
-        allowdConsume = false;
-        api.getReadCard(companyCode, diviceID, number, token, Constants.MODIAN_TOKEN);
-    }
-
-    /**
-     * descirption: 查询卡支付次数取消费
-     */
-    public void getReadCardPaycount(Integer companyCode, Integer diviceID, Integer number) {
-        allowdConsume = true;
-        api.getReadCard(companyCode, diviceID, number, token, Constants.MODIAN_TOKEN);
-    }
-
-    /**
-     * descirption: 刷卡消费
-     */
-    public void postSimpleExpense(int number, int count) {
-        String amount = tvMoney.getText().toString();
-        PostSimpleExpenseBody body = new PostSimpleExpenseBody(number, Double.parseDouble(amount), p, count, "scy", Integer.parseInt(deviceId), 2);
-        api.postSimpleExpense(body, token);
-    }
-
-    /**
-     * descirption: 定值消费
-     */
-    public void postDefineExpense(int number, int count, String name, int status) {
-        PostDefiniteExpenseBody body = new PostDefiniteExpenseBody(number, 0, count, "scy", Integer.parseInt(deviceId));
-        api.postDefiniteExpense(body, token);
-    }
-
-    /**
-     * descirption: 付款码消费
-     */
-    private void QrCodeConsume(String a, int kind) {
-        String qrcode = a.substring(22, 40);
-        if (kind == Constants.KIND_CONSUME_TDC) {
-            String amount = tvMoney.getText().toString();
-            PostQRCodeExpenseBody body = new PostQRCodeExpenseBody(qrcode, Double.parseDouble(amount), p, Integer.parseInt(deviceId), 2);
-            api.postQRCodeExpense(body, token, Constants.MODIAN_TOKEN);
-        }
+        mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 5000);
     }
 
     /**
@@ -523,11 +336,15 @@ public class DsyActivity extends BaseActivity {
                 api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
             } else {
                 String money = tvMoney.getText().toString();
-                if (!money.equals("0.00")) {
-                    PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(money), p, Integer.parseInt(deviceId), 2);
-                    api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
+                if (!money.equals("刷脸支付") && !money.equals("")) {
+                    if (Double.parseDouble(money) > 0) {
+                        PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(money), p, Integer.parseInt(deviceId), 2);
+                        api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
+                    } else {
+                        return;
+                    }
                 } else {
-                    ToastHelper.showToast("请输入金额");
+                    ToastHelper.showToast("请先输入金额");
                 }
             }
         } else {
@@ -626,13 +443,22 @@ public class DsyActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case Constants.KEY_CLEAR:
-                    updateText("请先刷卡", 0, 0);
+                    tvUsername.setText("");
+                    tvUsername.setHint("请先识别");
+                    tvBalance.setText("");
+                    tvBalance.setHint("请先识别");
+                    tvPaycount.setText("");
+                    tvPaycount.setHint("请先识别");
+                    if (p == 1) {
+                        tvMoney.setText("");
+                        tvMoney.setHint("刷脸支付");
+                    }
                     break;
                 case Constants.KEY_SET_TEXT:
                     String name = msg.getData().getString("name");
                     double balance = msg.getData().getDouble("balance");
                     int paycount = msg.getData().getInt("paycount");
-                    tvUsername.setText(name);
+                    tvUsername.setText(name.substring(0, 10));
                     tvBalance.setText(balance + "元");
                     tvPaycount.setText(paycount + "次");
                     break;
@@ -641,7 +467,12 @@ public class DsyActivity extends BaseActivity {
                     if (mRgbCameraView != null) {
                         if (mRgbCameraView.hasOpened()) {
                             mNirCameraView.onResume();
-                            dialog.dismiss();
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    dialog.dismiss();
+                                }
+                            }, 2000);
                         } else {
                             mCheckRgbCameraOpenCount++;
                             mHandler.sendEmptyMessageDelayed(Constants.KEY_OPEN_NIR_CAMERA, Constants.OPEN_MIR_CAMERA_DELAY + mCheckRgbCameraOpenCount * 1000);

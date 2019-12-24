@@ -64,7 +64,8 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".view.activity.DsyActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
 
         <receiver
             android:name=".receiver.BootCompletedBroadcastReceiver"
