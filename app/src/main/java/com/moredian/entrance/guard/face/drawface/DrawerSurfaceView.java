@@ -9,11 +9,10 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;

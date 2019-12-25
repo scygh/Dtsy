@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/root"
     android:orientation="vertical"
     tools:context=".view.activity.ManualconsumptionActivity">
 
@@ -14,29 +14,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false">
-        <androidx.viewpager.widget.ViewPager
+
+        <android.support.v4.view.ViewPager
             android:id="@+id/meal_viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/margin_100"
-            android:layout_marginRight="@dimen/margin_100"
             android:layout_marginTop="@dimen/margin_200"
+            android:layout_marginRight="@dimen/margin_100"
             android:layout_marginBottom="@dimen/margin_200"
-            android:clipChildren="false"
-            >
+            android:clipChildren="false">
 
-        </androidx.viewpager.widget.ViewPager>
+        </android.support.v4.view.ViewPager>
 
         <ImageView
             android:id="@+id/inper_face_pay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/margin_80"
             android:src="@mipmap/facepay" />
     </RelativeLayout>
-
 
 
 </LinearLayout>

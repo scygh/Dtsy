@@ -1,16 +1,12 @@
 package com.moredian.entrance.guard.view.fragment;
 
-import android.view.View;
-import android.widget.ArrayAdapter;
+import android.support.design.widget.TextInputEditText;
 import android.widget.Spinner;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.google.android.material.textfield.TextInputEditText;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
-import com.moredian.entrance.guard.entity.GetCardTypeList;
 import com.moredian.entrance.guard.entity.GetDepartmentList;
-import com.moredian.entrance.guard.entity.PostResponse;
 import com.moredian.entrance.guard.entity.ReisterResponse;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.view.adapter.SpinnerAdapter;

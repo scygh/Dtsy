@@ -66,7 +66,7 @@
             android:text="工本费"
             android:textSize="@dimen/textSize_24" />
 
-        <com.google.android.material.textfield.TextInputEditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/fpa_cost_et"
             android:layout_width="0dp"
             android:layout_height="@dimen/height_70"
@@ -94,7 +94,7 @@
             android:text="充值金额"
             android:textSize="@dimen/textSize_24" />
 
-        <com.google.android.material.textfield.TextInputEditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/fpa_cash_et"
             android:layout_width="0dp"
             android:layout_height="@dimen/height_70"
@@ -122,7 +122,7 @@
             android:text="赠送金额"
             android:textSize="@dimen/textSize_24" />
 
-        <com.google.android.material.textfield.TextInputEditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/fpa_donate_et"
             android:layout_width="0dp"
             android:layout_height="@dimen/height_70"

@@ -88,7 +88,7 @@ public class CameraUtil {
         for (int i = 0; i < numberOfCameras; i++) {
             Camera.getCameraInfo(i, cameraInfo);
             if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                Log.d(TAG, "back camera id :" + i);
+                Log.d(TAG, "back icon_camera id :" + i);
                 return i;
             }
         }
@@ -105,7 +105,7 @@ public class CameraUtil {
         for (int i = 0; i < numberOfCameras; i++) {
             Camera.getCameraInfo(i, cameraInfo);
             if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                Log.d(TAG, "front camera id :" + i);
+                Log.d(TAG, "front icon_camera id :" + i);
                 return i;
             }
         }

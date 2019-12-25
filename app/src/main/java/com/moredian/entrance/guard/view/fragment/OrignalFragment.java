@@ -1,17 +1,12 @@
 package com.moredian.entrance.guard.view.fragment;
 
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.support.design.widget.TextInputEditText;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.google.android.material.textfield.TextInputEditText;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
-import com.moredian.entrance.guard.entity.PostRegister;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * description ：

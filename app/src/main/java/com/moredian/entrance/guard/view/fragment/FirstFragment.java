@@ -1,18 +1,8 @@
 package com.moredian.entrance.guard.view.fragment;
 
-import android.os.Bundle;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.SimpleAdapter;
+import android.support.design.widget.TextInputEditText;
 import android.widget.Spinner;
-
-import androidx.annotation.Nullable;
-
 import com.blankj.utilcode.util.SPUtils;
-import com.google.android.material.textfield.TextInputEditText;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.GetCardTypeList;
@@ -24,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * description ：

@@ -1,31 +1,23 @@
 package com.moredian.entrance.guard.view.activity;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
+import android.widget.TextView;
 
 import com.moredian.entrance.guard.R;
-import com.moredian.entrance.guard.app.MainApplication;
-import com.moredian.entrance.guard.utils.RenderScriptUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.main_ll1)
     LinearLayout mainLl1;
@@ -47,10 +39,12 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout mainLl9;
     @BindView(R.id.main_ll10)
     LinearLayout mainLl10;
-    @BindView(R.id.iv_come_back)
-    ImageView ivComeBack;
     @BindView(R.id.main_ll11)
     LinearLayout mainLl11;
+    @BindView(R.id.Manualconsumption_back)
+    ImageView ManualconsumptionBack;
+    @BindView(R.id.page_name)
+    TextView pageName;
 
     public static Intent getMainActivityIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -58,22 +52,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
-        //getWindow().getDecorView().setBackground(new BitmapDrawable(RenderScriptUtil.rsBlur(this, BitmapFactory.decodeResource(getResources(), R.mipmap.splash_iv), 10)));
+    public void initData() {
+
     }
 
-    @OnClick({R.id.iv_come_back, R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6, R.id.main_ll7, R.id.main_ll8, R.id.main_ll9, R.id.main_ll10, R.id.main_ll11})
+    @Override
+    public void initView() {
+        pageName.setText("我的菜单");
+    }
+
+    @Override
+    public int layoutView() {
+        return R.layout.activity_main;
+    }
+
+    @OnClick({R.id.Manualconsumption_back, R.id.main_ll1, R.id.main_ll2, R.id.main_ll3, R.id.main_ll4, R.id.main_ll5, R.id.main_ll6, R.id.main_ll7, R.id.main_ll8, R.id.main_ll9, R.id.main_ll10, R.id.main_ll11})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_come_back:
+            case R.id.Manualconsumption_back:
                 startActivity(DsyActivity.getDsyActivityIntent(this));
                 finish();
                 break;
@@ -126,4 +122,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
 }

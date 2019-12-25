@@ -2,14 +2,12 @@ package com.moredian.entrance.guard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.viewpager.widget.ViewPager;
-
-import com.google.android.material.tabs.TabLayout;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.view.adapter.MainViewPagerAdapter;
 import com.moredian.entrance.guard.view.fragment.BaseFragment;

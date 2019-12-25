@@ -48,7 +48,7 @@
         android:layout_margin="@dimen/margin_20"
         android:text="可用WLAN列表" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/net_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -57,12 +57,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/net_setting_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            </androidx.recyclerview.widget.RecyclerView>
+            </android.support.v7.widget.RecyclerView>
 
             <include
                 layout="@layout/loading_layout"
@@ -71,6 +71,6 @@
                 android:layout_centerInParent="true"
                 android:visibility="gone" />
         </RelativeLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

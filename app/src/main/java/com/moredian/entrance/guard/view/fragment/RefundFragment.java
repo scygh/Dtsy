@@ -1,31 +1,25 @@
 package com.moredian.entrance.guard.view.fragment;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
-
 import com.blankj.utilcode.util.SPUtils;
-import com.google.android.material.textfield.TextInputEditText;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.PostDepositBody;
 import com.moredian.entrance.guard.http.Api;
-import com.moredian.entrance.guard.utils.KeyBoardUtil;
 import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.activity.VoucherCenterActivity;
 
@@ -33,9 +27,7 @@ import java.text.DecimalFormat;
 
 import android_serialport_api.ChangeTool;
 import android_serialport_api.SerialPortUtils;
-import butterknife.BindView;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.blankj.utilcode.util.Utils.runOnUiThread;
 
 /**
@@ -134,7 +126,7 @@ public class RefundFragment extends DialogFragment {
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         } catch (NullPointerException e) {
-            Log.i(TAG, "dialog dismiss, resume activity failed, null pointer exception occurs");
+            Log.i("scy", "dialog dismiss, resume activity failed, null pointer exception occurs");
         }
 
         super.dismiss();

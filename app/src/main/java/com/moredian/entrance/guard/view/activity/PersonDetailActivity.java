@@ -5,18 +5,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.ThumbnailUtils;
-import android.os.Bundle;
-import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -31,13 +25,10 @@ import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.Base64BitmapUtil;
 import com.moredian.entrance.guard.utils.DrawableUtils;
 import com.moredian.entrance.guard.utils.ToastHelper;
-
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.samlss.broccoli.Broccoli;
 import me.samlss.broccoli.PlaceholderParameter;
@@ -147,7 +138,7 @@ public class PersonDetailActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        persondetailCamera.setImageResource(R.mipmap.camera);
+                        persondetailCamera.setImageResource(R.mipmap.icon_camera);
                     }
                 });
             }

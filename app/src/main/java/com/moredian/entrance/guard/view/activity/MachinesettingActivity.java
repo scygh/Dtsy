@@ -2,7 +2,6 @@ package com.moredian.entrance.guard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +10,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
@@ -25,7 +23,6 @@ import java.util.List;
 
 import android_serialport_api.SerialPortFinder;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MachinesettingActivity extends BaseActivity {
@@ -42,8 +39,6 @@ public class MachinesettingActivity extends BaseActivity {
     EditText machinesettingBaudrate;
     @BindView(R.id.persondetail_sure)
     Button persondetailSure;
-    @BindView(R.id.persondetail_cancle)
-    Button persondetailCancle;
     @BindView(R.id.machinesetting_device_pattern)
     Spinner machinesettingDevicePattern;
     private List<String> deviceNums = new ArrayList<>();
@@ -114,7 +109,7 @@ public class MachinesettingActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.persondetail_sure, R.id.persondetail_cancle, R.id.Manualconsumption_back})
+    @OnClick({R.id.persondetail_sure, R.id.Manualconsumption_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.persondetail_sure:
@@ -130,8 +125,6 @@ public class MachinesettingActivity extends BaseActivity {
                 api.setDevicePattern(postsetDevicePattern, Integer.parseInt(deviceId), token);
                 MainApplication.getSerialPortUtils().closeSerialPort();
                 MainApplication.getSerialPortUtils().openSerialPort(machinePort, Integer.parseInt(machineBaudrate));
-                break;
-            case R.id.persondetail_cancle:
                 finish();
                 break;
             case R.id.Manualconsumption_back:

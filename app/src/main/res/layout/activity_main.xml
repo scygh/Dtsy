@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.moredian.entrance.guard.view.designview.ReboundScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <FrameLayout
+    <include layout="@layout/header_bar" />
+
+
+    <com.moredian.entrance.guard.view.designview.ReboundScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <androidx.core.widget.NestedScrollView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -18,13 +22,6 @@
                 android:background="@color/colorPrimaryDark"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/height_350">
-
-                <ImageView
-                    android:id="@+id/iv_come_back"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_top" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -163,7 +160,7 @@
                         <ImageView
                             android:layout_width="@dimen/width_70"
                             android:layout_height="@dimen/height_70"
-                            android:src="@mipmap/vouchercenter" />
+                            android:src="@mipmap/chongzhi" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -211,13 +208,13 @@
                         <ImageView
                             android:layout_width="@dimen/width_70"
                             android:layout_height="@dimen/height_70"
-                            android:src="@mipmap/xiaofeibaobiao" />
+                            android:src="@mipmap/xiaofeijilu" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_10"
-                            android:text="消费报表"
+                            android:text="消费记录"
                             android:textSize="@dimen/textSize_20" />
                     </LinearLayout>
 
@@ -233,13 +230,13 @@
                         <ImageView
                             android:layout_width="@dimen/width_70"
                             android:layout_height="@dimen/height_70"
-                            android:src="@mipmap/chongzhijiluicon" />
+                            android:src="@mipmap/chongzhijilu" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_10"
-                            android:text="充值报表"
+                            android:text="充值记录"
                             android:textSize="@dimen/textSize_20" />
                     </LinearLayout>
 
@@ -254,7 +251,7 @@
                         <ImageView
                             android:layout_width="@dimen/width_70"
                             android:layout_height="@dimen/height_70"
-                            android:src="@mipmap/tubiaozhuzhuangtu" />
+                            android:src="@mipmap/baobiao" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -293,7 +290,7 @@
                         <ImageView
                             android:layout_width="@dimen/width_70"
                             android:layout_height="@dimen/height_70"
-                            android:src="@mipmap/main_machine_setting" />
+                            android:src="@mipmap/shezhi" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -315,7 +312,7 @@
                         <ImageView
                             android:layout_width="@dimen/width_70"
                             android:layout_height="@dimen/height_70"
-                            android:src="@mipmap/main_net_setting" />
+                            android:src="@mipmap/wangluo" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -348,8 +345,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
 
-    </FrameLayout>
-
-</com.moredian.entrance.guard.view.designview.ReboundScrollView>
+    </com.moredian.entrance.guard.view.designview.ReboundScrollView>
+</LinearLayout>

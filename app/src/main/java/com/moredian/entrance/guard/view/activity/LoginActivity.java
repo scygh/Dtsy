@@ -2,45 +2,34 @@ package com.moredian.entrance.guard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.RadioButton;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
-import com.google.android.material.textfield.TextInputEditText;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.entity.GetCardPassword;
 import com.moredian.entrance.guard.entity.GetDevicePattern;
-import com.moredian.entrance.guard.entity.GetToken;
 import com.moredian.entrance.guard.http.Api;
-import com.moredian.entrance.guard.http.ApiUtils;
 import com.moredian.entrance.guard.utils.SerialPortApi;
 import com.moredian.entrance.guard.utils.ToastHelper;
 
 import android_serialport_api.ChangeTool;
 import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.username_tv)
-    TextInputEditText usernameTv;
+    EditText usernameTv;
     @BindView(R.id.passsword_tv)
-    TextInputEditText passswordTv;
+    EditText passswordTv;
     @BindView(R.id.remenberpassword_rb)
     RadioButton remenberpasswordRb;
     @BindView(R.id.login_btn)

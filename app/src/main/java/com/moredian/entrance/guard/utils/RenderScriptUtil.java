@@ -8,8 +8,6 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 /**
  * description ：
  * author : scy

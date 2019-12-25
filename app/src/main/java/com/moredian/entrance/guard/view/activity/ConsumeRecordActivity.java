@@ -2,26 +2,20 @@ package com.moredian.entrance.guard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.entity.GetExpensePage;
-import com.moredian.entrance.guard.entity.GetListByPage;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.view.adapter.ConsumeRecordRvAdapter;
-import com.moredian.entrance.guard.view.adapter.PersonManageRvAdapter;
 import com.moredian.entrance.guard.view.fragment.DatePickerFragment;
 
 import java.text.SimpleDateFormat;
@@ -30,7 +24,6 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ConsumeRecordActivity extends BaseActivity {
@@ -127,7 +120,7 @@ public class ConsumeRecordActivity extends BaseActivity {
      * descirption: 刷新一次
      */
     private void refresh() {
-        api.getExpensePage(token, 1, 10,new SimpleDateFormat("yyyy-MM-dd").format(new Date()), new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        api.getExpensePage(token, 1, 10, new SimpleDateFormat("yyyy-MM-dd").format(new Date()), new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         if (loadingLl != null) {
             loadingLl.setVisibility(View.VISIBLE);
         }
@@ -190,7 +183,7 @@ public class ConsumeRecordActivity extends BaseActivity {
                 @Override
                 public void onItemClick(int position) {
                     GetExpensePage.ContentBean.RowsBean rowsBean = rowsBeans.get(position);
-                    startActivity(RecordDetailActivity.getRecordDetailActivityIntent(ConsumeRecordActivity.this,rowsBean));
+                    startActivity(RecordDetailActivity.getRecordDetailActivityIntent(ConsumeRecordActivity.this, rowsBean));
                 }
             });
         }
@@ -204,7 +197,7 @@ public class ConsumeRecordActivity extends BaseActivity {
                 break;
             case R.id.record_fab:
                 DatePickerFragment datePickerFragment = DatePickerFragment.newInstance();
-                datePickerFragment.show(getSupportFragmentManager(),"tag_consume_record");
+                datePickerFragment.show(getSupportFragmentManager(), "tag_consume_record");
                 datePickerFragment.setOnDialogListener(new DatePickerFragment.OnDialogListener() {
                     @Override
                     public void onDialogClick(Date date) {

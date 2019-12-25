@@ -13,15 +13,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
@@ -54,8 +52,7 @@ public class FaceInputConsumeActivity extends AppCompatActivity {
     ImageView mNirFaceView;
     @BindView(R.id.persondetail_sure)
     Button beSure;
-    @BindView(R.id.persondetail_cancle)
-    Button beCancle;
+
     private byte[] rgb_data;
     private byte[] image;
     private String memberId;
@@ -267,13 +264,10 @@ public class FaceInputConsumeActivity extends AppCompatActivity {
         }
     };
 
-    @OnClick({R.id.persondetail_sure, R.id.persondetail_cancle})
+    @OnClick({R.id.persondetail_sure})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.persondetail_sure:
-                break;
-            case R.id.persondetail_cancle:
-                finish();
                 break;
         }
     }

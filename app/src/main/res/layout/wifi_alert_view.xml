@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_70"
     android:layout_marginLeft="@dimen/margin_50"
     android:layout_marginRight="@dimen/margin_50"
-    android:background="@drawable/wifi_password_et_bg">
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:passwordToggleEnabled="true"
-            android:layout_gravity="center">
+    android:background="@drawable/wifi_password_et_bg"
+    android:orientation="vertical">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:passwordToggleEnabled="true">
+
         <EditText
             android:id="@+id/wifi_alert_view_et"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="@null"
-            android:textSize="@dimen/textSize_26"
             android:layout_marginLeft="@dimen/margin_20"
             android:layout_marginRight="@dimen/margin_20"
             android:layout_marginBottom="@dimen/margin_10"
-            android:textCursorDrawable="@null"
+            android:background="@null"
             android:inputType="textPassword"
-            />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/textSize_26" />
+    </android.support.design.widget.TextInputLayout>
 </LinearLayout>

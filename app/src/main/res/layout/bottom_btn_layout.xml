@@ -8,15 +8,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:textSize="@dimen/textSize_26"
+            android:textColor="@color/colorPrimary"
             android:text="确定"/>
-        <Button
-            android:id="@+id/persondetail_cancle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:background="@color/color_grey"
-            android:layout_weight="1"
-            android:textSize="@dimen/textSize_26"
-            android:text="取消"/>
 </LinearLayout>

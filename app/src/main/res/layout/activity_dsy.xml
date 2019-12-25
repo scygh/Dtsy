@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dsy_refresh"
     android:layout_width="match_parent"
@@ -48,24 +48,22 @@
                     android:layout_margin="@dimen/margin_40"
                     android:background="@drawable/shap_nir_tip_default" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <Button
                     android:id="@+id/face_exit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorPrimaryDark"
-                    android:backgroundTint="#AAA"
-                    android:src="@mipmap/face_tuichu"
-                    app:borderWidth="0dp" />
+                    android:background="@drawable/operator_button_bg"
+                    android:text="关闭"
+                    android:textColor="@color/colorPrimary" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <Button
                     android:id="@+id/main_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_40"
-                    android:background="@color/colorPrimaryDark"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:src="@mipmap/face_menu"
-                    app:borderWidth="0dp" />
+                    android:background="@drawable/operator_button_bg"
+                    android:text="菜单"
+                    android:textColor="@color/colorPrimary" />
 
                 <Switch
                     android:id="@+id/dsy_switch"
@@ -230,21 +228,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:background="@null"
+                android:clickable="false"
+                android:cursorVisible="false"
                 android:gravity="center"
                 android:hint="刷脸支付"
-                android:textColorHint="@color/colorPrimary"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/textSize_80"
-                android:textStyle="bold"
-                android:cursorVisible="false"
-                android:background="@null"
                 android:inputType="numberDecimal"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary"
                 android:textCursorDrawable="@null"
-                android:clickable="false"
-                />
+                android:textSize="@dimen/textSize_80"
+                android:textStyle="bold" />
         </RelativeLayout>
 
-        <androidx.viewpager.widget.ViewPager
+        <android.support.v4.view.ViewPager
             android:id="@+id/meal_viewpager"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_300"
@@ -256,4 +253,4 @@
             android:visibility="gone" />
 
     </RelativeLayout>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

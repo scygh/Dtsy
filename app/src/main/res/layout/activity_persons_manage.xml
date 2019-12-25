@@ -9,7 +9,7 @@
 
     <include layout="@layout/header_bar" />
 
-    <com.google.android.material.tabs.TabLayout
+    <android.support.design.widget.TabLayout
         android:id="@+id/invest_tablayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_80"
@@ -21,10 +21,10 @@
         app:tabTextAppearance="@style/tab_text_size"
         app:tabMode="fixed"/>
 
-    <androidx.viewpager.widget.ViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/invest_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </androidx.viewpager.widget.ViewPager>
+    </android.support.v4.view.ViewPager>
 
 </LinearLayout>

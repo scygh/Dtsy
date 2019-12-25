@@ -50,8 +50,6 @@ public class FaceInputActivity extends BaseActivity {
     ImageView mNirFaceView;
     @BindView(R.id.persondetail_sure)
     Button beSure;
-    @BindView(R.id.persondetail_cancle)
-    Button beCancle;
     private byte[] rgb_data;
     private byte[] image;
     private String memberId;
@@ -265,13 +263,10 @@ public class FaceInputActivity extends BaseActivity {
         }
     };
 
-    @OnClick({R.id.persondetail_sure, R.id.persondetail_cancle, R.id.face_exit})
+    @OnClick({R.id.persondetail_sure, R.id.face_exit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.persondetail_sure:
-                break;
-            case R.id.persondetail_cancle:
-                finish();
                 break;
             case R.id.face_exit:
                 finish();

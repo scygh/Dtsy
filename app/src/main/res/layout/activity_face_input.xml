@@ -11,38 +11,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:previewheight="720"
-        app:previewwidth="1280"
-        />
+        app:previewwidth="1280" />
 
     <com.moredian.entrance.guard.face.CameraView
         android:id="@+id/nir_camera"
         android:layout_width="1dp"
         android:layout_height="1dp"
         app:previewheight="480"
-        app:previewwidth="800"
-        />
+        app:previewwidth="800" />
 
     <com.moredian.entrance.guard.face.drawface.DrawerSurfaceView
         android:id="@+id/faceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
-        />
+        android:visibility="visible" />
 
 
     <TextView
         android:id="@+id/detect_tips_tv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_150"
-        android:gravity="center"
-        android:fontFamily="lablack"
-        android:textStyle="bold"
-        android:textSize="68sp"
-        android:lines="1"
         android:layout_marginBottom="20dp"
+        android:fontFamily="lablack"
+        android:gravity="center"
+        android:lines="1"
         android:textColor="@android:color/white"
-        android:visibility="gone"
-        />
+        android:textSize="68sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/iv_rgb"
@@ -50,8 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/iv_nir"
@@ -59,16 +54,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <include
+        layout="@layout/bottom_btn_layout"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        layout="@layout/bottom_btn_layout"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -76,21 +69,20 @@
         android:layout_alignParentRight="true"
         android:gravity="center"
         android:orientation="vertical">
+
         <ImageView
             android:id="@+id/nir_tips"
             android:layout_width="@dimen/width_30"
             android:layout_height="@dimen/height_30"
             android:layout_margin="@dimen/margin_40"
-            android:background="@drawable/shap_nir_tip_default"/>
+            android:background="@drawable/shap_nir_tip_default" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <Button
             android:id="@+id/face_exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#AAA"
             android:background="@color/colorPrimaryDark"
-            app:borderWidth="0dp"
-            android:src="@mipmap/face_tuichu"
-            />
+            android:text="exit"
+            android:textColor="@color/colorPrimary" />
     </LinearLayout>
 </RelativeLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/height_80"
+    android:layout_height="@dimen/height_100"
     android:background="@color/colorPrimaryDark"
     android:elevation="10dp">
 
@@ -11,7 +11,7 @@
         android:layout_height="@dimen/height_50"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin_20"
-        android:src="@mipmap/back_header" />
+        android:src="@mipmap/icon_back" />
 
     <TextView
         android:id="@+id/page_name"

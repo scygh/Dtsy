@@ -11,10 +11,13 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,45 +25,32 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager.widget.ViewPager;
-
 import com.android.tu.loadingdialog.LoadingDailog;
 import com.blankj.utilcode.util.ToastUtils;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
-import com.moredian.entrance.guard.entity.DefiniteExpense;
 import com.moredian.entrance.guard.entity.FaceExpense;
 import com.moredian.entrance.guard.entity.GetMealList;
-import com.moredian.entrance.guard.entity.GetReadCard;
-import com.moredian.entrance.guard.entity.PostDefiniteExpenseBody;
 import com.moredian.entrance.guard.entity.PostFaceExpenseBody;
-import com.moredian.entrance.guard.entity.PostQRCodeExpenseBody;
-import com.moredian.entrance.guard.entity.PostSimpleExpenseBody;
-import com.moredian.entrance.guard.entity.QRCodeExpense;
-import com.moredian.entrance.guard.entity.SimpleExpense;
 import com.moredian.entrance.guard.face.CameraUtil;
 import com.moredian.entrance.guard.face.CameraView;
 import com.moredian.entrance.guard.face.drawface.DrawerSurfaceView;
 import com.moredian.entrance.guard.http.Api;
-import com.moredian.entrance.guard.utils.SerialPortApi;
+import com.moredian.entrance.guard.utils.AudioUtils;
 import com.moredian.entrance.guard.utils.StatusBarUtil;
 import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.adapter.MealPagerAdapter;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android_serialport_api.ChangeTool;
-import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -109,23 +99,16 @@ public class DsyActivity extends BaseActivity {
     @BindView(R.id.dsy_switch)
     Switch able_switch;
     @BindView(R.id.face_exit)
-    FloatingActionButton faceExit;
+    Button faceExit;
     @BindView(R.id.main_menu)
-    FloatingActionButton mainMenu;
+    Button mainMenu;
     private boolean ableTag = true;
     private byte[] rgb_data;
     private String memberId;
     private static boolean mShowCallbackFace = false;
     private static int mCheckRgbCameraOpenCount = 0;
     private MyReceiver mReceiver = new MyReceiver();
-    private int publiccount;
-    private boolean allowdConsume = false;
-    private int cardnumber;
-    private String name;
-    private int status;
     private String username;
-    private double balance;
-    private int paycount;
     private List<GetMealList.ContentBean> datas = new ArrayList<>();
     private List<String[]> times = new ArrayList<>();
     MealPagerAdapter adapter;
@@ -152,7 +135,6 @@ public class DsyActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        StatusBarUtil.fitStatusBar(this);
         if (!TextUtils.isEmpty(pattern)) {
             tvPattern.setText(pattern);
         }
@@ -190,6 +172,7 @@ public class DsyActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        AudioUtils.getInstance().init(getApplicationContext());
         initReceiver();
         initRequest();
         initCamera();
@@ -246,11 +229,11 @@ public class DsyActivity extends BaseActivity {
                                 updateText(((FaceExpense) o).getContent().getExpenseDetail().getUserId(), ((FaceExpense) o).getContent().getExpenseDetail().getBalance(), ((FaceExpense) o).getContent().getExpenseDetail().getPayCount());
                             }
                         } else if (p == 2) {
-                            ToastHelper.showToast("人脸消费" + ((FaceExpense) o).getContent().getExpenseDetail().getAmount() + "元");
+                            AudioUtils.getInstance().speakText("人脸消费" + ((FaceExpense) o).getContent().getExpenseDetail().getAmount() + "元");
                             updateText(((FaceExpense) o).getContent().getExpenseDetail().getUserId(), ((FaceExpense) o).getContent().getExpenseDetail().getBalance(), ((FaceExpense) o).getContent().getExpenseDetail().getPayCount());
                         }
                     } else {
-                        ToastHelper.showToast("请先打开消费开关");
+                        AudioUtils.getInstance().speakText("请先打开消费开关");
                     }
                 } else if (o instanceof GetMealList) {
                     datas.clear();
@@ -379,7 +362,6 @@ public class DsyActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        allowdConsume = false;
         if (mRgbCameraView != null) {
             mRgbCameraView.onResume();
         }

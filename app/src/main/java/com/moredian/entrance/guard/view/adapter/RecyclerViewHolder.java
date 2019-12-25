@@ -1,9 +1,9 @@
 package com.moredian.entrance.guard.view.adapter;
 
+import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
 
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * description ：

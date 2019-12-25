@@ -3,24 +3,18 @@ package com.moredian.entrance.guard.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.moredian.entrance.guard.R;
-import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.GetDepositPage;
-import com.moredian.entrance.guard.entity.GetExpensePage;
 import com.moredian.entrance.guard.http.Api;
-import com.moredian.entrance.guard.utils.ToastHelper;
-import com.moredian.entrance.guard.view.adapter.ConsumeRecordRvAdapter;
 import com.moredian.entrance.guard.view.adapter.ExpenseRecordRvAdapter;
 import com.moredian.entrance.guard.view.fragment.DatePickerFragment;
 

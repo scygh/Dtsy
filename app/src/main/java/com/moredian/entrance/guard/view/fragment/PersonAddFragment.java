@@ -1,18 +1,13 @@
 package com.moredian.entrance.guard.view.fragment;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.provider.Settings;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.moredian.entrance.guard.R;
@@ -20,7 +15,6 @@ import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.PostRegister;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.ToastHelper;
-import com.moredian.entrance.guard.view.activity.NetSettingActivity;
 import com.xyz.step.FlowViewHorizontal;
 
 import butterknife.BindView;
