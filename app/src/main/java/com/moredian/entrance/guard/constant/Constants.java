@@ -22,6 +22,7 @@ public class Constants {
     public static final String CARDPASSWORD = "CARDPASSWORD";
 
     public static final String DEVICE_PATTERN = "device_pattern";
+    public static final String AUTO_AMOUNT = "AutoAmount";
     public static final String CONSUME_ERROR = "consume_error";
 
     //url

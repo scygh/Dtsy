@@ -38,9 +38,7 @@
         <activity android:name=".view.activity.RecordDetailActivity" />
         <activity android:name=".view.activity.ConsumeRecordActivity" />
         <activity android:name=".view.activity.DepositRecordActivity" />
-        <activity
-            android:name=".view.activity.VoucherCenterActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".view.activity.VoucherCenterActivity" />
         <activity android:name=".view.activity.PersonalSettingActivity" />
         <activity android:name=".view.activity.ConsumeResultActivity" />
         <activity android:name=".view.activity.FaceInputActivity" />

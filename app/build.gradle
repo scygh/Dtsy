@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
 
-    packagingOptions {       //避免重复导入库
-        exclude 'lib/armeabi-v7a/libserial_port.so'
+   /* packagingOptions {       //避免重复导入库
+        exclude 'lib/armeabi-v7a/libserial_port.so' //加上就会报错
         exclude 'lib/x86/libserial_port.so'
-    }
+    }*/
 
     signingConfigs {
         release {
@@ -32,6 +32,9 @@ android {
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
+        ndk {
+            abiFilters 'armeabi-v7a'//这句话很关键，没有写对就报错
+        }
     }
 
     buildTypes {

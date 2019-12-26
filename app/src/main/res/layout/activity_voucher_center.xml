@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,7 +21,8 @@
             android:layout_height="@dimen/height_50"
             android:layout_alignParentRight="true"
             android:layout_margin="@dimen/margin_20"
-            android:src="@mipmap/refund" />
+            android:src="@mipmap/refund"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,7 +32,8 @@
             android:layout_marginRight="@dimen/margin_20"
             android:text="退款"
             android:textColor="#fff"
-            android:textSize="@dimen/textSize_22" />
+            android:textSize="@dimen/textSize_22"
+            android:visibility="gone" />
 
         <ImageView
             android:layout_width="@dimen/width_30"
@@ -59,49 +60,38 @@
             android:textColor="#fff"
             android:textSize="@dimen/textSize_22" />
 
-        <ImageView
-            android:layout_width="@dimen/width_30"
-            android:layout_height="@dimen/height_30"
-            android:layout_marginLeft="@dimen/margin_20"
-            android:layout_marginTop="@dimen/margin_60"
-            android:src="@mipmap/qingchu_icon" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_60"
-            android:layout_marginTop="@dimen/margin_60"
-            android:text="卡片轻触设备左侧即刻响应"
-            android:textColor="#fff"
-            android:textSize="@dimen/textSize_22" />
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/margin_50"
+            android:layout_marginLeft="@dimen/margin_20">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="余额"
+                android:textColor="#fff"
+                android:textSize="@dimen/textSize_40" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_20"
-            android:layout_marginTop="@dimen/margin_100"
-            android:text="余额"
-            android:textColor="#fff"
-            android:textSize="@dimen/textSize_40" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(提示:余额包含赠送补贴)"
+                android:textColor="#fff"
+                android:textSize="@dimen/textSize_16" />
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/avc_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_120"
-            android:layout_marginTop="@dimen/margin_100"
+            android:layout_centerInParent="true"
             android:text="0.00"
             android:textColor="#fff"
-            android:textSize="@dimen/textSize_40" />
+            android:textSize="@dimen/textSize_80" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_20"
-            android:layout_marginTop="@dimen/margin_150"
-            android:text="(提示:余额包含赠送补贴)"
-            android:textColor="#fff"
-            android:textSize="@dimen/textSize_16" />
+
     </RelativeLayout>
 
     <LinearLayout
@@ -189,9 +179,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_80"
         android:layout_margin="@dimen/margin_30"
-        android:background="@drawable/login_button_bg"
+        android:background="@drawable/chongzhi_button_bg"
         android:text="充值"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/textSize_26" />
 
     <LinearLayout

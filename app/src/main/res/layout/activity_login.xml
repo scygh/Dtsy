@@ -53,7 +53,7 @@
         android:textCursorDrawable="@null"
         android:textSize="@dimen/textSize_26" />
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/remenberpassword_rb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,7 +61,8 @@
         android:layout_marginTop="@dimen/margin_20"
         android:text="@string/remember_password"
         android:textColor="@color/icon"
-        android:textSize="@dimen/textSize_20" />
+        android:textSize="@dimen/textSize_20"
+        android:checked="true"/>
 
     <Button
         android:id="@+id/login_btn"

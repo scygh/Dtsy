@@ -38,21 +38,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         api = new Api();
         token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER, "10000");
-        p = SPUtils.getInstance().getInt(Constants.DEVICE_PATTERN);
-        if (p == 1) {
-            pattern = "手动消费";
-        } else if (p == 2) {
-            pattern = "自动消费";
-        } else if (p == 3) {
-            pattern = "定值消费";
-        } else if (p == 4) {
-            pattern = "商品消费";
-        } else if (p == 5) {
-            pattern = "机器充值";
-        } else if (p == 6) {
-            pattern = "机器退款";
-        } else if (p == 7) {
-            pattern = "订餐模式";
+        pattern = SPUtils.getInstance().getString(Constants.DEVICE_PATTERN);
+        if (pattern.equals("手动消费")) {
+            p = 1;
+        } else if (pattern.equals("自动消费")) {
+            p = 2;
+        } else if (pattern.equals("定值消费")) {
+            p = 3;
         }
         setLightMode();
         initView();

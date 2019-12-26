@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.blankj.utilcode.util.SPUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
@@ -93,7 +94,6 @@ public class PersonFindFragment extends BaseFragment {
 
     @Override
     public void initViewController() {
-        refresh();
         swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.icon));
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -133,7 +133,6 @@ public class PersonFindFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
         api.getListByPage(1, 5000);
         api.setOnResponse(new Api.OnResponse<GetListByPage.ContentBean.RowsBean>() {
             @Override

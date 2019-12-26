@@ -56,6 +56,7 @@ public class MachinesettingActivity extends BaseActivity {
     @Override
     public void initView() {
         pageName.setText("机器设置");
+        //设置串口和波特率的显示
         SerialPortFinder finder = new SerialPortFinder();
         String[] attr = finder.getAllDevicesPath();
         machinesettingPort.setAdapter(new SpinnerAdapter(this, attr));
@@ -70,9 +71,9 @@ public class MachinesettingActivity extends BaseActivity {
         //消费模式
         String[] devicePattern = getResources().getStringArray(R.array.devicepattern);
         machinesettingDevicePattern.setAdapter(new SpinnerAdapter(this, devicePattern));
-        int pattern = SPUtils.getInstance().getInt(Constants.DEVICE_PATTERN);
+        String pattern = SPUtils.getInstance().getString(Constants.DEVICE_PATTERN);
         for (int k = 0; k < devicePattern.length; k++) {
-            if (Integer.parseInt(devicePattern[k]) == pattern) {
+            if (devicePattern[k].equals(pattern)) {
                 machinesettingDevicePattern.setSelection(k);
                 break;
             }
@@ -120,8 +121,16 @@ public class MachinesettingActivity extends BaseActivity {
                 SPUtils.getInstance().put(Constants.MACHINE_NUMBER, machineNumber);
                 SPUtils.getInstance().put(Constants.MACHINE_PORT, machinePort);
                 SPUtils.getInstance().put(Constants.MACHINE_BAUDRTE, machineBaudrate);
-                SPUtils.getInstance().put(Constants.DEVICE_PATTERN, Integer.parseInt(devicepattern));
-                PostsetDevicePattern postsetDevicePattern = new PostsetDevicePattern("0", devicepattern);
+                SPUtils.getInstance().put(Constants.DEVICE_PATTERN, devicepattern);
+                String pattern = "";
+                if (devicepattern.equals("手动消费")) {
+                    pattern = "1";
+                } else if (devicepattern.equals("自动消费")) {
+                    pattern = "2";
+                } else if (devicepattern.equals("定值消费")) {
+                    pattern = "3";
+                }
+                PostsetDevicePattern postsetDevicePattern = new PostsetDevicePattern("0", pattern);
                 api.setDevicePattern(postsetDevicePattern, Integer.parseInt(deviceId), token);
                 MainApplication.getSerialPortUtils().closeSerialPort();
                 MainApplication.getSerialPortUtils().openSerialPort(machinePort, Integer.parseInt(machineBaudrate));

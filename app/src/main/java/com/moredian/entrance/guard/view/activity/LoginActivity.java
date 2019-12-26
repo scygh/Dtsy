@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
@@ -31,7 +33,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.passsword_tv)
     EditText passswordTv;
     @BindView(R.id.remenberpassword_rb)
-    RadioButton remenberpasswordRb;
+    CheckBox remenberpasswordRb;
     @BindView(R.id.login_btn)
     Button loginBtn;
 
@@ -51,9 +53,9 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        String existsUsername = SPUtils.getInstance().getString(Constants.USRTNAME);
-        String existsPassword = SPUtils.getInstance().getString(Constants.PASSWORD);
-        if (existsUsername != null && existsPassword != null) {
+        String existsUsername = SPUtils.getInstance().getString(Constants.USRTNAME, "");
+        String existsPassword = SPUtils.getInstance().getString(Constants.PASSWORD, "");
+        if (!TextUtils.isEmpty(existsUsername) && !TextUtils.isEmpty(existsPassword)) {
             usernameTv.setText(existsUsername);
             passswordTv.setText(existsPassword);
         }
@@ -62,18 +64,27 @@ public class LoginActivity extends BaseActivity {
             public void onRespnse(Object o) {
                 if (o instanceof GetDevicePattern) {
                     int devicePattern = ((GetDevicePattern) o).getContent().getPattern();
-                    SPUtils.getInstance().put(Constants.DEVICE_PATTERN, devicePattern);
+                    String pattern = "";
+                    if (devicePattern == 1) {
+                        pattern = "手动消费";
+                    } else if (devicePattern == 2) {
+                        pattern = "自动消费";
+                        SPUtils.getInstance().put(Constants.AUTO_AMOUNT, ((GetDevicePattern) o).getContent().getAutoAmount(),true);
+                    } else if (devicePattern == 3) {
+                        pattern = "定值消费";
+                    }
+                    SPUtils.getInstance().put(Constants.DEVICE_PATTERN, pattern);
                     startActivity(DsyActivity.getDsyActivityIntent(LoginActivity.this));
                     finish();
-                } else if (o instanceof GetCardPassword) {
+                } /*else if (o instanceof GetCardPassword) {
                     SerialPortApi.givePassword(((GetCardPassword) o).getContent());
-                    SPUtils.getInstance().put(Constants.CARDPASSWORD,((GetCardPassword) o).getContent());
-                }
+                    SPUtils.getInstance().put(Constants.CARDPASSWORD, ((GetCardPassword) o).getContent());
+                }*/
             }
 
             @Override
             public void onFail(String err) {
-
+                ToastHelper.showToast(err);
             }
         });
         api.setOnCreate(new Api.OnCreate() {
@@ -81,11 +92,13 @@ public class LoginActivity extends BaseActivity {
             public void created() {
                 //第一次打开未登录，没有查询结果，所以重复查一次。
                 token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
+                deviceId = SPUtils.getInstance().getString(Constants.MACHINE_NUMBER, "10000");
                 api.getDevicePattern(Integer.parseInt(deviceId), token);
-                api.getCardPassword(token);
+                //因为此版本没有接串口，所以不需要此步骤
+                //api.getCardPassword(token);
             }
         });
-        MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
+        /*MainApplication.getSerialPortUtils().setOnDataReceiveListener(new SerialPortUtils.OnDataReceiveListener() {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
                 String hexStr = ChangeTool.ByteArrToHex(buffer, 0, size);
@@ -94,17 +107,21 @@ public class LoginActivity extends BaseActivity {
                     ToastHelper.showToast("下发卡密码成功");
                 }
             }
-        });
+        });*/
     }
 
-    @OnClick({R.id.remenberpassword_rb, R.id.login_btn, R.id.iv_come_back})
+    @OnClick({R.id.login_btn, R.id.iv_come_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.remenberpassword_rb:
-                SPUtils.getInstance().put(Constants.USRTNAME, usernameTv.getText().toString().trim());
-                SPUtils.getInstance().put(Constants.PASSWORD, passswordTv.getText().toString().trim());
-                break;
+            //先获取token,再去拿设备消费模式
             case R.id.login_btn:
+                if (remenberpasswordRb.isChecked()) {
+                    SPUtils.getInstance().put(Constants.USRTNAME, usernameTv.getText().toString().trim());
+                    SPUtils.getInstance().put(Constants.PASSWORD, passswordTv.getText().toString().trim());
+                } else {
+                    SPUtils.getInstance().put(Constants.USRTNAME, "");
+                    SPUtils.getInstance().put(Constants.PASSWORD, "");
+                }
                 String name = usernameTv.getText().toString().trim();
                 String password = passswordTv.getText().toString().trim();
                 if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {

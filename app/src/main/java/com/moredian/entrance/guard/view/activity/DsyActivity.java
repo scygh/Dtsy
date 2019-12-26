@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.tu.loadingdialog.LoadingDailog;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
@@ -135,8 +137,12 @@ public class DsyActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         if (!TextUtils.isEmpty(pattern)) {
             tvPattern.setText(pattern);
+            if (pattern.equals("自动消费")) {
+                tvMoney.setText(SPUtils.getInstance().getFloat(Constants.AUTO_AMOUNT) + "");
+            }
         }
         if (p == 3) {
             rlData.setVisibility(View.GONE);
@@ -222,18 +228,10 @@ public class DsyActivity extends BaseActivity {
             public void onRespnse(Object o) {
                 //{"Content":{"ExpenseDetail":{"Id":"00000000-0000-0000-0000-000000000000","UserId":"48aa1ec4-3dda-403c-b1a8-904532123fbe","Number":120,"DeviceType":2,"DeviceId":10000,"Pattern":2,"DetailType":0,"PayCount":46,"Finance":0,"OriginalAmount":1.0,"Amount":1.0,"Balance":9975.75,"IsDiscount":false,"DiscountRate":100,"TradeDateTime":"0001-01-01 00:00:00","CreateTime":"0001-01-01 00:00:00","Description":"扣款合计1.0元;账户合计扣款1.0元;账户余额合计9975.75元.","OfflinePayCount":null},"ListEMGoodsDetail":null,"ThirdPartyExpense":null,"TradingState":0},"Result":true,"Message":"Success!","StatusCode":200}
                 if (o instanceof FaceExpense) {//人脸消费
-                    if (ableTag) {
-                        if (p == 1 || p == 3) {
-                            startActivity(ConsumeResultActivity.getFaceConsumeSuccessActivityIntent(DsyActivity.this, ((FaceExpense) o).getContent()));
-                            if (p == 1) {
-                                updateText(((FaceExpense) o).getContent().getExpenseDetail().getUserId(), ((FaceExpense) o).getContent().getExpenseDetail().getBalance(), ((FaceExpense) o).getContent().getExpenseDetail().getPayCount());
-                            }
-                        } else if (p == 2) {
-                            AudioUtils.getInstance().speakText("人脸消费" + ((FaceExpense) o).getContent().getExpenseDetail().getAmount() + "元");
-                            updateText(((FaceExpense) o).getContent().getExpenseDetail().getUserId(), ((FaceExpense) o).getContent().getExpenseDetail().getBalance(), ((FaceExpense) o).getContent().getExpenseDetail().getPayCount());
-                        }
-                    } else {
-                        AudioUtils.getInstance().speakText("请先打开消费开关");
+                    AudioUtils.getInstance().speakText("人脸消费" + ((FaceExpense) o).getContent().getExpenseDetail().getAmount() + "元");
+                    startActivity(ConsumeResultActivity.getFaceConsumeSuccessActivityIntent(DsyActivity.this, ((FaceExpense) o).getContent()));
+                    if (p != 3) {
+                        updateText(((FaceExpense) o).getContent().getExpenseDetail().getUserId(), ((FaceExpense) o).getContent().getExpenseDetail().getBalance(), ((FaceExpense) o).getContent().getExpenseDetail().getPayCount());
                     }
                 } else if (o instanceof GetMealList) {
                     datas.clear();
@@ -253,10 +251,9 @@ public class DsyActivity extends BaseActivity {
 
             @Override
             public void onFail(String err) {
-                if (err.equals(Constants.CONSUME_ERROR)) {
-                    mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 5000);
-                    startActivity(ConsumeResultActivity.getConsumeFailActivityIntent(DsyActivity.this));
-                }
+                AudioUtils.getInstance().speakText(err);
+                mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 2000);
+                startActivity(ConsumeResultActivity.getConsumeFailActivityIntent(DsyActivity.this));
             }
         });
     }
@@ -306,7 +303,7 @@ public class DsyActivity extends BaseActivity {
         message.setData(bundle);
         message.what = Constants.KEY_SET_TEXT;
         mHandler.sendMessage(message);
-        mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 5000);
+        mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 2000);
     }
 
     /**
@@ -314,24 +311,28 @@ public class DsyActivity extends BaseActivity {
      */
     private void faceConsume() {
         if (!TextUtils.isEmpty(memberId)) {
-            if (p == 3) {
-                PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, 0, p, Integer.parseInt(deviceId), 2);
-                api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
-            } else {
-                String money = tvMoney.getText().toString();
-                if (!money.equals("刷脸支付") && !money.equals("")) {
-                    if (Double.parseDouble(money) > 0) {
-                        PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(money), p, Integer.parseInt(deviceId), 2);
-                        api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
-                    } else {
-                        return;
-                    }
+            if (ableTag) {
+                if (p == 3) {
+                    PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, 0, p, Integer.parseInt(deviceId), 2);
+                    api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
                 } else {
-                    ToastHelper.showToast("请先输入金额");
+                    String money = tvMoney.getText().toString();
+                    if (!money.equals("刷脸支付") && !money.equals("")) {
+                        if (Double.parseDouble(money) > 0) {
+                            PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(money), p, Integer.parseInt(deviceId), 2);
+                            api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
+                        } else {
+                            ToastHelper.showToast("金额必须大于零才能支付");
+                        }
+                    } else {
+                        ToastHelper.showToast("还未输入金额");
+                    }
                 }
+            } else {
+                ToastHelper.showToast("请先打开消费开关");
             }
         } else {
-            ToastUtils.showShort("人脸未录入，不能使用人脸支付");
+            ToastHelper.showToast("人脸未录入");
         }
     }
 

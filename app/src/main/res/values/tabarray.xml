@@ -11,8 +11,8 @@
         <item>开户成功</item>
     </string-array>
     <string-array name="devicepattern">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
+        <item>手动消费</item>
+        <item>自动消费</item>
+        <item>定值消费</item>
     </string-array>
 </resources>

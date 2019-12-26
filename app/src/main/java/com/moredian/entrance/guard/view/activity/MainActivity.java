@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity {
                 startActivity(PersonsManageActivity.getPersonsManageActivityIntent(this));
                 break;
             case R.id.main_ll5:
-                startActivity(VoucherCenterActivity.getVoucherCenterActivityIntent(this));
+                startActivity(VoucherCenterActivity.getVoucherCenterActivityIntent(this,""));
                 break;
             case R.id.main_ll6:
                 startActivity(ConsumeRecordActivity.getConsumeRecordActivityIntent(this));

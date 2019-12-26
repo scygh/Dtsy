@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -71,7 +72,6 @@ public class PersonListFragment extends BaseFragment {
 
     @Override
     public void initViewController() {
-        refresh();
         api.setOnResponse(new Api.OnResponse<GetListByPage.ContentBean.RowsBean>() {
             @Override
             public void onResponse(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
@@ -89,6 +89,7 @@ public class PersonListFragment extends BaseFragment {
                     }
                     Collections.sort(users);
                     arowsBeans.clear();
+                    //安照已排好序的User排序一遍
                     for (User user : users) {
                         for (GetListByPage.ContentBean.RowsBean bean : rowsBeans) {
                             if (bean.getUser().getId().equals(user.getUid())) {
@@ -108,7 +109,6 @@ public class PersonListFragment extends BaseFragment {
             @Override
             public void onResponseMore(List<GetListByPage.ContentBean.RowsBean> rowsBeans) {
                 if (rowsBeans.size() > 0) {
-                    ToastUtils.showShort("还有这么一些");
                     arowsBeans.addAll(rowsBeans);
                     adapter.notifyDataSetChanged();
                     adapter.notifyItemRemoved(adapter.getItemCount());
@@ -154,7 +154,10 @@ public class PersonListFragment extends BaseFragment {
 
             @Override
             public void onActionDown() {
-                api.getListByPage(1, 5000);
+                if (users.size() == 0) {
+                    Log.d("abc", "onActionDown: 进来了");
+                    api.getListByPage(1, 5000);
+                }
             }
         });
     }
@@ -206,6 +209,9 @@ public class PersonListFragment extends BaseFragment {
             loadingLl.setVisibility(View.VISIBLE);
         }
         pageIndex = 1;
+        if (users.size() > 0) {
+            users.clear();
+        }
     }
 
     /**

@@ -25,6 +25,7 @@ import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.Base64BitmapUtil;
 import com.moredian.entrance.guard.utils.DrawableUtils;
 import com.moredian.entrance.guard.utils.ToastHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,14 +74,6 @@ public class PersonDetailActivity extends BaseActivity {
     String memberId;
     private Broccoli mBroccoli;
 
-    /**
-     * descirption: 得到列表界面需要intent
-     */
-    public static Intent getPersonDetailActivityIntent(Context context, int position) {
-        Intent intent = new Intent(context, PersonDetailActivity.class);
-        intent.putExtra(Constants.INTENT_ROWSBEAN_POSITION, position);
-        return intent;
-    }
 
     /**
      * descirption: 得到查询界面需要的intent
@@ -157,7 +150,7 @@ public class PersonDetailActivity extends BaseActivity {
     }
 
     /**
-     * descirption: 请求数据初始化
+     * descirption: 根据传进来的userid去请求数据初始化
      */
     private void initRequest() {
         userid = dataIntent.getStringExtra(Constants.INTENT_ROWSBEAN_BEAN);
@@ -191,7 +184,7 @@ public class PersonDetailActivity extends BaseActivity {
                 }
             });
         } else {
-            ToastUtils.showShort("userid 为空");
+            ToastHelper.showToast("userid 为空");
         }
     }
 
@@ -222,7 +215,7 @@ public class PersonDetailActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.Manualconsumption_back, R.id.persondetail_camera, R.id.personDetail_create, R.id.personDetail_update, R.id.personDetail_delete})
+    @OnClick({R.id.Manualconsumption_back, R.id.persondetail_camera, R.id.personDetail_create, R.id.personDetail_update, R.id.personDetail_delete, R.id.personDetail_chongzhi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Manualconsumption_back:
@@ -237,6 +230,10 @@ public class PersonDetailActivity extends BaseActivity {
                 break;
             case R.id.personDetail_delete:
                 deletePerson();
+                break;
+            case R.id.personDetail_chongzhi:
+                startActivity(VoucherCenterActivity.getVoucherCenterActivityIntent(this,userid));
+                break;
         }
     }
 

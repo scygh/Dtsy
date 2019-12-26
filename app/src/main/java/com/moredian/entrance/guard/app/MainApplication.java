@@ -38,7 +38,7 @@ public class MainApplication extends Application {
         String port = SPUtils.getInstance().getString(Constants.MACHINE_PORT, Constants.SERIALPORT);
         String baudrate = SPUtils.getInstance().getString(Constants.MACHINE_BAUDRTE, Constants.BAUDRATE);
         serialPortUtils.openSerialPort(port, Integer.parseInt(baudrate));
-        SpeechUtility.createUtility(getApplicationContext(), SpeechConstant.APPID + "=12345678");
+        SpeechUtility.createUtility(context, SpeechConstant.APPID + "=12345678");
 
     }
 }

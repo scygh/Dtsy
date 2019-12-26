@@ -78,7 +78,7 @@ public class GetDevicePattern {
         private int ID;
         private String PlaceID;
         private int Pattern;
-        private int AutoAmount;
+        private float AutoAmount;
         private boolean KeyEnabled;
         private boolean MealEnabled;
         private boolean DepositEnabled;
@@ -118,11 +118,11 @@ public class GetDevicePattern {
             this.Pattern = Pattern;
         }
 
-        public int getAutoAmount() {
+        public float getAutoAmount() {
             return AutoAmount;
         }
 
-        public void setAutoAmount(int AutoAmount) {
+        public void setAutoAmount(float AutoAmount) {
             this.AutoAmount = AutoAmount;
         }
 

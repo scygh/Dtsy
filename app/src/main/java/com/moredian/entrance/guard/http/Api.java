@@ -36,6 +36,7 @@ import com.moredian.entrance.guard.entity.PostsetDevicePattern;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.ReisterResponse;
 import com.moredian.entrance.guard.entity.SimpleExpense;
+import com.moredian.entrance.guard.utils.AudioUtils;
 import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.activity.DsyActivity;
 import com.moredian.entrance.guard.view.activity.LoginActivity;
@@ -329,7 +330,7 @@ public class Api {
                                 getResponseListener.onRespnse(postResponse);
                             }
                         } else {
-                            ToastHelper.showToast(postResponse.getMessage());
+                            ToastHelper.showToast("您还未添加人脸");
                         }
                     }
 
@@ -427,7 +428,7 @@ public class Api {
                         } else {
                             ToastHelper.showToast(simpleExpense.getMessage());
                             if (getResponseListener != null) {
-                                getResponseListener.onFail(Constants.CONSUME_ERROR);
+                                getResponseListener.onFail(simpleExpense.getMessage());
                             }
                         }
                     }
@@ -1072,7 +1073,7 @@ public class Api {
                     @Override
                     public void onNext(PostResponseNoContent postResponseNoContent) {
                         if (postResponseNoContent != null && postResponseNoContent.getStatusCode() == 200) {
-                            ToastHelper.showToast("充值成功");
+                            AudioUtils.getInstance().speakText("充值成功");
                         } else {
                             ToastHelper.showToast(postResponseNoContent.getMessage());
                         }
@@ -1368,8 +1369,8 @@ public class Api {
     /**
      * descirption: 获取设备号对应的餐段
      */
-    public void getDevicePattern(Integer id,String token) {
-        ApiUtils.getDevicePattern().getDevicePattern(id,token)
+    public void getDevicePattern(Integer id, String token) {
+        ApiUtils.getDevicePattern().getDevicePattern(id, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GetDevicePattern>() {
@@ -1420,8 +1421,8 @@ public class Api {
     /**
      * descirption: 获取设备号对应的餐段
      */
-    public void setDevicePattern(PostsetDevicePattern postsetDevicePattern,Integer id, String token) {
-        ApiUtils.setDevicePattern().postSetDevicePattern(postsetDevicePattern,id,token)
+    public void setDevicePattern(PostsetDevicePattern postsetDevicePattern, Integer id, String token) {
+        ApiUtils.setDevicePattern().postSetDevicePattern(postsetDevicePattern, id, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<PostResponse>() {

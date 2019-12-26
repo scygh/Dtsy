@@ -103,8 +103,8 @@ public class PersonAddFragment extends BaseFragment {
     }
 
     /**
-    * descirption: 显示提示
-    */
+     * descirption: 显示提示
+     */
     private void showDialog() {
         new AlertDialog.Builder(mContext).setTitle("提示")
                 .setMessage("确认开户？")
@@ -128,8 +128,8 @@ public class PersonAddFragment extends BaseFragment {
     }
 
     /**
-    * descirption: 显示第三个界面
-    */
+     * descirption: 显示第三个界面
+     */
     private void showSecondFragment() {
         childfragment = new SecondFragment();
         fm.beginTransaction()
@@ -146,8 +146,8 @@ public class PersonAddFragment extends BaseFragment {
     }
 
     /**
-    * descirption: 显示第二个界面
-    */
+     * descirption: 显示第二个界面
+     */
     private void showFirstFragment() {
         childfragment = new FirstFragment();
         fm.beginTransaction()
@@ -192,8 +192,8 @@ public class PersonAddFragment extends BaseFragment {
     }
 
     /**
-    * descirption: 开户去
-    */
+     * descirption: 开户去
+     */
     private void GotoRegister() {
         // TODO: 2019/8/27 开户去
         String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
