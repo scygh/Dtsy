@@ -28,6 +28,7 @@ public class Constants {
     //url
     //public static final String SERVER_URL = "http://dev.machine_api.dt128.com/";
     public static final String SERVER_URL = "http://dev.open.api.dt128.com/";
+    //public static final String SERVER_URL = "http://open.api.dt128.com/";
     public static final String MODIAN_TOKEN = "116d758e-e603-4c26-a4a5-ab9cdb5c9a20";
 
     //intent
