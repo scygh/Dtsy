@@ -4,6 +4,7 @@ android {
 
     packagingOptions {       //避免重复导入库
         exclude 'lib/armeabi-v7a/libserial_port.so'
+        exclude 'lib/x86/libserial_port.so'
     }
 
     signingConfigs {
