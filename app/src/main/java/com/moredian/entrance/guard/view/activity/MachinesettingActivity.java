@@ -3,6 +3,7 @@ package com.moredian.entrance.guard.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.GetDeviceNumList;
+import com.moredian.entrance.guard.entity.GetDevicePattern;
 import com.moredian.entrance.guard.entity.PostsetDevicePattern;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.view.adapter.SpinnerAdapter;
@@ -99,6 +101,8 @@ public class MachinesettingActivity extends BaseActivity {
                             machinesettingMachineNumber.setSelection(j);
                         }
                     }
+                } else if (o instanceof GetDevicePattern) {
+                    SPUtils.getInstance().put(Constants.AUTO_AMOUNT, ((GetDevicePattern) o).getContent().getAutoAmount(), true);
                 }
             }
 
@@ -107,6 +111,20 @@ public class MachinesettingActivity extends BaseActivity {
 
             }
         });
+        machinesettingMachineNumber.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (deviceNums.size() > 0) {
+                    api.getDevicePattern(Integer.parseInt(deviceNums.get(position)), token);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
 
@@ -114,31 +132,37 @@ public class MachinesettingActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.persondetail_sure:
-                String machineNumber = (String) machinesettingMachineNumber.getSelectedItem();
-                String machinePort = (String) machinesettingPort.getSelectedItem();
-                String machineBaudrate = machinesettingBaudrate.getText().toString();
-                String devicepattern = (String) machinesettingDevicePattern.getSelectedItem();
-                SPUtils.getInstance().put(Constants.MACHINE_NUMBER, machineNumber);
-                SPUtils.getInstance().put(Constants.MACHINE_PORT, machinePort);
-                SPUtils.getInstance().put(Constants.MACHINE_BAUDRTE, machineBaudrate);
-                SPUtils.getInstance().put(Constants.DEVICE_PATTERN, devicepattern);
-                String pattern = "";
-                if (devicepattern.equals("手动消费")) {
-                    pattern = "1";
-                } else if (devicepattern.equals("自动消费")) {
-                    pattern = "2";
-                } else if (devicepattern.equals("定值消费")) {
-                    pattern = "3";
-                }
-                PostsetDevicePattern postsetDevicePattern = new PostsetDevicePattern("0", pattern);
-                api.setDevicePattern(postsetDevicePattern, Integer.parseInt(deviceId), token);
-                MainApplication.getSerialPortUtils().closeSerialPort();
-                MainApplication.getSerialPortUtils().openSerialPort(machinePort, Integer.parseInt(machineBaudrate));
-                finish();
                 break;
             case R.id.Manualconsumption_back:
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onStop() {
+        String machineNumber = (String) machinesettingMachineNumber.getSelectedItem();
+        String machinePort = (String) machinesettingPort.getSelectedItem();
+        String machineBaudrate = machinesettingBaudrate.getText().toString();
+        String devicepattern = (String) machinesettingDevicePattern.getSelectedItem();
+        SPUtils.getInstance().put(Constants.MACHINE_NUMBER, machineNumber);
+        SPUtils.getInstance().put(Constants.MACHINE_PORT, machinePort);
+        SPUtils.getInstance().put(Constants.MACHINE_BAUDRTE, machineBaudrate);
+        SPUtils.getInstance().put(Constants.DEVICE_PATTERN, devicepattern);
+        String pattern = "";
+        if (devicepattern.equals("手动消费")) {
+            pattern = "1";
+        } else if (devicepattern.equals("自动消费")) {
+            pattern = "2";
+        } else if (devicepattern.equals("定值消费")) {
+            pattern = "3";
+        }
+        PostsetDevicePattern postsetDevicePattern = new PostsetDevicePattern(SPUtils.getInstance().getFloat(Constants.AUTO_AMOUNT) + "", pattern);
+        if (machineNumber != null) {
+            api.setDevicePattern(postsetDevicePattern, Integer.parseInt(machineNumber), token);
+        }
+        MainApplication.getSerialPortUtils().closeSerialPort();
+        MainApplication.getSerialPortUtils().openSerialPort(machinePort, Integer.parseInt(machineBaudrate));
+        super.onStop();
     }
 }

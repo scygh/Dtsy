@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -42,7 +43,7 @@ public class PersonFindFragment extends BaseFragment {
 
     private static final String TAG = "PersonFindFragment";
     @BindView(R.id.person_manage_recyclerview)
-    SlideRecyclerView personManageRecyclerview;
+    RecyclerView personManageRecyclerview;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.loading)
@@ -58,7 +59,6 @@ public class PersonFindFragment extends BaseFragment {
     private PersonFindRvAdapter adapter;
     List<GetListByPage.ContentBean.RowsBean> alldata = new ArrayList<>();
     List<GetListByPage.ContentBean.RowsBean> findData = new ArrayList<>();
-    String token;
     Handler handler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
@@ -66,7 +66,6 @@ public class PersonFindFragment extends BaseFragment {
             updateData();
         }
     };
-    private String toDeleteUserId;
 
     private void updateData() {
         String data = fpfFindEt.getText().toString();
@@ -106,6 +105,14 @@ public class PersonFindFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 fpfFindEt.setText("");
+                if (findData != null) {
+                    findData.clear();
+                }
+                if (adapter == null) {
+                    initRecyclerview();
+                } else {
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
         fpfFindEt.addTextChangedListener(new TextWatcher() {
@@ -153,27 +160,6 @@ public class PersonFindFragment extends BaseFragment {
 
             }
         });
-        api.setGetResponseListener(new Api.GetResponseListener() {
-            @Override
-            public void onRespnse(Object o) {
-                if (o instanceof GetUserByUserID) {
-                    //查询到了用户信息去删除
-                    PostDeregister postDeregister = new PostDeregister();
-                    postDeregister.setCost(((GetUserByUserID) o).getContent().getCost());
-                    postDeregister.setMoney(((GetUserByUserID) o).getContent().getCash());
-                    postDeregister.setUserID(((GetUserByUserID) o).getContent().getUserID());
-                    api.postDeRegister(postDeregister, token);
-                    refresh();
-                } else if (o instanceof PostResponse) {
-                    api.getUserByuserID(toDeleteUserId, token);
-                }
-            }
-
-            @Override
-            public void onFail(String err) {
-
-            }
-        });
     }
 
     /**
@@ -201,13 +187,13 @@ public class PersonFindFragment extends BaseFragment {
                 startActivity(PersonDetailActivity.getPersonDetailActivityIntent(mContext, userid));
             }
 
-            @Override
+           /* @Override
             public void onDelete(String userID) {
                 //先删除人脸
                 PostRequestBody postRequestBody = new PostRequestBody(userID);
                 api.postDelete(postRequestBody, token, Constants.MODIAN_TOKEN);
                 toDeleteUserId = userID;
-            }
+            }*/
         });
     }
 

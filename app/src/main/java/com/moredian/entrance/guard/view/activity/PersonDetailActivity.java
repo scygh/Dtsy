@@ -1,11 +1,13 @@
 package com.moredian.entrance.guard.view.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +22,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.GetListByPage;
+import com.moredian.entrance.guard.entity.GetUserByUserID;
+import com.moredian.entrance.guard.entity.PostDeregister;
 import com.moredian.entrance.guard.entity.PostRequestBody;
+import com.moredian.entrance.guard.entity.PostResponse;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.Base64BitmapUtil;
 import com.moredian.entrance.guard.utils.DrawableUtils;
@@ -73,6 +78,8 @@ public class PersonDetailActivity extends BaseActivity {
     String userid;
     String memberId;
     private Broccoli mBroccoli;
+    private String toDeleteUserId;
+    private boolean isZhuxiao = false;
 
 
     /**
@@ -126,14 +133,22 @@ public class PersonDetailActivity extends BaseActivity {
         api.setGetResponseListener(new Api.GetResponseListener() {
             @Override
             public void onRespnse(Object o) {
-                //如果是删除成功了，就清空ExitMemberId
-                exitmemberId = null;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        persondetailCamera.setImageResource(R.mipmap.icon_camera);
+                if (o instanceof GetUserByUserID) {
+                    //查询到了用户信息去删除
+                    PostDeregister postDeregister = new PostDeregister();
+                    postDeregister.setCost(((GetUserByUserID) o).getContent().getCost());
+                    postDeregister.setMoney(((GetUserByUserID) o).getContent().getCash());
+                    postDeregister.setUserID(((GetUserByUserID) o).getContent().getUserID());
+                    api.postDeRegister(postDeregister, token);
+                } else if (o instanceof PostResponse) {
+                    if (isZhuxiao) {
+                        return;
+                    } else {
+                        //如果是删除成功了，就清空ExitMemberId
+                        clearData();
                     }
-                });
+                }
+
             }
 
             @Override
@@ -145,6 +160,17 @@ public class PersonDetailActivity extends BaseActivity {
             @Override
             public void created() {
                 updateCheck();
+            }
+        });
+    }
+
+    private void clearData() {
+        //如果是删除成功了，就清空ExitMemberId
+        exitmemberId = null;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                persondetailCamera.setImageResource(R.mipmap.icon_camera);
             }
         });
     }
@@ -215,7 +241,7 @@ public class PersonDetailActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.Manualconsumption_back, R.id.persondetail_camera, R.id.personDetail_create, R.id.personDetail_update, R.id.personDetail_delete, R.id.personDetail_chongzhi})
+    @OnClick({R.id.Manualconsumption_back, R.id.persondetail_camera, R.id.personDetail_create, R.id.personDetail_update, R.id.personDetail_delete, R.id.personDetail_chongzhi, R.id.personDetail_xiaohu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Manualconsumption_back:
@@ -229,12 +255,45 @@ public class PersonDetailActivity extends BaseActivity {
             case R.id.personDetail_update:
                 break;
             case R.id.personDetail_delete:
+                isZhuxiao = false;
                 deletePerson();
                 break;
             case R.id.personDetail_chongzhi:
-                startActivity(VoucherCenterActivity.getVoucherCenterActivityIntent(this,userid));
+                startActivity(VoucherCenterActivity.getVoucherCenterActivityIntent(this, userid));
+                break;
+            case R.id.personDetail_xiaohu:
+                showDialog();
                 break;
         }
+    }
+
+    /**
+     * descirption: 显示提示
+     */
+    private void showDialog() {
+        new AlertDialog.Builder(PersonDetailActivity.this).setTitle("提示")
+                .setMessage("您确定注销此用户？")
+                //  取消选项
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                //  确认选项
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        isZhuxiao = true;
+                        deletePerson();
+                        toDeleteUserId = findbean.getUser().getId();
+                        api.getUserByuserID(toDeleteUserId, token);
+                        clearData();
+                    }
+                })
+                .setCancelable(true)
+                .show();
     }
 
     /**

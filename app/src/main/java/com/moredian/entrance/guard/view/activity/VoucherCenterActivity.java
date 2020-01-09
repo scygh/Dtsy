@@ -5,34 +5,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.moredian.entrance.guard.R;
-import com.moredian.entrance.guard.app.MainApplication;
-import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.GetChannel;
-import com.moredian.entrance.guard.entity.GetReadCard;
-import com.moredian.entrance.guard.entity.GetUser;
 import com.moredian.entrance.guard.entity.GetUserByUserID;
 import com.moredian.entrance.guard.entity.PostDepositBody;
+import com.moredian.entrance.guard.entity.PostResponseNoContent;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.adapter.SpinnerAdapter;
-import com.moredian.entrance.guard.view.fragment.RefundFragment;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import android_serialport_api.ChangeTool;
-import android_serialport_api.SerialPortUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -58,6 +49,27 @@ public class VoucherCenterActivity extends BaseActivity {
     Spinner spinnerChannel;
     @BindView(R.id.refund)
     ImageView refund;
+    @BindView(R.id.donate_tv)
+    TextView donateTv;
+    @BindView(R.id.subsidy_tv)
+    TextView subsidyTv;
+    @BindView(R.id.card_type)
+    TextView cardType;
+    @BindView(R.id.DepartmentName)
+    TextView DepartmentName;
+    @BindView(R.id.SubsidyLevelName)
+    TextView SubsidyLevelName;
+    @BindView(R.id.ll_amount)
+    LinearLayout llAmount;
+    @BindView(R.id.ll_donate)
+    LinearLayout llDonate;
+    @BindView(R.id.fpa_count_et)
+    TextInputEditText fpaCountEt;
+    @BindView(R.id.fpa_money_et)
+    TextInputEditText fpaMoneyEt;
+    @BindView(R.id.ll_count)
+    LinearLayout llCount;
+    private int cardTypenum;
 
     public static Intent getVoucherCenterActivityIntent(Context context, String userId) {
         Intent intent = new Intent(context, VoucherCenterActivity.class);
@@ -90,7 +102,14 @@ public class VoucherCenterActivity extends BaseActivity {
                     }
                     spinnerChannel.setAdapter(new SpinnerAdapter(VoucherCenterActivity.this, channel.toArray(new String[channel.size()])));
                 } else if (o instanceof GetUserByUserID) {
-                    showData(((GetUserByUserID) o).getContent().getName(), ((GetUserByUserID) o).getContent().getCash());
+                    cardType.setText(((GetUserByUserID) o).getContent().getCardTypeName());
+                    cardTypenum = ((GetUserByUserID) o).getContent().getCardType();
+                    DepartmentName.setText(((GetUserByUserID) o).getContent().getDepartmentName());
+                    SubsidyLevelName.setText(((GetUserByUserID) o).getContent().getSubsidyLevelName());
+                    showData(((GetUserByUserID) o).getContent().getName(), ((GetUserByUserID) o).getContent().getCash() + ((GetUserByUserID) o).getContent().getDonate()
+                            + ((GetUserByUserID) o).getContent().getTimes() + ((GetUserByUserID) o).getContent().getSubsidy(), ((GetUserByUserID) o).getContent().getDonate(), ((GetUserByUserID) o).getContent().getSubsidy());
+                } else if (o instanceof PostResponseNoContent) {
+                    refreshData();
                 }
             }
 
@@ -101,9 +120,18 @@ public class VoucherCenterActivity extends BaseActivity {
         });
     }
 
-    private void showData(String name, double balance) {
+    private void showData(String name, double balance, double donate, double subsidy) {
         avcName.setText(name);
-        avcBalance.setText(balance + "");
+        if (cardTypenum == 2 || cardTypenum == 3 || cardTypenum == 4) {
+            avcBalance.setText((int) balance + "次");
+            llAmount.setVisibility(View.GONE);
+            llDonate.setVisibility(View.GONE);
+            llCount.setVisibility(View.VISIBLE);
+        } else {
+            avcBalance.setText(balance + "");
+        }
+        donateTv.setText(donate + "元");
+        subsidyTv.setText(subsidy + "元");
     }
 
     @OnClick({R.id.Manualconsumption_back, R.id.deposit, R.id.refund})
@@ -117,6 +145,8 @@ public class VoucherCenterActivity extends BaseActivity {
             case R.id.deposit:
                 String deposit = fpaCashEt.getText().toString();
                 String donate = fpaDonateEt.getText().toString();
+                String count = fpaCountEt.getText().toString();
+                String money = fpaMoneyEt.getText().toString();
                 String channel = (String) spinnerChannel.getSelectedItem();
                 int c = 0;
                 if (channel.equals("线上")) {
@@ -131,22 +161,43 @@ public class VoucherCenterActivity extends BaseActivity {
                     c = 104;
                 }
                 PostDepositBody body = null;
-                if (TextUtils.isEmpty(deposit)) {
-                    ToastHelper.showToast("请输入充值金额");
-                } else {
-                    if (!TextUtils.isEmpty(userId)) {
-                        if (!TextUtils.isEmpty(donate)) {
-                            body = new PostDepositBody(userId, Double.parseDouble(deposit), Double.parseDouble(donate), c);
+                if (!TextUtils.isEmpty(money)) {
+                    if (cardTypenum == 2 || cardTypenum == 3 || cardTypenum == 4) {
+                        if (TextUtils.isEmpty(count)) {
+                            ToastHelper.showToast("请输入充值次数");
                         } else {
-                            body = new PostDepositBody(userId, Double.parseDouble(deposit), 0.0, c);
+                            if (!TextUtils.isEmpty(userId)) {
+                                body = new PostDepositBody(userId, Double.parseDouble(count), 0.0, c, Double.parseDouble(money));
+                                api.postDeposit(token, body);
+                            } else {
+                                ToastHelper.showToast("userId为空");
+                            }
                         }
-                        api.postDeposit(token, body);
                     } else {
-                        ToastHelper.showToast("userId为空");
+                        if (TextUtils.isEmpty(deposit)) {
+                            ToastHelper.showToast("请输入充值金额");
+                        } else {
+                            if (!TextUtils.isEmpty(userId)) {
+                                if (!TextUtils.isEmpty(donate)) {
+                                    body = new PostDepositBody(userId, Double.parseDouble(deposit), Double.parseDouble(donate), c, Double.parseDouble(money));
+                                } else {
+                                    body = new PostDepositBody(userId, Double.parseDouble(deposit), 0.0, c, Double.parseDouble(money));
+                                }
+                                api.postDeposit(token, body);
+                            } else {
+                                ToastHelper.showToast("userId为空");
+                            }
+                        }
                     }
+                } else {
+                    ToastHelper.showToast("请输入现金收取");
                 }
                 break;
         }
+    }
+
+    private void refreshData() {
+        api.getUserByuserID(userId, token);
     }
 
     @Override
@@ -158,4 +209,5 @@ public class VoucherCenterActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
 }

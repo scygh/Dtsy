@@ -125,7 +125,7 @@ public class LoginActivity extends BaseActivity {
                 String name = usernameTv.getText().toString().trim();
                 String password = passswordTv.getText().toString().trim();
                 if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
-                    api.getToken(name, password, LoginActivity.this);
+                    api.getToken(name, password);
                 } else {
                     ToastHelper.showToast("用户名或者密码不能为空！");
                 }

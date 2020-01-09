@@ -63,9 +63,10 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/margin_20"
             android:layout_marginTop="@dimen/margin_50"
-            android:layout_marginLeft="@dimen/margin_20">
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,9 +77,57 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="(提示:余额包含赠送补贴)"
+                android:text="(提示:余额包含赠送和补贴)"
                 android:textColor="#fff"
                 android:textSize="@dimen/textSize_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/margin_20"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="赠送金额："
+                android:textColor="#fff"
+                android:textSize="@dimen/textSize_26" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="补贴金额："
+                android:textColor="#fff"
+                android:textSize="@dimen/textSize_26" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:layout_toRightOf="@+id/ll"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/donate_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0"
+                android:textColor="#fff"
+                android:textSize="@dimen/textSize_26" />
+
+            <TextView
+                android:id="@+id/subsidy_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0"
+                android:textColor="#fff"
+                android:textSize="@dimen/textSize_26" />
         </LinearLayout>
 
 
@@ -91,10 +140,43 @@
             android:textColor="#fff"
             android:textSize="@dimen/textSize_80" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/margin_20"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/card_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="正常卡"
+                android:textColor="#fff"
+                android:textSize="@dimen/textSize_26" />
+
+            <TextView
+                android:id="@+id/DepartmentName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:text="默认部门"
+                android:textColor="#fff"
+                android:textSize="@dimen/textSize_26" />
+
+            <TextView
+                android:id="@+id/SubsidyLevelName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="无补贴"
+                android:textColor="#fff"
+                android:textSize="@dimen/textSize_26" />
+        </LinearLayout>
 
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/ll_amount"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_80"
         android:layout_margin="@dimen/margin_20"
@@ -123,6 +205,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_donate"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_80"
         android:layout_margin="@dimen/margin_20"
@@ -138,6 +221,65 @@
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/fpa_donate_et"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_70"
+            android:layout_margin="@dimen/margin_20"
+            android:layout_weight="6"
+            android:background="@color/colorPrimaryDark"
+            android:hint="0.00"
+            android:inputType="numberDecimal"
+            android:paddingLeft="@dimen/padding_10"
+            android:singleLine="true"
+            android:textSize="@dimen/textSize_22" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_count"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_80"
+        android:layout_margin="@dimen/margin_20"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="充值次数"
+            android:textSize="@dimen/textSize_26" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/fpa_count_et"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_70"
+            android:layout_margin="@dimen/margin_20"
+            android:layout_weight="6"
+            android:background="@color/colorPrimaryDark"
+            android:hint="0"
+            android:inputType="numberDecimal"
+            android:paddingLeft="@dimen/padding_10"
+            android:singleLine="true"
+            android:textSize="@dimen/textSize_22" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_money"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_80"
+        android:layout_margin="@dimen/margin_20"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="现金收取"
+            android:textSize="@dimen/textSize_26" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/fpa_money_et"
             android:layout_width="0dp"
             android:layout_height="@dimen/height_70"
             android:layout_margin="@dimen/margin_20"
@@ -218,7 +360,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_40"
-        android:text="2.操作前请先刷卡"
+        android:text="2.充值前请先确认金额"
         android:textColor="@color/icon"
         android:textSize="@dimen/textSize_16" />
 

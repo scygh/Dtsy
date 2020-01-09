@@ -94,7 +94,7 @@ public class InpersontopayActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        api.getMealList(Integer.parseInt(deviceId), token);
+        api.getMealList(token);
         Date date = new Date(System.currentTimeMillis());
         format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String currentDate = format.format(date).substring(0, 11);
@@ -114,8 +114,8 @@ public class InpersontopayActivity extends BaseActivity {
                         mealViewpager.setOffscreenPageLimit(datas.size());
                     }
                     for (int i = 0; i < datas.size(); i++) {
-                        String begintime = currentDate + ((GetMealList) o).getContent().get(i).getMeal().getBeginTime();
-                        String endtime = currentDate + ((GetMealList) o).getContent().get(i).getMeal().getEndTime();
+                        String begintime = currentDate + ((GetMealList) o).getContent().get(i).getBeginTime();
+                        String endtime = currentDate + ((GetMealList) o).getContent().get(i).getEndTime();
                         String[] timearr = new String[]{begintime, endtime};
                         times.add(timearr);
                     }
@@ -149,7 +149,7 @@ public class InpersontopayActivity extends BaseActivity {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
                 String a = ChangeTool.ByteArrToHex(buffer, 0, size);
-                money = datas.get(shouldConsume).getDeviceMeal().getMealAmount();
+                //money = datas.get(shouldConsume).getDeviceMeal().getMealAmount();
                 if (a.length() == 32) {//接收到刷卡的信息
                     formatReadCard(a, money);
                 } else if (a.length() == 42) {//接收到扫码的信息

@@ -43,18 +43,18 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7"
+                android:background="@drawable/machine_setting_edittext_bg"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:background="@drawable/machine_setting_edittext_bg">
+                android:focusableInTouchMode="true">
 
                 <Spinner
                     android:id="@+id/machinesetting_machine_number"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:spinnerMode="dropdown"
                     android:layout_marginLeft="@dimen/margin_10"
                     android:layout_marginRight="@dimen/margin_10"
-                    android:textSize="@dimen/textSize_26"/>
+                    android:spinnerMode="dropdown"
+                    android:textSize="@dimen/textSize_26" />
             </LinearLayout>
 
         </LinearLayout>
@@ -80,18 +80,18 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7"
+                android:background="@drawable/machine_setting_edittext_bg"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:background="@drawable/machine_setting_edittext_bg">
+                android:focusableInTouchMode="true">
 
                 <Spinner
                     android:id="@+id/machinesetting_device_pattern"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:spinnerMode="dropdown"
                     android:layout_marginLeft="@dimen/margin_10"
                     android:layout_marginRight="@dimen/margin_10"
-                    android:textSize="@dimen/textSize_26"/>
+                    android:spinnerMode="dropdown"
+                    android:textSize="@dimen/textSize_26" />
             </LinearLayout>
 
         </LinearLayout>
@@ -102,7 +102,8 @@
             android:layout_marginLeft="@dimen/margin_50"
             android:layout_marginTop="@dimen/margin_20"
             android:text="@string/portandbaudrate"
-            android:textSize="@dimen/textSize_26" />
+            android:textSize="@dimen/textSize_26"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,7 +111,8 @@
             android:layout_marginLeft="@dimen/margin_80"
             android:layout_marginTop="@dimen/margin_20"
             android:layout_marginRight="@dimen/margin_50"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="0dp"
@@ -125,18 +127,18 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7"
+                android:background="@drawable/machine_setting_edittext_bg"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:background="@drawable/machine_setting_edittext_bg">
+                android:focusableInTouchMode="true">
 
                 <Spinner
                     android:id="@+id/machinesetting_port"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:spinnerMode="dropdown"
                     android:layout_marginLeft="@dimen/margin_10"
                     android:layout_marginRight="@dimen/margin_10"
-                    android:textSize="@dimen/textSize_26"/>
+                    android:spinnerMode="dropdown"
+                    android:textSize="@dimen/textSize_26" />
             </LinearLayout>
 
         </LinearLayout>
@@ -147,7 +149,8 @@
             android:layout_marginLeft="@dimen/margin_80"
             android:layout_marginTop="@dimen/margin_20"
             android:layout_marginRight="@dimen/margin_50"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="0dp"
@@ -162,9 +165,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7"
+                android:background="@drawable/machine_setting_edittext_bg"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:background="@drawable/machine_setting_edittext_bg">
+                android:focusableInTouchMode="true">
 
                 <EditText
                     android:id="@+id/machinesetting_baudrate"
@@ -183,5 +186,6 @@
         layout="@layout/bottom_btn_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_80"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
 </RelativeLayout>

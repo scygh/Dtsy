@@ -113,7 +113,7 @@ public class Api {
     /**
      * descirption: 获取登录者的信息
      */
-    public void getToken(String name, String password, Context context) {
+    public void getToken(String name, String password) {
         ApiUtils.getTokenService().getToken(name, password).enqueue(new Callback<GetToken>() {
             @Override
             public void onResponse(Call<GetToken> call, Response<GetToken> response) {
@@ -125,7 +125,6 @@ public class Api {
                         SPUtils.getInstance().put(Constants.ACCESSTOKEN, contentBean.getAccessToken());
                         SPUtils.getInstance().put(Constants.USERID, contentBean.getUserID());
                         SPUtils.getInstance().put(Constants.ACCOUNT, contentBean.getAccount());
-                        ToastHelper.showToast("登录成功");
                         if (onCreate != null) {
                             onCreate.created();
                         }
@@ -138,6 +137,7 @@ public class Api {
             @Override
             public void onFailure(Call<GetToken> call, Throwable e) {
                 if (e instanceof HttpException) {
+                    ToastHelper.showToast(((HttpException) e).code() + "");
                     ResponseBody body = ((HttpException) e).response().errorBody();
                     try {
                         JSONObject jsonObject = new JSONObject(body.string());
@@ -192,21 +192,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                                if (onResponse != null) {
-                                    onResponse.onFailed();
-                                }
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -214,6 +200,28 @@ public class Api {
 
                     }
                 });
+    }
+
+    private void errorExecute(Throwable e) {
+        if (e instanceof HttpException) {
+            if (((HttpException) e).code() == 401) {
+                String name = SPUtils.getInstance().getString(Constants.ACCOUNT);
+                String password = SPUtils.getInstance().getString(Constants.PASSWORD);
+                getToken(name, password);
+                ToastHelper.showToast("登录信息失效，以为您重新登录，请重新打开此页面");
+            } else {
+                ResponseBody body = ((HttpException) e).response().errorBody();
+                try {
+                    JSONObject jsonObject = new JSONObject(body.string());
+                    String error = jsonObject.getString("Message");
+                    ToastHelper.showToast(error);
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
     }
 
     /**
@@ -243,18 +251,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -288,18 +285,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -336,18 +322,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -384,18 +359,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -435,21 +399,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                                if (getResponseListener != null) {
-                                    getResponseListener.onFail(Constants.CONSUME_ERROR);
-                                }
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -489,21 +439,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                                if (getResponseListener != null) {
-                                    getResponseListener.onFail(Constants.CONSUME_ERROR);
-                                }
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -536,28 +472,14 @@ public class Api {
                         } else {
                             ToastHelper.showToast(expense.getMessage());
                             if (getResponseListener != null) {
-                                getResponseListener.onFail(Constants.CONSUME_ERROR);
+                                getResponseListener.onFail(expense.getMessage());
                             }
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                                if (getResponseListener != null) {
-                                    getResponseListener.onFail(Constants.CONSUME_ERROR);
-                                }
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -597,21 +519,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                                if (getResponseListener != null) {
-                                    getResponseListener.onFail(Constants.CONSUME_ERROR);
-                                }
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -648,21 +556,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                                if (getResponseListener != null) {
-                                    getResponseListener.onFail(error);
-                                }
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -699,18 +593,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -736,7 +619,7 @@ public class Api {
                     @Override
                     public void onNext(PostResponseNoContent postResponseNoContent) {
                         if (postResponseNoContent != null && postResponseNoContent.getStatusCode() == 200) {
-                            ToastHelper.showToast("销户成功");
+                            AudioUtils.getInstance().speakText("注销成功");
                         } else {
                             ToastHelper.showToast(postResponseNoContent.getMessage());
                         }
@@ -744,18 +627,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -792,18 +664,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -840,18 +701,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -888,18 +738,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -936,18 +775,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -987,19 +815,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                ToastHelper.showToast(body.string());
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -1036,18 +852,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -1074,6 +879,9 @@ public class Api {
                     public void onNext(PostResponseNoContent postResponseNoContent) {
                         if (postResponseNoContent != null && postResponseNoContent.getStatusCode() == 200) {
                             AudioUtils.getInstance().speakText("充值成功");
+                            if (getResponseListener != null) {
+                                getResponseListener.onRespnse(postResponseNoContent);
+                            }
                         } else {
                             ToastHelper.showToast(postResponseNoContent.getMessage());
                         }
@@ -1081,18 +889,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -1126,18 +923,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -1184,21 +970,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                                if (onResponse != null) {
-                                    onResponse.onFailed();
-                                }
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -1245,21 +1017,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                                if (onResponse != null) {
-                                    onResponse.onFailed();
-                                }
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -1272,8 +1030,8 @@ public class Api {
     /**
      * descirption: 获取每一个餐段的消费名称
      */
-    public void getMealList(Integer deviceId, String token) {
-        ApiUtils.getMealList().getMealList(deviceId, token)
+    public void getMealList(String token) {
+        ApiUtils.getMealList().getMealList(token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GetMealList>() {
@@ -1285,7 +1043,6 @@ public class Api {
                     @Override
                     public void onNext(GetMealList getMealList) {
                         if (getMealList != null && getMealList.getStatusCode() == 200) {
-                            ToastHelper.showToast("查询餐段成功");
                             if (getResponseListener != null) {
                                 getResponseListener.onRespnse(getMealList);
                             }
@@ -1296,19 +1053,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                ToastHelper.showToast(body.string());
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -1345,18 +1090,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                ToastHelper.showToast(error);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -1393,22 +1127,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                if (error != null) {
-                                    ToastHelper.showToast(error);
-                                } else {
-                                    ToastHelper.showToast(body.string());
-                                }
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -1442,22 +1161,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                if (error != null) {
-                                    ToastHelper.showToast(error);
-                                } else {
-                                    ToastHelper.showToast(body.string());
-                                }
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override
@@ -1494,22 +1198,7 @@ public class Api {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ResponseBody body = ((HttpException) e).response().errorBody();
-                            try {
-                                JSONObject jsonObject = new JSONObject(body.string());
-                                String error = jsonObject.getString("Message");
-                                if (error != null) {
-                                    ToastHelper.showToast(error);
-                                } else {
-                                    ToastHelper.showToast(body.string());
-                                }
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
+                        errorExecute(e);
                     }
 
                     @Override

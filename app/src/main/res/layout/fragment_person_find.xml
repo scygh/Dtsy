@@ -56,12 +56,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.moredian.entrance.guard.view.designview.SlideRecyclerView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/person_manage_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            </com.moredian.entrance.guard.view.designview.SlideRecyclerView>
+            </android.support.v7.widget.RecyclerView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
         <include

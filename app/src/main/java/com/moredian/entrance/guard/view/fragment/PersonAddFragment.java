@@ -203,21 +203,8 @@ public class PersonAddFragment extends BaseFragment {
         postRegister.setIDCard(SPUtils.getInstance().getString(Constants.ARGUEMENT_IDCARD));
         postRegister.setPhone(SPUtils.getInstance().getString(Constants.ARGUEMENT_PHONE));
         postRegister.setAddress(SPUtils.getInstance().getString(Constants.ARGUEMENT_ADDRESS));
-        String cardtype = SPUtils.getInstance().getString(Constants.ARGUEMENT_CARDTYPE);
-        if (cardtype.equals("正常卡")) {
-            postRegister.setCardType(1);
-        } else if (cardtype.equals("不限餐次卡")) {
-            postRegister.setCardType(2);
-        } else if (cardtype.equals("限餐次卡")) {
-            postRegister.setCardType(3);
-        } else if (cardtype.equals("充值记次卡")) {
-            postRegister.setCardType(4);
-        } else if (cardtype.equals("打折卡 50%")) {
-            postRegister.setCardType(5);
-        } else if (cardtype.equals("折扣卡")) {
-            postRegister.setCardType(6);
-        }
-        postRegister.setSubsidyLevel(0);
+        postRegister.setCardType(SPUtils.getInstance().getInt(Constants.ARGUEMENT_CARDTYPE));
+        postRegister.setSubsidyLevel(SPUtils.getInstance().getInt(Constants.ARGUEMENT_SUBSIDY));
         String cost = SPUtils.getInstance().getString(Constants.ARGUEMENT_CONST);
         if (!TextUtils.isEmpty(cost)) {
             postRegister.setCost(Double.parseDouble(cost));
@@ -237,14 +224,15 @@ public class PersonAddFragment extends BaseFragment {
             postRegister.setDonate(0.0);
         }
         String serialno = SPUtils.getInstance().getString(Constants.ARGUEMENT_SERIALNO);
+        String name = SPUtils.getInstance().getString(Constants.ARGUEMENT_NAME);
         postRegister.setSerialNo(serialno);
         postRegister.setPayKey(SPUtils.getInstance().getString(Constants.ARGUEMENT_PAYPASSWORD));
         postRegister.setDeadline(SPUtils.getInstance().getString(Constants.ARGUEMENT_DEADLINE));
         postRegister.setDepartmentName(SPUtils.getInstance().getString(Constants.ARGUEMENT_DEPARTMENT));
         postRegister.setNumber(SPUtils.getInstance().getInt(Constants.ARGUEMENT_NUMBER));
         postRegister.setCardState(1);
-        postRegister.setDepartmentID("00000000-0000-0000-0000-000000000001");
-        if (!TextUtils.isEmpty(serialno)) {
+        postRegister.setDepartmentID(SPUtils.getInstance().getString(Constants.ARGUEMENT_DEPARTMENT_ID));
+        if (!TextUtils.isEmpty(serialno) && !TextUtils.isEmpty(name)) {
             api.postRegister(postRegister, token);
             api.setGetResponseListener(new Api.GetResponseListener() {
                 @Override
@@ -258,7 +246,7 @@ public class PersonAddFragment extends BaseFragment {
                 }
             });
         } else {
-            ToastHelper.showToast("卡号不能为空！");
+            ToastHelper.showToast("卡号或者姓名不能为空！");
         }
     }
 }

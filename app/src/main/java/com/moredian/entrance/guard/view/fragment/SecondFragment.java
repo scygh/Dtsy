@@ -1,20 +1,22 @@
 package com.moredian.entrance.guard.view.fragment;
 
+import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Spinner;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
-import com.moredian.entrance.guard.entity.GetDepartmentList;
 import com.moredian.entrance.guard.entity.ReisterResponse;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.view.adapter.SpinnerAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * description ：
@@ -24,16 +26,18 @@ import butterknife.BindView;
  */
 public class SecondFragment extends BaseFragment {
 
-    @BindView(R.id.fpa_serialNo_et)
-    TextInputEditText fpaSerialNoEt;
-    @BindView(R.id.fpa_paypassword_et)
-    TextInputEditText fpaPaypasswordEt;
+    @BindView(R.id.fpa_empid_et)
+    TextInputEditText fpaEmpidEt;
     @BindView(R.id.spinner_deadtime)
     Spinner spinnerDeadtime;
-    @BindView(R.id.spinner_department)
-    Spinner spinnerDepartment;
-    private List<String> dlist;
+    @BindView(R.id.fpa_idcard_et)
+    TextInputEditText fpaIdcardEt;
+    @BindView(R.id.fpa_phone_et)
+    TextInputEditText fpaPhoneEt;
+    @BindView(R.id.fpa_address_et)
+    TextInputEditText fpaAddressEt;
     private int number;
+
 
     @Override
     public int initView() {
@@ -48,24 +52,10 @@ public class SecondFragment extends BaseFragment {
     public void initData() {
         spinnerDeadtime.setAdapter(new SpinnerAdapter(mContext, new String[]{"2029-12-31 00:00:00"}));
         String token = SPUtils.getInstance().getString(Constants.ACCESSTOKEN);
-        api.getDepartmentList(token);
         api.getNextCardNumber(token);
         api.setGetResponseListener(new Api.GetResponseListener() {
             @Override
             public void onRespnse(Object o) {
-                if (o instanceof GetDepartmentList) {
-                    int dlength = ((GetDepartmentList) o).getContent().size();
-                    if (dlist == null) {
-                        dlist = new ArrayList<>();
-                    } else {
-                        dlist.clear();
-                    }
-                    for (int i = 0; i < dlength; i++) {
-                        dlist.add(((GetDepartmentList) o).getContent().get(i).getName());
-                    }
-                    String[] darray = dlist.toArray(new String[dlist.size()]);
-                    spinnerDepartment.setAdapter(new SpinnerAdapter(mContext, darray));
-                }
                 if (o instanceof ReisterResponse) {
                     number = ((ReisterResponse) o).getContent();
                 }
@@ -79,10 +69,11 @@ public class SecondFragment extends BaseFragment {
     }
 
     public void save() {
-        SPUtils.getInstance().put(Constants.ARGUEMENT_SERIALNO, fpaSerialNoEt.getText().toString());
-        SPUtils.getInstance().put(Constants.ARGUEMENT_PAYPASSWORD, fpaPaypasswordEt.getText().toString());
-        SPUtils.getInstance().put(Constants.ARGUEMENT_DEADLINE, (String) spinnerDeadtime.getSelectedItem());
-        SPUtils.getInstance().put(Constants.ARGUEMENT_DEPARTMENT, (String) spinnerDepartment.getSelectedItem());
         SPUtils.getInstance().put(Constants.ARGUEMENT_NUMBER, number);
+        SPUtils.getInstance().put(Constants.ARGUEMENT_DEADLINE, (String) spinnerDeadtime.getSelectedItem());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_EMPID, fpaEmpidEt.getText().toString());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_IDCARD, fpaIdcardEt.getText().toString());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_PHONE, fpaPhoneEt.getText().toString());
+        SPUtils.getInstance().put(Constants.ARGUEMENT_ADDRESS, fpaAddressEt.getText().toString());
     }
 }

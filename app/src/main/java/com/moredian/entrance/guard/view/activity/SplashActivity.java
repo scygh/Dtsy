@@ -42,7 +42,7 @@ public class SplashActivity extends BaseActivity {
                         pattern = "手动消费";
                     } else if (devicePattern == 2) {
                         pattern = "自动消费";
-                        SPUtils.getInstance().put(Constants.AUTO_AMOUNT, ((GetDevicePattern) o).getContent().getAutoAmount(),true);
+                        SPUtils.getInstance().put(Constants.AUTO_AMOUNT, ((GetDevicePattern) o).getContent().getAutoAmount(), true);
                     } else if (devicePattern == 3) {
                         pattern = "定值消费";
                     }

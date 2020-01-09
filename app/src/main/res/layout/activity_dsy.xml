@@ -34,44 +34,42 @@
                 android:layout_height="match_parent"
                 android:visibility="visible" />
 
+            <ImageView
+                android:id="@+id/nir_tips"
+                android:layout_width="@dimen/width_30"
+                android:layout_height="@dimen/height_30"
+                android:layout_margin="@dimen/margin_40"
+                android:background="@drawable/shap_nir_tip_default" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/nir_tips"
-                    android:layout_width="@dimen/width_30"
-                    android:layout_height="@dimen/height_30"
-                    android:layout_margin="@dimen/margin_40"
-                    android:background="@drawable/shap_nir_tip_default" />
-
-                <Button
-                    android:id="@+id/face_exit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/operator_button_bg"
-                    android:text="关闭"
-                    android:textColor="@color/colorPrimary" />
-
-                <Button
-                    android:id="@+id/main_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_40"
-                    android:background="@drawable/operator_button_bg"
-                    android:text="菜单"
-                    android:textColor="@color/colorPrimary" />
+                android:layout_margin="@dimen/width_30"
+                android:gravity="center">
 
                 <Switch
                     android:id="@+id/dsy_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_40"
+                    android:text="支付开关"
+                    android:switchPadding="@dimen/margin_20"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_marginRight="@dimen/margin_20"
                     android:thumb="@drawable/switch_custom_thumb_selector"
                     android:track="@drawable/switch_custom_track_selector" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_marginRight="@dimen/margin_20"/>
+                <Button
+                    android:id="@+id/main_menu"
+                    android:layout_width="@dimen/width_50"
+                    android:layout_height="@dimen/height_50"
+                    android:background="@drawable/dsy_set_icon" />
             </LinearLayout>
 
 
@@ -138,9 +136,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="请先识别"
-                        android:textColor="@color/colorPrimary"
-                        android:textColorHint="@color/colorPrimary"
+                        android:hint="请先识别"
+                        android:textColor="@color/color_grey"
+                        android:textColorHint="@color/color_grey"
                         android:textSize="@dimen/textSize_26"
                         android:textStyle="bold" />
 
@@ -160,9 +158,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="请先识别"
-                        android:textColor="@color/colorPrimary"
-                        android:textColorHint="@color/colorPrimary"
+                        android:hint="请先识别"
+                        android:textColor="@color/color_grey"
+                        android:textColorHint="@color/color_grey"
                         android:textSize="@dimen/textSize_26"
                         android:textStyle="bold" />
 
@@ -191,8 +189,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="请先识别"
-                        android:textColor="@color/colorPrimary"
-                        android:textColorHint="@color/colorPrimary"
+                        android:textColor="@color/color_grey"
+                        android:textColorHint="@color/color_grey"
                         android:textSize="@dimen/textSize_24"
                         android:textStyle="bold" />
 
@@ -214,8 +212,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="未设置"
-                        android:textColor="@color/colorPrimary"
-                        android:textColorHint="@color/colorPrimary"
+                        android:textColor="@color/color_grey"
+                        android:textColorHint="@color/color_grey"
                         android:textSize="@dimen/textSize_24"
                         android:textStyle="bold" />
 
@@ -231,11 +229,12 @@
                 android:background="@null"
                 android:clickable="false"
                 android:cursorVisible="false"
+                android:enabled="false"
                 android:gravity="center"
                 android:hint="刷脸支付"
                 android:inputType="numberDecimal"
-                android:textColor="@color/colorPrimary"
-                android:textColorHint="@color/colorPrimary"
+                android:textColor="@color/color_grey"
+                android:textColorHint="@color/color_grey"
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/textSize_80"
                 android:textStyle="bold" />
@@ -244,11 +243,10 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/meal_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_300"
+            android:layout_height="@dimen/height_250"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/margin_20"
-            android:layout_marginRight="@dimen/margin_20"
-            android:layout_marginBottom="@dimen/margin_20"
+            android:layout_marginLeft="@dimen/margin_80"
+            android:layout_marginRight="@dimen/margin_80"
             android:clipChildren="false"
             android:visibility="gone" />
 

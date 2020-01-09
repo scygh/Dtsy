@@ -76,13 +76,5 @@
             android:layout_height="@dimen/height_30"
             android:layout_margin="@dimen/margin_40"
             android:background="@drawable/shap_nir_tip_default" />
-
-        <Button
-            android:id="@+id/face_exit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:text="exit"
-            android:textColor="@color/colorPrimary" />
     </LinearLayout>
 </RelativeLayout>

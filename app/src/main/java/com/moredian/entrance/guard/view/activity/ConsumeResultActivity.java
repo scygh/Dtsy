@@ -2,12 +2,13 @@ package com.moredian.entrance.guard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.constant.Constants;
@@ -15,11 +16,13 @@ import com.moredian.entrance.guard.entity.DefiniteExpense;
 import com.moredian.entrance.guard.entity.FaceExpense;
 import com.moredian.entrance.guard.entity.QRCodeExpense;
 import com.moredian.entrance.guard.entity.SimpleExpense;
+import com.moredian.entrance.guard.utils.AudioUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ConsumeResultActivity extends BaseActivity {
@@ -46,15 +49,14 @@ public class ConsumeResultActivity extends BaseActivity {
     RelativeLayout csBalanceRl;
     @BindView(R.id.cs_ll_detail)
     LinearLayout csLlDetail;
+    @BindView(R.id.continue_consume)
+    TextView continueConsume;
+    @BindView(R.id.time_to_consume)
+    TextView timeToConsume;
     private Handler handler = new Handler();
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private Date date;
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            finish();
-        }
-    };
+    private MyTime myTime;
 
     public static Intent getDefineConsumeSuccessActivityIntent(Context context, DefiniteExpense.ContentBean.ExpenseDetailBean contentBean) {
         Intent intent = new Intent(context, ConsumeResultActivity.class);
@@ -164,9 +166,16 @@ public class ConsumeResultActivity extends BaseActivity {
         }
         if (facecontentbean != null) {
             csConsumeResult.setText("支付成功");
-            csAmountBig.setText(facecontentbean.getExpenseDetail().getAmount() + "");
-            csAmountSmall.setText(facecontentbean.getExpenseDetail().getAmount() + "");
-            csBalance.setText(facecontentbean.getExpenseDetail().getBalance() + "");
+            int fin = facecontentbean.getExpenseDetail().getFinance();
+            if (fin == 2 || fin == 3 || fin == 4) {
+                csAmountBig.setText((int)facecontentbean.getExpenseDetail().getAmount() + "次");
+                csAmountSmall.setText((int)facecontentbean.getExpenseDetail().getAmount() + "次");
+                csBalance.setText((int)facecontentbean.getExpenseDetail().getBalance() + "次");
+            } else {
+                csAmountBig.setText(facecontentbean.getExpenseDetail().getAmount() + "");
+                csAmountSmall.setText(facecontentbean.getExpenseDetail().getAmount() + "");
+                csBalance.setText(facecontentbean.getExpenseDetail().getBalance() + "");
+            }
             csDate.setText(time);
             int partern = facecontentbean.getExpenseDetail().getPattern();
             csConsumeKind.setText("人脸支付");
@@ -216,21 +225,44 @@ public class ConsumeResultActivity extends BaseActivity {
             csAmountBigLl.setVisibility(View.GONE);
             csLlDetail.setVisibility(View.GONE);
         }
-        handler.postDelayed(runnable, 5000);
+        myTime = new MyTime(60000, 1000);
+        myTime.start();
     }
 
-    @OnClick({R.id.cs_over})
+    @OnClick({R.id.cs_over, R.id.continue_consume})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cs_over:
                 finish();
                 break;
+            case R.id.continue_consume:
+                finish();
+                break;
+        }
+    }
+
+
+    class MyTime extends CountDownTimer {
+        public MyTime(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            timeToConsume.setText(millisUntilFinished / 1000 + "");
+        }
+
+        @Override
+        public void onFinish() {
+            finish();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler.removeCallbacks(runnable);
+        if (myTime != null) {
+            myTime.cancel();
+        }
     }
 }

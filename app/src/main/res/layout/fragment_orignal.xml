@@ -15,6 +15,34 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="right"
+            android:text="卡号"
+            android:textSize="@dimen/textSize_24" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/fpa_serialNo_et"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_70"
+            android:layout_margin="@dimen/margin_20"
+            android:layout_weight="6"
+            android:background="@color/colorPrimaryDark"
+            android:hint="必填"
+            android:inputType="number"
+            android:paddingLeft="@dimen/padding_10"
+            android:singleLine="true"
+            android:textSize="@dimen/textSize_22" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_80"
+        android:layout_margin="@dimen/margin_20"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:gravity="right"
             android:text="姓名"
             android:textSize="@dimen/textSize_24" />
 
@@ -25,7 +53,7 @@
             android:layout_margin="@dimen/margin_20"
             android:layout_weight="6"
             android:background="@color/colorPrimaryDark"
-            android:hint="选填"
+            android:hint="必填"
             android:inputType="textPersonName"
             android:paddingLeft="@dimen/padding_10"
             android:singleLine="true"
@@ -43,20 +71,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="right"
-            android:text="工号"
+            android:text="部门"
             android:textSize="@dimen/textSize_24" />
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/fpa_empid_et"
+        <Spinner
+            android:id="@+id/spinner_department"
             android:layout_width="0dp"
             android:layout_height="@dimen/height_70"
-            android:layout_margin="@dimen/margin_20"
+            android:layout_marginLeft="@dimen/margin_20"
             android:layout_weight="6"
-            android:background="@color/colorPrimaryDark"
-            android:hint="选填"
-            android:paddingLeft="@dimen/padding_10"
-            android:singleLine="true"
-            android:textSize="@dimen/textSize_22" />
+            android:background="@color/colorPrimaryDark" />
     </LinearLayout>
 
     <LinearLayout
@@ -70,21 +94,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="right"
-            android:text="身份证"
+            android:text="卡片类型"
             android:textSize="@dimen/textSize_24" />
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/fpa_idcard_et"
+        <Spinner
+            android:id="@+id/spinner_cardtype"
             android:layout_width="0dp"
             android:layout_height="@dimen/height_70"
-            android:layout_margin="@dimen/margin_20"
+            android:layout_marginLeft="@dimen/margin_20"
             android:layout_weight="6"
             android:background="@color/colorPrimaryDark"
-            android:hint="选填"
-            android:maxLength="18"
-            android:paddingLeft="@dimen/padding_10"
-            android:singleLine="true"
-            android:textSize="@dimen/textSize_22" />
+            android:spinnerMode="dropdown" />
     </LinearLayout>
 
     <LinearLayout
@@ -98,49 +118,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="right"
-            android:text="电话"
+            android:text="补贴级别"
             android:textSize="@dimen/textSize_24" />
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/fpa_phone_et"
+        <Spinner
+            android:id="@+id/spinner_subsidyLevel"
             android:layout_width="0dp"
             android:layout_height="@dimen/height_70"
-            android:layout_margin="@dimen/margin_20"
+            android:layout_marginLeft="@dimen/margin_20"
             android:layout_weight="6"
             android:background="@color/colorPrimaryDark"
-            android:hint="选填"
-            android:inputType="number"
-            android:maxLength="11"
-            android:paddingLeft="@dimen/padding_10"
-            android:singleLine="true"
-            android:textSize="@dimen/textSize_22" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_80"
-        android:layout_margin="@dimen/margin_20"
-        android:gravity="center">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:gravity="right"
-            android:text="详细地址"
-            android:textSize="@dimen/textSize_24" />
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/fpa_address_et"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/height_70"
-            android:layout_margin="@dimen/margin_20"
-            android:layout_weight="6"
-            android:background="@color/colorPrimaryDark"
-            android:hint="选填"
-            android:paddingLeft="@dimen/padding_10"
-            android:singleLine="true"
-            android:textSize="@dimen/textSize_22" />
+            android:spinnerMode="dropdown" />
     </LinearLayout>
 
 </LinearLayout>

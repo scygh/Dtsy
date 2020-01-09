@@ -2,16 +2,17 @@ package com.moredian.entrance.guard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.view.adapter.MainViewPagerAdapter;
 import com.moredian.entrance.guard.view.fragment.BaseFragment;
-import com.moredian.entrance.guard.view.fragment.PersonAddFragment;
 import com.moredian.entrance.guard.view.fragment.PersonFindFragment;
 import com.moredian.entrance.guard.view.fragment.PersonListFragment;
 
@@ -32,6 +33,12 @@ public class PersonsManageActivity extends BaseActivity {
     ViewPager investViewpager;
     @BindView(R.id.invest_tablayout)
     TabLayout investTablayout;
+    @BindView(R.id.add_person_tv)
+    TextView addPersonTv;
+    @BindView(R.id.add_person)
+    ImageView addPerson;
+    @BindView(R.id.add_ll)
+    LinearLayout addll;
     private ArrayList<BaseFragment> mFragments = new ArrayList<>();
     private MainViewPagerAdapter mainViewPagerAdapter;
 
@@ -47,12 +54,12 @@ public class PersonsManageActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        pageName.setText("人员管理");
+        pageName.setText("用户管理");
+        addll.setVisibility(View.VISIBLE);
         mFragments.clear();
         investTablayout.removeAllTabs();
         String[] arr = getResources().getStringArray(R.array.tab);
         mFragments.add(new PersonListFragment());
-        mFragments.add(new PersonAddFragment());
         mFragments.add(new PersonFindFragment());
         for (int i = 0; i < arr.length; i++) {
             investTablayout.addTab(investTablayout.newTab());
@@ -70,11 +77,14 @@ public class PersonsManageActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.Manualconsumption_back)
+    @OnClick({R.id.Manualconsumption_back, R.id.add_ll})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Manualconsumption_back:
                 finish();
+                break;
+            case R.id.add_ll:
+                startActivity(PersonsAddActivity.getPersonAddActivityIntent(this));
                 break;
         }
     }

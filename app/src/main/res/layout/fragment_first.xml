@@ -15,54 +15,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="right"
-            android:text="卡片类型"
-            android:textSize="@dimen/textSize_24" />
-
-        <Spinner
-            android:id="@+id/spinner_cardtype"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/height_70"
-            android:layout_marginLeft="@dimen/margin_20"
-            android:layout_weight="6"
-            android:background="@color/colorPrimaryDark"
-            android:spinnerMode="dropdown" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_margin="@dimen/margin_20"
-        android:gravity="center">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:gravity="right"
-            android:text="补贴级别"
-            android:textSize="@dimen/textSize_24" />
-
-        <Spinner
-            android:id="@+id/spinner_subsidyLevel"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/height_70"
-            android:layout_marginLeft="@dimen/margin_20"
-            android:layout_weight="6"
-            android:background="@color/colorPrimaryDark"
-            android:spinnerMode="dropdown" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_80"
-        android:layout_margin="@dimen/margin_20"
-        android:gravity="center">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:gravity="right"
             android:text="工本费"
             android:textSize="@dimen/textSize_24" />
 
@@ -136,5 +88,33 @@
             android:textSize="@dimen/textSize_22" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_80"
+        android:layout_margin="@dimen/margin_20"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:gravity="right"
+            android:text="支付密码"
+            android:textSize="@dimen/textSize_24" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/fpa_paypassword_et"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_70"
+            android:layout_margin="@dimen/margin_20"
+            android:layout_weight="6"
+            android:background="@color/colorPrimaryDark"
+            android:hint="选填(密码长度4位)"
+            android:inputType="number"
+            android:maxLength="4"
+            android:paddingLeft="@dimen/padding_10"
+            android:singleLine="true"
+            android:textSize="@dimen/textSize_22" />
+    </LinearLayout>
 
 </LinearLayout>

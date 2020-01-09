@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.hardware.Camera;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,7 +17,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -28,9 +32,6 @@ import android.widget.TextView;
 
 import com.android.tu.loadingdialog.LoadingDailog;
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
-import com.iflytek.cloud.SpeechConstant;
-import com.iflytek.cloud.SpeechUtility;
 import com.moredian.entrance.guard.R;
 import com.moredian.entrance.guard.app.MainApplication;
 import com.moredian.entrance.guard.constant.Constants;
@@ -42,9 +43,9 @@ import com.moredian.entrance.guard.face.CameraView;
 import com.moredian.entrance.guard.face.drawface.DrawerSurfaceView;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.AudioUtils;
-import com.moredian.entrance.guard.utils.StatusBarUtil;
 import com.moredian.entrance.guard.utils.ToastHelper;
 import com.moredian.entrance.guard.view.adapter.MealPagerAdapter;
+import com.moredian.entrance.guard.view.designview.ComonDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -100,8 +101,6 @@ public class DsyActivity extends BaseActivity {
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.dsy_switch)
     Switch able_switch;
-    @BindView(R.id.face_exit)
-    Button faceExit;
     @BindView(R.id.main_menu)
     Button mainMenu;
     private boolean ableTag = true;
@@ -115,6 +114,8 @@ public class DsyActivity extends BaseActivity {
     private List<String[]> times = new ArrayList<>();
     MealPagerAdapter adapter;
     private LoadingDailog dialog;
+    private boolean isEnterPressed = false;
+    //private GestureDetector gestureDetector;
 
 
     public static Intent getDsyActivityIntent(Context context) {
@@ -130,14 +131,40 @@ public class DsyActivity extends BaseActivity {
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         int e = event.getKeyCode();
-        tvMoney.setFocusable(true);
-        ToastHelper.showToast(e + "");
+        //确认金额
+        if (e == KeyEvent.KEYCODE_ENTER) {
+            String money = tvMoney.getText().toString();
+            if (!money.equals("刷脸支付") && !money.equals("")) {
+                if (Double.parseDouble(money) > 0) {
+                    isEnterPressed = true;
+                    tvMoney.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    if (p == 1) {
+                        tvMoney.setEnabled(false);
+                    }
+                    AudioUtils.getInstance().speakText("请识别人脸");
+                }
+            }
+        }
+        //键盘清空时，需要重新确认金额
+        if (e == KeyEvent.KEYCODE_DEL) {
+            if (p == 1) {
+                tvMoney.setEnabled(true);
+            }
+            if (TextUtils.isEmpty(tvMoney.getText())) {
+                tvMoney.setTextColor(getResources().getColor(R.color.color_grey));
+                isEnterPressed = false;
+            }
+        }
         return super.dispatchKeyEvent(event);
     }
 
     @Override
     public void initView() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
         if (!TextUtils.isEmpty(pattern)) {
             tvPattern.setText(pattern);
             if (pattern.equals("自动消费")) {
@@ -147,13 +174,16 @@ public class DsyActivity extends BaseActivity {
         if (p == 3) {
             rlData.setVisibility(View.GONE);
             mealViewpager.setVisibility(View.VISIBLE);
-            api.getMealList(Integer.parseInt(deviceId), token);
+            api.getMealList(token);
+        }
+        if (p == 1) {
+            tvMoney.setEnabled(true);
         }
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (p == 3) {
-                    api.getMealList(Integer.parseInt(deviceId), token);
+                    api.getMealList(token);
                 }
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -188,6 +218,15 @@ public class DsyActivity extends BaseActivity {
                 .setCancelOutside(true);
         dialog = loadBuilder.create();
         dialog.show();
+       /* gestureDetector = new GestureDetector(this,new GestureDetector.SimpleOnGestureListener(){
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                ToastHelper.showToast("您确定要退出吗");
+                MainApplication.getSerialPortUtils().closeSerialPort();
+                finish();
+                return super.onDoubleTap(e);
+            }
+        });*/
     }
 
     /**
@@ -228,7 +267,12 @@ public class DsyActivity extends BaseActivity {
             public void onRespnse(Object o) {
                 //{"Content":{"ExpenseDetail":{"Id":"00000000-0000-0000-0000-000000000000","UserId":"48aa1ec4-3dda-403c-b1a8-904532123fbe","Number":120,"DeviceType":2,"DeviceId":10000,"Pattern":2,"DetailType":0,"PayCount":46,"Finance":0,"OriginalAmount":1.0,"Amount":1.0,"Balance":9975.75,"IsDiscount":false,"DiscountRate":100,"TradeDateTime":"0001-01-01 00:00:00","CreateTime":"0001-01-01 00:00:00","Description":"扣款合计1.0元;账户合计扣款1.0元;账户余额合计9975.75元.","OfflinePayCount":null},"ListEMGoodsDetail":null,"ThirdPartyExpense":null,"TradingState":0},"Result":true,"Message":"Success!","StatusCode":200}
                 if (o instanceof FaceExpense) {//人脸消费
-                    AudioUtils.getInstance().speakText("人脸消费" + ((FaceExpense) o).getContent().getExpenseDetail().getAmount() + "元");
+                    int fin = ((FaceExpense) o).getContent().getExpenseDetail().getFinance();
+                    if (fin == 2 || fin == 3 || fin == 4) {
+                        AudioUtils.getInstance().speakText("计次卡消费" + (int) ((FaceExpense) o).getContent().getExpenseDetail().getAmount() + "次");
+                    } else {
+                        AudioUtils.getInstance().speakText("支付" + ((FaceExpense) o).getContent().getExpenseDetail().getAmount() + "元");
+                    }
                     startActivity(ConsumeResultActivity.getFaceConsumeSuccessActivityIntent(DsyActivity.this, ((FaceExpense) o).getContent()));
                     if (p != 3) {
                         updateText(((FaceExpense) o).getContent().getExpenseDetail().getUserId(), ((FaceExpense) o).getContent().getExpenseDetail().getBalance(), ((FaceExpense) o).getContent().getExpenseDetail().getPayCount());
@@ -241,8 +285,8 @@ public class DsyActivity extends BaseActivity {
                     } else {
                         adapter = new MealPagerAdapter(datas, DsyActivity.this);
                         mealViewpager.setAdapter(adapter);
-                        mealViewpager.setPageMargin(20);
-                        mealViewpager.setPageTransformer(false, new LoopTransformer());
+                        mealViewpager.setPageMargin(15);
+                        //mealViewpager.setPageTransformer(false, new LoopTransformer());
                         mealViewpager.setOffscreenPageLimit(datas.size());
                     }
                     setDefiCurrentItem((GetMealList) o);
@@ -252,10 +296,39 @@ public class DsyActivity extends BaseActivity {
             @Override
             public void onFail(String err) {
                 AudioUtils.getInstance().speakText(err);
-                mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 2000);
+                mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 3000);
                 startActivity(ConsumeResultActivity.getConsumeFailActivityIntent(DsyActivity.this));
             }
         });
+    }
+
+    private boolean leftTop = false;
+    private boolean rightTop = false;
+    private boolean rightBottom = false;
+    private boolean leftBpttom = false;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
+        if (x < 200 && y < 200) {
+            leftTop = true;
+            Log.d(TAG, "leftTop" + x + "，" + y);
+        } else if (x > 520 && y < 200) {
+            rightTop = true;
+            Log.d(TAG, "rightTop" + x + "，" + y);
+        } else if (x > 520 && y > 1080) {
+            rightBottom = true;
+            Log.d(TAG, "rightBottom" + x + "，" + y);
+        } else if (x < 200 && y > 1080) {
+            leftBpttom = true;
+            Log.d(TAG, "leftBpttom" + x + "，" + y);
+        }
+        if (leftTop && leftBpttom && rightBottom && rightTop) {
+            MainApplication.getSerialPortUtils().closeSerialPort();
+            finish();
+        }
+        return super.onTouchEvent(event);
     }
 
     /**
@@ -268,8 +341,8 @@ public class DsyActivity extends BaseActivity {
         String currentTime = format.format(date);
         times.clear();
         for (int i = 0; i < datas.size(); i++) {
-            String begintime = currentDate + o.getContent().get(i).getMeal().getBeginTime();
-            String endtime = currentDate + o.getContent().get(i).getMeal().getEndTime();
+            String begintime = currentDate + o.getContent().get(i).getBeginTime();
+            String endtime = currentDate + o.getContent().get(i).getEndTime();
             String[] timearr = new String[]{begintime, endtime};
             times.add(timearr);
         }
@@ -295,6 +368,10 @@ public class DsyActivity extends BaseActivity {
      * descirption: 更新数据
      */
     private void updateText(String name, double balance, int paycount) {
+        isEnterPressed = false;
+        if (p == 1) {
+            tvMoney.setEnabled(true);
+        }
         Message message = Message.obtain();
         Bundle bundle = new Bundle();
         bundle.putString("name", name);
@@ -303,7 +380,7 @@ public class DsyActivity extends BaseActivity {
         message.setData(bundle);
         message.what = Constants.KEY_SET_TEXT;
         mHandler.sendMessage(message);
-        mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 2000);
+        mHandler.sendEmptyMessageDelayed(Constants.KEY_CLEAR, 3000);
     }
 
     /**
@@ -313,19 +390,28 @@ public class DsyActivity extends BaseActivity {
         if (!TextUtils.isEmpty(memberId)) {
             if (ableTag) {
                 if (p == 3) {
-                    PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, 0, p, Integer.parseInt(deviceId), 2);
-                    api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
+                    AudioUtils.getInstance().speakText("请确认支付金额");
+                    initDialog("0");
                 } else {
                     String money = tvMoney.getText().toString();
                     if (!money.equals("刷脸支付") && !money.equals("")) {
                         if (Double.parseDouble(money) > 0) {
-                            PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(money), p, Integer.parseInt(deviceId), 2);
-                            api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
+                            if (p == 1) {
+                                if (isEnterPressed) {
+                                    PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(money), p, Integer.parseInt(deviceId), 2);
+                                    api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
+                                } else {
+                                    AudioUtils.getInstance().speakText("请确认支付金额");
+                                }
+                            } else {
+                                AudioUtils.getInstance().speakText("请确认支付金额");
+                                initDialog(money);
+                            }
                         } else {
                             ToastHelper.showToast("金额必须大于零才能支付");
                         }
                     } else {
-                        ToastHelper.showToast("还未输入金额");
+                        ToastHelper.showToast("请输入金额");
                     }
                 }
             } else {
@@ -334,6 +420,41 @@ public class DsyActivity extends BaseActivity {
         } else {
             ToastHelper.showToast("人脸未录入");
         }
+    }
+
+    private ComonDialog comonDialog;
+
+    private void initDialog(String money) {
+        if (comonDialog != null) {
+            return;
+        }
+        comonDialog = new ComonDialog(DsyActivity.this);
+        if (p == 2) {
+            comonDialog.setMessage("已识别到人脸，请您确认支付：自动消费" + money + "元。");
+        } else {
+            comonDialog.setMessage("已识别到人脸，请您确认支付：定值消费。");
+        }
+        comonDialog.setTitle("支付提示")
+                .setSingle(false).setOnClickBottomListener(new ComonDialog.OnClickBottomListener() {
+            @Override
+            public void onPositiveClick() {
+                comonDialog.dismiss();
+                if (p == 2) {
+                    PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, Double.parseDouble(money), p, Integer.parseInt(deviceId), 2);
+                    api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
+                } else {
+                    PostFaceExpenseBody postFaceExpenseBody = new PostFaceExpenseBody(memberId, 0, p, Integer.parseInt(deviceId), 2);
+                    api.postFaceExpense(postFaceExpenseBody, token, Constants.MODIAN_TOKEN);
+                }
+                comonDialog = null;
+            }
+
+            @Override
+            public void onNegtiveClick() {
+                comonDialog.dismiss();
+                comonDialog = null;
+            }
+        }).show();
     }
 
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
@@ -373,6 +494,10 @@ public class DsyActivity extends BaseActivity {
                 mHandler.sendEmptyMessageDelayed(Constants.KEY_OPEN_NIR_CAMERA, Constants.OPEN_MIR_CAMERA_DELAY);
             }
         }
+        leftTop = false;
+        rightTop = false;
+        rightBottom = false;
+        leftBpttom = false;
     }
 
     /**
@@ -390,6 +515,14 @@ public class DsyActivity extends BaseActivity {
         }
         if (mNirCameraView != null) {
             mNirCameraView.onPause();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (adapter != null) {
+            adapter = null;
         }
     }
 
@@ -432,6 +565,9 @@ public class DsyActivity extends BaseActivity {
                     tvBalance.setHint("请先识别");
                     tvPaycount.setText("");
                     tvPaycount.setHint("请先识别");
+                    if (p == 1 || p == 2) {
+                        tvMoney.setTextColor(getResources().getColor(R.color.color_grey));
+                    }
                     if (p == 1) {
                         tvMoney.setText("");
                         tvMoney.setHint("刷脸支付");
@@ -527,13 +663,9 @@ public class DsyActivity extends BaseActivity {
     };
 
 
-    @OnClick({R.id.face_exit, R.id.main_menu})
+    @OnClick({R.id.main_menu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.face_exit:
-                MainApplication.getSerialPortUtils().closeSerialPort();
-                finish();
-                break;
             case R.id.main_menu:
                 startActivity(MainActivity.getMainActivityIntent(DsyActivity.this));
                 finish();
@@ -591,22 +723,24 @@ public class DsyActivity extends BaseActivity {
                     if (action.equals(Constants.DETECT_RESULT_ACTION)) {
                         int facecount = intent.getIntExtra(Constants.FACE_COUNT, 0);
                         String trackids = "";
-                        long trackid = 0l;
+                        long trackid = 01;
                         if (facecount > 0) {
                             for (int i = 0; i < facecount; i++) {
                                 trackid = intent.getLongExtra(Constants.TRACK_ID + i, 0l);
                                 trackids = trackids + "," + trackid;
                             }
                         }
+                        Log.d("ascb", "DETECT_RESULT_ACTION: " + trackids);
                     } else if (action.equals(Constants.NIR_RESULT_ACTION)) {
                         long trackid = intent.getLongExtra(Constants.TRACK_ID, 0l);
                         mNirTipsView.setBackground(getResources().getDrawable(R.drawable.shap_nir_tip_succ));
-                        Log.d(TAG, "NIR_RESULT_ACTION: " + System.currentTimeMillis());
+                        Log.d("ascb", "NIR_RESULT_ACTION: " + trackid);
                     } else if (action.equals(Constants.OFFLINE_RECOGNIZE_ACTION) || action.equals(Constants.ONLINE_RECOGNIZE_ACTION)) {
-                        Log.d(TAG, "OFFLINE_RECOGNIZE_ACTION: " + System.currentTimeMillis());
                         long trackid = intent.getLongExtra(Constants.TRACK_ID, 0l);
+                        Log.d("ascb", "OFFLINE_RECOGNIZE_ACTION: " + trackid);
                         username = intent.getStringExtra(Constants.USER_NAME);
                         memberId = intent.getStringExtra(Constants.PERSON_ID);
+                        Log.d("ascb", "OFFLINE_RECOGNIZE_ACTION: " + memberId);
                         Message msg = new Message();
                         msg.what = Constants.KEY_DETECT_USER_NAME;
                         Bundle b = new Bundle();
@@ -620,7 +754,7 @@ public class DsyActivity extends BaseActivity {
     }
 
     public class LoopTransformer implements ViewPager.PageTransformer {
-        private static final float MIN_SCALE = 0.8f;
+        private static final float MIN_SCALE = 0.6f;
         private static final float MIN_ALPHA = 0.5f;
 
         @Override

@@ -82,6 +82,7 @@ public class Constants {
     public static final String ARGUEMENT_PAYPASSWORD = "arguement_paypassword";
     public static final String ARGUEMENT_DEADLINE = "arguement_deadline";
     public static final String ARGUEMENT_DEPARTMENT = "arguement_department";
+    public static final String ARGUEMENT_DEPARTMENT_ID = "arguement_department_id";
     public static final String ARGUEMENT_NUMBER = "arguement_number";
 
     public static final String DATE = "arguement_date";

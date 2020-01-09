@@ -9,22 +9,28 @@
 
     <include layout="@layout/header_bar" />
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/invest_tablayout"
+    <LinearLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_80"
-        android:paddingTop="@dimen/padding_20"
-        android:background="@color/colorPrimaryDark"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabIndicatorFullWidth="false"
-        app:tabSelectedTextColor="@color/colorPrimary"
-        app:tabTextAppearance="@style/tab_text_size"
-        app:tabMode="fixed"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.design.widget.TabLayout
+            android:id="@+id/invest_tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_80"
+            android:paddingTop="@dimen/padding_20"
+            android:background="@color/colorPrimaryDark"
+            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabIndicatorFullWidth="false"
+            app:tabSelectedTextColor="@color/colorPrimary"
+            app:tabTextAppearance="@style/tab_text_size"
+            app:tabMode="fixed"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/invest_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v4.view.ViewPager>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/invest_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v4.view.ViewPager>
+    </LinearLayout>
 
 </LinearLayout>

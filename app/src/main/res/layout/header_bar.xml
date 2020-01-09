@@ -19,6 +19,33 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="pagename"
-        android:textSize="@dimen/textSize_26"
-        android:textColor="@color/colorAccent"/>
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/textSize_26" />
+
+    <LinearLayout
+        android:id="@+id/add_ll"
+        android:layout_width="@dimen/width_100"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/add_person"
+            android:layout_width="@dimen/width_30"
+            android:layout_height="@dimen/height_30"
+            android:src="@drawable/jiahao" />
+
+        <TextView
+            android:id="@+id/add_person_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="添加用户"
+            android:textColor="@color/description"
+            android:textSize="@dimen/textSize_16" />
+    </LinearLayout>
+
+
 </RelativeLayout>

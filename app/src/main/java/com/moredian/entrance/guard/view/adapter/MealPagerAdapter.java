@@ -69,42 +69,25 @@ public class MealPagerAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = LayoutInflater.from(context).inflate(R.layout.meal_cardview_layout, null);
         ButterKnife.bind(this, view);
-        mealName.setText(data.get(position).getMeal().getName());
-        mealPrice.setText(data.get(position).getDeviceMeal().getMealAmount() + "");
-        if (data.get(position).getMeal().getName().equals("早餐")) {
+        mealName.setText(data.get(position).getName());
+        if (data.get(position).getName().equals("早餐")) {
             mealIcon.setImageResource(R.mipmap.zaocan);
             rl.setBackgroundColor(context.getResources().getColor(R.color.color_fde3a8));
-        } else if (data.get(position).getMeal().getName().equals("中餐")) {
+        } else if (data.get(position).getName().equals("中餐")) {
             mealIcon.setImageResource(R.mipmap.wucan);
             rl.setBackgroundColor(context.getResources().getColor(R.color.color_f6d76d));
-        } else if (data.get(position).getMeal().getName().equals("晚餐")) {
+        } else if (data.get(position).getName().equals("晚餐")) {
             mealIcon.setImageResource(R.mipmap.wancan);
             rl.setBackgroundColor(context.getResources().getColor(R.color.color_f27835));
-        } else if (data.get(position).getMeal().getName().equals("夜宵")) {
+        } else if (data.get(position).getName().equals("夜宵")) {
             mealIcon.setImageResource(R.mipmap.yexiao);
             rl.setBackgroundColor(context.getResources().getColor(R.color.color_4b77be));
         }
-        if (data.get(position).getDeviceMeal().isIsLimitMeal()) {
-            if (data.get(position).getDeviceMeal().getMealQuota() != 0) {
-                mealMealQuota.setText(data.get(position).getDeviceMeal().getMealQuota() + "元");
-                ll3.setVisibility(View.VISIBLE);
-            }
-            if (data.get(position).getDeviceMeal().getMealTimes()!= 0){
-                mealMealTimes.setText(data.get(position).getDeviceMeal().getMealTimes()+"次");
-                ll1.setVisibility(View.VISIBLE);
-            }
-        }
 
-        if (data.get(position).getDeviceMeal().isIsPreferential()) {
-            if (data.get(position).getDeviceMeal().getPreferentialAmount()!=0) {
-                mealPreferentialAmount.setText(data.get(position).getDeviceMeal().getPreferentialAmount() + "元");
-                ll2.setVisibility(View.VISIBLE);
-            }
-        }
-        mealStartTime.setText(data.get(position).getMeal().getBeginTime());
-        mealEndTime.setText(data.get(position).getMeal().getEndTime());
+        mealStartTime.setText(data.get(position).getBeginTime());
+        mealEndTime.setText(data.get(position).getEndTime());
         container.addView(view);
-        view.setTag(R.id.tag_pos,position);
+        view.setTag(R.id.tag_pos, position);
         return view;
     }
 

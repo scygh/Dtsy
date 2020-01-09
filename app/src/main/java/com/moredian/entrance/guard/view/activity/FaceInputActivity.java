@@ -263,13 +263,10 @@ public class FaceInputActivity extends BaseActivity {
         }
     };
 
-    @OnClick({R.id.persondetail_sure, R.id.face_exit})
+    @OnClick({R.id.persondetail_sure})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.persondetail_sure:
-                break;
-            case R.id.face_exit:
-                finish();
                 break;
         }
     }

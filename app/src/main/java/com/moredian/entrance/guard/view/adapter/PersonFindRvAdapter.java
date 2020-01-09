@@ -31,7 +31,7 @@ public class PersonFindRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public interface OnMyItemClickListener {
         void onItemClick(String userID);
 
-        void onDelete(String userID);
+        //void onDelete(String userID);
     }
 
     public void setMyItemClickListener(OnMyItemClickListener myItemClickListener) {
@@ -59,7 +59,7 @@ public class PersonFindRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             super(itemView);
             ButterKnife.bind(this, itemView);
             relativeLayout.setOnClickListener(relaticeLayoutlistener);
-            textView.setOnClickListener(textViewListener);
+            //textView.setOnClickListener(textViewListener);
         }
 
         private View.OnClickListener relaticeLayoutlistener = new View.OnClickListener() {
@@ -69,12 +69,12 @@ public class PersonFindRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         };
 
-        private View.OnClickListener textViewListener = new View.OnClickListener() {
+       /* private View.OnClickListener textViewListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 myItemClickListener.onDelete(rowsBeans.get(getAdapterPosition()).getUser().getId());
             }
-        };
+        };*/
 
         public void bind() {
             String name = rowsBeans.get(getAdapterPosition()).getUser().getName();

@@ -14,6 +14,6 @@ import retrofit2.http.Query;
  */
 public interface GetMealList {
 
-    @GET("Api/Device/Meal/GetList")
-    Observable<com.moredian.entrance.guard.entity.GetMealList> getMealList(@Query ("deviceID") Integer id, @Header("AccessToken") String token);
+    @GET("Api/Config/MealList")
+    Observable<com.moredian.entrance.guard.entity.GetMealList> getMealList(@Header("AccessToken") String token);
 }

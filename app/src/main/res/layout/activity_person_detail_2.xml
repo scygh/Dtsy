@@ -12,8 +12,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:paddingBottom="@dimen/padding_50">
+        android:background="@drawable/card_bg"
+        android:layout_margin="@dimen/margin_20">
 
         <ImageView
             android:id="@+id/persondetail_camera"
@@ -42,7 +42,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_10">
+                android:layout_margin="@dimen/margin_10"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -110,56 +111,53 @@
         android:id="@+id/personDetail_create"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_100"
-        android:layout_marginTop="@dimen/margin_20"
-        android:background="@color/colorPrimaryDark"
+        android:layout_margin="@dimen/margin_20"
+        android:background="@drawable/card_bg"
         android:gravity="center"
         android:text="添加人脸"
         android:textSize="@dimen/textSize_26" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/margin_50"
-        android:layout_marginRight="@dimen/margin_50"
-        android:layout_marginTop="@dimen/margin_10"
-        android:background="@color/icon" />
 
     <TextView
         android:id="@+id/personDetail_update"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_100"
-        android:background="@color/colorPrimaryDark"
+        android:layout_margin="@dimen/margin_20"
+        android:background="@drawable/card_bg"
         android:gravity="center"
         android:text="添加人脸"
         android:textSize="@dimen/textSize_26"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/personDetail_delete"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_100"
-        android:layout_marginTop="@dimen/margin_10"
-        android:background="@color/colorPrimaryDark"
+        android:layout_margin="@dimen/margin_20"
+        android:background="@drawable/card_bg"
         android:gravity="center"
         android:text="删除人脸"
         android:textSize="@dimen/textSize_26" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/margin_50"
-        android:layout_marginRight="@dimen/margin_50"
-        android:layout_marginTop="@dimen/margin_10"
-        android:background="@color/icon" />
 
     <TextView
         android:id="@+id/personDetail_chongzhi"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_100"
-        android:layout_marginTop="@dimen/margin_10"
-        android:background="@color/colorPrimaryDark"
+        android:layout_margin="@dimen/margin_20"
+        android:background="@drawable/card_bg"
         android:gravity="center"
         android:text="充值"
+        android:textSize="@dimen/textSize_26" />
+
+
+    <TextView
+        android:id="@+id/personDetail_xiaohu"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_100"
+        android:layout_margin="@dimen/margin_20"
+        android:background="@drawable/card_bg_red"
+        android:gravity="center"
+        android:text="注销"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/textSize_26" />
 
     <LinearLayout
@@ -188,8 +186,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_10"
         android:layout_marginLeft="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_10"
         android:text="1. 录脸请靠近屏幕，照片有质量要求"
         android:textColor="@color/icon"
         android:textSize="@dimen/textSize_16" />
@@ -197,8 +195,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_10"
         android:layout_marginLeft="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_10"
         android:text="2. 如果没有提示成功，请重新操作"
         android:textColor="@color/icon"
         android:textSize="@dimen/textSize_16" />

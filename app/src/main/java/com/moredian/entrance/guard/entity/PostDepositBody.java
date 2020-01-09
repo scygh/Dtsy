@@ -18,17 +18,27 @@ public class PostDepositBody {
     private double Amount;
     private double Donate;
     private int Channel;
+    private double Money;
 
-    public PostDepositBody(String userID, double amount, double donate,int channel) {
+    public PostDepositBody(String userID, double amount, double donate, int channel, double money) {
         UserID = userID;
         Amount = amount;
         Donate = donate;
         Channel = channel;
+        Money = money;
     }
 
     public PostDepositBody(String userID, double amount) {
         UserID = userID;
         Amount = amount;
+    }
+
+    public double getMoney() {
+        return Money;
+    }
+
+    public void setMoney(double money) {
+        Money = money;
     }
 
     public String getUserID() {
