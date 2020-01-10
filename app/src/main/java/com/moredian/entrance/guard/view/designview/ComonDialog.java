@@ -186,8 +186,8 @@ public class ComonDialog extends Dialog {
     public ComonDialog setTitle(String title) {
         this.title = title;
         return this;
-    }
 
+}
     public String getPositive() {
         return positive;
     }

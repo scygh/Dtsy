@@ -15,6 +15,7 @@ import com.moredian.entrance.guard.constant.Constants;
 import com.moredian.entrance.guard.entity.PostRegister;
 import com.moredian.entrance.guard.http.Api;
 import com.moredian.entrance.guard.utils.ToastHelper;
+import com.moredian.entrance.guard.view.designview.ComonDialog;
 import com.xyz.step.FlowViewHorizontal;
 
 import butterknife.BindView;
@@ -102,29 +103,36 @@ public class PersonAddFragment extends BaseFragment {
         }
     }
 
+    ComonDialog comonDialog;
+
     /**
      * descirption: 显示提示
      */
     private void showDialog() {
-        new AlertDialog.Builder(mContext).setTitle("提示")
-                .setMessage("确认开户？")
-                //  取消选项
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        if (comonDialog != null) {
+            return;
+        }
+        comonDialog = new ComonDialog(getActivity());
+        comonDialog.setMessage(
+                "姓名：" + SPUtils.getInstance().getString(Constants.ARGUEMENT_NAME) + "\n" +
+                        "卡号：" + SPUtils.getInstance().getString(Constants.ARGUEMENT_SERIALNO) + "\n" +
+                        "充值金额：" + SPUtils.getInstance().getString(Constants.ARGUEMENT_CASH)
+        );
+        comonDialog.setTitle("请确认开户信息")
+                .setSingle(true).setOnClickBottomListener(new ComonDialog.OnClickBottomListener() {
+            @Override
+            public void onPositiveClick() {
+                comonDialog.dismiss();
+                GotoRegister();
+                comonDialog = null;
+            }
 
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                })
-                //  确认选项
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        GotoRegister();
-                    }
-                })
-                .setCancelable(true)
-                .show();
+            @Override
+            public void onNegtiveClick() {
+                comonDialog.dismiss();
+                comonDialog = null;
+            }
+        }).show();
     }
 
     /**
